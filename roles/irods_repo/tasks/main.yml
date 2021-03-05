@@ -1,0 +1,8 @@
+- name: enable iRODS repository
+  yum_repository:
+    name: iRODS
+    description: YUM repositories from iRODS Consortium
+    baseurl: https://packages.irods.org/yum/pool/centros7/x86_64/
+    gpgkey: https://packages.irods.org/irods-signing-key.asc
+    gpgcheck: yes
+

@@ -1,0 +1,10 @@
+- hosts: all
+  
+- name: provision icommands client software
+  hosts: all
+  become: yes
+  roles:
+    - irods_repo
+    - irods_icommands
+
+
