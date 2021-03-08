@@ -1,13 +1,25 @@
-- name: enable iRODS repository
-    yum_repository:
-      name: iRODS
-      description: YUM repositories from iRODS Consortium
-      baseurl: https://packages.irods.org/yum/pool/centros7/x86_64/
-      gpgkey: https://packages.irods.org/irods-signing-key.asc
-      gpgcheck: yes
+---
+- name: install iRODS iCommands toolset in researchcloud workspace
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: wait for the system to become available
+      wait_for_connection:
+              timeout: 300 
 
-- name: install icommands
-    yum:
-      name: irods-icommands-4.2.7-1
-      state: present
+    - name: enable iRODS repository
+      yum_repository:
+         name: iRODS
+         description: YUM repositories from iRODS Consortium
+         baseurl: https://packages.irods.org/yum/pool/centros7/x86_64/
+         gpgkey: https://packages.irods.org/irods-signing-key.asc
+         gpgcheck: yes
+
+    - name: install icommands
+      yum:
+         name: irods-icommands-4.2.7-1
+         state: present
+
+    - debug:
+        msg: 'service_url: {"url": "https://{{ ansible_host }}", "tag": "web", "description": "iCommands"}'
 
