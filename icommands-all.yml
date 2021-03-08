@@ -20,6 +20,14 @@
          name: irods-icommands-4.2.7-1
          state: present
 
+    - name: prep config irods
+      copy:
+        dest: /etc/irods-environment.txt
+        content: |
+           [myconfig]
+           Blah=Ton
+           user={'{{ ssh_user | default('rods', true) }}'}
+
     - debug:
         msg: 'service_url: {"url": "https://{{ ansible_host }}", "tag": "web", "description": "iCommands"}'
 
