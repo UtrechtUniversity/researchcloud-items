@@ -1,8 +1,7 @@
-- hosts: all
-  
-- name: provision icommands client software
-  hosts: all
-  become: yes
+---
+- name: install iRODS iCommands toolset in researchcloud workspace
+  hosts: localhost
+  gather_facts: false
   roles:
     - irods_repo
     - irods_icommands
