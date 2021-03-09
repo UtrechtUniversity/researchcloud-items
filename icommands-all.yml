@@ -29,7 +29,7 @@
         content: |
            [myconfig]
            Blah=Ton
-           host={'{{ uu-icommands-server | default('hostname-missing', true) }}'}
+           host={'{{ uu_icommands_server | default('hostname missing', true) }}'}
 
     - debug:
         msg: 'service_url: {"url": "https://{{ ansible_host }}", "tag": "web", "description": "iCommands"}'
