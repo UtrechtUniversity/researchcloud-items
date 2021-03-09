@@ -7,6 +7,9 @@
       wait_for_connection:
               timeout: 300 
 
+    - name: gather facts
+      setup:
+
     - name: enable iRODS repository
       yum_repository:
          name: iRODS
@@ -26,7 +29,7 @@
         content: |
            [myconfig]
            Blah=Ton
-           user={'{{ ssh_user | default('rods', true) }}'}
+           host={'{{ uu-icommands-server | default('hostname-missing', true) }}'}
 
     - debug:
         msg: 'service_url: {"url": "https://{{ ansible_host }}", "tag": "web", "description": "iCommands"}'
