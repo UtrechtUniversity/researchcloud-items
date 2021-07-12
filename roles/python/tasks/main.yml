@@ -2,5 +2,11 @@
 
 - name: install python and pip
   package:
-    name: python-pip
+    name: python3-pip
     state: present
+
+- name: install pint
+  pip:
+    name: python3-pint
+    virtualenv: /home/vagrant/myvirtenv
+    extra_args: --user
