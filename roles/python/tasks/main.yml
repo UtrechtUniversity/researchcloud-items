@@ -10,3 +10,10 @@
     name: pint
     virtualenv: /home/vagrant/myvirtenv
     virtualenv_command: /usr/bin/python3 -m venv
+
+- name: fix ownership files in virtual environment
+  file:
+    path: /home/vagrant/myvirtenv
+    owner: vagrant
+    state: directory
+    recurse: yes
