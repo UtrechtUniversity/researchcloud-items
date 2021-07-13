@@ -1,0 +1,14 @@
+---
+#
+# this file can be used to test a role
+#
+- name: test a role 
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - fact_regular_users
+
+  tasks:
+    - name: list content of variable fact_regular_users
+      debug:
+        msg: "{{fact_regular_users}}"
