@@ -11,7 +11,7 @@
 
 - name: ensure directory /etc/runonce.d exists
   file:
-    path: "etc/runonce.d"
+    path: "/etc/runonce.d"
     state: directory
     mode: 0755
     owner: root
