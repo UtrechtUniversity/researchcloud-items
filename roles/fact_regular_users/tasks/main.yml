@@ -21,7 +21,7 @@
 # jmespath is required for filter 
 - name: ensure jmespath is installed
   pip:
-    name: JMESPath
+    name: jmespath
 
 - name: read database /etc/passwd
   getent:
