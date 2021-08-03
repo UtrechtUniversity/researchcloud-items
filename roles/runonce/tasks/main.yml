@@ -16,7 +16,8 @@
     mode: 0755
     owner: root
     group: root
-  
+ 
+# NB: link needs "follow:no" otherwise owner/group would be applied to its src 
 - name: add link to /etc/runonce.d in /etc/skel
   file:
     src: "/etc/runonce.d"
@@ -24,6 +25,7 @@
     owner: root
     group: root
     state: link
+    follow: no
 
 - name: add link to runonce dir in home of existing users
   file:
@@ -32,6 +34,7 @@
     owner: "{{item.user}}"
     group: "{{item.user}}"
     state: link
+    follow: no
   with_items: "{{fact_regular_users}}"
   
 
