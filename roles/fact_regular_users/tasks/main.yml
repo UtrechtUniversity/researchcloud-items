@@ -18,6 +18,11 @@
 #     with unicode strings to a dictionary with ascii strings
 #     as json_query expects ascii strings
 
+# jmespath is required for filter 
+- name: ensure jmespath is installed
+  pip:
+    name: JMESPath
+
 - name: read database /etc/passwd
   getent:
     database: passwd
