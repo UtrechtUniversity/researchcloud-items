@@ -2,6 +2,8 @@
 #
 # this file demonstrates how user data can be retrieved and used
 #
+# NB: this role requires Ansible 2.6+
+#
 - name: demonstrate role fact_regular_users
   hosts: localhost
   gather_facts: true
