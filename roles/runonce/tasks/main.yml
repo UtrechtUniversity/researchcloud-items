@@ -19,16 +19,16 @@
   
 - name: add link to /etc/runonce.d in /etc/skel
   file:
-    src: "/etc/skel/runonce.d"
-    dest: "/etc/runonce.d"
+    src: "/etc/runonce.d"
+    dest: "/etc/skel/runonce.d"
     owner: root
     group: root
     state: link
 
 - name: add link to runonce dir in home of existing users
   file:
-    src: "/{{item.home}}/runonce.d"
-    dest: "/etc/runonce.d"
+    src: "/etc/runonce.d"
+    dest: "/{{item.home}}/runonce.d"
     owner: "{{item.user}}"
     group: "{{item.user}}"
     state: link
