@@ -7,17 +7,15 @@ curl https://pyenv.run | bash
 #       and be executed before ~/.bashrc is sourced
 # 
 #
-cat >>~/.bashrc <<'INPUTEND'
+cat >>~/.profile <<'INPUTEND1'
 # added by runonce as pyenv config:
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 # load pyenv and pyenv-virtualenv automatically
+INPUTEND1
+cat >>~/.bashrc <<'INPUTEND2'
+# added by runonce as pyenv config
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-INPUTEND
-# add pyenv to current login shell (to support immediate use in runonce scripts)
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv virtualenv-init -)"
+INPUTEND2
 
