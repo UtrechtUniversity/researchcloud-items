@@ -1,0 +1,10 @@
+# Editor swapfiles
+*~
+
+# Ansible 
+*.retry
+.vaultpw
+development_credentials.yml
+
+# Vagrant
+/.vagrant
