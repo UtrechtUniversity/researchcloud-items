@@ -2,9 +2,9 @@
 
 - name: install pyenv dependencies, yum package manager
   package:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: present
-  with items:
+  with_items:
     - "zlib-devel"
     - "bzip2"
     - "bzip2-devel"
@@ -21,7 +21,7 @@
   package:
     name: "{{item}}"
     state: present
-  with items:
+  with_items:
     - "build-essential"
     - "libssl-dev"
     - "zlib1g-dev"
