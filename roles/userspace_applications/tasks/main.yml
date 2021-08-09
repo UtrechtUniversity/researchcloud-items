@@ -13,5 +13,5 @@
     src: "{{ item }}"
     dest: "/etc/runonce.d"
     mode: 0755
-  with_items "{{ list_userspace_applications }}"
+    with_items: "{{ list_userspace_applications }}"
 
