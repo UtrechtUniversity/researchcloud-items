@@ -43,6 +43,6 @@
 - name: add pyenv install to runonce config
   copy:
     src: "pyenv-install.sh"
-    dest: "/etc/runonce.d/pyenv-install.sh"
+    dest: "/etc/runonce.d/01_pyenv-install.sh"
     mode: 0755
 
