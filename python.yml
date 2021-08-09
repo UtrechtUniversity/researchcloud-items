@@ -1,8 +1,13 @@
 ---
-- name: install Python generic tools in researchcloud workspace
+- name: install Python generic tools and Python applications in researchcloud workspace
   hosts: localhost
   gather_facts: true
+  vars:
+    list_userspace_applications:
+       - "python-poetry"
+
   roles:
     - python
     - pyenv
+    - userspace_applications
 
