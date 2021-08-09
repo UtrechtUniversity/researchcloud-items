@@ -8,6 +8,6 @@
     - pyenv
     - role: userspace_applications
       vars:
-        list_userspace_applications:
+        - list_userspace_applications:
           - "python-poetry"
 
