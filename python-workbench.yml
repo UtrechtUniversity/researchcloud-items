@@ -10,4 +10,5 @@
       vars:
         - list_userspace_applications:
           - "10-python-poetry"
+          - "999ready"
 

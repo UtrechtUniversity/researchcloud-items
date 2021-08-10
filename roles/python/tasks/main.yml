@@ -5,21 +5,12 @@
     name: python3-pip
     state: present
 
-- name: place test file
-  copy:
-    src: "test.sh"
-    dest: "/etc/runonce.d/test.sh"
-    mode: 0755
+# userspace configuration can be added.
+# below is a test script to serve as an example
+    
+# - name: place test file
+#  copy:
+#    src: "test.sh"
+#    dest: "/etc/runonce.d/test.sh"
+#    mode: 0755
 
-# - name: install Python modules in virtual environment
-#  pip:
-#    name: pint
-#    virtualenv: /home/vagrant/myvirtenv
-#    virtualenv_command: /usr/bin/python3 -m venv
-
-# - name: fix ownership files in virtual environment
-#  file:
-#    path: /home/vagrant/myvirtenv
-#    owner: vagrant
-#    state: directory
-#    recurse: yes
