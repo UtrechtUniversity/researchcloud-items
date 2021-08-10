@@ -1,5 +1,5 @@
 ---
-- name: install Python generic tools and Python applications in researchcloud workspace
+- name: install Python environment management tools 
   hosts: localhost
   gather_facts: true
 
@@ -10,5 +10,4 @@
       vars:
         - list_userspace_applications:
           - "10-python-poetry"
-          - "70-tweets-collector"
 
