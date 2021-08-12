@@ -23,7 +23,8 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 INPUTEND2
 #
-# also add pyenv to current login shell
-#export PYENV_ROOT="$HOME/.pyenv"
-#export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+# also add pyenv to current login shell 
+# so that pyenv commands can be used in other runonce actions
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
