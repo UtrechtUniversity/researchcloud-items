@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 # iselect.py
 # Aug-2021 Ton Smeele - Utrecht University
+# All rights reserved
 # 
 
 from pathlib import Path
 import json
+import subprocess
 
 # input file IRODSZONESFILE
 # format must be: 
@@ -14,10 +16,10 @@ import json
 #     "zone2": { ... }
 #   }
 # where the "config" json object will be the content for the outputfile
-IRODSZONESFILE = '/etc/irods_zones.json'
+IRODSZONESFILE = './irods_zones.json'
 #
 # output file IRODSENVFILE:
-IRODSENVFILE = '~/.irods/irods_environment.json'
+IRODSENVFILE = './irods_environment.json'
 
 def readFile(textfile):
     with textfile.open(mode = 'rt') as f:
@@ -58,7 +60,7 @@ def main():
     data = json.dumps(zones[zoneChosen]['config'])
     writeFile(outPath, data)
     print('Config written to ' + str(outPath))
-
+    subprocess.run(['iinit'])
 
 # main program
 if __name__ == "__main__":
