@@ -8,5 +8,5 @@
 - name: add iselect as client command
   copy:
     src: "iselect.py"
-    dest: "/usr/bin/iselect.py"
+    dest: "/usr/bin/iselect"
     mode: 0755
