@@ -10,7 +10,7 @@
   copy:
     src: "{{ irods_iselect_file }}"
     dest: "/etc/irods_zones.json"
-    mode: 0744
+    mode: 0644
   when: irods_iselect_file is defined
 
 
