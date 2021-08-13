@@ -38,9 +38,6 @@ def writeFile(textfile, data):
         f.write(data)
     f.close()
 
-def match(text, list):
-    hits = [i for i in list if text in i]
-    return (len(hits) == 1, hits) 
 
 def selector(zones, nameFilter):
     zoneChosen = nameFilter
