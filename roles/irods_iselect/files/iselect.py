@@ -5,8 +5,8 @@
 # 
 
 VERSION =  'iselect release 1.0'
-IRODSZONESFILE = './irods_zones.json'
-IRODSENVFILE = './irods_environment.json'
+IRODSZONESFILE = '/etc/irods_zones.json'
+IRODSENVFILE = '~/.irods/irods_environment.json'
 from pathlib import Path
 import json
 import sys
