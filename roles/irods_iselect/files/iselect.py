@@ -57,7 +57,11 @@ def selector(zones, nameFilter):
                 print(name + "\t : " + props['description'])
         if not zoneChosen == nameFilter:
             print('\nSorry, your input was not recognized as a name in the list')
-        zoneChosen = input('\nPlease select a name from the list above: ').lower()
+        try:
+            zoneChosen = input('\nPlease select a name from the list above: ').lower()
+        except:
+            print('\nInput aborted by user')
+            exit(1)
     return zoneChosen
 
 
