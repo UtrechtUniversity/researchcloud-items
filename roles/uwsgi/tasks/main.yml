@@ -17,7 +17,7 @@
      - "flask"
     
 - name: configure uwsgi within nginx for locations starting with '/w'
-copy:
+  copy:
     src: "nginx-uwsgi.conf"
     dest: "/etc/nginx/app-location-conf.d/uwsgi.conf"
     mode: 0644
