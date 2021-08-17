@@ -1,24 +1,29 @@
 ---
 # Note that below config of uwsgi depends on 
-#   - nginx installed and configured using SURF config parameters
-#   - wsgi python applications served via flask
+# nginx (plugin) already installed and configured using SURF config parameters
+# 
 #
 - name: ensure uwsgi service is installed
   package:
     name: uwsgi
     state: present
 
-- name: pip3 systemwide install flask 
-  pip:
-     name: "{{ item }}"
-     state: present
-     executable: pip3
-  with_items:
-     - "flask"
-    
+
 - name: configure uwsgi within nginx for locations starting with '/w'
   copy:
     src: "nginx-uwsgi.conf"
     dest: "/etc/nginx/app-location-conf.d/uwsgi.conf"
     mode: 0644
 
+- name: copy example uwsgi.ini file to /etc/uwsgi/apps-available
+  copy:
+    src: "uwsgi-example.ini"
+    dest: "/etc/uwsgi/apps-available/example.ini"
+    mode: 0644    
+
+
+- name: start uwsgi service at boot
+  service:
+    name: uwsgi
+    state: started
+    enabled: yes
