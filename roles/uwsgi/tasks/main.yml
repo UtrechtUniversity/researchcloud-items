@@ -21,5 +21,4 @@
     src: "nginx-uwsgi.conf"
     dest: "/etc/nginx/app-location-conf.d/uwsgi.conf"
     mode: 0644
-    owner: "www-data"
 
