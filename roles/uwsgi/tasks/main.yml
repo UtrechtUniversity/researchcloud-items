@@ -5,9 +5,11 @@
 #
 - name: ensure uwsgi service is installed
   package:
-    name: uwsgi
+    name: "{{ item }}"
     state: present
-
+  with_items:
+    - "uwsgi"
+    - "uwsgi-plugin-python3"
 
 - name: configure uwsgi within nginx for locations starting with '/w'
   copy:
