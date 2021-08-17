@@ -6,10 +6,11 @@
   roles:
     - python
     - pyenv
-    - role: userspace_applications
-      vars:
-        - list_userspace_applications:
-          - "10-python-poetry"
-          - "70-tweets-collector"
-          - "999ready"
+    - uwsgi
+#    - role: userspace_applications
+#      vars:
+#        - list_userspace_applications:
+#          - "10-python-poetry"
+#          - "70-tweets-collector"
+#          - "999ready"
 
