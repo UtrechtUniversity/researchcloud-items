@@ -16,3 +16,17 @@
     src: "app.py"
     dest: "/var/www/uwsgi/app.py"
     mode: 0755
+
+- name: copy uwsgi config for app.py to /etc/uwsgi/apps-available
+  copy:
+    src: "uwsgi-app.ini"
+    dest: "/etc/uwsgi/apps-available/uwsgi-app.ini"
+    mode: 0644
+
+- name: enable uwsgi config for app.py
+  file:
+    src: "/etc/uwsgi/apps-available/uwsgi-app.ini"
+    dest: "/etc/uwsgi/apps-enabled/uwsgi-app.ini"
+    state: link
+  notify: Reload uwsgi
+

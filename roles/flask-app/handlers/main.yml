@@ -1,0 +1,5 @@
+---
+- name: Reload uwsgi
+  service:
+    name: uwsgi
+    state: reloaded
