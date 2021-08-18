@@ -18,11 +18,11 @@
     mode: 0644
   notify: Restart nginx
 
-- name: copy example uwsgi.ini file to /etc/uwsgi/apps-available
-  copy:
-    src: "uwsgi-example.ini"
-    dest: "/etc/uwsgi/apps-available/example.ini"
-    mode: 0644    
+# - name: copy example uwsgi.ini file to /etc/uwsgi/apps-available
+#  copy:
+#    src: "uwsgi-example.ini"
+#    dest: "/etc/uwsgi/apps-available/example.ini"
+#    mode: 0644    
 
 
 - name: start uwsgi service at boot
