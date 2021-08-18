@@ -28,5 +28,5 @@
     src: "/etc/uwsgi/apps-available/uwsgi-app.ini"
     dest: "/etc/uwsgi/apps-enabled/uwsgi-app.ini"
     state: link
-  notify: Reload uwsgi
+  notify: Restart uwsgi
 
