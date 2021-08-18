@@ -1,0 +1,18 @@
+---
+# cooperates with role uwsgi
+#
+- name: pip install flask sitewide
+  pip:
+    name: flask
+
+- name: create /var/www/uwsgi dir for python web applications
+  file:
+    path: "/var/www/uwsgi"
+    state: directory
+    mode: 0755
+
+- name: copy example/test app.py to /var/www/uwsgi
+  copy:
+    src: "app.py"
+    dest: "/var/www/uwsgi/app.py"
+    mode: 0755

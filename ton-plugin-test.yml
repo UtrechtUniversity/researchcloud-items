@@ -7,6 +7,7 @@
     - python
     - pyenv
     - uwsgi
+    - flask-app
 #    - role: userspace_applications
 #      vars:
 #        - list_userspace_applications:
