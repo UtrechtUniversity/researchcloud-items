@@ -1,0 +1,15 @@
+[Unit]
+Description=KeyCloak Server
+After=network.target
+
+[Service]
+Type=idle
+Environment=JBOSS_HOME={{ keycloak_jboss_home }} JBOSS_LOG_DIR={{ keycloak_log_dir }} "JAVA_OPTS=-Xms1024m -Xmx20480m -XX:MaxPermSize=768m"
+User=keycloak
+Group=keycloak
+ExecStart=/bin/bash -c "{{ keycloak_jboss_home }}/bin/standalone.sh --server-config=standalone.xml -Djboss.bind.address={{ keycloak_bind_address }} -Djboss.bind.address.management={{ keycloak_bind_address }} -Djboss.http.port={{ keycloak_bind_port }}"
+TimeoutStartSec=600
+TimeoutStopSec=600
+
+[Install]
+WantedBy=multi-user.target
