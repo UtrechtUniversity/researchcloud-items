@@ -1,6 +1,6 @@
 ---
 keycloak_version: "15.0.2"
-keycloak_tardir: "https://github.com/keycloak/releases/download/{{ keycloak_version }}/"
+keycloak_tardir: "https://github.com/keycloak/keycloak/releases/download/{{ keycloak_version }}/"
 keycloak_tarfile: "keycloak-{{ keycloak_version }}.tar.gz"
 keycloak_dir: "/var/lib/keycloak/"
 keycloak_jboss_home: "{{ keycloak_dir }}keycloak-{{ keycloak_version }}"
