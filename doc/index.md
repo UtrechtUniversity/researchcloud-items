@@ -5,27 +5,10 @@ They can be used stand-alone or as a SURF Researchcloud plugin.
 
 The roles serve as reusable building blocks for these playbooks.
 
-- 1
-- 2
-- 3
-- 4
-- 5
-- 6
-- 7
-- 8
-- 9
-- 10
-- 11
-- 12
-- 13
-- 14
-- 15
-- 16
-- 17
-- 18
-- 19
-- 20
-
+When adding documentation, please consider to format your text
+using the file [template-plugins.md](plugins/template-plugins.md) to
+document a plugin
+or the file [template-roles.md](roles/template-roles.md) to document a role.
 
 
 ## Plugins
