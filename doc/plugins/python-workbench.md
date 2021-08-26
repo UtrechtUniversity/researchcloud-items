@@ -1,4 +1,4 @@
 # Plugin: python-workbench
-[back to index](..)
+[back to index](../index.md)
 
 tbd
