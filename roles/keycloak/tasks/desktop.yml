@@ -46,7 +46,7 @@
 
 - name: copy desktop launcher file to /tmp
   template:
-    src: "{{ app_name }}.desktop"
+    src: "{{ app_name }}.desktop.j2"
     dest: "/tmp/{{ app_name }}.desktop"
     mode: 0644
 
