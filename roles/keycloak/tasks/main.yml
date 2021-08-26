@@ -81,6 +81,9 @@
     name: keycloak
     state: started 
 
+- name: install desktop launcher
+  include: desktop.yml
+
 - name: create admin user
   include: admin.yml
   when: keycloak_create_admin
