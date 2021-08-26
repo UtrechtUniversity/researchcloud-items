@@ -35,7 +35,7 @@
     - "128"
 
 - name: install icons as xdg resource
-  command: "xdg-icon-resource install --context apps --size {{ item }} {{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}"
+  command: "xdg-icon-resource install --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}"
   with_items:
     - "16"
     - "22"
