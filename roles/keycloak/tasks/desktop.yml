@@ -31,7 +31,7 @@
     - "22"
     - "32"
     - "48"
-    - "64"
+    - "96"
     - "128"
 
 - name: install icons as xdg resource
@@ -41,7 +41,7 @@
     - "22"
     - "32"
     - "48"
-    - "64"
+    - "96"
     - "128"
 
 - name: copy desktop launcher file to /tmp
