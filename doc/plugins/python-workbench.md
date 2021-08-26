@@ -1,4 +1,4 @@
 # Plugin: python-workbench
-[back to index](../index.md)
+[back to plugins](../index.md#plugins)
 
 tbd
