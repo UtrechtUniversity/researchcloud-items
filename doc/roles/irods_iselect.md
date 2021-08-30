@@ -9,7 +9,7 @@ Installs the iselect tool as a means to configure commandline access to iRODS zo
 Linux distribution, also depends on role [irods_icommands](./irods_icommands.md)
 
 ## Description
-The iselect Linux shell command allows the user to select an iRODS zone from a list,
+The `iselect` Linux shell command allows the user to select an iRODS zone from a list,
 then configures the user's iRODs environment so that the user can connect to that zone. 
 Finallly, `iinit` is called to allow the user to 
 enter individual settings such as username/password.
