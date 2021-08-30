@@ -19,7 +19,7 @@ Keycloak in production environments.
 
 Client applications and users access Keycloak services via 
 `https://<hostname>/auth/realms/<realm>/`.
-Requests areforward by nginx as a remote proxy to an
+Requests are forwarded by nginx (reverse proxy) to an
 application server running Keycloak.
 
 Keycloak admins are required to login to the Linux server on `https://<hostanme>/`
