@@ -10,9 +10,9 @@ Linux distribution, also depends on role [irods_icommands](./irods_icommands.md)
 
 ## Description
 The iselect Linux shell command allows the user to select an iRODS zone from a list,
-then configures the user's iRODs environment so that she can connect to that zone. 
-Finallly, `iinit` is called to allow to user to 
-add individual settings such as username/password.
+then configures the user's iRODs environment so that the user can connect to that zone. 
+Finallly, `iinit` is called to allow the user to 
+enter individual settings such as username/password.
 
 Example use iselect:
 ```
