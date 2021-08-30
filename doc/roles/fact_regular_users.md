@@ -16,7 +16,8 @@ Information from /etc/cpasswd is filtered on: 1) userid >= 1000 and
 Example content with just one user named "foo": 
 ```
     [   { user: "foo", 
-          userid: 1000, groupid: 1000, 
+          userid: 1000, 
+          groupid: 1000, 
           home: "/home/foo", 
           shell: "/bin/bash",
           description: "sample user foo"
