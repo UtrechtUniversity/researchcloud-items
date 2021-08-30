@@ -28,7 +28,7 @@ where they access Keycloak via the desktop menu.
 ## Variables
 
 ## See also
-Role [keycloak](../roles/keycloak.md).
+Role [keycloak](../roles/keycloak.md).   
 Role [keycloak_behind_nginx](../roles/keycloak_behind_nginx.md).
 
 ## History
