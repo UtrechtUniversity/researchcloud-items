@@ -21,9 +21,10 @@ Example content with just one user named "foo":
         }  
     ]
 ```
-Example how to use in a playbook:
+Example use in a playbook task:
+(assumes fact_regular_users is listed as a dependency for this role) 
 ```
-    - name: example
+    - name: example task
       copy:
         src: "info.txt"
         dst: "/{{ item.home }}/info.txt"
