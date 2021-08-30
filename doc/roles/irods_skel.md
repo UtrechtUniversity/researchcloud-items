@@ -14,12 +14,15 @@ via shell compatible commands. Its `iinit` command is used to set connectivity
 parameters to access an iRODS zone. However, zones may require PAM based access
 and encrypted connections that require more advanced settings to be configured.
 
-This role preconfigures the `~/.irods/irods_environment.json` with common defaults
-for those advanced settings.
+This role preconfigures the file `~/.irods/irods_environment.json` with default
+values for those advanced settings.
 
 Please see the [iselect](./irods_iselect.md) role for an alternative (or additional)
 mechanism to select an iRODS zone from a distinct list.   
 
+Disclaimer: The default values instantiated by irods_skel are not suitable for all zones.
+Use iselect along with a list of zones/properties to obtain a more reliable mechanism.
+ 
 ## Variables
 
 ## See also
