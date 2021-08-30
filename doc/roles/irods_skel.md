@@ -17,11 +17,8 @@ and encrypted connections that require more advanced settings to be configured.
 This role preconfigures the file `~/.irods/irods_environment.json` with default
 values for those advanced settings.
 
-Please see the [iselect](./irods_iselect.md) role for an alternative (or additional)
-mechanism to select an iRODS zone from a distinct list.   
-
-Disclaimer: The default values instantiated by irods_skel are not suitable for all zones.
-Use iselect along with a list of zones/properties to obtain a more reliable mechanism.
+Disclaimer: The default values instantiated by irods_skel may not be suitable for your zones.
+Use the [iselect](./irods_iselect.md) role with a list of zones/properties to obtain a more reliable mechanism.
  
 ## Variables
 
