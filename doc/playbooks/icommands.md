@@ -18,10 +18,10 @@ some preconfigured iRODS zones.
 See [irods_iselect](../roles/irods_iselect.md) for options to configure a list of zones.
 
 ## See also
-Role [irods_icommands](../roles/irods_icommands.md)  
-Role [irods_iselect](../roles/irods_iselect.md)
-Role [irods_repo](../roles/irods_repo.md)  
-Role [irods_skel](../roles/irods_skel.md)  
+- Role [irods_icommands](../roles/irods_icommands.md)  
+- Role [irods_iselect](../roles/irods_iselect.md)
+- Role [irods_repo](../roles/irods_repo.md)  
+- Role [irods_skel](../roles/irods_skel.md)  
 
 
 ## History
