@@ -12,11 +12,16 @@ or the file [template-roles.md](roles/template-roles.md) to document a role.
 
 
 ## Playbooks
-- [python-workbench](playbooks/python-workbench.md)
+- [icommands](playbooks/icommands.md)
 - [keycloak](playbooks/keycloak.md)
+- [python-workbench](playbooks/python-workbench.md)
 
 ## Roles
 - [fact_regular_users](roles/fact_regular_users.md)
+- [irods_repo](roles/irods_repo.md)
+- [irods_icommands](roles/irods_icommands.md)
+- [irods_iselect](roles/irods_iselect.md)
+- [irods_skel](roles/irods_skel.md)
 - [keycloak](roles/keycloak.md)
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [python](roles/python.md)
