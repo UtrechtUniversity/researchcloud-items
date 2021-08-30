@@ -28,7 +28,7 @@ where they access Keycloak via the desktop menu.
 ## Variables
 
 ## See also
-[keycloak](../roles/keycloak.md).
+[Role keycloak](../roles/keycloak.md).
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
