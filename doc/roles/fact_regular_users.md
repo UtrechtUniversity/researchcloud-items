@@ -1,4 +1,4 @@
-# Role <name>
+# Role fact_regular_users
 [back to index](../index.md#Roles)
 
 ## Summary
