@@ -18,7 +18,8 @@ This role preconfigures the file `~/.irods/irods_environment.json` with default
 values for those advanced settings.
 
 Disclaimer: The default values instantiated by irods_skel may not be suitable for your zones.
-Use the [iselect](./irods_iselect.md) role with a list of zones/properties to obtain a more reliable mechanism.
+Complement this role with the [iselect](./irods_iselect.md) role and a list of 
+zones/properties to obtain a more reliable mechanism.
  
 ## Variables
 
