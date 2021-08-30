@@ -13,6 +13,7 @@ or the file [template-roles.md](roles/template-roles.md) to document a role.
 
 ## Playbooks
 - [python-workbench](playbooks/python-workbench.md)
+- [keycloak](playbooks/keycloak.md]
 
 ## Roles
 - [fact_regular_users](roles/fact_regular_users.md)
