@@ -17,5 +17,5 @@ or the file [template-roles.md](roles/template-roles.md) to document a role.
 ## Roles
 - [fact_regular_users](roles/fact_regular_users.md)
 - [python](roles/python.md)
-- [runonce](roles/runonce.md]
+- [runonce](roles/runonce.md)
 - [userspace_applications](roles/userspace_applications.md)

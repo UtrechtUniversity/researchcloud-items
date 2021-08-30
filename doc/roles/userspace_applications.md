@@ -11,8 +11,9 @@ a per-user basis.
 Linux flavor operating system. Facilitates bash and zsh scripts.
 
 ## Description
-Add this role to your playbook to have a selection of scripts added to
-a [runonce](./runonce.md) schedule.
+Place your scripts in the `files` section of this role.
+Then add this role to your playbook to have a selection of scripts added to
+a [runonce](./runonce.md) schedule. 
 
 Example of inclusion in a playbook: 
 ```
@@ -24,14 +25,14 @@ Example of inclusion in a playbook:
             - "999ready"
 
 ```
-The scripts located in `userspace_applications/files` with directory
-named `10-python-poetry` and file named `999ready` will be added to 
-the runonce schedule.  If the name refers to a directory
-then all scripts held underneath that directory tree are included.
+In the example, the scripts located in `userspace_applications/files` with the
+names `10-python-poetry` and `999ready` are added to 
+the runonce schedule.  Since `10-python-poetry` refers to a directory,
+all the scripts held underneath that directory tree are included.
  
 ## Variables
 The Ansible variable `list_userspace_applications` must be set by the calling 
-playbook and consist of a list of script filenames (see example above).
+playbook and should consist of a list of script filenames (see example above).
 
 ## See also
 Role [userspace_applications](./userspace_applications.md) can be used to store
