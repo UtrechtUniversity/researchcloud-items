@@ -12,7 +12,7 @@ a SURF ResearchCloud configured nginx web server.
 
 ## Description
 Keycloak is an open source identity and access management service.
-It can act as a SAML or OIDC authorization service.
+It can act as a SAML or OIDC authentication/authorization service.
 The playbook installs Keycloak for development, testing and training purposes.
 Note that some addtional hardening and configuration will be needed to use
 Keycloak in production environments.
