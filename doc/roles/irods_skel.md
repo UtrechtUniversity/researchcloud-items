@@ -17,15 +17,15 @@ and encrypted connections that require more advanced settings to be configured.
 This role preconfigures the `~/.irods/irods_environment.json` with common defaults
 for those advanced settings.
 
-Please see the [iselect](./irods_iselect) role for an alternative (or additional)
+Please see the [iselect](./irods_iselect.md) role for an alternative (or additional)
 mechanism to select an iRODS zone from a distinct list.   
 
 ## Variables
 
 ## See also
-- [irods_repo](./irods_repo)  
-- [irods_icommands](./irods_icommands)  
-- [irods_iselect](./irods_iselect)  
+- [irods_repo](./irods_repo.md)  
+- [irods_icommands](./irods_icommands.md)  
+- [irods_iselect](./irods_iselect.md)  
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

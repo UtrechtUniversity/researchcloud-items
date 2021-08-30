@@ -6,7 +6,7 @@ Installs the iselect tool as a means to configure commandline access to iRODS zo
  
 
 ## Requires
-Linux distribution, also depends on role [irods_icommands](./irods_icommands)
+Linux distribution, also depends on role [irods_icommands](./irods_icommands.md)
 
 ## Description
 The iselect Linux shell command allows the user to select an iRODS zone from a list,
@@ -42,9 +42,9 @@ The file needs to exist in the `files` section of this role.
 
 
 ## See also
-- [irods_repo](./irods_repo)  
-- [irods_icommands](./irods_icommands)  
-- [irods_skel](./irods_skel)
+- [irods_repo](./irods_repo.md)  
+- [irods_icommands](./irods_icommands.md)  
+- [irods_skel](./irods_skel.md)
 
 
 ## History

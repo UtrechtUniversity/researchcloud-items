@@ -14,9 +14,9 @@ See related roles to install software packages.
 ## Variables
 
 ## See also
-- [irods_icommands](./irods_icommands)  
-- [irods_iselect](./irods_iselect)  
-- [irods_skel](./irods_skel)
+- [irods_icommands](./irods_icommands.md)  
+- [irods_iselect](./irods_iselect.md)  
+- [irods_skel](./irods_skel.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
