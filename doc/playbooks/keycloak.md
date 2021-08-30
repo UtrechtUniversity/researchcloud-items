@@ -22,8 +22,8 @@ Client applications and users access Keycloak services via
 Requests are forwarded by nginx (reverse proxy) to an
 application server running Keycloak.
 
-Keycloak admins are required to login to the Linux server on `https://<hostanme>/`
-and access Keycloak via the desktop menu. 
+Keycloak admins are required to login to the Linux server on `https://<hostname>/`
+where they access Keycloak via the desktop menu. 
 
 ## Variables
 
