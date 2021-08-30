@@ -17,13 +17,18 @@ The playbook installs Keycloak for development, testing and training purposes.
 Note that some addtional hardening and configuration will be needed to use
 Keycloak in production environments.
 
-Client applications and users access Keycloak via their browser on uri `/auth/...`.
-The Keycloak admin console is only accessible to Linux users logged in to the server itself. 
-Please see the role [keycloak](../roles/keycloak.md) for further details.
+Client applications and users access Keycloak services via 
+`https://<hostname>/auth/realms/<realm>/`.
+Requests areforward by nginx as a remote proxy to an
+application server running Keycloak.
+
+Keycloak admins are required to login to the Linux server on `https://<hostanme>/`
+and access Keycloak via the desktop menu. 
 
 ## Variables
 
 ## See also
+[keycloak](../roles/keycloak.md).
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

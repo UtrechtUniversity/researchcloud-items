@@ -22,7 +22,7 @@ Access to the Keycloak admin console is added to the desktop menu.
 The admin user is created with username/password admin/admin.
 Other configurations are obtained by setting any of the below Ansible variables in a playbook.
 
-We recommend to combine Keycloack with a web server (nginx) as a reverse proxy to add
+We recommend to combine Keycloak with a web server (nginx) as a reverse proxy to add
 internet access and encrypt all communication. Just add role 
 [keycloak_behind_nginx](./keycloak_behind_nginx.md) to your playbook.
 
@@ -47,7 +47,7 @@ Role [keycloak_behind_nginx](./keycloak_behind_nginx.md).
 
 
 ## History
-2019 Written by Andre Lohmann
+2019 Written by Andre Lohmann   
 2021 Adapted for use with SURF ResearchCloud by Ton Smeele (Utrecht University)
 
 

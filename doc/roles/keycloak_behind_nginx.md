@@ -6,7 +6,7 @@ Adds to nginx a reverse proxy configuration that allows internet users and appli
 to access Keycloak services, for instance for authentication purposes. 
 
 ## Requires
-Ubuntu operating system with desktop environment, nginx
+Ubuntu operating system with desktop environment, nginx webserver
 
 ## Description
 Keycloak will be accessible to client applications and regular users as an 
