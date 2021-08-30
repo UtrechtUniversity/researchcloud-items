@@ -15,5 +15,6 @@ or the file [template-roles.md](roles/template-roles.md) to document a role.
 [python-workbench](playbooks/python-workbench.md)
 
 ## Roles
+[fact_regular_users](roles/fact_regular_users.md)
 [python](roles/python.md)
 

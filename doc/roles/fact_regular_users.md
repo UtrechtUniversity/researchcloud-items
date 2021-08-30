@@ -3,13 +3,15 @@
 
 ## Summary
 Makes filtered information from /etc/passwd available as an Ansible variable
-with usernames and other properties of regular users (excluding system process users).
+with username and other properties of regular users (excluding system process users).
 
 ## Requires
 Linux flavor operating system.
 
 ## Description
 The role sets the Ansible variable `fact_regular_users` to a list of users json object. 
+Information from /etc/cpasswd is filtered on: 1) userid >= 1000 and 
+2) user has a home directory located underneath /home/
 
 Example content with just one user named "foo": 
 ```
@@ -24,7 +26,7 @@ Example content with just one user named "foo":
 Example use in a playbook task:
 (assumes fact_regular_users is listed as a dependency for this role) 
 ```
-    - name: example task
+    - name: copy file info.txt to home directory, for all existing users
       copy:
         src: "info.txt"
         dst: "/{{ item.home }}/info.txt"
