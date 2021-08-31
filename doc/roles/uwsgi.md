@@ -9,10 +9,11 @@ and its Python3 plugin as a service behind nginx.
 nginx web server, as preconfigured by SURF.
 
 ## Description
-The uwsgi services translate HTTP requests into UWSGI protocol requests, suitable
+The uwsgi service translates HTTP requests into UWSGI protocol requests, suitable
 for consumption by for instance Python web applications.
 
-The nginx web server is used as a reverse proxy, all HTTP(S) requests that have prefix `/w/`
+The nginx web server is used as a reverse proxy, all HTTP(S) requests that have prefix 
+`https://<hostname>/w/`
 are routed to uwsgi. 
 
 ## Variables
