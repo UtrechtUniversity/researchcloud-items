@@ -27,3 +27,4 @@ or the file [template-roles.md](roles/template-roles.md) to document a role.
 - [python](roles/python.md)
 - [runonce](roles/runonce.md)
 - [userspace_applications](roles/userspace_applications.md)
+- [uwsgi](roles/uwsgi.md)
