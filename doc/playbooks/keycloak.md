@@ -29,12 +29,12 @@ where they access Keycloak via the desktop menu.
 Nginx fronts Keycloak as a reverse proxy and offloads ssl. 
 As a consequence, Keycloak will report its realm endpoints as having 'http' scheme 
 instead of 'https'.
-To compensate for the proxy, set an alternative frontend url for each realm
-that you have added to the system:
+To compensate for the proxy, use the Keycloak admin console to set an alternative 
+frontend url for each realm that you have added to the system:
 ```
     Alternative frontend url:  https://<hostname>/auth
 ```
-NB: Do *NOT* update the *master* realm Alternative frontend url!! 
+NB: Do **NOT** update the *master* realm settings!! 
 
 ## Variables
 
