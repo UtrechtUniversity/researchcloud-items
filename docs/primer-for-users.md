@@ -8,11 +8,11 @@ the configuration of your own laptop/workstation and the
 configuration of a workspace. Please consult the tables below
 and click on the access method for details and instructions.
 
-| Workspace:     | Access methods: |
+| Workspace:     | Supported access methods: |
 | -------------- | --------------- |
 | Windows        | remote-desktop  |
 | Linux          | ssh             |
-| Linux+desktop  | browser, remote-desktop, ssh |
+| Linux with desktop | browser, remote-desktop, ssh |
 
 
 
