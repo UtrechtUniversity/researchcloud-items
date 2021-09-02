@@ -4,7 +4,9 @@ Alternatively feel free to clone this repository on a target host and locally ru
 `ansible-playbook <name-of-the-playbook>`. 
 
 ### Documentation
-Please consult the [documentation](doc/index.md) before using a playbook to find out if the playbook meets your use case.  
+Script developers, please consult the [developer documentation](docs/index.md) before using a playbook 
+to find out if the playbook meets your use case.  
+For end-users, there is a [Primer SURF ResearchCloud](docs/primer-for-users.md).
 
 ### Applicable licences
 Some of the code maintained in this repo is derived from other sources. As a consequence, unfortunately we are unable to provide the entire repo content under a single general license. We use the following licensing policy:
