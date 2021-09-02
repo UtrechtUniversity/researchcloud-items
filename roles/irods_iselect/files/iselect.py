@@ -4,8 +4,11 @@
 # All rights reserved
 # 
 
-VERSION =  'iselect release 1.1a'
-IRODSZONESFILE = '/etc/irods_zones.json'
+VERSION =  'iselect release 1.1'
+# the default locations for zone config information
+# IRODSZONESFILE1 is tried first, the second file is used as fallback
+IRODSZONESFILE1 = '/etc/irods_zones.json'
+IRODSZONESFILE2 = 'https://yoda.uu.nl/facts/irods_zones.json'
 
 IRODSENVFILE = '~/.irods/irods_environment.json'
 from pathlib import Path
@@ -138,7 +141,10 @@ def help():
 
 # main program
 if __name__ == "__main__":
-    zonesfile = IRODSZONESFILE
+    zonesfile = IRODSZONESFILE1
+    inPath = Path(zonesfile).expanduser()
+    if not inPath.is_file():
+        zonesfile = IRODSZONESFILE2
     args_start = 0
     quit = False
     try:
