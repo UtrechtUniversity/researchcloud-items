@@ -10,9 +10,9 @@ and click on the access method for instructions.
 
 | Workspace type:     | Supported access methods: |
 | ------------------- | --------------- |
-| Windows             | remote-desktop  |
+| Windows             | [remote-desktop](primer/access-rdp.md)  |
 | Linux               | [ssh](primer/access-ssh.md)             |
-| Linux with desktop  | browser, remote-desktop, [ssh](primer/access-ssh.md) |
+| Linux with desktop  | browser, [remote-desktop](primer/access-rdp.md), [ssh](primer/access-ssh.md) |
 
 
 
