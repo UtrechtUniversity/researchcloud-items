@@ -8,18 +8,12 @@ the configuration of your own laptop/workstation and the
 configuration of a workspace. Please consult the tables below
 and click on the access method for details and instructions.
 
-#### Your local laptop/workstation is Windows:
-| Workspace: | Access methods: |
-| ---------- | --------------- |
-| Windows    |                 |
-| Linux      |                 |
+| Workspace:     | Access methods: |
+| -------------- | --------------- |
+| Windows        | remote-desktop  |
+| Linux          | ssh             |
+| Linux+desktop  | browser, remote-desktop, ssh |
 
-
-#### Your local laptop/workstation is Linux:
-| Workspace: | Access methods: |
-| ---------- | --------------- |
-| Windows    |                 |
-| Linux      |                 |
 
 
 - Linux workspaces: shell commandline access via ssh is always supported. In addition, many
