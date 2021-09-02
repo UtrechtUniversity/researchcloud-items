@@ -1,4 +1,5 @@
 # Access workspace using Remote Desktop Protocol
+[back to index](../primer-for-users.md)
 
 ### Preparation
 Ensure that your laptop/workstation supports Remote Desktop connections:
