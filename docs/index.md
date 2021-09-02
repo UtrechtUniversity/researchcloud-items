@@ -1,37 +1,33 @@
-## Welcome to GitHub Pages
+# Developer documentation
+Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles).
+The playbook can be used stand-alone (run them locally on the target host) 
+or as a SURF ResearchCloud plugin.
 
-You can use the [editor on GitHub](https://github.com/UtrechtUniversity/researchcloud-items/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+The roles serve as reusable building blocks for these playbooks.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+When adding documentation, please consider to format your text
+using the file [template-playbooks.md](playbooks/template-playbooks.md) to
+document a playbook
+or the file [template-roles.md](roles/template-roles.md) to document a role.
 
-### Markdown
+NB: The files section of roles may include base64 encoded icon files. 
+These files can be used to decorate a related catalog item in 
+SURF ResearchCloud.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Playbooks
+- [icommands](playbooks/icommands.md)
+- [keycloak](playbooks/keycloak.md)
+- [python-workbench](playbooks/python-workbench.md)
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/UtrechtUniversity/researchcloud-items/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Roles
+- [fact_regular_users](roles/fact_regular_users.md)
+- [irods_repo](roles/irods_repo.md)
+- [irods_icommands](roles/irods_icommands.md)
+- [irods_iselect](roles/irods_iselect.md)
+- [irods_skel](roles/irods_skel.md)
+- [keycloak](roles/keycloak.md)
+- [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
+- [python](roles/python.md)
+- [runonce](roles/runonce.md)
+- [userspace_applications](roles/userspace_applications.md)
+- [uwsgi](roles/uwsgi.md)
