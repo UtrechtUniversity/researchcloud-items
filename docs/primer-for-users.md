@@ -1,4 +1,27 @@
 # Primer for users SURF ResearchCloud
 (see [developer documentation](index.md) for creation of catalog items)   
 
-A
+
+### Access to your workspace
+The methods for accessing a workspace vary and are based on 
+the configuration of your own laptop/workstation and the
+configuration of a workspace. Please consult the table below
+and click on the access method for details and instructions.
+
+| ------------------- | ---------- | --------------- |
+| Local workstation:  | Workspace: | Access methods: |
+| ------------------- | ---------- | --------------- |
+| Windows             | Windows    |                 |
+| ------------------- | ---------- | --------------- |
+| Windows             | Linux      |                 |
+| ------------------- | ---------- | --------------- |
+ 
+
+- Linux workspaces: shell commandline access via ssh is always supported. In addition, many
+  workspace configurations have a graphical user interface that can be accessed using a
+  browser or using a remote desktop viewer application.
+- Windows workspaces: information will be added in the future.
+
+- [using a browser ](primer/gui.md)
+
+
