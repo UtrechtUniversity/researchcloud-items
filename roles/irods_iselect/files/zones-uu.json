@@ -1,5 +1,5 @@
 { 
-"uu.youth" : {
+"youth.uu" : {
 	"description": "Yoda for YOUth cohort study",
 	"config": {
 		"irods_host" : "youth.data.uu.nl",
@@ -15,7 +15,7 @@
 	}
   },	
   
-"uu.geo" : {
+"geo.uu" : {
 	"description": "Yoda for Faculty of Geosciences",
 	"config": {
 		"irods_host" : "geo.data.uu.nl",
@@ -32,7 +32,7 @@
   },	
   
   
-"uu.gw" : {
+"gw.uu" : {
 	"description": "Yoda for Faculty of Humanities",
 	"config": {
 		"irods_host" : "i-lab.data.uu.nl",
@@ -48,7 +48,7 @@
 	}
   },	
   
-"uu.rebo" : {
+"rebo.uu" : {
 	"description": "Yoda for Faculty of Law, Economics and Governance",
 	"config": {
 		"irods_host" : "i-lab.data.uu.nl",
@@ -65,7 +65,7 @@
   },	
   
 
-"uu.gnk" : {
+"gnk.uu" : {
 	"description": "Yoda for Faculty of Medicine",
 	"config": {
 		"irods_host" : "dgk.data.uu.nl",
@@ -82,7 +82,7 @@
   },	
   
 
-"uu.beta" : {
+"science.uu" : {
 	"description": "Yoda for Faculty of Science",
 	"config": {
 		"irods_host" : "science.data.uu.nl",
@@ -100,7 +100,7 @@
   
 
   
-"uu.fsw" : {
+"fsw.uu" : {
 	"description": "Yoda for Faculty of Social and Behavioural Sciences",
 	"config": {
 		"irods_host" : "fsw.data.uu.nl",
@@ -117,7 +117,7 @@
   },	
 
 
-"uu.dgk" : {
+"dgk.uu" : {
 	"description": "Yoda for Faculty of Veterinary Medicine",
 	"config": {
 		"irods_host" : "dgk.data.uu.nl",
@@ -135,7 +135,7 @@
   
 
 
-"uu.ios" : {
+"i-lab.uu" : {
 	"description": "Yoda for Institutions for Open Societies",
 	"config": {
 		"irods_host" : "i-lab.data.uu.nl",
@@ -153,7 +153,7 @@
 
 
 
-"uu.corp" : {
+"its.uu" : {
 	"description": "Yoda for University Corporate Offices",
 	"config": {
 		"irods_host" : "its.data.uu.nl",
