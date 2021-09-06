@@ -7,7 +7,7 @@ Ensure that your laptop/workstation supports Remote Desktop connections:
 - Windows 10+: Support for Remote Desktop may be installed already.
   In the search box on the taskbar, type ***Remote Desktop Connection***
   In case this does not yield any results, you will need to upgrade your Windows Edition
-  on install Remote Desktop as additional software.
+  or install Remote Desktop as additional software.
 
 - Linux: Install a Remote Desktop viewer, for example the Gnome desktop viewer ["vinagre"](https://help.gnome.org/users/vinagre/)
 
