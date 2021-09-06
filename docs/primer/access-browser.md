@@ -17,7 +17,7 @@ If the URL starts with "https://" then the workspace includes
 a graphical desktop that can be accessed using a browser.
 Click the yellow "access" button to navigate to the workspace.
 
-### Using the clipboard to cut/paste data
+### Cut/paste data from laptop/workstation to workspace.
 Note that data that you cut/paste locally on your laptop/workstation 
 remains local, it is not shared with the workspace.
 
