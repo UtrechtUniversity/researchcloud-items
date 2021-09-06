@@ -27,7 +27,7 @@ To copy data to the workspace:
    (on a touch screen: swipe right from the left edge of the screen)
 3. Paste the data on the Guacamole menu clipboard.
    This will transfer the data to the workspace.
-4. In the workspace just paste the data into an application.
+4. In the workspace paste the data into an application.
 5. Press CTL-ALT-SHIFT again to hide the Guacamole menu 
 
 Data can also be copied in the opposite direction. 
