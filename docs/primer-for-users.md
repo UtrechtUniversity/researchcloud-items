@@ -3,7 +3,7 @@
 
 ## Topics:
 - [first-time use](primer/first-time-use.md)
-- [access to your workspace](# Access to your workspace)
+- [access to your workspace](#Access)
 
 ## Access to your workspace
 The methods for accessing a workspace vary and are based on 
