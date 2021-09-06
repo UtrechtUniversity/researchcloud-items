@@ -30,7 +30,9 @@ To copy data to the workspace:
    In the workspace just paste the data into an application.
 4. Press CTL-ALT-SHIFT again to hide the Guacamole menu 
 
-
+Data can also be copied in the opposite direction. 
+The Guacamole clipboard on your laptop/workstation reflects
+the content of the workspace clipboard. 
 
 
 
