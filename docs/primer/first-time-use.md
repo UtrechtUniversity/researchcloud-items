@@ -11,7 +11,7 @@ memberships.
 - To *create* a workspace you need to be a member of a collaborative
 organization. It also requires that you have a *wallet* attached
 to your account. The running costs of the workspace will be charged
-to the cost center of your wallet.
+to the cost center of your wallet. It is common to have a wallet per project.
 
 ### Guidelines for managing a workspace
 - Suspend ("pause") the workspace when you do not need to access it for
