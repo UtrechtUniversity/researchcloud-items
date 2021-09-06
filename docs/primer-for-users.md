@@ -12,7 +12,7 @@ and click on the access method for instructions.
 | ------------------- | --------------- |
 | Windows             | [remote-desktop](primer/access-rdp.md)  |
 | Linux               | [ssh](primer/access-ssh.md)             |
-| Linux with desktop  | browser, [remote-desktop](primer/access-rdp.md), [ssh](primer/access-ssh.md) |
+| Linux with desktop  | [browser](primer/access-browser.md), [remote-desktop](primer/access-rdp.md), [ssh](primer/access-ssh.md) |
 
 
 
