@@ -23,7 +23,8 @@ if you do not plan to use it for a prolonged number of days.
 Usually it takes less than 30 minutes to recreate a workspace.    
 ***NB: make sure that you have safe-guarded your valuable data 
 by saving it to a location external to the workspace, 
-for instance Yoda or ResearchDrive.***  
+for instance Yoda or ResearchDrive.*** Once a workspace is deleted,
+all data held locally on that workspace is purged (unrecoverable).  
 
   
 
