@@ -34,9 +34,8 @@ Data can also be copied in the opposite direction.
 The [Guacamole clipboard](https://guacamole.apache.org/doc/gug/using-guacamole.html#using-the-clipboard) 
 on your laptop/workstation reflects the content of the workspace clipboard. 
 
-NB: For data security reasons, this feature is not available on 
-workspaces that are configured as a closed environment, e.g. to protect
-sensitive data. 
+NB: To protect sensitive data, this feature is not available on 
+workspaces that are configured as a closed environment.
 
 
  
