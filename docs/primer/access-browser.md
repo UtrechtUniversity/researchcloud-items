@@ -23,16 +23,16 @@ remains local, it is not shared with the workspace.
 
 To copy data to the workspace:
 1. Copy or cut the data locally at the source
-2. Press CTL-ALT-SHIFT, this opens a hidden ["Guacamole" menu](https://guacamole.apache.org/doc/gug/using-guacamole.html#using-the-clipboard)  in your browser
+2. Press CTL-ALT-SHIFT, this opens a hidden "Guacamole" menu in your browser
    (on a touch screen: swipe right from the left edge of the screen)
-3. Paste the data on the clipboard in the Guacamole menu.
+3. Paste the data on the Guacamole menu clipboard.
    This will transfer the data to the workspace.
    In the workspace just paste the data into an application.
 4. Press CTL-ALT-SHIFT again to hide the Guacamole menu 
 
 Data can also be copied in the opposite direction. 
-The Guacamole clipboard on your laptop/workstation reflects
-the content of the workspace clipboard. 
+The [Guacamole clipboard](https://guacamole.apache.org/doc/gug/using-guacamole.html#using-the-clipboard) 
+on your laptop/workstation reflects the content of the workspace clipboard. 
 
 
 
