@@ -6,12 +6,16 @@
 you need to be a member of the related *collaborative organization*.
 Logon to [SURF ResearchCloud portal](https://portal.live.surfresearchcloud.nl/) 
 and navigate in the menu to "Profile" to list your collaborative organization
-memberships. 
+memberships.   
+Use a UU Servicedesk call to [request a new collaboration](https://uu.topdesk.net) is created.
+
 
 - To *create* a workspace you need to be a member of a collaborative
 organization. It also requires that you have a *wallet* attached
 to your account. The running costs of the workspace will be charged
-to the cost center of your wallet. It is common to have a wallet per project.
+to the cost center of your wallet. It is common to have a wallet per project.   
+Use a UU Servicedesk call to [request a new wallet](https://uu.topdesk.net). Ideally
+include your project's cost center WBS in the call.
 
 ### Guidelines for managing a workspace
 - Suspend ("pause") the workspace when you do not need to access it for
