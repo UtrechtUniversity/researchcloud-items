@@ -1,4 +1,4 @@
-# Your first-time use of SURF ResearchCloud
+# ResearchCloud first-time use
 [back to index](../primer-for-users.md)
 
 ### Preparation
