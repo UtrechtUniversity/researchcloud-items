@@ -1,4 +1,4 @@
-#!/bin/bash install python module poetry
+#!/bin/bash install python module miniconda
 #
 echo "Installing Miniconda"
 mkdir -p ~/miniconda3
