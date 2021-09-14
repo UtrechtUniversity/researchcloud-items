@@ -23,6 +23,7 @@ SURF ResearchCloud.
 - [miniconda-base](playbooks/miniconda-base.md)
 
 ## Roles
+- [camunda-server](roles/camunda-server.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
