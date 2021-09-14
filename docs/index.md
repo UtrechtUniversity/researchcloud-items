@@ -20,6 +20,7 @@ SURF ResearchCloud.
 - [icommands](playbooks/icommands.md)
 - [keycloak](playbooks/keycloak.md)
 - [python-workbench](playbooks/python-workbench.md)
+- [miniconda-base](playbooks/miniconda-base.md)
 
 ## Roles
 - [fact_regular_users](roles/fact_regular_users.md)
