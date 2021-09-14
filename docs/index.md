@@ -12,7 +12,7 @@ using the file [template-playbooks.md](playbooks/template-playbooks.md) to
 document a playbook
 or the file [template-roles.md](roles/template-roles.md) to document a role.
 
-NB: The files section of roles may include base64 encoded icon files. 
+NB: The files section of roles may include [base64 encoded](icons.md) icon files. 
 These files can be used to decorate a related catalog item in 
 SURF ResearchCloud.
 
