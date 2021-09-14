@@ -1,1 +1,11 @@
+---
+- name: create environment and install dependencies
+  hosts: localhost
+  gather_facts: true
 
+  roles:
+    - role: userspace_applications
+      vars:
+        - list_userspace_applications:
+          - "21-pytorch-geoproject"
+          - "999ready"
