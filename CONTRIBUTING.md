@@ -1,6 +1,6 @@
 # Contributing
 
-We are very happy with any suggestions or contributions to improve the contents. Feel free to add Issues e.g. for feature requests or submit a pull request for ansible scripts for Research Cloud plugins. When adding a research cloud plugin, read the [documentation guidelines](https://utrechtuniversity.github.io/researchcloud-items/).
+We are very happy with any suggestions or contributions to improve the contents. Feel free to add Issues e.g. for feature requests or submit a pull request to add ansible scripts for Research Cloud plugins. When adding a research cloud plugin, read the [documentation guidelines](https://utrechtuniversity.github.io/researchcloud-items/).
 
 ## Issues
 The easiest way to contribute is to submit an [issue](https://github.com/UtrechtUniversity/researchcloud-items/issues), and make your suggestions about new features, plugins or other issues.
