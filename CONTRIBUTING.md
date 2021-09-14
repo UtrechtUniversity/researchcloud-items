@@ -17,4 +17,5 @@ In short:
 5. Submit a pull request from that branch to the main branch of the master repository. 
 6. If you receive feedback, make changes on your desktop and push to your branch on GitHub: the pull request will update automatically.
 
-## Use an editorial style guide for writing, preferably the [Google developer documentation style guide](https://developers.google.com/style). 
+## Style guides
+Use an editorial style guide when writing documenation, preferably the [Google developer documentation style guide](https://developers.google.com/style). 
