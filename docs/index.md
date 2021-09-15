@@ -18,7 +18,7 @@ SURF ResearchCloud.
 
 ## Playbooks
 - [camunda](playbooks/camunda.md)
-- [camunda-modeler](playbooks/camudna-modeler.md)
+- [camunda-modeler](playbooks/camunda-modeler.md)
 - [icommands](playbooks/icommands.md)
 - [keycloak](playbooks/keycloak.md)
 - [python-workbench](playbooks/python-workbench.md)
