@@ -17,12 +17,12 @@ These files can be used to decorate a related catalog item in
 SURF ResearchCloud.
 
 ## Playbooks
-- [camunda](playbooks/camunda.md)
-- [camunda-modeler](playbooks/camunda-modeler.md)
-- [icommands](playbooks/icommands.md)
-- [keycloak](playbooks/keycloak.md)
-- [python-workbench](playbooks/python-workbench.md)
-- [miniconda-base](playbooks/miniconda-base.md)
+- [camunda](playbooks/camunda.md)  a business process workflow suite
+- [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
+- [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
+- [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
+- [python-workbench](playbooks/python-workbench.md)  Python application development
+- [miniconda-base](playbooks/miniconda-base.md)   Python application development
 
 ## Roles
 - [camunda-modeler](roles/camunda-modeler.md)
