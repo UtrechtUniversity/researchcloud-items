@@ -19,6 +19,7 @@ See variable definitions in roles [camunda-modeler](../roles/camunda-modeler.md)
 and [camunda-server](../roles/camunda-server.md).
 
 ## See also
+[camunda-modeler](camunda-modeler.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
