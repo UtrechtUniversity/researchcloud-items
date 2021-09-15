@@ -6,7 +6,7 @@
 
 - name: download camunda modeler
   get_url:
-    url: "{{ camunda_modeler_urldir }}/ {{ camunda_modeler_urlfile_prefix }}.tar.gz"
+    url: "{{ camunda_modeler_urldir }}/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
     dest: "/tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
 
 - name: unpack modeler tar.gz file in tmp location
