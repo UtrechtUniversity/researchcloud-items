@@ -17,12 +17,15 @@ These files can be used to decorate a related catalog item in
 SURF ResearchCloud.
 
 ## Playbooks
+- [camunda](playbooks/camunda.md)
+- [camunda-modeler](playbooks/camudna-modeler.md)
 - [icommands](playbooks/icommands.md)
 - [keycloak](playbooks/keycloak.md)
 - [python-workbench](playbooks/python-workbench.md)
 - [miniconda-base](playbooks/miniconda-base.md)
 
 ## Roles
+- [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [irods_repo](roles/irods_repo.md)

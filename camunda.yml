@@ -4,3 +4,4 @@
   gather_facts: true
   roles:
     - camunda-server
+    - camunda-modeler
