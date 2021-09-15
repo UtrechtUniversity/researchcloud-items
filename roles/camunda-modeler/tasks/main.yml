@@ -11,8 +11,8 @@
 
 - name: unpack modeler tar.gz file in tmp location
   unarchive:
-    src: "/tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
-    dest: "/tmp/{{ camunda_modeler_urlfile_prefix }}"
+    src:  "/tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
+    dest: "/tmp"
 
 - name: make sure camunda-modeler target dir does not yet exist
   file:
