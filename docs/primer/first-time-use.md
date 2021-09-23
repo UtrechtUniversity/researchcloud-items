@@ -1,6 +1,9 @@
 # ResearchCloud first-time use
 [back to index](../primer-for-users.md)
 
+The [SURF ResearchCloud Wiki](https://servicedesk.surfsara.nl/wiki/display/WIKI/Research+Cloud+Documentation)
+pages provide an elaborate introduction on concepts related to this cloud service. 
+
 ### Preparation
 - To *access* an already created, running workspace, 
 you need to be a member of the related *collaborative organization*.
