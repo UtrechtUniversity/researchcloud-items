@@ -4,6 +4,8 @@
   gather_facts: true
   roles:
     - irods_repo
+      vars:
+        - irods_repo_apt_release: "bionic"
     - irods_icommands
     - irods_iselect
     - irods_skel
