@@ -10,6 +10,12 @@
     gpgcheck: yes
   when: ansible_pkg_mgr  == 'yum'
 
+- name: run apt update
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_pkg_mgr == 'apt'
+
 - name: add iRODS repository apt-key
   apt_key:
     url: https://packages.irods.org/irods-signing-key.asc
