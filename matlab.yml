@@ -1,0 +1,13 @@
+---
+- name: install matlab products in researchcloud workspace
+  hosts: localhost
+  gather_facts: true
+
+#  NB: we will AT-LEAST need to overwrite the following vars      
+#  vars: 
+#    - matlab_file_installation_key: "00000-00000-..."
+#    - matlab_license_text: "foo\nsecond line"
+#
+  roles:
+    - matlab
+  
