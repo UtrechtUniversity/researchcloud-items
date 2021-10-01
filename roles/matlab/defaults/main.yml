@@ -1,11 +1,16 @@
 ---
 matlab_version: "R2021b"
-matlab_iso_file: "{{ matlab_version }}_Linux.iso"
 matlab_iso_dir: "/data/volume_2"
-matlab_file_installation_key: "replace-this-text-by-your-own-key"
+matlab_iso_file: "{{ matlab_version }}_Linux.iso"
+matlab_configfile_file: "matlab_config.yml"
+matlab_configfile_path: "{{ matlab_iso_dir }}/{{ matlab_configfile_file }}"
 matlab_license_dir: "/root"
-matlab_license_text: "replace-this-text-with-content\nfor-license.dat-file"
 matlab_dir: "/usr/local/MATLAB"
+
+# below variable content is placeholder, should be overwritten dynamically 
+# using the file referred to by "matlab_configfile_path"
+matlab_file_installation_key: "replace-this-text-by-your-own-key"
+matlab_license_text: "replace-this-text-with-content\nfor-license.dat-file"
 
 # matlab_products is a list of the products that should be installed 
 matlab_products:

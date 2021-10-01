@@ -6,6 +6,22 @@
 #
 #  further this install assumes a Linux system with desktop GUI  
 
+# the site-specific information is read into variables from a file
+# NB: file format should be yaml, suggested variables are:
+#     matlab_file_installation_key
+#     matlab_license_text
+#     matlab_products  (specify here if not all products are to be installed)
+#
+- name: check if a configuration file exists
+  stat:
+    path: "{{ matlab_configfile_path }}"
+  register: matlab_c 
+
+- name: if config file exists, load its content into Ansible vars
+  include_vars:
+    file: "{{ matlab_configfile_path }}"
+  when: matlab_c.stat.exists
+
 - name: mount Matlab software iso image as /mnt/matlab-iso
   mount:
     path: /mnt/matlab-iso
