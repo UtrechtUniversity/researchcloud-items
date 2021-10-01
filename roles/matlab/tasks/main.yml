@@ -90,5 +90,9 @@
 - name: install desktop launcher
   include: desktop.yml
 
-
+- name: create symlink to matlab executable for bash access
+  file:
+    dest: /usr/local/bin/matlab
+    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
+    state: link
  
