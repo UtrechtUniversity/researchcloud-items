@@ -39,7 +39,7 @@
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
     fstype: iso9660
     opts: loop
-    state: present
+    state: mounted
 
 - name: prepare a silent install inputfile
   template:
