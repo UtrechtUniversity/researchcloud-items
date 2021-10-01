@@ -72,6 +72,11 @@
   command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
   args:
     chdir: /mnt/matlab-iso
+  register: matlab_i
+
+- name: check install result
+  debug:
+    msg: "rc = {{matlab_i.rc}}"
 
 - name: unmount Matlab software iso image, no longer needed
   mount:
