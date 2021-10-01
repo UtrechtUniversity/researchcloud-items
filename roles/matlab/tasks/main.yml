@@ -23,6 +23,16 @@
     file: "{{ matlab_configfile_path }}"
   when: matlab_c.stat.exists
 
+
+- name: create mountpoint /mnt/matlab-iso
+  file:
+    dest: "/mnt/matlab-iso"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+
 - name: mount Matlab software iso image as /mnt/matlab-iso
   mount:
     path: /mnt/matlab-iso
