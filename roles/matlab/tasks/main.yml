@@ -1,18 +1,19 @@
 ---
-
-# depends:
-#  - matlab iso file must be located on the system
-#  - variables need to be customized to specify a valid file installer key and licence.dat content
+# depends: Ubuntu + desktop GUI
 #
-#  further this install assumes a Linux system with desktop GUI  
-
-# the site-specific information is read into variables from a file
-# NB: file format should be yaml, suggested variables are:
+# Matlab installation requires you to have prepared 2 files:
+#  1) target machine must locally have a file with Matlab software ISO image 
+#    NB: You should obtain this ISO image from MathWorks Inc.
+#
+#  2) target machine must locally have a file with configuration information
+#    NB: file format should be yaml, suggested variables are:
 #     matlab_file_installation_key
 #     matlab_license_text
 #     matlab_products  (specify here if not all products are to be installed)
 #
-- name: check if a configuration file exists
+# As an alternative approach to 2) one could provide the variables as part of an Ansible playbook
+#
+- name: check if the configuration file exists
   stat:
     path: "{{ matlab_configfile_path }}"
   register: matlab_c 
@@ -28,7 +29,7 @@
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
     fstype: iso9660
     opts: loop
-    state: present
+    state: mounted
 
 - name: prepare a silent install inputfile
   template:
@@ -60,6 +61,14 @@
 # run command ./install -inputFile /root/installer_input.txt
 # NB: may take 30 min and 20 GB disk space for full product install
 #
+
+- name: unmount Matlab software iso image, no longer needed
+  mount:
+    path: /mnt/matlab-iso
+    src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
+    fstype: iso9660
+    opts: loop
+    state: unmounted
 
 - name: install desktop launcher
   include: desktop.yml
