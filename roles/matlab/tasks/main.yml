@@ -29,7 +29,7 @@
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
     fstype: iso9660
     opts: loop
-    state: mounted
+    state: present
 
 - name: prepare a silent install inputfile
   template:
@@ -68,7 +68,7 @@
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
     fstype: iso9660
     opts: loop
-    state: unmounted
+    state: absent
 
 - name: install desktop launcher
   include: desktop.yml
