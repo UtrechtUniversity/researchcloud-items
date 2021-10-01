@@ -58,7 +58,7 @@
     group: root
 
 # NB: may take 30 min and 20 GB disk space for full product install
-- name: install Matlab products using silent installation. NB: check log in /tmp for progress
+- name: install Matlab products using silent installation. check log in /tmp for progress
   command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
   args:
     chdir: /mnt/matlab-iso
