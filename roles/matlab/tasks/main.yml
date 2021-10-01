@@ -37,7 +37,7 @@
     group: root
     mode: 0644
     src: "installer_input.txt.j2"
-    dest: "/root/installer_input.txt"
+    dest: "/root/matlab_installer_input.txt"
 
 
 - name: prepare the license.dat file
@@ -57,10 +57,11 @@
     owner: root
     group: root
 
-# install matlab ....
-# run command ./install -inputFile /root/installer_input.txt
 # NB: may take 30 min and 20 GB disk space for full product install
-#
+- name: install Matlab products using silent installation. NB: check log in /tmp for progress
+  command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
+  args:
+    chdir: /mnt/matlab-iso
 
 - name: unmount Matlab software iso image, no longer needed
   mount:
