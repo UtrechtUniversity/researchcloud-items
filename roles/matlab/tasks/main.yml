@@ -74,9 +74,10 @@
     chdir: /mnt/matlab-iso
   register: matlab_i
 
-- name: check install result
-  debug:
-    msg: "rc = {{matlab_i.rc}}"
+    # TODO: even if unsuccessful, the matlab install script will report success :(
+    #- name: check install result
+    #  debug:
+    #    msg: "rc = {{matlab_i.rc}}"
 
 - name: unmount Matlab software iso image, no longer needed
   mount:
