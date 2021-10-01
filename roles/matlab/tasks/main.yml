@@ -61,8 +61,8 @@
 # NB: may take 30 min and 20 GB disk space for full product install
 #
 
-# - name: install desktop launcher
-#   include: desktop.yml
+- name: install desktop launcher
+  include: desktop.yml
 
 
  
