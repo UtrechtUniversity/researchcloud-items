@@ -36,6 +36,7 @@ SURF ResearchCloud.
 - [irods_skel](roles/irods_skel.md)
 - [keycloak](roles/keycloak.md)
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
+- [matlab](roles/matlab.md)
 - [python](roles/python.md)
 - [runonce](roles/runonce.md)
 - [userspace_applications](roles/userspace_applications.md)
