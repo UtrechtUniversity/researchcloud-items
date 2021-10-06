@@ -90,9 +90,17 @@
 - name: install desktop launcher
   include: desktop.yml
 
-- name: create symlink to matlab executable for bash access
-  file:
-    dest: /usr/local/bin/matlab
-    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
-    state: link
+#- name: create symlink to matlab executable for bash access
+#  file:
+#    dest: /usr/local/bin/matlab
+#    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
+#    state: link
  
+# commandline wrapper will try per-user license before network license
+- name: create commandline wrapper to matlab executable
+  template:
+    owner: root
+    group: root
+    mode: 0755
+    src: "matlab.j2"
+    dest: /usr/local/bin/matlab
