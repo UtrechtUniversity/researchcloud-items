@@ -23,8 +23,8 @@ SURF ResearchCloud.
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
-- [python-workbench](playbooks/python-workbench.md)  Python application development
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
+- [python-workbench](playbooks/python-workbench.md)  Python application development
 
 ## Roles
 - [camunda-modeler](roles/camunda-modeler.md)
