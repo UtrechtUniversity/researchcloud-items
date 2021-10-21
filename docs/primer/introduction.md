@@ -35,7 +35,7 @@ Often, workspaces will need to be used by research staff from different institut
 The organizational structure may vary from an ad-hoc project team to a legal entity representing a
 consortium. 
 Solutions such as guest accounts for staff from other institutes could lead to scenarios where
-the guests are deprived from important features..
+the guests are deprived from important features.
 
 To overcome such limitations, SRC instead uses the concept of a collaboration.
 A collaboration may be viewed as a *virtual* organization, with members that can originate
@@ -76,4 +76,4 @@ wallet request.
 The [SURF ResearchCloud Wiki](https://servicedesk.surfsara.nl/wiki/display/WIKI/Research+Cloud+Documentation)
 pages provide an elaborate introduction on concepts related to this cloud service. 
 
-Practical instructions to get started on SRC can be found [here](first-time-use.md)
+Practical instructions to get started on SRC can be found [here](first-time-use.md).

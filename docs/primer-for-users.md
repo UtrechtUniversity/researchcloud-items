@@ -2,7 +2,8 @@
 (see [developer documentation](index.md) for creation of catalog items)   
 
 If you are new to SURF ResearchCloud, please first read our [introduction](primer/introduction.md).
-Next proceed to our [first-time use](primer/first-time-use.md) page for instructions to get started..
+Next proceed to our [first-time use](primer/first-time-use.md) page for practical 
+instructions to get started.
 
 ## Options for accessing your workspace
 The methods for accessing a workspace vary and are based on 
