@@ -4,8 +4,8 @@
 Below are some suggestions for Research-IT support staff to assist new users 
 during their first use of SURF ResearchCloud. 
 While most users will be able to find their bearings using available 
-documentation, you can make the difference to make this a much faster and more
-gentle learning curve.   
+documentation, you can make the difference to make this a fast, smooth 
+learning curve.   
 
 The below steps build upon either other. They minimize the roundtrips that you
 and users need to wait for SURF ResearchCloud and SRAM services to complete
@@ -75,7 +75,7 @@ familiarize themselves with SURF ResearchCloud.
 Explain that data in the workspace is not persistent, it will only
 be available for the duration of the lifetime of the workspace. 
 Hence data needs to be *staged* to a workspace from a persistent storage
-location. Likewise the results of analysis need to be transfered to a
+location. Likewise the results of analysis need to be transfered back to a
 persistent storage location. 
 
 Assist them to load some sample data from a persistent location. This
@@ -84,13 +84,13 @@ Proceed with one of the steps below in line
 with needs of the user.
 
 ## 6a. Setup network drive connection to Yoda
-(the same procedure can be used to connect a SURF Researchdrive)   
+(this procedure can also be used to connect a SURF Researchdrive)   
 Show the user how to use the SURF ResearchCloud portal to link 
-Yoda or SURF Researchdrive as an option in the collaboration attributes.
+Yoda as an option in the collaboration attributes.
 
 Important: For security reasons, the user should generate a Yoda data 
 access password and use this access token for linking Yoda with a workspace.
-This feature is available per Yoda 1.8. 
+This feature requires Yoda release 1.8 or higher. 
 
 ## 6b. Setup data transfer with Yoda using iCommands
 Make sure the workspace type includes iRODS icommands. Show the user
@@ -109,7 +109,7 @@ between SRAM and SURF ResearchCloud.
 
 Test that the user can use the keypair to login to a workspace using the
 SSH protocol.  Alternatively check that the user is able to use another
-SSH protocol based command, such as `ftp`.
+SSH protocol based command, such as `sftp`.
 
 ## 7. (WITH USER, AFTER WALLET APPROVAL) User creates a workspace
 Assist the user to create a new workspace using the SURF ResearchCloud catalog.
