@@ -1,0 +1,23 @@
+---
+
+- name: create robot user
+  user:
+    name: {{ robotuser_name }}
+    state: present
+
+- name: ensure that .ssh dir exists
+  file:
+    path: /home/{{ robotuser_name }}/.ssh
+    state: directory
+    mode: 0751
+    owner: {{ robotuser_name }}
+
+- name: install private key for robot user
+  template:
+    src: id_rsa.j2
+    dest: /home/{{ robotuser_name }}/.ssh/id_rsa
+    mode: 0700
+    owner: {{ robotuser_name }}
+  when: robotuser_key is defined
+
+

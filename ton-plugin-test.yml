@@ -15,7 +15,7 @@
       when: TON_TEST is undefined
 
   roles:
-    - uurobot
+    - robotuser
 #    - python
 #    - pyenv
 #    - uwsgi
