@@ -1,0 +1,26 @@
+---
+
+- name: create uurobot user
+  user:
+    name: uurobot
+    group: uurobot
+    state: present
+
+- name: ensure that .ssh dir exists
+  file:
+    path: /home/uurobot/.ssh
+    state: directory
+    mode: 731
+    owner: uurobot
+    group: uurobot
+
+- name: install private key for user uurobot
+  tenplate:
+    src: id_rsa.j2
+    dest: /home/uurobot/.ssh/id_rsa
+    mode: 0700
+    owner: uurobot
+    group: uurobot
+  when: uurobot_key is defined
+
+

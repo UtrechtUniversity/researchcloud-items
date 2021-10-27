@@ -14,7 +14,8 @@
         msg: "variable TON_TEST not defined"
       when: TON_TEST is undefined
 
-#  roles:
+  roles:
+    - uurobot
 #    - python
 #    - pyenv
 #    - uwsgi
