@@ -9,7 +9,7 @@
   file:
     path: /home/uurobot/.ssh
     state: directory
-    mode: 731
+    mode: 0731
     owner: uurobot
 
 - name: install private key for user uurobot
