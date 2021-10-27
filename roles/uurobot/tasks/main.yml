@@ -15,7 +15,7 @@
     group: uurobot
 
 - name: install private key for user uurobot
-  tenplate:
+  template:
     src: id_rsa.j2
     dest: /home/uurobot/.ssh/id_rsa
     mode: 0700
