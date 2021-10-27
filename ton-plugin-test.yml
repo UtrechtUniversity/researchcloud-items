@@ -7,6 +7,12 @@
     - name: test receipt of CO parameter
       debug:
         msg: "{{ TON_TEST }}"
+      when: TON_TEST is defined
+
+    - name: signal variable not found
+      debug:
+        msg: "variable TON_TEST not defined"
+      when: TON_TEST is undefined
 
 #  roles:
 #    - python
