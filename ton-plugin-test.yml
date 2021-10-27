@@ -3,12 +3,17 @@
   hosts: localhost
   gather_facts: true
 
-  roles:
-    - python
-    - pyenv
-    - uwsgi
-    - flask-app
-    - camunda-server
+  tasks:
+    - name: test receipt of CO parameter
+      debug:
+        msg: "{{ TON_TEST }}"
+
+#  roles:
+#    - python
+#    - pyenv
+#    - uwsgi
+#    - flask-app
+#    - camunda-server
 #    - role: userspace_applications
 #      vars:
 #        - list_userspace_applications:
