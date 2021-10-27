@@ -3,7 +3,6 @@
 - name: create uurobot user
   user:
     name: uurobot
-    group: uurobot
     state: present
 
 - name: ensure that .ssh dir exists
@@ -12,7 +11,6 @@
     state: directory
     mode: 731
     owner: uurobot
-    group: uurobot
 
 - name: install private key for user uurobot
   template:
@@ -20,7 +18,6 @@
     dest: /home/uurobot/.ssh/id_rsa
     mode: 0700
     owner: uurobot
-    group: uurobot
   when: uurobot_key is defined
 
 
