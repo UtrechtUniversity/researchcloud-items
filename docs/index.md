@@ -39,6 +39,7 @@ SURF ResearchCloud.
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
 - [python](roles/python.md)
+- [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
 - [userspace_applications](roles/userspace_applications.md)
 - [uwsgi](roles/uwsgi.md)
