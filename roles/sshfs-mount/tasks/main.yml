@@ -1,0 +1,18 @@
+---
+- name: ensure that local mountpoint exists
+  file:
+    path: "{{ sshfs_mountpoint }}"
+    state: directory
+    owner: "{{ robotuser_name }}"
+
+  
+- name: mount remote filesystem using credentials of robot user
+  mount:
+    src: "{{ robotuser_name }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
+    path: "{{ sshfs_mountpoint }}"
+    fstype: "fuse.sshfs"
+    opts: "_netdev,user,idmap=user,transform_symlinks,identifyfile=/home/{{ robotuser_name }}/.ssh/rsa_id,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
+    state: present
+
+
+

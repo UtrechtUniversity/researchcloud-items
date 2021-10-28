@@ -1,0 +1,10 @@
+---
+  
+- name: umount remote filesystem 
+  mount:
+    path: "{{ sshfs_mountpoint }}"
+    state: unmounted
+
+
+
+
