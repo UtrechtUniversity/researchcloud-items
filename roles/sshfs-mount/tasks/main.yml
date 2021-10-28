@@ -1,4 +1,9 @@
 ---
+- name: install package sshfs
+  package:
+    name: sshfs
+    state: present
+
 - name: ensure that local mountpoint exists
   file:
     path: "{{ sshfs_mountpoint }}"
