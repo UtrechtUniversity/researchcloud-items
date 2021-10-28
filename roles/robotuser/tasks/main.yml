@@ -20,7 +20,7 @@
     dest: "/home/{{ robotuser_name }}/.ssh/id_rsa"
     mode: 0700
     owner: "{{ robotuser_name }}"
-  when: robotuser_generate_ssh_key = "no"
+  when: robotuser_generate_ssh_key == "no"
 
 
 
