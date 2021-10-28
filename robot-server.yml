@@ -6,6 +6,7 @@
 
   roles:
     - role: robotuser
-      vars: robotuser_generate_ssh_key: "yes"
+      vars: 
+       - robotuser_generate_ssh_key: "yes"
 
 
