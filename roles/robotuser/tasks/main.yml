@@ -12,7 +12,7 @@
     state: directory
     mode: 0751
     owner: "{{ robotuser_name }}"
-  when: robotuser_generate_ssh_key = "no"
+  when: robotuser_generate_ssh_key == "no"
 
 - name: install private key for robot user
   template:
