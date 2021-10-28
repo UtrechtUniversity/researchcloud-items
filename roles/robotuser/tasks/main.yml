@@ -3,6 +3,7 @@
 - name: create robot user
   user:
     name: "{{ robotuser_name }}"
+    generate_ssh_key: "{{ robotuser_generate_ssh_key }}"
     state: present
 
 - name: ensure that .ssh dir exists
@@ -11,6 +12,7 @@
     state: directory
     mode: 0751
     owner: "{{ robotuser_name }}"
+  when: robotuser_generate_ssh_key = "no"
 
 - name: install private key for robot user
   template:
@@ -18,5 +20,7 @@
     dest: "/home/{{ robotuser_name }}/.ssh/id_rsa"
     mode: 0700
     owner: "{{ robotuser_name }}"
+  when: robotuser_generate_ssh_key = "no"
+
 
 
