@@ -1,0 +1,33 @@
+---
+
+- name: create robot user
+  user:
+    name: "{{ robotuser_name }}"
+    generate_ssh_key: "{{ robotuser_generate_ssh_key }}"
+    state: present
+
+- name: authorize ssh incoming access for robot user
+  command: cp "/home/{{ robotuser_name }}/.ssh/id_rsa.pub" "/home/{{ robotuser_name }}/.ssh/authorized_keys"
+  when: robotuser_generate_ssh_key == "yes"
+
+
+- name: ensure that .ssh dir exists
+  file:
+    path: "/home/{{ robotuser_name }}/.ssh"
+    state: directory
+    mode: 0751
+    owner: "{{ robotuser_name }}"
+  when: robotuser_generate_ssh_key == "no"
+
+# NB: to avoid loss of a key, script will not overwrite an existing key
+- name: install private key for robot user
+  template:
+    src: id_rsa.j2
+    dest: "/home/{{ robotuser_name }}/.ssh/id_rsa"
+    force: no
+    mode: 0700
+    owner: "{{ robotuser_name }}"
+  when: robotuser_generate_ssh_key == "no"
+
+
+

@@ -12,17 +12,24 @@ using the file [template-playbooks.md](playbooks/template-playbooks.md) to
 document a playbook
 or the file [template-roles.md](roles/template-roles.md) to document a role.
 
-NB: The files section of roles may include base64 encoded icon files. 
+NB: The files section of roles may include [base64 encoded](icons.md) icon files. 
 These files can be used to decorate a related catalog item in 
 SURF ResearchCloud.
 
 ## Playbooks
-- [icommands](playbooks/icommands.md)
-- [keycloak](playbooks/keycloak.md)
-- [python-workbench](playbooks/python-workbench.md)
-- [miniconda-base](playbooks/miniconda-base.md)
+- [camunda](playbooks/camunda.md)  a business process workflow suite
+- [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
+- [docker](playbooks/docker.md) application container management
+- [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
+- [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
+- [matlab](playbooks/matlab.md) Data analysis and simulation suite
+- [miniconda-base](playbooks/miniconda-base.md)   Python application development
+- [python-workbench](playbooks/python-workbench.md)  Python application development
 
 ## Roles
+- [camunda-modeler](roles/camunda-modeler.md)
+- [camunda-server](roles/camunda-server.md)
+- [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
@@ -30,7 +37,9 @@ SURF ResearchCloud.
 - [irods_skel](roles/irods_skel.md)
 - [keycloak](roles/keycloak.md)
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
+- [matlab](roles/matlab.md)
 - [python](roles/python.md)
+- [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
 - [userspace_applications](roles/userspace_applications.md)
 - [uwsgi](roles/uwsgi.md)

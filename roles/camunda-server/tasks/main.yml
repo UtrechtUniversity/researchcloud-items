@@ -1,0 +1,53 @@
+---
+- name: ensure java runtime is installed
+  package:
+    name: "default-jre"
+    state: present
+
+#- name: install jar tool
+#  package: 
+#    name: "default-jdk"
+#    state: present
+    
+
+- name: create camunda target dir
+  file:
+    dest: "{{ camunda_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: download camunda war
+  get_url:
+    url: "{{ camunda_war_urldir }}/{{ camunda_war_urlfile }}"
+    dest: "{{ camunda_dir }}/{{ camunda_war_urlfile }}"
+
+- name: provide applicationContext configuration
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: "applicationContext.xml.j2"
+    dest: "{{ camunda_dir }}/applicationContext.xml"
+
+# todo: update war with applicationContext
+
+- name: add link to Camunda .war in tomcat webapps dir
+  file:
+    src: "{{ camunda_dir }}/{{ camunda_war_urlfile }}"
+    dest: "{{ catalina_home }}/webapps/{{ camunda_context_name }}.war"
+    state: link
+
+- name: add camunda as a proxy destination in nginx
+  copy:
+    src: "camunda.conf"
+    dest: "/etc/nginx/app-location-conf.d/camunda.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart nginx
+
+
+
+ 

@@ -9,7 +9,7 @@ Ensure that your laptop/workstation supports Remote Desktop connections:
   In case this does not yield any results, you will need to upgrade your Windows Edition
   or install Remote Desktop as additional software.
 
-- Linux: Install a Remote Desktop viewer, for example the Gnome desktop viewer ["vinagre"](https://help.gnome.org/users/vinagre/)
+- Linux: Install a Remote Desktop viewer, for example ["Remmina"](https://remmina.org/).
 
 Access to the workspace requires that you register a time-based one-time password (TOTP). 
 See the SURF wiki for instructions to [configure a time-based password](https://servicedesk.surfsara.nl/wiki/display/WIKI/Log+in+to+your+workspace).   

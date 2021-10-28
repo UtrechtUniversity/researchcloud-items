@@ -6,7 +6,7 @@ Installs the icommands client tools (and iselect) that facilitate users to acces
 an [iRODS](https://www.irods.org) server from within a shell. 
 
 ## Requires
-Linux operating system flavor as supported by iRODS.
+Linux operating system flavor and major version as supported by iRODS.
 
 ## Description
 The playbook installs the latest icommands client and iRODS runtime libraries
