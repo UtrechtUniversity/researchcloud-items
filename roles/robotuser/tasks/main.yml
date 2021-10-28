@@ -14,10 +14,12 @@
     owner: "{{ robotuser_name }}"
   when: robotuser_generate_ssh_key == "no"
 
+# NB: to avoid loss of a key, script will not overwrite an existing key
 - name: install private key for robot user
   template:
     src: id_rsa.j2
     dest: "/home/{{ robotuser_name }}/.ssh/id_rsa"
+    force: no
     mode: 0700
     owner: "{{ robotuser_name }}"
   when: robotuser_generate_ssh_key == "no"
