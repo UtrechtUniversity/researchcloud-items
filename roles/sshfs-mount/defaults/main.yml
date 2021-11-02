@@ -1,6 +1,6 @@
 ---
 sshfs_server: "localhost"
-sshfs_sourcepath: "/home/{{ robotuser_name }}/shared-data"
+sshfs_sourcepath: "/data"
 sshfs_mountpoint: "/home/{{ robotuser_name }}/remote-data"
 
 
