@@ -11,7 +11,7 @@
     owner: "{{ robotuser_name }}"
 
 - name: enable user_allow_other in fuse config
-  line_in_file:
+  lineinfile:
     path: /etc/fuse.conf
     search_string: '#user_allow_other'
     line: 'user_allow_other'
