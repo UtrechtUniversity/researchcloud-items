@@ -10,11 +10,11 @@ application (for instance "Remote Desktop" or "ssh").
 Your web browser displays the screen content of this workspace and allows you to interact with
 it using your keyboard and mouse. 
 
-There are many types of workspaces available to choose from. Workspace types vary in 
-computational power and in the applications that are preinstalled.
+Workspaces are preconfigured with one or more applications, ranging from RStudio, Jupyter Notebooks, Matlab, to plain Windows or Linux virtual machines where the user installs their own software. Workspaces are also scalable:
+computational power, GPU drivers and extra storage can be ordered with a single mouse click.
 You can select a workspace type that suites your needs from a catalog in 
 the [SRC web portal](https://portal.live.surfresearchcloud.nl). 
-Support staff has prepared workspace types to suit a variety of research domains and analysis methods. 
+Workspaces are preconfigured for the user by support staff and can be extended on request to suit a variety of research domains and analysis methods. 
 Should analysis applications for your domain not yet be covered, the support staff is happy to assist 
 and to make additions to the catalog.
 
@@ -29,6 +29,20 @@ your favorite applications come conveniently preinstalled for you.
 This resource leasing concept is a cost effective solution if you plan to use it part-time, 
 or if you seek to avoid to invest in expensive computer hardware, software or related IT-skills.
 Once you are done with using your workspace, just dispose of it in the SRC web portal.
+
+**Example workspaces**
+- Rstudio
+- Jupyter
+- Matlab
+- Python with Machine learning libraries
+- Windows Server (install your own software)
+- Ubuntu (install your own software)
+
+**Resources available for a single workspace**
+- up to 80 CPU cores
+- up to 480 GB RAM
+- up to 4 GPU drives
+- up to 2 TB storage
 
 ## Designed with consortia and other Collaborative use in mind
 Often, workspaces will need to be used by research staff from different institutes. 
@@ -53,15 +67,14 @@ Managing membership is done via a self-service portal (called [SRAM](https://sra
 short for SURF Research Access Management. 
 
 ## Membership and Wallets
-As an Utrecht University employee or student, first join an existing SRC collaboration.
+As an Utrecht University employee or student, you can be invited by a colleague to an existing SRC collaboration.
 Alternatively issue a request via the [University Servicedesk](https://uu.topdesk.net) to have 
 a new SURF ResearchCloud collaboration set up for your project. 
 Once you are a member of a collaboration, you can start using any of its already running workspaces.
 NB: Allow upto 5 minutes for running workspaces to learn about and give access to newly added members.
 
-You might also want to be provided with a wallet. A wallet is usually linked to the collaboration 
-budget. It authorizes you to perform actions with financial implications. For instance, you
-need a wallet to order the creation of a new workspace. 
+You need a wallet if you want to create new workspaces. A wallet is usually linked to the collaboration 
+budget. It authorizes you to perform actions with financial implications. 
 You can request a wallet via the [SRC Web portal](https://portal.live.surfresearchcloud.nl).
 We recommend that you always request a wallet as soon as you start using SRC. 
 
