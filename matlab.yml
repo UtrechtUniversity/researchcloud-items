@@ -1,19 +1,17 @@
 ---
+# calling this plugin playbook:
+#   - robot-client playbook must have run before and related Ansible vars set
+#     (this will set robotuser_name, robotuser_server, robotuser_sourcepath)
+# 
+# include in the plugin for this playbook the following vars:
+#    - matlab_iso_dir   location of matlab related files on robot server
+#
+# For more information, see documentation on the roles used in this playbook 
+#
 - name: install matlab products in researchcloud workspace
   hosts: localhost
   gather_facts: true
-
-#  NB: we will AT-LEAST need to overwrite the following vars      
-#  vars: 
-#    - matlab_file_installation_key: "00000-00000-..."
-#    - matlab_license_text: "foo\nsecond line"
-#
-# in matlab plugin specify as var:
-#    - matlab_iso_dir   location of matlab related files on robot server
-#
-
   roles:
-    - robotuser
     - role: sshfs-mount
       sshfs-user: "{{ robotuser_name }}"
       sshfs-server: "{{ robotuser_server }}" 
