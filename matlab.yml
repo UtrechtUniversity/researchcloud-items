@@ -13,7 +13,7 @@
   gather_facts: true
   roles:
     - role: sshfs-mount
-      sshfs_user: "{{ robotuser_name }}"
+      sshfs_username: "{{ robotuser_name }}"
       sshfs_server: "{{ robotuser_server }}" 
       sshfs_sourcepath: "{{ robotuser_sourcepath }}"
     - matlab
