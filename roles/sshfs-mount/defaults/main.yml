@@ -1,5 +1,5 @@
 ---
-sshfs_username: "{{ robotuser_name }} "
+sshfs_username: "{{ robotuser_name }}"
 sshfs_server: "{{ robotuser_server }}"
 sshfs_sourcepath: "{{ robotuser_sourcepath }}"
 sshfs_mountpoint: "/home/{{ sshfs_username }}/remote-data"
