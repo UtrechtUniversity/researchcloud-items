@@ -14,7 +14,7 @@
 
   roles:
     - robotuser
-    - sshfs-mount
+    - role: sshfs-mount
       vars:
         sshfs-user: "{{ robotuser_name }}"
         sshfs-server: "{{ robotuser_server }}" 
