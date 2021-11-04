@@ -8,7 +8,7 @@
   file:
     path: "{{ sshfs_mountpoint }}"
     state: directory
-    owner: "{{ robotuser_name }}"
+    owner: "{{ sshfs_username }}"
 
 - name: enable user_allow_other in fuse config
   lineinfile:
@@ -22,7 +22,7 @@
 # Note that to make this work, only the 'state' differs  
 - name: add remote filesystem to /etc/fstab
   mount:
-    src: "sshfs#{{ robotuser_name }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
+    src: "sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
     path: "{{ sshfs_mountpoint }}"
     fstype: "fuse"
     opts: "_netdev,user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
@@ -30,9 +30,9 @@
 
 - name: mount remote filesystem using credentials of robot user
   become: true
-  become_user: "{{ robotuser_name }}"
+  become_user: "{{ sshfs_username }}"
   mount:
-    src: "sshfs#{{ robotuser_name }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
+    src: "sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
     path: "{{ sshfs_mountpoint }}"
     fstype: "fuse"
     opts: "_netdev,user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"

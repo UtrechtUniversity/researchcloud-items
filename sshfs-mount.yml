@@ -15,7 +15,6 @@
       when: TON_TEST is undefined
 
 # when calling this Ansible script, the following variables MUST be set:
-#   robotuser_key   - private key for robot user
 #   sshfs_server    - ip address of server that shares filesystem
 #
 # Recommended:  
@@ -24,6 +23,5 @@
 #   This ensures that other workspaces cannot overwrite or erase server data
         
   roles:
-    - robotuser
     - sshfs-mount
 

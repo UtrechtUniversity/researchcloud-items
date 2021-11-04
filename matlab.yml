@@ -8,6 +8,14 @@
 #    - matlab_file_installation_key: "00000-00000-..."
 #    - matlab_license_text: "foo\nsecond line"
 #
+# in matlab plugin specify as var:
+#    - matlab_iso_dir   location of matlab related files on robot server
+#
   roles:
+    - robotuser
+    - sshfs-mount
+      sshfs-user: "{{ robotuser_name }}"
+      sshfs-server: "{{ robotuser_server }}" 
     - matlab
+    - sshfs-umount
   
