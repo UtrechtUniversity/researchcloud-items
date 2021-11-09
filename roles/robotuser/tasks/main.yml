@@ -45,4 +45,16 @@
     owner: "{{ robotuser_name }}"
   when: robotuser_generate_ssh_key == "no"
 
+# NB: if server ip is in other domain then below task is vulnerable to man-in-the-middle
+#     use with care
+- name: obtain robot server fingerprint
+  command: "ssh-keyscan {{ robotuser_server }}"
+  register: robotuser_f
+  when: robotuser_generate_ssh_key == "no"
+
+- name: register robot server as known host
+  lineinfile:
+    dest: "/home/{{ robotuser_name }}/.ssh/known_hosts"
+    line: "{{ robotuser_f.stdout_lines }}"
+  when: robotuser_generate_ssh_key == "no"
 
