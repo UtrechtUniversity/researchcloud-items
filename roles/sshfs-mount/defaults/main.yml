@@ -1,7 +1,7 @@
 ---
-sshfs_username: "{{ robotuser_name }}"
-sshfs_server: "{{ robotuser_server }}"
-sshfs_sourcepath: "{{ robotuser_sourcepath }}"
-sshfs_mountpoint: "/home/{{ sshfs_username }}/remote-data"
+sshfs_username: "SSHFS_USERNAME_MISSING"
+sshfs_server: "SSHFS_SERVER_MISSING"
+sshfs_sourcepath: "SSHFS_SOURCEPATH_MISSING"
+sshfs_mountpoint: "SSHFS_MOUNTPOINT_MISSING"
 
 
