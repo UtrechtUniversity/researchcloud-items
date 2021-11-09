@@ -58,6 +58,7 @@
     create: "yes"
     owner: "{{ robotuser_name }}"
     mode: 0600
-    line: "{{ robotuser_f.stdout_lines }}"
+    line: "{{ item }}"
+  with_items: "{{ robotuser_f.stdout_lines }}"
   when: robotuser_generate_ssh_key == "no"
 
