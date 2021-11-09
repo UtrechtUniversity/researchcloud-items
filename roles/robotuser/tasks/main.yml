@@ -55,6 +55,7 @@
 - name: register robot server as known host
   lineinfile:
     dest: "/home/{{ robotuser_name }}/.ssh/known_hosts"
+    create: "yes"
     line: "{{ robotuser_f.stdout_lines }}"
   when: robotuser_generate_ssh_key == "no"
 
