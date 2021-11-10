@@ -79,13 +79,13 @@
     #  debug:
     #    msg: "rc = {{matlab_i.rc}}"
 
+- name: ensure filesystems are at rest before unmount
+  command: "sync"
+
 - name: unmount Matlab software iso image, no longer needed
   mount:
     path: /mnt/matlab-iso
-    src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
-    fstype: iso9660
-    opts: loop
-    state: absent
+    state: unmounted
 
 - name: install desktop launcher
   include: desktop.yml
