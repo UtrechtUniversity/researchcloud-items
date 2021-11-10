@@ -21,7 +21,7 @@ robotuser_sourcepath: # no default! - path to served files e.g. /data/volume_2
 The above variables must be supplied as parameter to the playbook.
 
 ## See also
-[sshfs-configrobot](../roles/sshfs-configrobot) robot used to mount remote filesystem
+Role [sshfs-configrobot](../roles/sshfs-configrobot) robot used to mount remote filesystem
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
