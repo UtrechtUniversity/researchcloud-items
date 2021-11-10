@@ -20,8 +20,6 @@ This role requires the plugin/playbook to provide some Ansible variables as
 parameter: `robotuser_key` (private ssh key), `robotuser_server` (ip address), 
 `robotuser_sourcepath` (server directory as data source for mounts).
 
-Server-side robotuser ceration is supported by setting `robotuser_generate_ssh_key:"yes"`.
-
 For an example robotuser use case, please see the [matlab](../playbooks/matlab.md) playbook.
 
 ## Variables
@@ -37,9 +35,9 @@ is generated for this user. The use case for this setting is creation of the rob
 instead of a client.
 
 ## See also
-[sshfs-mount](sshfs-mount.md)
-[sshfs-umount](sshfs-umount.md)
-[sshfs-configrobot](sshfs-configrobot)
+- [sshfs-mount](sshfs-mount.md)
+- [sshfs-umount](sshfs-umount.md)
+- [sshfs-configrobot](sshfs-configrobot)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
