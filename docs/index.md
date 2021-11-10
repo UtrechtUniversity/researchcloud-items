@@ -25,6 +25,7 @@ SURF ResearchCloud.
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
+- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
 
 ## Roles
 - [camunda-modeler](roles/camunda-modeler.md)
@@ -41,5 +42,8 @@ SURF ResearchCloud.
 - [python](roles/python.md)
 - [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
+- [sshfs-configrobot](roles/sshfs-configrobot.md)
+- [sshfs-mount](roles/sshfs-mount.md)
+- [sshfs-umount](roles/sshfs-umount.md)
 - [userspace_applications](roles/userspace_applications.md)
 - [uwsgi](roles/uwsgi.md)
