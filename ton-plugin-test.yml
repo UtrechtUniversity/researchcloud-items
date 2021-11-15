@@ -16,7 +16,7 @@
 
   roles:
     - robotuser
-    - sshfs-mount
+      #    - sshfs-mount
 #    - python
 #    - pyenv
 #    - uwsgi
