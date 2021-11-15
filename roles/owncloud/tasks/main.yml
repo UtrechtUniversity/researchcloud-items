@@ -2,7 +2,7 @@
 - name: Get ownCloud APT GPG key
   apt_key:
     url: https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_20.04/Release.key
-    state: presen
+    state: present
 
 - name: Configure ownCloud apt repository
   apt_repository:
