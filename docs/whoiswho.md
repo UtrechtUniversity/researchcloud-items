@@ -2,7 +2,7 @@
 (back to [end-user documentation](primer-for-users.md))   
 
 ## Service Administration and Support
-Our Service Administration and Support staff make sure that requests and
+Our Research Information Systems support staff make sure that requests and
 questions from research teams on the use of SURF Research Cloud and other
 cloud compute services are answered. They can provide you and your team 
 with an account on SURF Research Cloud, a wallet, etc.
