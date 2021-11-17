@@ -141,10 +141,7 @@ def help():
 
 # main program
 if __name__ == "__main__":
-    zonesfile = IRODSZONESFILE1
-    inPath = Path(zonesfile).expanduser()
-    if not inPath.is_file():
-        zonesfile = IRODSZONESFILE2
+    zonesfile_ext = ''
     args_start = 0
     quit = False
     try:
@@ -160,7 +157,7 @@ if __name__ == "__main__":
             help()
             quit = True
         if opt.lower() == '-a':
-            zonesfile = zonesfile + '.acc'
+            zonesfile_ext = '.acc'
         if (opt.lower() == '-f') and len(args) > 0:
             zonesfile = args[args_start]
             args_start = args_start + 1
@@ -169,4 +166,8 @@ if __name__ == "__main__":
     choice = ''
     if len(args) > args_start:
         choice = args[args_start].lower()
+    zonesfile = IRODSZONESFILE1 + zonesfile_ext
+    inPath = Path(zonesfile).expanduser()
+    if not inPath.is_file():
+        zonesfile = IRODSZONESFILE2 + zonesfile_ext
     main(choice, zonesfile)
