@@ -12,7 +12,7 @@ call or contact them directly.
 
 Primary contact:    
 Lloyd Sabajo - IT Administrator   
-[its.ris@uu.nl](mailto:its.ris@uu.nl)
+Email: [its.ris@uu.nl](mailto:its.ris@uu.nl)
 
 ## Service portfolio and consultancy
 Our Research Engineering team assists research teams with on-demand development
@@ -24,7 +24,7 @@ Contact them directly for assistance on your project.
 
 Primary contact:   
 Jelle Treep - Research Software Engineer   
-[research.engineering@uu.nl](mailto:research.engineering@uu.nl)
+Email: [research.engineering@uu.nl](mailto:research.engineering@uu.nl)
 
 
 
