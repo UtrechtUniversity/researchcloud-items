@@ -160,7 +160,7 @@ if __name__ == "__main__":
             help()
             quit = True
         if opt.lower() == '-a':
-            zonesfile = IRODSZONESFILE + '.acc'
+            zonesfile = zonesfile + '.acc'
         if (opt.lower() == '-f') and len(args) > 0:
             zonesfile = args[args_start]
             args_start = args_start + 1
