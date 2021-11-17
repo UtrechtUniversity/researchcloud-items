@@ -20,7 +20,8 @@ and integration of research domain specific software applications.
 The resulting solutions are productized and added to the SURF Research 
 Cloud catalog for easy reuse by other researchers. 
 
-Contact them directly for assistance on your project.
+Contact them via an [IT servicedesk](https://uu.topdesk.net/) 
+call or contact them directly.
 
 Primary contact:   
 Jelle Treep - Research Software Engineer   
