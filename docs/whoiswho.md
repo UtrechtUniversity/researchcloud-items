@@ -1,7 +1,7 @@
 # Utrecht University contacts for SURF Research Cloud
 (back to [end-user documentation](primer-for-users.md))   
 
-## Service Administration and Support
+## Service administration and support
 Our Research Information Systems support staff make sure that requests and
 questions from research teams on the use of SURF Research Cloud and other
 cloud compute services are answered. They can provide you and your team 
