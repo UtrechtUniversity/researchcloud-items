@@ -1,11 +1,11 @@
 # Primer for users SURF ResearchCloud
 (see [developer documentation](index.md) for creation of catalog items)   
 
-## IT Support staff
+## Information for IT Support staff
 If you are IT support staff, please consult our 
 [workshop](primer/workshop-src.md) suggested route for onboarding new users.
 
-## New to SURF ResearchCloud?
+## Information for users new to SURF ResearchCloud
 If you are new to SURF ResearchCloud, we recommend that
 you first read our [introduction](primer/introduction.md). 
 Next proceed to our [first-time use](primer/first-time-use.md) page for 
@@ -23,6 +23,9 @@ and click on the access method for instructions.
 | Linux               | [ssh](primer/access-ssh.md)             |
 | Linux with desktop  | [browser](primer/access-browser.md), [remote-desktop](primer/access-rdp.md), [ssh](primer/access-ssh.md) |
 
+## Contact
+Please feel free to contact the [support team](whoiswho.md) 
+at Utrecht University.
 
 
 
