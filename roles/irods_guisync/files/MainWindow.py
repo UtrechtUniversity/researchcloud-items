@@ -130,8 +130,11 @@ class MainWindow(Gtk.Window):
      label_local = Gtk.Label()
      label_local.set_markup('<b>Workspace folder</b>')
      label_remote = Gtk.Label()
-     irods_host = IrodsStore().get_hostname()
-     label_remote.set_markup('<b>Server at ' + irods_host + '</b>')
+     try:
+        irods_host = IrodsStore().get_hostname()
+        label_remote.set_markup('<b>Server at ' + irods_host + '</b>')
+     except:
+        label_remote.set_markup('<b>Error: No connection to Yoda/iRODS Server, please run "iselect" first</b>')
      row = self.h_grid_rows
      self.h_grid.attach(label_local, 0, row, 1, 1)
      self.h_grid.attach(label_remote, 2, row, 1, 1)
