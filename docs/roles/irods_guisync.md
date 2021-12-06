@@ -11,7 +11,7 @@ Ubuntu desktop environment, iRODS icommands
 The quisync function is a user-friendly version of the irsync command
 found in the iRODS icommands set. The user can select a folder in
 the workspace and a collection in the connected iRODS zone plus either
-a retrive or save action. The actual synchronization will be performed
+a retrieve or save action. The actual synchronization will be performed
 through an irsync function of which the output is presented in a window.
 
 ## Variables
