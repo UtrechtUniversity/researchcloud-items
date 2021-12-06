@@ -1,16 +1,26 @@
 ---
 
-- name: install iselect
-  copy:
-    src: "iselect.py"
-    dest: "/usr/bin/iselect"
+- name: create target directory for guisync files
+  file:
+    dest: "{{ irods_guisync_dir }}"
+    state: directory
     mode: 0755
+    owner: root
+    group: root
 
-- name: install file indicated by iselect-file as zone list
+- name: copy irods_guisync files to target dir
   copy:
-    src: "{{ irods_iselect_file }}"
-    dest: "/etc/irods_zones.json"
-    mode: 0644
-  when: irods_iselect_file is defined
+    src: "{{ item }}"
+    dest: "{{ irods_guisync_dir }}/{{ item }}"
+    mode: 0755
+  with_items:
+    - "guisync.py"
+    - "guisync.css"
+    - "UU_logo_2021_EN_RGB_transparant.png"
+    - "MainWindow.py"
+    - "LogWindow.py"
+    - "IrodsStore.py"
+    - "IrodsChooserDialog.py"
 
-
+- name: install desktop launcher for irods_guisync
+  include: desktop.yml
