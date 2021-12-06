@@ -15,7 +15,9 @@ a retrieve or save action. The actual synchronization will be performed
 through an irsync function of which the output is presented in a window.
 
 ## Variables
-n/a
+```
+irods_guisync_dir: "/usr/local/lib/irods_guisync"
+```
 
 ## See also
 [irods_icommands](irods_icommands.md)
