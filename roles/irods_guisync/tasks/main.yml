@@ -3,6 +3,7 @@
 - name: pip install python-irodsclient
   pip:
     name: python-irodsclient
+    executable: pip3
 
 - name: create target directory for guisync files
   file:
