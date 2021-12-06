@@ -11,8 +11,13 @@ Linux operating system flavor with desktop and major version as supported by iRO
 Also requires that [iRODS icommands](icommands.md) are installed.
 
 ## Description
-The playbook installs the Yoda data synchronization desktop application (guisync).
-This application is a wrapper around the iRODS irsync tool.
+The playbook installs: 
+- The Yoda data synchronization desktop application ([guisync](../roles/irods_guisync.md).
+This application allows users to synchronize data stored in a collection
+on an iRODS server with a workspace folder.
+- A desktop launcher for [iselect](../roles/irods_iselect.md) to allow the user to
+initialize/configure a connection to an iRODS server from the desktop.
+
 
 ## Variables
 n/a
