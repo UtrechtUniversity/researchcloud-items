@@ -1,5 +1,9 @@
 ---
 
+- name: pip install python-irodsclient
+  pip:
+    name: python-irodsclient
+
 - name: create target directory for guisync files
   file:
     dest: "{{ irods_guisync_dir }}"
