@@ -12,7 +12,7 @@ Also requires that [iRODS icommands](icommands.md) are installed.
 
 ## Description
 The playbook installs: 
-- The Yoda data synchronization desktop application ([guisync](../roles/irods_guisync.md).
+- The Yoda data synchronization desktop application [irods_guisync](../roles/irods_guisync.md).
 This application allows users to synchronize data stored in a collection
 on an iRODS server with a workspace folder.
 - A desktop launcher for [iselect](../roles/irods_iselect.md) to allow the user to
