@@ -51,11 +51,13 @@
     mode: 0644
   with_items:
     - "irods_guisync"
+    - "irods_iselect"
 
 - name: install launcher in system-wide desktop menu
   command: "xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop"
   with_items:
     - "irods_guisync"
+    - "irods_iselect"
 
 
 
