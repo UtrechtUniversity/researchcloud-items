@@ -38,7 +38,7 @@ Now we are ready to create workspaces that will connect to the robot server usin
 mounts authenticating as the robot user:
 - Add the `robot-client` SRC plugin to a workspace application
 - Add an application specific plugin to the workspace application for using the shared data.
-This plugin should execute a playbook to execute the following roles:
+This plugin should execute a playbook to execute the following roles:   
 ```
    roles:
     - sshfs-configrobot
