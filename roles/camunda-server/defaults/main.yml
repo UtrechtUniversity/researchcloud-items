@@ -1,8 +1,8 @@
 ---
-camunda_version: "7.15"
-camunda_release: "7.15.0"
-camunda_war_urldir: "https://downloads.camunda.cloud/release/camunda-bpm/tomcat/{{ camunda_version }}"
-camunda_war_urlfile: "camunda-webapp-tomcat-standalone-{{ camunda_release }}.war"
+camunda_version: "7.17"
+camunda_release: "7.17.0-alpha2"
+camunda_tar_urldir: "https://downloads.camunda.cloud/release/camunda-bpm/tomcat/{{ camunda_version }}"
+camunda_tar_urlfile: "camunda-bpm-tomcat-{{ camunda_release }}.tar.gz"
 camunda_dir: "/var/lib/camunda"
 camunda_context_name: "camunda"
 catalina_home: "/var/lib/tomcat9"
