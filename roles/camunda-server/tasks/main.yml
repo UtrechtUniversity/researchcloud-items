@@ -43,6 +43,13 @@
     group: root
     mode: 0644
 
+- name: add camunda listener to Tomcat server.xml
+  replace:
+    path: "{{ cataline_home }}/conf/server.xml"
+    insertafter: '<Server port="-1" shutdown="SHUTDOWN">'
+    search_string: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
+    line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
+
       
 - name: copy camunda webapps to tomcat webapps dir
   copy:
@@ -54,7 +61,10 @@
     mode: 0644
   with_items:
     - "engine-rest"
-    - "examples"
+    - "camunda"
+    - "camunda-welcome"
+    - "h2"
+    - "camunda-invoice"
 
 # - name: provide applicationContext configuration
 #  template:
