@@ -45,7 +45,7 @@
 
 - name: add camunda listener to Tomcat server.xml
   replace:
-    path: "{{ cataline_home }}/conf/server.xml"
+    path: "{{ catalina_home }}/conf/server.xml"
     insertafter: '<Server port="-1" shutdown="SHUTDOWN">'
     search_string: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
     line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
