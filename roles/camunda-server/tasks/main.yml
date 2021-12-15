@@ -46,7 +46,7 @@
       
 - name: copy camunda webapps to tomcat webapps dir
   copy:
-    src: "{{ camunda_tomcatdir }}/webapps/{{ item }}"
+    src: "{{ camunda_tomcatdir }}/webapps/{{ item }}/"
     remote_src: yes
     dest: "{{ catalina_home }}/webapps/{{ item }}"
     owner: root
