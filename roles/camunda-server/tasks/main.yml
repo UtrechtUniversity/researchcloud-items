@@ -31,18 +31,20 @@
     src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
     remote_src: yes
     dest: "{{ catalina_home }}/conf/bpm-platform.xml"
-    owner: tomcat
-    group: tomcat
-    mode: 0755
 
 - name: copy camunda jars to tomcat lib
   copy:
     src: "{{ camunda_dir }}/lib/"
     remote_src: yes
     dest: "{{ catalina_home }}/lib/"
-    owner: tomcat
-    group: tomcat
-    mode: 0755
+
+# a copy with remore_src preserves file attribs regardless of mode
+# hence we need to set these props using a separate command
+- name: set file access rights for files in tomcat lib dir
+  command: "chmod 0755 {{catalina_home }}/lib/*"
+
+- name: set file access tights for tomcat ./conf/bpm-platform.xml
+  command: "chmod 0755 {{ catalina_home }}/conf/bpm-platfrom.xml"
 
 - name: add camunda listener to Tomcat server.xml
   lineinfile:
