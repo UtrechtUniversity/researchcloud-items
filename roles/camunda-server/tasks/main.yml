@@ -30,18 +30,18 @@
     src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
     remote_src: yes
     dest: "{{ catalina_home }}/conf/bpm-platform.xml"
-    owner: root
-    group: root
-    mode: 0644
+    owner: tomcat
+    group: tomcat
+    mode: 0755
 
 - name: copy camunda jars to tomcat lib
   copy:
     src: "{{ camunda_dir }}/lib/"
     remote_src: yes
     dest: "{{ catalina_home }}/lib/"
-    owner: root
-    group: root
-    mode: 0644
+    owner: tomcat
+    group: tomcat
+    mode: 0755
 
 - name: add camunda listener to Tomcat server.xml
   lineinfile:
@@ -60,9 +60,9 @@
     src: "{{ camunda_tomcatdir }}/webapps/{{ item }}/"
     remote_src: yes
     dest: "{{ catalina_home }}/webapps/{{ item }}"
-    owner: root
-    group: root
-    mode: 0644
+    owner: tomcat
+    group: tomcat
+    mode: 0755
   with_items:
     - "engine-rest"
     - "camunda"
