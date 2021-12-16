@@ -72,6 +72,7 @@
     - "camunda-welcome"
     - "h2"
     - "camunda-invoice"
+  notify: Restart tomcat9
 
 # - name: provide applicationContext configuration
 #  template:
