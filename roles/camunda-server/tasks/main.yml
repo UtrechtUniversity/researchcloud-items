@@ -1,4 +1,5 @@
 ---
+# this install script depends on tomcat9 
 - name: ensure java runtime is installed
   package:
     name: "default-jre"
@@ -46,7 +47,7 @@
 - name: add camunda listener to Tomcat server.xml
   lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
-    insertafter: '<Server port="-1" shutdown="SHUTDOWN">'
+    insertafter: '<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />'
     line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
 
 - name: add camunda resources to Tomcat server.xml
