@@ -44,7 +44,7 @@
   command: "chmod -R 0755 {{catalina_home }}/lib"
 
 - name: set file access tights for tomcat ./conf/bpm-platform.xml
-  command: "chmod 0755 {{ catalina_home }}/conf/bpm-platfrom.xml"
+  command: "chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml"
 
 - name: add camunda listener to Tomcat server.xml
   lineinfile:
