@@ -41,7 +41,7 @@
 # a copy with remore_src preserves file attribs regardless of mode
 # hence we need to set these props using a separate command
 - name: set file access rights for files in tomcat lib dir
-  command: "chmod 0755 {{catalina_home }}/lib/*"
+  shell: "chmod 0755 {{catalina_home }}/lib/*"
 
 - name: set file access tights for tomcat ./conf/bpm-platform.xml
   command: "chmod 0755 {{ catalina_home }}/conf/bpm-platfrom.xml"
