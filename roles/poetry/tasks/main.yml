@@ -11,11 +11,11 @@
 
 - name: Print python version
   debug:
-    msg: "python{{ python_version[7:10] }}"
+    msg: "python{{ python_version.stdout[7:10] }}"
 
 - name: Install virtualenv dependency
-  pip:
-    name: virtualenv
+  apt:
+    name: "python{{ python_version.stdout[7:10] }}-venv"
 
 - name: Download poetry installer
   get_url:
