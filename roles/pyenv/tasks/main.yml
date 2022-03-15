@@ -1,5 +1,4 @@
 ---
-
 - name: install pyenv dependencies, yum package manager
   package:
     name: "{{ item }}"
@@ -45,4 +44,3 @@
     src: "pyenv-install.sh"
     dest: "/etc/runonce.d/01_pyenv-install.sh"
     mode: 0755
-
