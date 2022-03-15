@@ -6,7 +6,7 @@
   ignore_errors: true
 
 - name: Create python version variable
-  command: python --version 2>&1
+  command: python3 --version 2>&1
   register: python_version
 
 - name: Print python version
