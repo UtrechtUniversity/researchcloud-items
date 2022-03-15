@@ -13,20 +13,20 @@
   debug:
     msg: "{{ python_version }}"
 
-# - name: Install virtualenv dependency
-#   pip:
-#     name: virtualenv
+- name: Install virtualenv dependency
+  pip:
+    name: virtualenv
 
-# - name: Download poetry installer
-#   get_url:
-#     url: https://install.python-poetry.org
-#     dest: "{{ ansible_env.HOME }}/install-poetry.py"
-#     mode: "0400"
-#     timeout: 20
-#   when: poetry_cmd is failed
+- name: Download poetry installer
+  get_url:
+    url: https://install.python-poetry.org
+    dest: "{{ ansible_env.HOME }}/install-poetry.py"
+    mode: "0400"
+    timeout: 20
+  when: poetry_cmd is failed
 
-# - name: Install poetry
-#   command: "python3 {{ ansible_env.HOME }}/install-poetry.py"
-#   notify: delete poetry installer 
-#   when: poetry_cmd is failed
+- name: Install poetry
+  command: "python3 {{ ansible_env.HOME }}/install-poetry.py"
+  notify: delete poetry installer 
+  when: poetry_cmd is failed
 ...
