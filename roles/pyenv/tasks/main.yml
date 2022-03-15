@@ -6,7 +6,8 @@
     state: present
   with_items:
     # Keep in alphabetical order
-    - bzip2 bzip2-devel
+    - bzip2
+    - bzip2-devel
     - gcc
     - libffi-devel
     - openssl-devel
