@@ -1,19 +1,21 @@
 ---
+# Taken from https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 - name: install pyenv dependencies, yum package manager
   package:
     name: "{{ item }}"
     state: present
   with_items:
-    - "zlib-devel"
-    - "bzip2"
-    - "bzip2-devel"
-    - "readline-devel"
-    - "sqlite"
-    - "sqlite-devel"
-    - "openssl-devel"
-    - "xz"
-    - "xz-devel"
-    - "libffi-devel"
+    # Keep in alphabetical order
+    - bzip2 bzip2-devel
+    - gcc
+    - libffi-devel
+    - openssl-devel
+    - readline-devel
+    - sqlite
+    - sqlite-devel
+    - tk-devel
+    - xz-devel
+    - zlib-devel
   when: ansible_pkg_mgr == 'yum'
 
 - name: install pyenv dependencies, apt package manager
@@ -21,22 +23,24 @@
     name: "{{item}}"
     state: present
   with_items:
-    - "build-essential"
-    - "libssl-dev"
-    - "zlib1g-dev"
-    - "libbz2-dev"
-    - "libreadline-dev"
-    - "libsqlite3-dev"
-    - "wget"
-    - "curl"
-    - "llvm"
-    - "libncurses5-dev"
-    - "libncursesw5-dev"
-    - "xz-utils"
-    - "tk-dev"
-    - "libffi-dev"
-    - "liblzma-dev"
-    - "python-openssl"
+    # Keep in alphabetical order
+    - build-essential 
+    - curl
+    - libbz2-dev
+    - libffi-dev
+    - libreadline-dev
+    - liblzma-dev
+    - libncursesw5-dev
+    - libssl-dev
+    - libsqlite3-dev
+    - libxml2-dev
+    - libxmlsec1-dev
+    - llvm
+    - make 
+    - tk-dev
+    - wget 
+    - xz-utils
+    - zlib1g-dev
   when: ansible_pkg_mgr == 'apt'
 
 - name: add pyenv install to runonce config
