@@ -5,20 +5,28 @@
   changed_when: false
   ignore_errors: true
 
-- name: Install virtualenv dependency
-  pip:
-    name: virtualenv
+- name: Create python version variable
+  command: python --version 2>&1
+  register: python_version
 
-- name: Download poetry installer
-  get_url:
-    url: https://install.python-poetry.org
-    dest: "{{ ansible_env.HOME }}/install-poetry.py"
-    mode: "0400"
-    timeout: 20
-  when: poetry_cmd is failed
+- name: Print python version
+  debug:
+    msg: "{{ python_version }}"
 
-- name: Install poetry
-  command: "python3 {{ ansible_env.HOME }}/install-poetry.py"
-  notify: delete poetry installer 
-  when: poetry_cmd is failed
+# - name: Install virtualenv dependency
+#   pip:
+#     name: virtualenv
+
+# - name: Download poetry installer
+#   get_url:
+#     url: https://install.python-poetry.org
+#     dest: "{{ ansible_env.HOME }}/install-poetry.py"
+#     mode: "0400"
+#     timeout: 20
+#   when: poetry_cmd is failed
+
+# - name: Install poetry
+#   command: "python3 {{ ansible_env.HOME }}/install-poetry.py"
+#   notify: delete poetry installer 
+#   when: poetry_cmd is failed
 ...
