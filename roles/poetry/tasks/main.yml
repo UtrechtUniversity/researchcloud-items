@@ -11,7 +11,7 @@
 
 - name: Print python version
   debug:
-    msg: "{{ python_version }}"
+    msg: "python{{ python_version[7:10] }}"
 
 - name: Install virtualenv dependency
   pip:
