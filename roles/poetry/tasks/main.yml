@@ -35,7 +35,7 @@
   become_user: "{{ item }}"
   notify: delete poetry installer 
   with_items:
-    - "{{ user_list.stdout_lines }}"
+    - "{{ users_list.stdout_lines }}"
   # when: poetry_cmd is failed
   
 ...
