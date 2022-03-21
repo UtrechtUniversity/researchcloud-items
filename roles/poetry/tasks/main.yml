@@ -1,32 +1,41 @@
 ---
-- name: Check if poetry is installed
-  command: "{{ ansible_env.HOME }}/.local/bin/poetry"
-  register: poetry_cmd
-  changed_when: false
-  ignore_errors: true
+# - name: Check if poetry is installed
+#   command: "{{ ansible_env.HOME }}/.local/bin/poetry"
+#   register: poetry_cmd
+#   changed_when: false
+#   ignore_errors: true
 
-- name: Create python version variable
-  command: python3 --version 2>&1
-  register: python_version
+# - name: Create python version variable
+#   command: python3 --version 2>&1
+#   register: python_version
 
-- name: Print python version
-  debug:
-    msg: "python{{ python_version.stdout[7:10] }}"
+# - name: Print python version
+#   debug:
+#     msg: "python{{ python_version.stdout[7:10] }}"
 
-- name: Install virtualenv dependency
-  apt:
-    name: "python{{ python_version.stdout[7:10] }}-venv"
+# - name: Install virtualenv dependency
+#   apt:
+#     name: "python{{ python_version.stdout[7:10] }}-venv"
+
+- name: Get list of all interative users
+  command: "awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd"
+  register: users_list
 
 - name: Download poetry installer
   get_url:
     url: https://install.python-poetry.org
     dest: "{{ ansible_env.HOME }}/install-poetry.py"
-    mode: "0400"
+    mode: "0440"
     timeout: 20
-  when: poetry_cmd is failed
+  # when: poetry_cmd is failed
 
 - name: Install poetry
   command: "python3 {{ ansible_env.HOME }}/install-poetry.py"
+  become: yes
+  become_user: "{{ item }}"
   notify: delete poetry installer 
-  when: poetry_cmd is failed
+  with_items:
+    - "{{ user_list.stdout_lines }}"
+  # when: poetry_cmd is failed
+  
 ...
