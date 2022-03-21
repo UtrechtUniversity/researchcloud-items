@@ -18,7 +18,7 @@
 #     name: "python{{ python_version.stdout[7:10] }}-venv"
 
 - name: Get list of all interative users
-  command: "awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd"
+  command: "awk -F: '$3 >= 1000 && $1 != 'nobody' {print $1}' /etc/passwd"
   register: users_list
 
 - name: Download poetry installer
