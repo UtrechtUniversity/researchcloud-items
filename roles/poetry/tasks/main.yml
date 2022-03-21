@@ -1,21 +1,7 @@
 ---
-# - name: Check if poetry is installed
-#   command: "{{ ansible_env.HOME }}/.local/bin/poetry"
-#   register: poetry_cmd
-#   changed_when: false
-#   ignore_errors: true
-
-# - name: Create python version variable
-#   command: python3 --version 2>&1
-#   register: python_version
-
-# - name: Print python version
-#   debug:
-#     msg: "python{{ python_version.stdout[7:10] }}"
-
-# - name: Install virtualenv dependency
-#   apt:
-#     name: "python{{ python_version.stdout[7:10] }}-venv"
+- name: Install virtualenv dependency
+  apt:
+    name: "python3-venv"
 
 - name: Get list of all interative users
   command: "awk -F: '$3 >= 1001 && $1 != 'nobody' {print $1}' /etc/passwd"
