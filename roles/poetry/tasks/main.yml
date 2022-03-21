@@ -18,21 +18,23 @@
 #     name: "python{{ python_version.stdout[7:10] }}-venv"
 
 - name: Get list of all interative users
-  command: "awk -F: '$3 >= 1000 && $1 != 'nobody' {print $1}' /etc/passwd"
+  command: "awk -F: '$3 >= 1001 && $1 != 'nobody' {print $1}' /etc/passwd"
   register: users_list
 
 - name: Download poetry installer
   get_url:
     url: https://install.python-poetry.org
-    dest: "{{ ansible_env.HOME }}/install-poetry.py"
+    dest: "/scratch/install-poetry.py"
     mode: "0440"
     timeout: 20
   # when: poetry_cmd is failed
 
 - name: Install poetry
-  command: "python3 {{ ansible_env.HOME }}/install-poetry.py"
+  command: "python3 /scratch/install-poetry.py"
   become: yes
   become_user: "{{ item }}"
+  environment:
+    POETRY_ROOT: "/home/{{ item }}/.poetry"
   notify: delete poetry installer 
   with_items:
     - "{{ users_list.stdout_lines }}"
