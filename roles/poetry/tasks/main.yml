@@ -11,6 +11,7 @@
   file:
     path: /scratch/poetry/install-poetry.py
     state: directory
+    mode: 0444
 
 - name: Download poetry installer
   get_url:
@@ -20,7 +21,7 @@
     timeout: 20
 
 - name: Install poetry
-  command: "python3 /scratch/install-poetry.py"
+  command: "python3 /scratch/poetry/install-poetry.py"
   become: yes
   become_user: "{{ item }}"
   environment:
