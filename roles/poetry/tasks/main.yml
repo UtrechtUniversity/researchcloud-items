@@ -7,11 +7,16 @@
   command: "awk -F: '$3 >= 1001 && $1 != \"nobody\" {print $1}' /etc/passwd"
   register: users_list
 
+- name: Ensure Poetry dir exists
+  file:
+    path: /scratch/poetry/install-poetry.py
+    state: directory
+
 - name: Download poetry installer
   get_url:
     url: https://install.python-poetry.org
-    dest: "/scratch/poetry/install-poetry.py"
-    mode: "0444"
+    dest: /scratch/poetry/install-poetry.py
+    mode: 0444
     timeout: 20
 
 - name: Install poetry
