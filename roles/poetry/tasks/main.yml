@@ -10,7 +10,7 @@
 - name: Download poetry installer
   get_url:
     url: https://install.python-poetry.org
-    dest: "/scratch/install-poetry.py"
+    dest: "/scratch/poetry/install-poetry.py"
     mode: "0444"
     timeout: 20
 
@@ -20,7 +20,7 @@
   become_user: "{{ item }}"
   environment:
     POETRY_HOME: "/home/{{ item }}/.poetry"
-  notify: delete poetry installer 
+    POETRY_ROOT: "/home/{{ item }}/.poetry"
   with_items:
     - "{{ users_list.stdout_lines }}"
 
