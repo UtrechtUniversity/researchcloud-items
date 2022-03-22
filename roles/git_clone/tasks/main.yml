@@ -2,7 +2,7 @@
 # End playbook if the default value was not overwrittien (argument needs a default value)
 - name: End playbook if no repository supplied
   meta: end_play
-  when: "{{ repositories }}" == "default"
+  when: "{{ repositories == 'default' }}"
 
 - name: Create list of repos to checkout
   set_fact: repos="{{ repositories.split(';') }}"
