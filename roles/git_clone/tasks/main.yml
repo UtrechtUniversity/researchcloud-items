@@ -1,4 +1,9 @@
 ---
+# End playbook if the default value was not overwrittien (argument needs a default value)
+- name: End playbook if no repository supplied
+  meta: end_play
+  when: repositories == "default"
+
 - name: Create list of repos to checkout
   set_fact: repos="{{ repositories.split(';') }}"
 
@@ -6,7 +11,7 @@
   when: ".git not in item"
   git:
     repo: '{{ item }}'
-    dest: "{{ git_dir }}/{{ item | basename }}"  # `basename` gathers the name of the repository from the URL
+    dest: "{{ git_dir }}/{{ item | basename }}"
   with_items:
   -  "{{ repos }}"
 
@@ -14,7 +19,7 @@
   when: ".git in item"
   git:
     repo: '{{ item }}'
-    dest: "{{ git_dir }}/{{ item[:-4] | basename }}"  # `basename` gathers the name of the repository from the URL
+    dest: "{{ git_dir }}/{{ item[:-4] | basename }}"
   with_items:
   -  "{{ repos }}"
 ...
