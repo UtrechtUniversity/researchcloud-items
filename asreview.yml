@@ -1,0 +1,7 @@
+---
+- name: Install ASReview system-wide
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - asreview
+...

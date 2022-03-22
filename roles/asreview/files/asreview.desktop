@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=ASReview
+Type=Application
+Terminal=False
+Exec=asreview lab
+Categories=Development
+Icon=/usr/share/pixmaps/asreview.png
