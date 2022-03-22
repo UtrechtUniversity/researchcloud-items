@@ -1,0 +1,8 @@
+---
+- name: create environment and install dependencies
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - git_clone
+...
