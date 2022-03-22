@@ -1,0 +1,20 @@
+---
+- name: Create list of repos to checkout
+  set_fact: repos="{{ repositories.split(';') }}"
+
+- name: Clone each repo from list if URL does NOT end with '.git'
+  when: ".git not in item"
+  git:
+    repo: '{{ item }}'
+    dest: "{{ git_dir }}/{{ item | basename }}"  # `basename` gathers the name of the repository from the URL
+  with_items:
+  -  "{{ repos }}"
+
+- name: Clone each repo from list if URL DOES end with '.git'
+  when: ".git in item"
+  git:
+    repo: '{{ item }}'
+    dest: "{{ git_dir }}/{{ item[:-4] | basename }}"  # `basename` gathers the name of the repository from the URL
+  with_items:
+  -  "{{ repos }}"
+...
