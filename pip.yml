@@ -1,0 +1,7 @@
+---
+- name: Install pip system-wide
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - pip
+...
