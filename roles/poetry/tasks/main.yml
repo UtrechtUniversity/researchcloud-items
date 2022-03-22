@@ -23,4 +23,6 @@
   notify: delete poetry installer 
   with_items:
     - "{{ users_list.stdout_lines }}"
+
+#TODO: Add script to install poetry for newly created users after the fact in /usr/local/sbin/adduser.local
 ...
