@@ -11,22 +11,24 @@
   file:
     path: /scratch/poetry
     state: directory
-    mode: 0444
+    mode: 0777
 
 - name: Download poetry installer
   get_url:
     url: https://install.python-poetry.org
     dest: /scratch/poetry/install-poetry.py
-    mode: 0444
+    mode: 0777
     timeout: 20
 
 - name: Install poetry
-  command: "python3 /scratch/poetry/install-poetry.py"
+  command: |
+    echo $PATH
+    python3 /scratch/poetry/install-poetry.py
+    export PATH={{ POETRY_HOME }}/bin:$PATH
   become: yes
   become_user: "{{ item }}"
   environment:
     POETRY_HOME: "/home/{{ item }}/.poetry"
-    POETRY_ROOT: "/home/{{ item }}/.poetry"
   with_items:
     - "{{ users_list.stdout_lines }}"
 
