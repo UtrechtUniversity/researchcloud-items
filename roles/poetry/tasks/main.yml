@@ -24,7 +24,7 @@
   command: |
     echo $PATH
     python3 /scratch/poetry/install-poetry.py
-    export PATH={{ POETRY_HOME }}/bin:$PATH
+    export PATH=$POETRY_HOME/bin:$PATH
   become: yes
   become_user: "{{ item }}"
   environment:
