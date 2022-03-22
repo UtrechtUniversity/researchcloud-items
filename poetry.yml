@@ -1,0 +1,7 @@
+---
+- name: Install poetry for each user
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - poetry
+...
