@@ -9,7 +9,7 @@
 
 - name: Ensure Poetry dir exists
   file:
-    path: /scratch/poetry/install-poetry.py
+    path: /scratch/poetry
     state: directory
     mode: 0444
 
