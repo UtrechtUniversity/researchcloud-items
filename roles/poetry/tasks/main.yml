@@ -30,9 +30,9 @@
     - "{{ users_list.stdout_lines }}"
 
 - name: Set poetry path
-  shell: export PATH=$POETRY_HOME/bin:$PATH
-  become: yes
-  become_user: "{{ item }}"
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    line: export PATH=$POETRY_HOME/bin:$PATH
   environment:
     POETRY_HOME: "/home/{{ item }}/.poetry"
   with_items:
