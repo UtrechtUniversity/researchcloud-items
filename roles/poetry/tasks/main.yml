@@ -31,13 +31,8 @@
 
 - name: Set poetry path
   lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    line: export PATH=$POETRY_HOME/bin:$PATH
-  environment:
-    POETRY_HOME: "/home/{{ item }}/.poetry"
-  with_items:
-    - "{{ users_list.stdout_lines }}"
-
+    path: "/etc/profile"
+    line: PATH=$PATH:~/.poetry/bin/
 
 #TODO: Add script to install poetry for newly created users after the fact in /usr/local/sbin/adduser.local
 ...
