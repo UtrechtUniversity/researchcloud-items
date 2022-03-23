@@ -21,16 +21,23 @@
     timeout: 20
 
 - name: Install poetry
-  shell: |
-    echo $PATH
-    python3 /scratch/poetry/install-poetry.py
-    export PATH=$POETRY_HOME/bin:$PATH
+  command: python3 /scratch/poetry/install-poetry.py
   become: yes
   become_user: "{{ item }}"
   environment:
     POETRY_HOME: "/home/{{ item }}/.poetry"
   with_items:
     - "{{ users_list.stdout_lines }}"
+
+- name: Set poetry path
+  shell: export PATH=$POETRY_HOME/bin:$PATH
+  become: yes
+  become_user: "{{ item }}"
+  environment:
+    POETRY_HOME: "/home/{{ item }}/.poetry"
+  with_items:
+    - "{{ users_list.stdout_lines }}"
+
 
 #TODO: Add script to install poetry for newly created users after the fact in /usr/local/sbin/adduser.local
 ...
