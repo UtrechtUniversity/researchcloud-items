@@ -32,7 +32,7 @@
 - name: Set poetry path
   lineinfile:
     path: "/etc/profile"
-    line: PATH=$PATH:~/.poetry/bin/
+    line: PATH=$PATH:~/.poetry/bin
 
 #TODO: Add script to install poetry for newly created users after the fact in /usr/local/sbin/adduser.local
 ...
