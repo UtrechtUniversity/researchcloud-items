@@ -1,5 +1,5 @@
 ---
-- name: Install ASReview system-wide
+- name: Install ASReview LAB system-wide
   hosts: localhost
   gather_facts: true
   roles:

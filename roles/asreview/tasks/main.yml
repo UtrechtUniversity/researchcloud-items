@@ -1,5 +1,5 @@
 ---
-- name: Install ASReview through pip
+- name: Install ASReview LAB through pip
   pip:
     name: asreview
 
