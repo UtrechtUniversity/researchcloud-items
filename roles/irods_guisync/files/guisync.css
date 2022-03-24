@@ -1,0 +1,19 @@
+@define-color uu_yellow #ffcd00;
+@define-color uu_red #c00a35;
+@define-color uu_creme #ffe6ab;
+@define-color uu_oranje #f3965e;
+@define-color uu_bordeauxrood #aa1555;
+@define-color uu_bruin #6e3b23;
+@define-color uu_groen #24a793;
+@define-color uu_blauw #5287c6;
+@define-color uu_donkerblauw #001240;
+@define-color uu_paars #5b2182;
+
+window {
+background-color: @uu_creme;
+}
+
+
+
+
+

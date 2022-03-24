@@ -20,7 +20,41 @@ This role requires the plugin/playbook to provide some Ansible variables as
 parameter: `robotuser_key` (private ssh key), `robotuser_server` (ip address), 
 `robotuser_sourcepath` (server directory as data source for mounts).
 
-For an example robotuser use case, please see the [matlab](../playbooks/matlab.md) playbook.
+### Configuration instructions
+First, deploy a robot server and prepare the plugins:
+- Create an SRC plugin called `robot-server` which runs the playbook `robot-server.yml`.
+The plugin will create a Linux user `uurobot` along with a new ssh key pair.
+- Create a `robot-server` application that contains this plugin.
+- Deploy a robot-server workspace. This server will run 24/7 to accept incoming
+requests for access to a data directory.
+- Create an SRC plugin called `robot-client` which runs the playbook `robot-client.yml`.
+Copy the private key of Linux user `uurobot` from the robot server workspace, and paste
+this key into the robot-client plugin string-type parameter `robotuser_key`. 
+In addition, paste the netwerk address (ip) into the string-type parameter `robotuser_server`.
+Similarly, paste the path of a robot server directory with shared data into
+string-type parameter `robotuser_sourcepath`.
+  
+Now we are ready to create workspaces that will connect to the robot server using sshfs
+mounts authenticating as the robot user:
+- Add the `robot-client` SRC plugin to a workspace application
+- Add an application specific plugin to the workspace application for using the shared data.
+This plugin should execute a playbook to execute the following roles:   
+
+```
+   roles:
+    - sshfs-configrobot
+    - sshfs-mount
+    - ....  (add application-specific roles here, can access the shared data)
+    - sshfs-umount
+```
+The first role fetches information on the server/connection as has been prepared by the
+`robot-client` plugin in an earlier stage of the deployment process.
+The second role performs a fuse mount of the remote directory via sshfs, while the last role
+unmounts the filesystem (which disconnects from the robot server).
+
+For an actual example robotuser use case, please see the [matlab](../playbooks/matlab.md) playbook in
+this repository and the related plugins on SURF Research Cloud.
+
 
 ## Variables
 ```

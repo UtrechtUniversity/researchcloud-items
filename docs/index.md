@@ -21,6 +21,7 @@ SURF ResearchCloud.
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [docker](playbooks/docker.md) application container management
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
+- [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
@@ -32,6 +33,7 @@ SURF ResearchCloud.
 - [camunda-server](roles/camunda-server.md)
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
+- [irods_guisync](roles/irods_guisync.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)

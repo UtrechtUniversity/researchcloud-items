@@ -1,5 +1,5 @@
 ---
-- name: Restart nginx
+- name: Restart tomcat9
   service:
-    name: nginx
+    name: tomcat9
     state: restarted
