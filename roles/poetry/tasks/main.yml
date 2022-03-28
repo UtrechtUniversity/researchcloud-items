@@ -3,9 +3,9 @@
   apt:
     name: "python3-venv"
 
-- name: Get list of all interative users
-  command: "awk -F: '$3 >= 1001 && $1 != \"nobody\" {print $1}' /etc/passwd"
-  register: users_list
+# - name: Get list of all interative users
+#   command: "awk -F: '$3 >= 1001 && $1 != \"nobody\" {print $1}' /etc/passwd"
+#   register: users_list
 
 - name: Ensure Poetry dir exists
   file:
@@ -27,7 +27,7 @@
   environment:
     POETRY_HOME: "/home/{{ item }}/.poetry"
   with_items:
-    - "{{ users_list.stdout_lines }}"
+    - "{{ fact_regular_users }}"
 
 - name: Set poetry path
   lineinfile:
