@@ -1,7 +1,0 @@
----
-- name: Install pyenv per user
-  hosts: localhost
-  gather_facts: true
-  roles:
-    - pyenv
-...
