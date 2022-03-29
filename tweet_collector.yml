@@ -7,5 +7,6 @@
     - pip
     - pyenv
     - poetry
+    - docker
     - git_clone
 ...
