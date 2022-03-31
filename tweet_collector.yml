@@ -3,7 +3,8 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - pip
-    - pyenv
-    - poetry
+    # - pip
+    # - pyenv
+    # - poetry
+    - tweet_collector
 ...
