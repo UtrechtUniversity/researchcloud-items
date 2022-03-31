@@ -1,4 +1,4 @@
-# Playbook <name>
+# Playbook asreview
 [back to index](../index.md#Playbooks)
 
 ## Summary

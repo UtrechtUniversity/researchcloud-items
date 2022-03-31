@@ -33,6 +33,7 @@ SURF ResearchCloud.
 - [asreview](roles/asreview.md)
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
+- [desktop-file](roles/desktop_file.md)
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [git_clone](roles/git_clone.md)
