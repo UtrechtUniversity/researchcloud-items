@@ -1,0 +1,52 @@
+---
+- name: Check if required variables are present
+  when: (app_name is not defined) and (sizes is not defined)
+
+- name: install xdg utilities
+  package: 
+    name: "xdg-utils"
+    state: present
+
+- name: copy icon files to /tmp 
+  copy:
+    src: "{{ app_name }}-{{ item }}x{{ item }}.png"
+    dest: "/tmp/{{ app_name }}-{{ item }}x{{ item }}.png"
+    mode: 0644
+  with_items: "{{ sizes }}"
+
+- name: install icons as xdg resource
+  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}"
+  with_items: "{{ sizes }}"
+
+- name: copy desktop launcher file to /tmp
+  template:
+    src: "{{ app_name }}.desktop.j2"
+    dest: "/tmp/{{ app_name }}.desktop"
+    mode: 0644
+
+- name: install launcher in system-wide desktop menu
+  when: modules is not defined
+  command: "xdg-desktop-menu install --novendor /tmp/{{ app_name }}.desktop"
+
+- name: Install launcher in system-wide desktop menu for multiple modules
+  when: modules is defined
+  command: "xdg-desktop-menu install --novendor /tmp/{{ app_name }}.desktop"
+  with_items: "{{ modules }}"
+
+...
+# FROM  ASREVIEW
+
+# - name: Copy icon for application shortcut
+#   copy:
+#     src: asreview_icon_64px.png
+#     dest: /usr/share/pixmaps/asreview.png
+#     mode: 644
+
+# - name: Create application shortcuts
+#   copy:
+#     src: asreview.desktop
+#     dest: "{{ item }}"
+#     mode: 644
+#   with_items:
+#     - /usr/share/applications #Application menu item
+#     - /etc/xdg/autostart/     #Launch at start
