@@ -17,7 +17,6 @@ This role was seperated from its playbook to facilitate reusability.
 None.
 
 ## See also
-[pyenv playbook](../playbooks/poetry.md)
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)
