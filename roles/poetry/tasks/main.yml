@@ -1,5 +1,5 @@
 ---
-- name: copy applications to runonce.d directory
+- name: Copy poetry installation script to runonce.d
   copy:
     src: "poetry.sh"
     dest: "/etc/runonce.d"

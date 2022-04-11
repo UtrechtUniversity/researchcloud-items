@@ -1,7 +1,7 @@
 #!/bin/bash install python module poetry
 #
 echo "Installing Python poetry"
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
+curl -sSL https://install.python-poetry.org | python3 -
 export POETRY_ROOT="~/.poetry"
 export PATH="$POETRY_ROOT/bin:$PATH"
 poetry self update
