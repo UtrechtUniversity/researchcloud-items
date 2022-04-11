@@ -13,4 +13,3 @@ export POETRY_ROOT="~/.poetry"
 export PATH="$POETRY_ROOT/bin:$PATH"
 fi
 INPUTEND
-
