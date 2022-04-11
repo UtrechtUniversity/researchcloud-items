@@ -1,9 +1,11 @@
+---
 - name: Checkout tweet collector repository
   git:
-    src: https://github.com/github_username/tweet_collector.git
+    repo: https://github.com/github_username/tweet_collector.git
     dest: /usr/bin/tweet_collector
 
 - name: Install tweet collector
   shell:
     cmd: poetry install
     chdir: /usr/bin/tweet_collector
+...
