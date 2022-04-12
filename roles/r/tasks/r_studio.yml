@@ -1,0 +1,6 @@
+---
+- name: Install R-studio for Debian
+
+- name: Install R-studio for Centos
+
+...

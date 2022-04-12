@@ -1,0 +1,30 @@
+---
+- name: Install R on Debian based systems
+  when: ansible_os_family == 'Debian'
+  apt:
+    name: r-base
+    state: present
+
+- name: Update extra packages for CentOS
+  when: ansible_os_family == 'CentOS'
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Install R on CentOS
+  when: ansible_os_family == 'CentOS'
+  yum:
+    name: R
+    state: present
+
+- name: Download R-studio for CentOS
+  when: ansible_os_family == 'CentOS'
+  get_url:
+    url: "https://cdn.rstudio.com/r/centos-8/pkgs/R-{{ r_version }}-1-1.x86_64.rpm"
+    dest: /tmp/R-{{ r_version }}-1-1.x86_64.rpm
+
+- name: Install R-studio for CentOS
+  when: ansible_os_family == 'CentOS'
+  yum:
+    name: /tmp/R-{{ r_version }}-1-1.x86_64.rpm
+...
