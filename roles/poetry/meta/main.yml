@@ -1,4 +1,7 @@
 ---
 dependencies:
-- runonce
+- pip
+- pyenv
+- role: runonce
+  when: per_user
 ...
