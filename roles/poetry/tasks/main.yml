@@ -1,5 +1,10 @@
 ---
-- name: Copy poetry installation script to runonce.d
+- name: (Install system-wide)
+  when: system_wide
+  include: main.yml
+
+- name: (Install per user) Copy poetry installation script to runonce.d
+  when: per_user
   copy:
     src: "poetry.sh"
     dest: "/etc/runonce.d"

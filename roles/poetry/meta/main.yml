@@ -1,4 +1,4 @@
 ---
 dependencies:
-- runonce
+- { role: runonce, when: per_user }
 ...

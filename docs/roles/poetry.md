@@ -6,7 +6,7 @@ Poetry is a Python package version management tool for easy packageing and depen
 
 ## Requires
 * Unix-based system.
-* Python 3.7+
+* Python 2.7 or 3.5+
 
 ## Description
 This role will install poetry through the official documentation's [recommended installed](https://python-poetry.org/docs/master/#installing-with-the-official-installer).
