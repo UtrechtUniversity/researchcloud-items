@@ -2,6 +2,10 @@
 - name: Workspace playbook for Ephor use-case
   hosts: localhost
   roles:
+    - irods_repo
+    - irods_icommands
+    - irods_iselect
+    - irods_skel
     - irods_guisync
     - rstudio
 ...
