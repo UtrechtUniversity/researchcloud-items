@@ -1,7 +1,7 @@
 ---
-- name: (Install system-wide)
+- name: (Install system-wide) Start system-wide install play
   when: system_wide
-  include: main.yml
+  include: system_wide.yml
 
 - name: (Install per user) Copy poetry installation script to runonce.d
   when: per_user

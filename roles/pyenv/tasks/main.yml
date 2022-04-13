@@ -1,4 +1,10 @@
 ---
+- name: Install pyenv system-wide
+  when: system_wide
+  apt:
+    name: python3.8-venv
+    state: present  
+
 # Taken from https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 - name: install pyenv dependencies, yum package manager
   package:
