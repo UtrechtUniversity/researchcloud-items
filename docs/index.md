@@ -33,6 +33,7 @@ SURF ResearchCloud.
 - [camunda-server](roles/camunda-server.md)
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
+- [git_clone](roles/git_clone.md)
 - [irods_guisync](roles/irods_guisync.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
