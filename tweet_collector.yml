@@ -2,11 +2,21 @@
 - name: Install tweet collector and dependencies
   hosts: localhost
   gather_facts: true
+
   roles:
-    - fact_regular_users
-    - pip
-    - pyenv
-    - poetry
-    - docker
-    - git_clone
+    # Dependency for tweet collector
+    - role: poetry
+      vars: 
+        system_wide: true
+
+  tasks:
+    - name: Checkout tweet collector repository
+      git:
+        repo: https://github.com/UtrechtUniversity/tweet_collector.git
+        dest: /usr/bin/tweet_collector
+
+    - name: Install tweet collector
+      shell:
+        cmd: /usr/bin/poetry/bin/poetry install
+        chdir: /usr/bin/tweet_collector
 ...
