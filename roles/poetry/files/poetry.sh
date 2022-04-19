@@ -3,7 +3,7 @@
 echo "Installing Python poetry"
 export POETRY_ROOT="~/.local/bin"
 curl -sSL https://install.python-poetry.org | python3 -
-export PATH="$POETRY_ROOT/bin:$PATH"
+export PATH="$POETRY_ROOT:$PATH"
 #
 cat >> ~/.bashrc <<'INPUTEND'
 # added by runonce as poetry config
