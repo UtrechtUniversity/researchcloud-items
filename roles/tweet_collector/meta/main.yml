@@ -1,5 +1,0 @@
----
-dependencies:
-  - role: poetry
-    system_wide: true
-...

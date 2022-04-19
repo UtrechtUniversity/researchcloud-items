@@ -2,8 +2,9 @@
 - name: Install tweet collector and dependencies
   hosts: localhost
   gather_facts: true
-  
+
   roles:
+    # Dependency for tweet collector
     - role: poetry
       vars: 
         system_wide: true
