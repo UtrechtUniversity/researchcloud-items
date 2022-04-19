@@ -1,7 +1,7 @@
 ---
 - name: Download poetry installer
   get_url:
-    url: http://install.python-poetry.org
+    url: https://install.python-poetry.org
     dest: /tmp/install-poetry.py
     mode: 0777
     timeout: 20
