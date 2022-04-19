@@ -23,7 +23,7 @@
     - tk-devel
     - xz-devel
     - zlib-devel
-  when: ansible_pkg_mgr == 'yum'
+  when: ansible_pkg_mgr == 'yum' and per_user
 
 - name: install pyenv dependencies, apt package manager
   package:
@@ -48,13 +48,12 @@
     - wget 
     - xz-utils
     - zlib1g-dev
-  when: ansible_pkg_mgr == 'apt'
+  when: ansible_pkg_mgr == 'apt' and per_user
 
 - name: add pyenv install to runonce config
   copy:
     src: "pyenv-install.sh"
     dest: "/etc/runonce.d/01_pyenv-install.sh"
     mode: 0755
-
-#TODO: refactor this to install per user the same was as poetry is done. 
+  when: per_user
 ...
