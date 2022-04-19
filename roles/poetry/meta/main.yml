@@ -1,7 +1,9 @@
 ---
 dependencies:
 - pip
-- pyenv
+- role: pyenv
+  vars:
+    system_wide: true
 - role: runonce
   when: per_user
 ...

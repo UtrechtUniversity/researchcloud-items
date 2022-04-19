@@ -6,6 +6,6 @@
 
 - name: Install tweet collector
   shell:
-    cmd: poetry install
+    cmd: /usr/bin/poetry/bin/poetry install
     chdir: /usr/bin/tweet_collector
 ...
