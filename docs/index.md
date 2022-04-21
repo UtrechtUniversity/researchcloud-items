@@ -44,6 +44,7 @@ SURF ResearchCloud.
 - [matlab](roles/matlab.md)
 - [poetry](roles/poetry.md)
 - [pyenv](roles/pyenv.md)
+- [pip](roles/pip.md)
 - [python](roles/python.md)
 - [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
