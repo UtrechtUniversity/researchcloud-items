@@ -10,13 +10,13 @@
 
 - name: copy icon files to /tmp 
   copy:
-    src: "{{ app_name }}-{{ item }}.png"
-    dest: "/tmp/{{ app_name }}-{{ item }}.png"
+    src: "{{ app_name }}_{{ item }}.png"
+    dest: "/tmp/{{ app_name }}_{{ item }}.png"
     mode: 0644
   with_items: "{{ sizes }}"
 
 - name: install icons as xdg resource
-  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}.png {{ app_name }}"
+  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}_{{ item }}.png {{ app_name }}"
   with_items: "{{ sizes }}"
 
 - name: copy desktop launcher file to /tmp
