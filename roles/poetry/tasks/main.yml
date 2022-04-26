@@ -1,10 +1,6 @@
 ---
 - name: Install poetry system-wide
-<<<<<<< HEAD
-  when: system-wide
-=======
   when: system_wide
->>>>>>> sg/poetry
   include: system_wide.yml
 
 - name: Install poetry per user through runonce.d
