@@ -17,7 +17,7 @@ The installation is then done through the pyenv installer script which is ran on
 None.
 
 ## See also
-[pyenv playbook](../playbooks/pyenv.md)
+
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)
