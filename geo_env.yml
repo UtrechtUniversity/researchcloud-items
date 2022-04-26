@@ -4,6 +4,7 @@
   gather_facts: true
 
   roles:
+    #TODO: replace userspace_applications with separate roles
     - role: userspace_applications
       vars:
         - list_userspace_applications:
