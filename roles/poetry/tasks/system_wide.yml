@@ -8,7 +8,6 @@
 
 - name: Install poetry system-wide
   command: python3 /tmp/install-poetry.py
-  # become: true
   environment:
     POETRY_HOME: /usr/bin/poetry
 
