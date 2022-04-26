@@ -3,6 +3,7 @@
   when: (app_name is not defined) and (sizes is not defined)
   meta: end_play
 
+
 - name: install xdg utilities
   package: 
     name: "xdg-utils"
@@ -33,21 +34,4 @@
   when: modules is defined
   command: "xdg-desktop-menu install --novendor /tmp/{{ app_name }}.desktop"
   with_items: "{{ modules }}"
-
 ...
-# FROM  ASREVIEW
-
-# - name: Copy icon for application shortcut
-#   copy:
-#     src: asreview_icon_64px.png
-#     dest: /usr/share/pixmaps/asreview.png
-#     mode: 644
-
-# - name: Create application shortcuts
-#   copy:
-#     src: asreview.desktop
-#     dest: "{{ item }}"
-#     mode: 644
-#   with_items:
-#     - /usr/share/applications #Application menu item
-#     - /etc/xdg/autostart/     #Launch at start
