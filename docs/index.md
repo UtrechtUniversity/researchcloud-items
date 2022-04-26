@@ -31,6 +31,7 @@ SURF ResearchCloud.
 ## Roles
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
+- [desktop-file](roles/desktop_file.md)
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [git_clone](roles/git_clone.md)
@@ -43,6 +44,7 @@ SURF ResearchCloud.
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
 - [poetry](roles/poetry.md)
+- [pip](roles/pip.md)
 - [pyenv](roles/pyenv.md)
 - [pip](roles/pip.md)
 - [python](roles/python.md)

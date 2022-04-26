@@ -16,7 +16,6 @@ This role is seperated from the playbook for reusability.
 None.
 
 ## See also
-[pip playbook](../playbooks/pip.md)
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)
