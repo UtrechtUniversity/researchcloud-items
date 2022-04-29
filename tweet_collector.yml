@@ -7,7 +7,7 @@
     # Dependency for tweet collector
     - role: poetry
       vars: 
-        system_wide: true
+        poetry_system_wide: true
 
   tasks:
     - name: Checkout tweet collector repository
