@@ -1,4 +1,4 @@
 ---
-per_user: true
-system_wide: false
+poetry_per_user: true
+poetry_system_wide: false
 ...
