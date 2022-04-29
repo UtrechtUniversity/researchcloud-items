@@ -11,13 +11,15 @@ For more information, visit https://asreview.ai/.
 
 ## Description
 This role installs ASReview LAB through pip, as recommended by the documentation.
-It also adds an entry in the Application menu, and the application is run automatically when a user logs in.
+It also adds an entry in the Application menu through the desktop_file role.
+
+N.B. the install through pip system-wide might introduce python dependency conflicts.
 
 ## Variables
 None.
 
 ## See also
-[asreview playbook](../playbooks/asreview.md)
+Playbook [asreview playbook](../playbooks/asreview.md)
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)
