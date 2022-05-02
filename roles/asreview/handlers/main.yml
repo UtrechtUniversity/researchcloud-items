@@ -9,6 +9,7 @@
   command: systemctl unmask asreview.service
 
 - name: systemctl actions
+  become: true
   systemd:
     name: asreview
     masked: no
