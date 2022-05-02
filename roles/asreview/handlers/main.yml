@@ -1,0 +1,7 @@
+---
+- name: reload systemctl
+  command: systemctl daemon-reload
+
+- name: enable systemctl
+  command: systemctl enable asreview.service
+...

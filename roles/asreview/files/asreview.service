@@ -1,0 +1,8 @@
+[Unit]
+Description=Starting ASReview Lab when a user logs in.
+
+[Service]
+ExecStart=asreview lab
+
+[Install]
+WantedBy=multi-user.target
