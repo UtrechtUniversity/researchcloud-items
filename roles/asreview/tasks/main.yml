@@ -14,10 +14,9 @@
       - 96
 
 - name: Create start login
-  file: 
+  copy: 
     src: asreview.service
     dest: /lib/systemd/system/asreview.service
-    state: touch
     mode: 0644
   notify:
     - unmask service
