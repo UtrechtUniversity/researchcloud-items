@@ -11,8 +11,7 @@
 - name: systemctl actions
   systemd:
     name: asreview
+    masked: no
     state: started
     enabled: yes
-    masked: no
-
 ...
