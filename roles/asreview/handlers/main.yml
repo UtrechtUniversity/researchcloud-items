@@ -7,4 +7,12 @@
 
 - name: unmask service
   command: systemctl unmask asreview.service
+
+- name: systemctl actions
+  systemd:
+    name: asreview
+    state: started
+    enabled: yes
+    masked: no
+
 ...

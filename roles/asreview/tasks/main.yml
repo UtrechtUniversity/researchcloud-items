@@ -20,7 +20,8 @@
     state: touch
     mode: 0644
   notify:
-    - unmask service
-    - reload systemctl
-    - enable systemctl
+    # - unmask service
+    # - reload systemctl
+    # - enable systemctl
+    - systemctl actions
 ...
