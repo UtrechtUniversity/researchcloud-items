@@ -7,19 +7,20 @@
   include_role:
     name: desktop_file
   vars: 
+    login: true
     app_name: asreview
     sizes:
       - 48
       - 64
       - 96
 
-- name: Create start login
-  copy: 
-    src: asreview.service
-    dest: /lib/systemd/system/asreview.service
-    mode: 0644
-  notify:
-    - unmask service
-    - enable systemctl
-    - reload systemctl
+# - name: Create start login
+#   copy: 
+#     src: asreview.service
+#     dest: /lib/systemd/system/asreview.service
+#     mode: 0644
+#   notify:
+#     - unmask service
+#     - enable systemctl
+#     - reload systemctl
 ...
