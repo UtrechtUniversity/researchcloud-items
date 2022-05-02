@@ -4,4 +4,7 @@
 
 - name: enable systemctl
   command: systemctl enable asreview.service
+
+- name: unmask service
+  command: systemctl unmask asreview.service
 ...
