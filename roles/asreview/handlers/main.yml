@@ -2,9 +2,9 @@
 - name: unmask service
   command: systemctl unmask asreview.service
 
-- name: reload systemctl
-  command: systemctl daemon-reload
-
 - name: enable systemctl
   command: systemctl enable asreview.service
+
+- name: reload systemctl
+  command: systemctl daemon-reload
 ...

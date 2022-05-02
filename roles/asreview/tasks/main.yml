@@ -20,7 +20,6 @@
     mode: 0644
   notify:
     - unmask service
-    - reload systemctl
     - enable systemctl
-    # - systemctl actions
+    - reload systemctl
 ...
