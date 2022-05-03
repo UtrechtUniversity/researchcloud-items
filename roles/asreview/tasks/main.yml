@@ -1,0 +1,16 @@
+---
+- name: Install ASReview LAB through pip
+  pip:
+    name: asreview
+
+- name: Install desktop file menu item through role
+  include_role:
+    name: desktop_file
+  vars: 
+    app_name: asreview
+    sizes:
+      - 48
+      - 64
+      - 96
+    login: true
+...
