@@ -17,6 +17,6 @@
 
     - name: Install tweet collector
       shell:
-        cmd: /usr/bin/poetry/bin/poetry install
+        cmd: /opt/poetry/bin/poetry install
         chdir: /usr/bin/tweet_collector
 ...
