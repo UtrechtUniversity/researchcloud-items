@@ -16,8 +16,13 @@
         repo: https://github.com/UtrechtUniversity/tweet_collector.git
         dest: /opt/tweet_collector
 
-    - name: Install tweet collector
-      shell:
-        cmd: /opt/poetry/bin/poetry install
-        chdir: /usr/bin/tweet_collector
+    # - name: Install tweet collector through poetry
+    #   shell:
+    #     cmd: /opt/poetry/bin/poetry install
+    #     chdir: /opt/tweet_collector
+    
+    # - name: Install tweet collector through pip
+    #   pip:
+    #     requirements: /opt/tweet_collector/requirements.txt
+    #     virtualenv: /opt/tweet_collector
 ...
