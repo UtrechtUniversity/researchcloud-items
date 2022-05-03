@@ -7,26 +7,10 @@
   include_role:
     name: desktop_file
   vars: 
-    login: true
     app_name: asreview
     sizes:
       - 48
       - 64
       - 96
-
-# - name: Start application at login
-#   template:
-#     src: asreview.desktop.j2
-#     dest: /etc/xdg/autostart/
-#     mode: 0644
-
-# - name: Create start login
-#   copy: 
-#     src: asreview.service
-#     dest: /lib/systemd/system/asreview.service
-#     mode: 0644
-#   notify:
-#     - unmask service
-#     - enable systemctl
-#     - reload systemctl
+    login: true
 ...
