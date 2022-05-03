@@ -5,6 +5,7 @@
 
   roles:
     # Dependency for tweet collector
+    - docker
     - role: poetry
       vars: 
         poetry_system_wide: true
@@ -13,7 +14,7 @@
     - name: Checkout tweet collector repository
       git:
         repo: https://github.com/UtrechtUniversity/tweet_collector.git
-        dest: /usr/bin/tweet_collector
+        dest: /opt/tweet_collector
 
     - name: Install tweet collector
       shell:
