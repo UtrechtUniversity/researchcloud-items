@@ -2,19 +2,18 @@
 [back to index](../index.md#Roles)
 
 ## Summary
-Explain the use case for this role in one or two sentences. 
-This role can be used to easily install desktop items through the xdg-utils package.
-
+This role can be used to easily install desktop items through the xdg-utils package. This allows for creation of Application menu items and/or autostarting applications on user login.
 
 ## Requires
 An environment that suports xdg-utils.
+Carefully read through the [variables](#variables) section about the requirements of files.
 
 ## Description
-The purpose of this role is to make the code to install desktop file menu items through xdg-utils reusable.
-This role cannot be a role on itself, due to the requirement of icon files. It has to be called from inside another role that holds the icon files in their respective `files` or `templates` folder. See below example:
+The purpose of this role is to install a desktop file menu items through xdg-utils reusable.
+This role cannot be a role on itself, due to the requirement of icon files. It has to be called from inside another role (e.g. `include_role`) that holds the icon files in their respective `files` or `templates` folder. See below example:
 
 ```
-# File structure of using this role
+# File structure example
 
 researchcloud-items > roles
 └─── application_role
@@ -47,12 +46,14 @@ The actual role can be called and passed variables as follows:
     modules:
       - <desktop item>
       - <desktop item>
-    var_required_for_app_name.desktop.j2: value
+    var1_required_for_app_name.desktop.j2: value
+    var2_required_for_app_name.desktop.j2: value
     ...
 [...]
 ```
 
-Elaborate on the purpose and functions of the role
+### Todo
+* Add option to create a desktop shortcut.
 
 ## Variables
 
@@ -66,11 +67,12 @@ While not variables, the below files are assumed to exist in your playbook or ro
 * `app_name-size-x-size.png` files: One file for each of your sizes of your icon. At least every `size` in the required variable `sizes` must have one representitive file. Strict name convention based on the `app_name` and `sizes` required variables.
 
 ### Optional variables
+* `menu`: Boolean. Defines whether or not to install an entry in the Application menu. Default: true.
+* `login`: Boolean. Defines whether or not to start the application on user login. Default: false.
 * `modules`: List. If defined, a desktop item is installed for each of the modules in the list. This is used when your application needs several desktop items. All the modules will share the same icon.
 * If your `app_name.desktop` file is a Jinja2 template that holds variables, ensure that those variables are passed to this role as well.
 
 ## See also
-Are there any other related roles? Add a link here.
 
 ## History
 2022 Written by Sytse Groenwold
