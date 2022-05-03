@@ -10,7 +10,7 @@ Poetry is a Python package version management tool for easy packageing and depen
 
 ## Description
 This role will install poetry through the official documentation's [recommended installed](https://python-poetry.org/docs/master/#installing-with-the-official-installer).
-The installtation is done on a per-user basis, as per the application's designed usage.
+The installation is done on a per-user basis, as per the application's designed usage.
 The actual installation is run at user login time through the runonce role.
 
 ## Variables

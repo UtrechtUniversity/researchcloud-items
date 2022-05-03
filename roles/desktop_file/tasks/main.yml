@@ -3,30 +3,36 @@
   when: (app_name is not defined) and (sizes is not defined)
   meta: end_play
 
-
-- name: install xdg utilities
+- name: Install xdg utilities
   package: 
     name: "xdg-utils"
     state: present
 
-- name: copy icon files to /tmp 
+- name: Copy icon files to /tmp 
   copy:
     src: "{{ app_name }}_{{ item }}.png"
     dest: "/tmp/{{ app_name }}_{{ item }}.png"
     mode: 0644
   with_items: "{{ sizes }}"
 
-- name: install icons as xdg resource
+- name: Install icons as xdg resource
   command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}_{{ item }}.png {{ app_name }}"
   with_items: "{{ sizes }}"
 
-- name: copy desktop launcher file to /tmp
+- name: Copy desktop launcher file to /tmp
   template:
     src: "{{ app_name }}.desktop.j2"
     dest: "/tmp/{{ app_name }}.desktop"
     mode: 0644
 
-- name: install launcher in system-wide desktop menu
+- name: Launch application at user login
+  when: login
+  template:
+    src: "{{ app_name }}.desktop.j2"
+    dest: "/etc/xdg/autostart/{{ app_name }}.desktop"
+    mode: 0644
+
+- name: Install launcher in system-wide desktop menu
   when: modules is not defined
   command: "xdg-desktop-menu install --novendor /tmp/{{ app_name }}.desktop"
 
