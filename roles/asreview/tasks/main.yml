@@ -2,6 +2,13 @@
 - name: Install ASReview LAB through pip
   pip:
     name: asreview
+    virtualenv: /opt/venvs/asreview
+
+- name: Create alias to source venv before launching ASReview LAB
+  copy:
+    src: set_asreview_alias.sh
+    dest: /etc/profile.d/set_asreview_alias.sh
+    mode: 0777
 
 - name: Install desktop file menu item through role
   include_role:

@@ -1,0 +1,1 @@
+alias asreview lab='source /opt/venvs/asreview/bin/activate && asreview lab'
