@@ -1,4 +1,9 @@
 ---
+- name: Ensure pyenv is installed
+  apt:
+    name: pyenv
+    state: present
+
 - name: Install ASReview LAB through pip
   pip:
     name: asreview
