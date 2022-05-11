@@ -10,11 +10,11 @@
     virtualenv: /opt/venvs/asreview
     virtualenv_command: virtualenv
 
-# - name: Create alias to source venv before launching ASReview LAB
-#   copy:
-#     src: set_asreview_alias.sh
-#     dest: /etc/profile.d/set_asreview_alias.sh
-#     mode: 0777
+- name: Create function to source venv before launching ASReview LAB
+  copy:
+    src: set_asreview_alias.sh
+    dest: /etc/profile.d/set_asreview_alias.sh
+    mode: 0777
 
 - name: Install desktop file menu item through role
   include_role:
