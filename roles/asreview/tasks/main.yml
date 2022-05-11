@@ -3,6 +3,7 @@
   pip:
     name: asreview
     virtualenv: /opt/venvs/asreview
+    virtualenv_command: pyenv
 
 - name: Create alias to source venv before launching ASReview LAB
   copy:
