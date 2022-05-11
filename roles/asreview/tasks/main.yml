@@ -1,14 +1,14 @@
 ---
 - name: Ensure pyenv is installed
-  apt:
-    name: pyenv
+  pip:
+    name: virtualenv
     state: present
 
 - name: Install ASReview LAB through pip
   pip:
     name: asreview
     virtualenv: /opt/venvs/asreview
-    virtualenv_command: pyenv
+    virtualenv_command: virtualenv
 
 - name: Create alias to source venv before launching ASReview LAB
   copy:
