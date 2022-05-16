@@ -16,13 +16,13 @@
 - name: Build tweet_collector to install through pip later
   shell:
     cmd: /opt/poetry/bin/poetry build
-  chdir: /opt/tweet_collector
+    chdir: /opt/tweet_collector
 
 - name: Install tweet_collector through pip
   pip:
-    name: /opt/tweet_collector/dist/tweet_collector*.whl
+    name: "{{ query('fileglob', '/opt/tweet_collector/dist/tweet_collector*.whl') }}"
     virtualenv: /opt/venvs/tweet_collector
-    virtual_command: virtualenv
+    virtualenv_command: virtualenv
 
 # - name: Install tweet collector through poetry
 #   shell:
