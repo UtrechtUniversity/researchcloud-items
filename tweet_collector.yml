@@ -9,20 +9,5 @@
     - role: poetry
       vars: 
         poetry_system_wide: true
-
-  tasks:
-    - name: Checkout tweet collector repository
-      git:
-        repo: https://github.com/UtrechtUniversity/tweet_collector.git
-        dest: /opt/tweet_collector
-
-    - name: Install tweet collector through poetry
-      shell:
-        cmd: /opt/poetry/bin/poetry install
-        chdir: /opt/tweet_collector
-    
-    # - name: Install tweet collector through pip
-    #   pip:
-    #     requirements: /opt/tweet_collector/requirements.txt
-    #     virtualenv: /opt/tweet_collector
+    - tweet_collector
 ...
