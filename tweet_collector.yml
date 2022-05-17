@@ -4,10 +4,6 @@
   gather_facts: true
 
   roles:
-    # Dependency for tweet collector
     - docker
-    - role: poetry
-      vars: 
-        poetry_system_wide: true
     - tweet_collector
 ...

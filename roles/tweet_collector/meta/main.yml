@@ -2,4 +2,7 @@
 dependencies:
   - pip
   - runonce
+  - role: poetry
+      vars: 
+        poetry_system_wide: true
 ...

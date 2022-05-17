@@ -24,13 +24,6 @@
     virtualenv: /opt/venvs/tweet_collector
     virtualenv_command: virtualenv
 
-# - name: Install tweet collector through poetry
-#   shell:
-#     cmd: |
-#       source /opt/venvs/tweet_collector/bin/activate
-#       /opt/poetry/bin/poetry install
-#     chdir: /opt/tweet_collector
-
 - name: Create function that launches virtualenv before launching tweet_collector
   copy:
     src: set_tweetcollector_alias
