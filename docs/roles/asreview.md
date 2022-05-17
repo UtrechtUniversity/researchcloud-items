@@ -11,9 +11,8 @@ For more information, visit https://asreview.ai/.
 
 ## Description
 This role installs ASReview LAB through pip, as recommended by the documentation.
+It deviates from the recommended installation by installing it inside a virtual environment. The virtual environment is sourced everytime the application is ran.
 It also adds an entry in the Application menu through the desktop_file role.
-
-N.B. the install through pip system-wide might introduce python dependency conflicts.
 
 ## Variables
 None.
