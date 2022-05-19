@@ -1,0 +1,4 @@
+---
+poetry_per_user: true
+poetry_system_wide: false
+...
