@@ -1,0 +1,8 @@
+---
+- name: Create application shortcuts
+  copy:
+    src: anaconda.desktop
+    dest: "{{ item }}"
+    mode: 644
+  with_items:
+    - /usr/share/applications
