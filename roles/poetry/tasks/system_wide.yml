@@ -1,0 +1,18 @@
+---
+- name: Download poetry installer
+  get_url:
+    url: https://install.python-poetry.org
+    dest: /tmp/install-poetry.py
+    mode: 0777
+    timeout: 20
+
+- name: Install poetry system-wide
+  command: python3 /tmp/install-poetry.py
+  environment:
+    POETRY_HOME: /usr/bin/poetry
+
+- name: Clean installation file
+  file:
+    path: /tmp/install-poetry.py
+    state: absent
+...

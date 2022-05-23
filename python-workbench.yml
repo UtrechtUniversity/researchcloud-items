@@ -6,6 +6,7 @@
   roles:
     - python
     - pyenv
+    #TODO: Replace userspace applications with separate roles
     - role: userspace_applications
       vars:
         - list_userspace_applications:
