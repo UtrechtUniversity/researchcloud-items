@@ -3,7 +3,12 @@
   git:
     repo: https://github.com/SytseGroenwold/tweet_collector.git
     dest: /opt/tweet_collector
-    version: remove-sh 
+    version: remove-sh
+  
+- name: Change permission of tweet_collector folder
+  file:
+    path: /opt/tweet_collector
+    mode: 0777
 
 - name: Ensure virtualenvwhich is installed
   pip:
