@@ -3,7 +3,7 @@
   git:
     repo: https://github.com/SytseGroenwold/tweet_collector.git
     dest: /opt/tweet_collector
-    version: remove-sh
+    version: refactors
   
 - name: Change permission of tweet_collector folder
   file:
