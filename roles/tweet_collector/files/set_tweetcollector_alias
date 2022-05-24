@@ -5,10 +5,12 @@ echo "Adding tweet_collector command function that launches virtualenv"
 cat >> ~/.bashrc <<'INPUTEND'
 # added by runonce as tweet_collector config
 tweet_collector() {
+    command cd /opt/tweet_collector/
     command source /opt/venvs/tweet_collector/bin/activate
     command /opt/venvs/tweet_collector/bin/tweet-collector | more
 }
 tweet_collector_elastic() {
+    command cd /opt/tweet_collector/
     command source /opt/venvs/tweet_collector/bin/activate
     command /opt/venvs/tweet_collector/bin/tweet-collector-elastic | more
 }
