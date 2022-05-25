@@ -1,0 +1,27 @@
+---
+# Following the instructions on https://docs.anaconda.com/anaconda/install/linux/, gathered in May 2022.
+
+# # commented out to first try to install it without these dependencies.
+# - name: Install dependencies
+#   include_task: "dependencies_{{ ansible_pkg_mgr }}.yml"
+
+- name: download anaconda
+  ansible.builtin.get_url:
+    url: "{{ anaconda_url }}"
+    dest: "{{ anaconda_download_dest }}"
+
+- name: install anaconda
+  ansible.builtin.command:
+    cmd: bash {{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}
+    creates: "{{ anaconda_install_dir }}"
+
+- name: Install desktop file menu item through role
+  include_role:
+    name: desktop_file
+  vars: 
+    app_name: anaconda
+    sizes:
+      - 48
+      - 64
+      - 96
+...
