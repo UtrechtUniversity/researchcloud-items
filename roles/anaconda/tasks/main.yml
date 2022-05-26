@@ -5,12 +5,18 @@
 # - name: Install dependencies
 #   include_task: "dependencies_{{ ansible_pkg_mgr }}.yml"
 
-- name: download anaconda
+- name: Ensure download dir exists
+  file:
+    path: "{{ anaconda_download_dest }}/" 
+    state: directory
+
+- name: Download anaconda installation files
   get_url:
     url: "{{ anaconda_url }}"
-    dest: "{{ anaconda_download_dest }}"
+    dest: "{{ anaconda_download_dest }}/"
+    mode: 0774
 
-- name: install anaconda
+- name: Install anaconda for every user
   become_user: "{{ item.user }}"
   command:
     cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
