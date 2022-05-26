@@ -17,6 +17,7 @@ These files can be used to decorate a related catalog item in
 SURF ResearchCloud.
 
 ## Playbooks
+- [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [docker](playbooks/docker.md) application container management
@@ -29,8 +30,10 @@ SURF ResearchCloud.
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
 
 ## Roles
+- [asreview](roles/asreview.md)
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
+- [desktop-file](roles/desktop_file.md)
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [git_clone](roles/git_clone.md)
@@ -42,6 +45,9 @@ SURF ResearchCloud.
 - [keycloak](roles/keycloak.md)
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
+- [poetry](roles/poetry.md)
+- [pip](roles/pip.md)
+- [pyenv](roles/pyenv.md)
 - [python](roles/python.md)
 - [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
