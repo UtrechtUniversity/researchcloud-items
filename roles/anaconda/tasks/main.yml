@@ -14,6 +14,9 @@
   ansible.builtin.command:
     cmd: bash {{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}
     creates: "{{ anaconda_install_dir }}"
+  become_user: "{{ items.user }}"
+  with_items:
+    - "{{ fact_regular_users }}"
 
 - name: Install desktop file menu item through role
   include_role:
