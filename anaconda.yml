@@ -1,0 +1,7 @@
+---
+- name: Install Anaconda
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - anaconda
+...
