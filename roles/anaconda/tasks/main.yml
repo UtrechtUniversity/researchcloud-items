@@ -6,15 +6,15 @@
 #   include_task: "dependencies_{{ ansible_pkg_mgr }}.yml"
 
 - name: download anaconda
-  ansible.builtin.get_url:
+  get_url:
     url: "{{ anaconda_url }}"
     dest: "{{ anaconda_download_dest }}"
 
 - name: install anaconda
-  ansible.builtin.command:
-    cmd: bash {{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}
+  become_user: "{{ item.user }}"
+  command:
+    cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
     creates: "{{ anaconda_install_dir }}"
-  become_user: "{{ items.user }}"
   with_items:
     - "{{ fact_regular_users }}"
 
