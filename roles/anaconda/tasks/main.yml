@@ -7,8 +7,11 @@
 
 - name: Ensure download dir exists
   file:
-    path: "{{ anaconda_download_dest }}/" 
+    path: " {{ item }}"
     state: directory
+  with_items:
+    - "/usr/share/desktop-directories/" #xdg-desktop-menu bug requires manually creating this directory.
+    - "{{ anaconda_download_dest }}/" #ansible get_url-module does not create directories. 
 
 - name: Download anaconda installation files
   get_url:
