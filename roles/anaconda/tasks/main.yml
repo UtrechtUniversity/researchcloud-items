@@ -11,12 +11,12 @@
     state: directory
   with_items:
     - "/usr/share/desktop-directories/" #xdg-desktop-menu bug requires manually creating this directory.
-    - "{{ anaconda_download_dest }}/" #ansible get_url-module does not create directories. 
+    - "{{ anaconda_download_dest }}" #ansible get_url-module does not create directories. 
 
 - name: Download anaconda installation files
   get_url:
     url: "{{ anaconda_url }}"
-    dest: "{{ anaconda_download_dest }}/"
+    dest: "{{ anaconda_download_dest }}"
     mode: 0774
 
 - name: Install anaconda for every user
