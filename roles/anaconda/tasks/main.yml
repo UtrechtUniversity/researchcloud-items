@@ -27,6 +27,12 @@
   with_items:
     - "{{ fact_regular_users }}"
 
+- name: Run conda-init for every user
+  copy:
+    src: run_conda_init.sh
+    dest: "/etc/runonce.d"
+    mode: 0755
+
 - name: Install desktop file menu item through role
   include_role:
     name: desktop_file
