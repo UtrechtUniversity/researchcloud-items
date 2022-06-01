@@ -28,7 +28,7 @@
     - "{{ fact_regular_users }}"
 
 - name: Run conda-init for every user
-  copy:
+  template:
     src: run_conda_init.sh
     dest: "/etc/runonce.d"
     mode: 0755
