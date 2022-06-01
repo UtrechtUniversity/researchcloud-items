@@ -3,6 +3,11 @@
   when: (app_name is not defined) and (sizes is not defined)
   meta: end_play
 
+- name: Preventing bug - Ensure directory exists
+  file:
+    path: /usr/share/desktop-directories/
+    state: directory
+
 - name: Install xdg utilities
   package: 
     name: "xdg-utils"
