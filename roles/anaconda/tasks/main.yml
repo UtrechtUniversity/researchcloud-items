@@ -27,7 +27,7 @@
 
 - name: Run conda-init for every user
   template:
-    src: run_conda_init.sh
+    src: run_conda_init.sh.j2
     dest: "/etc/runonce.d"
     mode: 0755
 
