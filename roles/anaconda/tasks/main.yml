@@ -36,7 +36,7 @@
 
 - name: Add users to anaconda_users
   user:
-    name: "{{ item }}"
+    name: "{{ item.user }}"
     groups: anaconda_users
     append: yes
   with_items: 
