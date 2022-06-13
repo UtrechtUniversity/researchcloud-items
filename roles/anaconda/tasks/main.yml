@@ -17,13 +17,38 @@
     dest: "{{ anaconda_download_dest }}"
     mode: 0774
 
-- name: Install anaconda for every user
-  become_user: "{{ item.user }}"
+- name: Install anaconda mutli-user
   command:
     cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
     creates: "{{ anaconda_install_dir }}"
-  with_items:
+
+- name: Create anaconda mutli-user group
+  group:
+      name: anaconda_users
+      state: present  
+
+- name: Change anaconda installation dir ownership
+  file:
+    path: "{{ anaconda_install_dir }}"
+    group: anaconda_users
+    mode: 0770
+    recurse: true
+
+- name: Add users to anaconda_users
+  user:
+    name: "{{ item }}"
+    groups: anaconda_users
+    append: yes
+  with_items: 
     - "{{ fact_regular_users }}"
+
+# - name: Install anaconda for every user
+#   become_user: "{{ item.user }}"
+#   command:
+#     cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
+#     creates: "{{ anaconda_install_dir }}"
+#   with_items:
+#     - "{{ fact_regular_users }}"
 
 - name: Run conda-init for every user
   template:
