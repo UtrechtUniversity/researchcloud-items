@@ -9,6 +9,7 @@
   file:
     path: /opt/tweet_collector
     mode: 0777
+    recurse: yes
 
 - name: Ensure virtualenvwhich is installed
   pip:
