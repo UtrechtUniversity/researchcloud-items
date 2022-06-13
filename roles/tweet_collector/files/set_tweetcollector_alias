@@ -7,11 +7,12 @@ cat >> ~/.bashrc <<'INPUTEND'
 tweet_collector() {
     command cd /opt/tweet_collector/
     command source /opt/venvs/tweet_collector/bin/activate
-    command /opt/venvs/tweet_collector/bin/tweet_collector | more
+    command /opt/venvs/tweet_collector/bin/tweet_collector "$@" | more
 }
 tweet_collector_elastic() {
     command cd /opt/tweet_collector/
     command source /opt/venvs/tweet_collector/bin/activate
-    command /opt/venvs/tweet_collector/bin/tweet_collector_elastic | more
+    command /opt/venvs/tweet_collector/bin/tweet_collector_elastic "$@" | more
 }
 INPUTEND
+
