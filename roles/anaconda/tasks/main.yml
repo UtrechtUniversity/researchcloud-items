@@ -1,12 +1,10 @@
 ---
-# Following the instructions on https://docs.anaconda.com/anaconda/install/linux/, gathered in May 2022.
+# Following the instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered in June 2022.
 
-# # commented out to first try to install it without these dependencies.
-# - name: Install dependencies
-#   include_task: "dependencies_{{ ansible_pkg_mgr }}.yml"
+- name: Install dependencies
+  include_task: "dependencies_{{ ansible_pkg_mgr }}.yml"
 
-- name: Ensure download dir exists
-  # the get_url module in the task below does not do this by default
+- name: Ensure download dir exists    # The get_url module in the task below does not do this by default
   file:
     path: "{{ anaconda_download_dest }}"
     state: directory
@@ -17,7 +15,7 @@
     dest: "{{ anaconda_download_dest }}"
     mode: 0774
 
-- name: Install anaconda mutli-user
+- name: Install anaconda for mutliple user
   command:
     cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
     creates: "{{ anaconda_install_dir }}"
@@ -27,28 +25,20 @@
       name: anaconda_users
       state: present  
 
-- name: Change anaconda installation dir ownership
+- name: Change anaconda installation dir ownership to multiple user group
   file:
     path: "{{ anaconda_install_dir }}"
     group: anaconda_users
     mode: 0770
     recurse: true
 
-- name: Add users to anaconda_users
+- name: Add users to anaconda multiple user group
   user:
     name: "{{ item.user }}"
     groups: anaconda_users
     append: yes
   with_items: 
     - "{{ fact_regular_users }}"
-
-# - name: Install anaconda for every user
-#   become_user: "{{ item.user }}"
-#   command:
-#     cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
-#     creates: "{{ anaconda_install_dir }}"
-#   with_items:
-#     - "{{ fact_regular_users }}"
 
 - name: Run conda-init for every user
   template:
