@@ -19,6 +19,11 @@
     pkg:
       - postgresql-12
 
+- name: Install PostgreSQL python library for Ansible module.
+  pip:
+    name: psycopg2-binary
+    state: present
+
 - name: Register if PostgreSQL is initialized.
   stat:
     path: /var/lib/pgsql/data/pg_hba.conf

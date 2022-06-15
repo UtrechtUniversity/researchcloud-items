@@ -1,9 +1,4 @@
 ---
-- name: Install PostgreSQL python library for Ansible module.
-  pip:
-    name: psycopg2-binary
-    state: present
-
 - name: Create PostgreSQL database
   postgresql_db:
     name: "{{ postgresql_db_name }}"
