@@ -2,12 +2,12 @@
 - name: Install PostgreSQL
   include_role:
     name: postgresql
-    vars:
-      postgresql_provision: false
+  vars:
+    postgresql_provision: false
 
-- databases:
-  - Camunda #"Camunda" engine
-  - "{{ camunda_database_name }}" #user database
+- name: Create list of databases.
+  set_fact:
+    databases: "['Camunda', '{{ camunda_database_name }}']"
 
 - name: Create databases.
   postgresql_db:
