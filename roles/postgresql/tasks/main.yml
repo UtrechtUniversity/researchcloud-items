@@ -1,0 +1,27 @@
+---
+- name: Install PostgreSQL.
+  apt:
+    state: present
+    pkg:
+      - postgresql
+      - postgresql-server
+
+- name: Register if PostgreSQL is initialized.
+  stat:
+    path: /var/lib/pgsql/data/pg_hba.conf
+  register: prostgresql_data
+
+- name: Initilize PostgreSQL if not yet.
+  when: not postgresql_data.exists
+  shell: postgresql-setup initdb
+
+- name: Start PostgreSQL service
+  service:
+    name: postgresql
+    state: restarted
+    enabled: true
+
+- name: Provision db and user by default
+  when: postgresql_provision
+  include: provision.yml
+...
