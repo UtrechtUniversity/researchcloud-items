@@ -1,0 +1,65 @@
+---
+# this install script depends on tomcat9 
+- name: ensure java runtime is installed
+  package:
+    name: "default-jre"
+    state: present
+
+#- name: install jar tool
+#  package: 
+#    name: "default-jdk"
+#    state: present
+    
+
+- name: create camunda target dir
+  file:
+    dest: "{{ camunda_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+# we install the shared BPM engine
+- name: download and unpack camunda full distribution tar.gz
+  unarchive:
+    src: "{{ camunda_tar_urldir }}/{{ camunda_tar_urlfile }}"
+    remote_src: yes
+    dest: "{{ camunda_dir }}"
+
+- name: Set up Tomcat if chosen
+  when: camunda_database == tomcat
+  include: tomcat.yml
+
+- name: Set up PostgresQL if chosen.
+  when: camunda_database == postgresql
+  include: postgresql.yml
+
+
+# - name: provide applicationContext configuration
+#  template:
+#    owner: root
+#    group: root
+#    mode: 0644
+#    src: "applicationContext.xml.j2"
+#    dest: "{{ camunda_dir }}/applicationContext.xml"
+
+# todo: update war with applicationContext
+
+# - name: add link to Camunda .war in tomcat webapps dir
+#  file:
+#    src: "{{ camunda_dir }}/{{ camunda_war_urlfile }}"
+#    dest: "{{ catalina_home }}/webapps/{{ camunda_context_name }}.war"
+#    state: link
+
+# - name: add camunda as a proxy destination in nginx
+#  copy:
+#    src: "camunda.conf"
+#    dest: "/etc/nginx/app-location-conf.d/camunda.conf"
+#    owner: root
+#    group: root
+#    mode: 0644
+#  notify: Restart nginx
+
+
+
+ 

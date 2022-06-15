@@ -1,0 +1,47 @@
+---
+- name: Install PostgreSQL
+  include_role:
+    name: postgresql
+    vars:
+      postgresql_provision: false
+
+- databases:
+  - Camunda #"Camunda" engine
+  - "{{ camunda_database_name }}" #user database
+
+- name: Create databases.
+  postgresql_db:
+    state: present
+    name: "{{ item }}"
+  with_items: "{{ databases }}"
+  become: true
+  become_user: postgres
+
+- name: Load `.sql` files to create schemas.
+  set_fact:
+    schemas: "{{ schemas | default([]) + {'name': item.name, 'var': lookup('file', 'item.location')} }}"
+    with_items:
+    - {'name': 'camunda_engine', 'location': '~\camunda-bpm-wildfly10-7.7.0\sql\create\postgres_engine_7.7.0.sql'}
+    - {'name': 'camunda_identity', 'location': '~\camunda-bpm-wildfly10-7.7.0\sql\create\postgres_identity_7.7.0.sql'}
+
+- name: Create Camunda schemas.
+  command: "psql Camunda -c {{ item.var }}"
+  with_items: 
+    - schemas
+  become_user: postgres
+  register: sql_response_variable
+
+
+- name: Grant "postgres" user permissions on databases.
+  with_items: "{{ databases }}"
+  
+
+- name: Download jdbc driver
+
+
+- name: Create module.xml
+
+
+- name: Edit standalone.xml of Camunda BPM.
+
+...
