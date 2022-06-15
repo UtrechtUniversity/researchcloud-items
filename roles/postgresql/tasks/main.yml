@@ -28,6 +28,7 @@
   when: not postgresql_data.stat.exists
   file:
     path: /usr/local/pgsql/data
+    state: directory
     owner: postgres
 
 # - name: Give postgres user permisisons on data folder if not yet.
@@ -35,7 +36,7 @@
 
 - name: initialize PostgreSQL if not yet.
   when: not postgresql_data.stat.exists
-  shell: /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+  shell: /usr/lib/postgresql/12/bin/initdb -D /usr/local/pgsql/data
   become_user: postgres
   become: true
 
