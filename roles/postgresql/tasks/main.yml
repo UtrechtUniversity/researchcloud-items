@@ -1,4 +1,5 @@
 ---
+# Following the suggestions provided by https://www.postgresql.org/download/linux/ubuntu/
 - name: Add key for Postgres repo
   apt_key: 
     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
@@ -6,8 +7,8 @@
   become: true
 
 - name: Add Postgres repo to sources list
-  apt_repository: 
-    repo: "deb http://apt.postgresql.org/pub/repos/apt/dists/{{ ansible_distribution_release }}-pgdg main" 
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
     state: present
   become: true
 
