@@ -22,11 +22,22 @@
 - name: Register if PostgreSQL is initialized.
   stat:
     path: /var/lib/pgsql/data/pg_hba.conf
-  register: prostgresql_data
+  register: postgresql_data
 
-- name: Initilize PostgreSQL if not yet.
-  when: not postgresql_data.exists
-  shell: postgresql-setup initdb
+- name: Create PostgreSQL data folder if not yet.
+  when: not postgresql_data.stat.exists
+  file:
+    path: /usr/local/pgsql/data
+    owner: postgres
+
+# - name: Give postgres user permisisons on data folder if not yet.
+#   when: not postgresql_data.stat.exists
+
+- name: initialize PostgreSQL if not yet.
+  when: not postgresql_data.stat.exists
+  shell: /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+  become_user: postgres
+  become: true
 
 - name: Start PostgreSQL service
   service:
