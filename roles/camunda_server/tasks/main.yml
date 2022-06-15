@@ -9,7 +9,6 @@
 #  package: 
 #    name: "default-jdk"
 #    state: present
-    
 
 - name: create camunda target dir
   file:
@@ -27,11 +26,11 @@
     dest: "{{ camunda_dir }}"
 
 - name: Set up Tomcat if chosen
-  when: camunda_database == tomcat
+  when: camunda_database == "tomcat"
   include: tomcat.yml
 
 - name: Set up PostgresQL if chosen.
-  when: camunda_database == postgresql
+  when: camunda_database == "postgresql"
   include: postgresql.yml
 
 

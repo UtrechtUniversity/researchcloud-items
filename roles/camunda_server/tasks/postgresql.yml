@@ -32,16 +32,16 @@
   register: sql_response_variable
 
 
-- name: Grant "postgres" user permissions on databases.
-  with_items: "{{ databases }}"
+# - name: Grant "postgres" user permissions on databases.
+#   with_items: "{{ databases }}"
   
 
-- name: Download jdbc driver
+# - name: Download jdbc driver
 
 
-- name: Create module.xml
+# - name: Create module.xml
 
 
-- name: Edit standalone.xml of Camunda BPM.
+# - name: Edit standalone.xml of Camunda BPM.
 
 ...
