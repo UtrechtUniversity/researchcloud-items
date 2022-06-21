@@ -32,6 +32,8 @@
 
 - name: Change postgres user password
   command: "psql -U 'postgres' -d 'Camunda' -c 'ALTER USER postgres PASSWORD {{ camunda_postgres_password }};'"
+  become_user: postgres
+  become: true
 
 - name: Download jdbc driver
   get_url: 
