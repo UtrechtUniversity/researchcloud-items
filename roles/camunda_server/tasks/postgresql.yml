@@ -31,11 +31,11 @@
 #   with_items: "{{ databases }}"
 
 - name: debug
-  debug:
-    msg: "{{ lookup('template', 'setup.sql') }}"
+  set_fact:
+    camunda_sql: "{{ lookup('template', 'setup.sql') }}"
 
 - name: Change postgres user password
-  command: "psql -U 'postgres' -d 'Camunda' -c '{{ lookup('template', 'setup.sql') }}'"
+  command: "psql -U 'postgres' -d 'Camunda' -c '{{ camunda_sql }}'"
   become_user: postgres
   become: true
 
