@@ -31,7 +31,7 @@
 #   with_items: "{{ databases }}"
 
 - name: Change postgres user password
-  command: "psql -U 'postgres' -d 'Camunda' -f {{ lookup('template', setup.sql) }}'"
+  command: "psql -U 'postgres' -d 'Camunda' -f '{{ lookup('template', setup.sql) }}'"
   become_user: postgres
   become: true
 
