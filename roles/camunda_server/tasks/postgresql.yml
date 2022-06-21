@@ -31,8 +31,20 @@
 #   with_items: "{{ databases }}"
   
 
-# - name: Download jdbc driver
+- name: Download jdbc driver
+  get_url: 
+    dest: /var/lib/camunda/server/apache-tomcat-9.0.52/lib/postgresql-42.4.0.jar
+    url: https://jdbc.postgresql.org/download/postgresql-42.4.0.jar
 
+# - name: Edit `server.xml` file to use PostgreSQL
+#   lineinfile:
+#     path: 
+#     regexp: 
+#     line: 
+#     state: present
+#   with_items:
+#     - {"original": 'driverClassName="org.h2.Driver"', "replacement": 'driverClassName="org.postgresql.Driver"'}
+#     - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": 'url="jdbc:postgresql://localhost:5432/camunda"'}
 
 # - name: Create module.xml
 
