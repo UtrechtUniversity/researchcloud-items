@@ -17,18 +17,20 @@
   become: true
   become_user: postgres
 
-- name: Load `.sql` files to create schemas.
-  set_fact:
-    schemas: "{{ schemas | default([]) + [lookup('file', {{ item }})] }}"
-    with_items:
-    - "/var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql"
-    - "/var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql"
+# - name: Load `.sql` files to create schemas.
+#   set_fact:
+#     schemas: "{{ schemas | default([]) + [lookup('file', {{ item }})] }}"
+#     with_items:
+#     - "/var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql"
+#     - "/var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql"
 
 - name: Create Camunda schemas.
-  command: "psql Camunda -c {{ item }}"
-  with_items: 
-    - schemas
+  command: "psql Camunda -c {{ lookup('file', {{ item }}) }}"
+  with_items:
+    - "/var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql"
+    - "/var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql"
   become_user: postgres
+  become: true
   register: sql_response_variable
 
 
