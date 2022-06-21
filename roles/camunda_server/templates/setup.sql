@@ -1,1 +1,1 @@
-'ALTER USER postgres PASSWORD "{{ camunda_postgres_password }}"';
+ALTER USER postgres PASSWORD "{{ camunda_postgres_password }}";
