@@ -35,7 +35,7 @@
     msg: "{{ lookup('template', 'setup.sql') }}"
 
 - name: Change postgres user password
-  command: "psql -U 'postgres' -d 'Camunda' -c ''{{ lookup('template', 'setup.sql') }}''"
+  command: "psql -U 'postgres' -d 'Camunda' -c '{{ lookup('template', 'setup.sql') }}'"
   become_user: postgres
   become: true
 
