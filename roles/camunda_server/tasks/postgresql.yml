@@ -38,9 +38,9 @@
 
 - name: Edit `server.xml` file to use PostgreSQL
   lineinfile:
-    path: 
-    regexp: 
-    line: 
+    path: /var/lib/camunda/server/apache-tomcat-9.0.52/conf/server.xml
+    regexp: "{{ item.original }}"
+    line: "{{ item.replacement }}"
     state: present
   with_items:
     - {"original": 'driverClassName="org.h2.Driver"', "replacement": 'driverClassName="org.postgresql.Driver"'}
