@@ -19,7 +19,7 @@
 
 - name: Load `.sql` files to create schemas.
   set_fact:
-    schemas: "{{ schemas | default([]) + {'name': item.name, 'var': lookup('file', 'item.location')} }}"
+    schemas: "{{ schemas | default([]) + [{'name': {{ item.name }} , 'var': lookup('file', {{ item.location }})}] }}"
     with_items:
     - {'name': 'camunda_engine', 'location': '/var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql'}
     - {'name': 'camunda_identity', 'location': '/var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql'}
