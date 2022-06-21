@@ -25,7 +25,7 @@
 #     - "/var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql"
 
 - name: Create Camunda schemas.
-  command: "psql Camunda -c {{ lookup('file', {{ item }}) }}"
+  command: "psql Camunda -c {{ lookup('file', item) }}"
   with_items:
     - "/var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql"
     - "/var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql"
