@@ -8,6 +8,7 @@ camunda_tomcatdir: "{{ camunda_dir }}/server/apache-tomcat-9.0.52"
 camunda_context_name: "camunda"
 camunda_database: postgresql
 camunda_database_name: camunda_app
+camunda_postgres_password: ChangeMe
 catalina_home: "/var/lib/tomcat9"
 
 
