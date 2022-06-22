@@ -41,7 +41,7 @@
   register: temp_sql
 
 - name: debug
-  tempalte:
+  template:
     src: setup.sql.j2
     dest: "{{ temp_sql.path }}"
 
