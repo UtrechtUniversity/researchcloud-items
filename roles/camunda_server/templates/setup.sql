@@ -1,1 +1,0 @@
-ALTER USER postgres PASSWORD "{{ camunda_postgres_password }}";

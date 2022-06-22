@@ -32,14 +32,21 @@
 
 - name: debug - check if new version is used
   debug:
-    msg: "1"
+    msg: "2"
+
+- name: Tempfile
+  tempfile:
+    state: file
+    suffix: sql
+  register: temp_sql
 
 - name: debug
-  set_fact:
-    camunda_sql: "{{ lookup('template', 'setup.sql') }}"
+  tempalte:
+    src: setup.sql.j2
+    dest: "{{ temp_sql.path }}"
 
 - name: Change postgres user password
-  command: "psql -U 'postgres' -d 'Camunda' -c '{{ camunda_sql }}'"
+  command: "psql -U 'postgres' -d 'Camunda' -f {{ temp_sql.path }}"
   become_user: postgres
   become: true
 
