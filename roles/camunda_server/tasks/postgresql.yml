@@ -65,7 +65,7 @@
   with_items:
     - {"original": 'driverClassName="org.h2.Driver"', "replacement": 'driverClassName="org.postgresql.Driver"'}
     - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": 'url="jdbc:postgresql://localhost:5432/camunda"'}
-    - {"original": 'password="sa"', "replacement": "{{ camunda_postgresql_password }}"}
+    - {"original": 'password="sa"', "replacement": 'password="{{ camunda_postgresql_password }}"'}
 # - name: Create module.xml
 
 
