@@ -32,7 +32,7 @@
 
 - name: debug - check if new version is used
   debug:
-    msg: "2"
+    msg: "4"
 
 - name: Tempfile
   tempfile:
@@ -44,6 +44,7 @@
   template:
     src: setup.sql.j2
     dest: "{{ temp_sql.path }}"
+    mode: 444
 
 - name: Change postgres user password
   command: "psql -U 'postgres' -d 'Camunda' -f {{ temp_sql.path }}"
