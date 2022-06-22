@@ -30,6 +30,10 @@
 # - name: Grant "postgres" user permissions on databases.
 #   with_items: "{{ databases }}"
 
+- name: debug - check if new version is used
+  debug:
+    msg: "1"
+
 - name: debug
   set_fact:
     camunda_sql: "{{ lookup('template', 'setup.sql') }}"
