@@ -38,6 +38,10 @@
     dest: /var/lib/camunda/server/apache-tomcat-9.0.52/lib/postgresql-42.4.0.jar
     url: https://jdbc.postgresql.org/download/postgresql-42.4.0.jar
 
+- name: Create module.xml
+  file:
+    
+
 - name: Edit `server.xml` file to use PostgreSQL
   lineinfile:
     path: /var/lib/camunda/server/apache-tomcat-9.0.52/conf/server.xml
