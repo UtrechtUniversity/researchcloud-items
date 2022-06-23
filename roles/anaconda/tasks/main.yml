@@ -23,13 +23,14 @@
 - name: Create anaconda mutli-user group
   group:
       name: anaconda_users
-      state: present  
+      state: present
 
 - name: Change anaconda installation dir ownership to multiple user group
   file:
     path: "{{ anaconda_install_dir }}"
     group: anaconda_users
-    mode: 0770
+    mode: u+rwxs,g+rwxs,o-rwxs
+    # mode: 0770
     recurse: true
 
 - name: Add users to anaconda multiple user group
