@@ -30,8 +30,26 @@
 # - name: Grant "postgres" user permissions on databases.
 #   with_items: "{{ databases }}"
 
+- name: debug - check if new version is used
+  debug:
+    msg: "4"
+
+- name: Tempfile
+  tempfile:
+    state: file
+    suffix: sql
+  register: temp_sql
+
+- name: debug
+  template:
+    src: setup.sql.j2
+    dest: "{{ temp_sql.path }}"
+    mode: 444
+
 - name: Change postgres user password
-  command: "psql -U 'postgres' -d 'Camunda' -c 'ALTER USER postgres PASSWORD {{ camunda_postgres_password }};'"
+  command: "psql -U 'postgres' -d 'Camunda' -f {{ temp_sql.path }}"
+  become_user: postgres
+  become: true
 
 - name: Download jdbc driver
   get_url: 
@@ -49,9 +67,9 @@
     line: "{{ item.replacement }}"
     state: present
   with_items:
-    - {"original": 'driverClassName="org.h2.Driver"', "replacement": 'driverClassName="org.postgresql.Driver"'}
-    - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": 'url="jdbc:postgresql://localhost:5432/camunda"'}
-    - {"original": 'password="sa"', "replacement": "{{ camunda_postgresql_password }}"}
+    - {"original": 'driverClassName="org.h2.Driver"', "replacement": '              driverClassName="org.postgresql.Driver"'}
+    - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": '              url="jdbc:postgresql://localhost:5432/camunda"'}
+    - {"original": 'password="sa"', "replacement": '              password="{{ camunda_postgresql_password }}"'}
 # - name: Create module.xml
 
 
