@@ -7,7 +7,7 @@
 
 - name: Create list of databases.
   set_fact:
-    databases: "['Camunda', '{{ camunda_database_name }}']"
+    databases: "['camunda', '{{ camunda_database_name }}']"
 
 - name: Create databases.
   postgresql_db:
@@ -18,7 +18,7 @@
   become_user: postgres
 
 - name: Create Camunda schemas.
-  command: "psql -U 'postgres' -d 'Camunda' -f '{{ item }}'"
+  command: "psql -U 'postgres' -d 'camunda' -f '{{ item }}'"
   with_items:
     - /var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql
     - /var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql
@@ -43,7 +43,7 @@
     mode: 444
 
 - name: Apply `.sql` file
-  command: "psql -U 'postgres' -d 'Camunda' -f {{ temp_sql.path }}"
+  command: "psql -U 'postgres' -d 'camunda' -f {{ temp_sql.path }}"
   become_user: postgres
   become: true
 
@@ -69,7 +69,7 @@
   with_items:
     - {"original": 'driverClassName="org.h2.Driver"', "replacement": '              driverClassName="org.postgresql.Driver"'}
     - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": '              url="jdbc:postgresql://localhost:5432/camunda"'}
-    - {"original": 'username="sa"', "replacement": '              username=postgres'}
+    - {"original": 'username="sa"', "replacement": '              username="postgres"'}
     - {"original": 'password="sa"', "replacement": '              password="{{ camunda_postgresql_password }}"'}
 
 # # Edit standalone.xml of Camunda BPM.
