@@ -30,23 +30,19 @@
 # - name: Grant "postgres" user permissions on databases.
 #   with_items: "{{ databases }}"
 
-- name: debug - check if new version is used
-  debug:
-    msg: "4"
-
-- name: Tempfile
+- name: Create tempfile to store `.sql` file
   tempfile:
     state: file
     suffix: sql
   register: temp_sql
 
-- name: debug
+- name: Store `.sql` file in tempfile
   template:
     src: setup.sql.j2
     dest: "{{ temp_sql.path }}"
     mode: 444
 
-- name: Change postgres user password
+- name: Apply `.sql` file
   command: "psql -U 'postgres' -d 'Camunda' -f {{ temp_sql.path }}"
   become_user: postgres
   become: true
@@ -70,9 +66,6 @@
     - {"original": 'driverClassName="org.h2.Driver"', "replacement": '              driverClassName="org.postgresql.Driver"'}
     - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": '              url="jdbc:postgresql://localhost:5432/camunda"'}
     - {"original": 'password="sa"', "replacement": '              password="{{ camunda_postgresql_password }}"'}
-# - name: Create module.xml
-
 
 # - name: Edit standalone.xml of Camunda BPM.
-
 ...
