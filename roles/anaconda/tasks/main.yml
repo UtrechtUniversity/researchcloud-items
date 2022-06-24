@@ -25,6 +25,7 @@
       name: anaconda_users
       state: present
 
+# `s` permission added due to bug: https://github.com/conda/conda/issues/7227
 - name: Change anaconda installation dir ownership to multiple user group
   file:
     path: "{{ anaconda_install_dir }}"
