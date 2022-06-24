@@ -53,8 +53,12 @@
     url: https://jdbc.postgresql.org/download/postgresql-42.4.0.jar
 
 - name: Create module.xml
-  file:
-    
+  copy:
+    src: module.xml
+    dest: /var/lib/camunda/server/apache-tomcat-9.0.52/lib/module.xml
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Edit `server.xml` file to use PostgreSQL
   lineinfile:
