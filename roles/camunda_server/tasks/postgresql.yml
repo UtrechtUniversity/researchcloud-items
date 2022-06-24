@@ -74,7 +74,7 @@
 # Edit standalone.xml of Camunda BPM.
 - name: Store xml replacement string in variable
   set_fact:
-    xml_replacement: "{{ lookup('template', 'bpm-platform.xml.j2') }}"
+    xml_replacement: "{{ lookup('template', './templates/bpm-platform.xml.j2') }}"
     
 - name: Edit camunda.xml
   lineinfile:

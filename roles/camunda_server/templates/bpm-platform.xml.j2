@@ -1,0 +1,19 @@
+<datasource jta="true" jndi-name="java:jboss/datasources/ProcessEnginePostgres" pool-name="java:jboss/datasources/ProcessEnginePostgres_Pool" enabled="true" use-java-context="true" use-ccm="true">
+                    <connection-url>jdbc:postgresql://localhost:5432/process-engine</connection-url>
+                    <driver>postgresql-jdbc4</driver>
+                    <pool>
+                        <min-pool-size>2</min-pool-size>
+                        <max-pool-size>20</max-pool-size>
+                        <prefill>true</prefill>
+                    </pool>
+                    <security>
+                        <user-name>postgres</user-name>
+                        <password>{{ camunda_postgresql_password }}</password>
+                    </security>
+                    <validation>
+                        <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+                        <validate-on-match>false</validate-on-match>
+                        <background-validation>false</background-validation>
+                        <use-fast-fail>false</use-fast-fail>
+                    </validation>
+                </datasource>
