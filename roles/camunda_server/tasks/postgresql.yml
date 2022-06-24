@@ -71,5 +71,15 @@
     - {"original": 'url="jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"', "replacement": '              url="jdbc:postgresql://localhost:5432/camunda"'}
     - {"original": 'password="sa"', "replacement": '              password="{{ camunda_postgresql_password }}"'}
 
-# - name: Edit standalone.xml of Camunda BPM.
+# Edit standalone.xml of Camunda BPM.
+- name: Store xml replacement string in variable
+  set_fact:
+    xml_replacement: "{{ lookup('template', 'bpm-platform.xml.j2') }}"
+    
+- name: Edit camunda.xml
+  lineinfile:
+    path: /var/lib/camunda/server/apache-tomcat-9.0.52/conf/bpm-platform.xml
+    regex: <datasource>java:jdbc/ProcessEngine</datasource>
+    line: "{{ xml_replacement }}"
+    state: present
 ...
