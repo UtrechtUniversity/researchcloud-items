@@ -72,6 +72,18 @@
     - {"original": 'username="sa"', "replacement": '              username="postgres"'}
     - {"original": 'password="sa"', "replacement": '              password="{{ camunda_postgresql_password }}"'}
 
+- name: add camunda listener to Tomcat server.xml
+  lineinfile:
+    path: /var/lib/camunda/server/apache-tomcat-9.0.52/conf/server.xml
+    insertafter: '<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />'
+    line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
+
+- name: set file access rights for files in tomcat lib dir
+  command: "chmod -R 0755 {{catalina_home }}/lib"
+
+- name: set file access tights for tomcat ./conf/bpm-platform.xml
+  command: "chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml"
+
 # # Edit standalone.xml of Camunda BPM.
 # - name: Store xml replacement string in variable
 #   set_fact:
