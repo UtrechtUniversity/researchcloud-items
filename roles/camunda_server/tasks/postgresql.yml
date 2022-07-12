@@ -30,22 +30,22 @@
 # - name: Grant "postgres" user permissions on databases.
 #   with_items: "{{ databases }}"
 
-- name: Create tempfile to store `.sql` file
-  tempfile:
-    state: file
-    suffix: sql
-  register: temp_sql
+# - name: Create tempfile to store `.sql` file
+#   tempfile:
+#     state: file
+#     suffix: sql
+#   register: temp_sql
 
-- name: Store `.sql` file in tempfile
-  template:
-    src: setup.sql.j2
-    dest: "{{ temp_sql.path }}"
-    mode: 444
+# - name: Store `.sql` file in tempfile
+#   template:
+#     src: setup.sql.j2
+#     dest: "{{ temp_sql.path }}"
+#     mode: 444
 
-- name: Apply `.sql` file
-  command: "psql -U 'postgres' -d 'camunda' -f {{ temp_sql.path }}"
-  become_user: postgres
-  become: true
+# - name: Apply `.sql` file
+#   command: "psql -U 'postgres' -d 'camunda' -f {{ temp_sql.path }}"
+#   become_user: postgres
+#   become: true
 
 # - name: Download jdbc driver
 #   get_url: 
