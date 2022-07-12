@@ -6,7 +6,7 @@ camunda_tar_urlfile: "camunda-bpm-tomcat-{{ camunda_release }}.tar.gz"
 camunda_dir: "/var/lib/camunda"
 camunda_tomcatdir: "{{ camunda_dir }}/server/apache-tomcat-9.0.52"
 camunda_context_name: "camunda"
+catalina_home: "/var/lib/tomcat9"
 camunda_database: postgresql
 camunda_database_name: camunda_app
 camunda_postgresql_password: ChangeMe
-catalina_home: "/var/lib/tomcat9"

@@ -33,6 +33,47 @@
   when: camunda_database == "postgresql"
   include: postgresql.yml
 
+- name: Copy camunda bpm engine config to tomcat config
+  copy:
+    src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
+    remote_src: yes
+    dest: "{{ catalina_home }}/conf/bpm-platform.xml"
+
+- name: copy camunda jars to tomcat lib
+  copy:
+    src: "{{ camunda_dir }}/lib/"
+    remote_src: yes
+    dest: "{{ catalina_home }}/lib/"
+
+# a copy with remore_src preserves file attribs regardless of mode
+# hence we need to set these props using a separate command
+- name: set file access rights for files in tomcat lib dir
+  command: "chmod -R 0755 {{catalina_home }}/lib"
+
+- name: set file access tights for tomcat ./conf/bpm-platform.xml
+  command: "chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml"
+
+- name: add camunda listener to Tomcat server.xml
+  lineinfile:
+    path: "{{ catalina_home }}/conf/server.xml"
+    insertafter: '<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />'
+    line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
+
+- name: copy camunda webapps to tomcat webapps dir
+  copy:
+    src: "{{ camunda_tomcatdir }}/webapps/{{ item }}/"
+    remote_src: yes
+    dest: "{{ catalina_home }}/webapps/{{ item }}"
+    owner: tomcat
+    group: tomcat
+    mode: 0755
+  with_items:
+    - "engine-rest"
+    - "camunda"
+    - "camunda-welcome"
+    - "camunda-invoice"
+  notify: Restart tomcat9
+
 
 # - name: provide applicationContext configuration
 #  template:
