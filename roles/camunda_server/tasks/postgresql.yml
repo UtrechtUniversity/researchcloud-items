@@ -26,9 +26,8 @@
   become: true
   register: sql_response_variable
 
-
-- name: Grant "postgres" user permissions on databases.
-  with_items: "{{ databases }}"
+# - name: Grant "postgres" user permissions on databases.
+#   with_items: "{{ databases }}"
 
 - name: Create tempfile to store `.sql` file
   tempfile:
