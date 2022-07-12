@@ -5,42 +5,42 @@
   vars:
     postgresql_provision: false
 
-# - name: Create list of databases.
-#   set_fact:
-#     databases: "['camunda', '{{ camunda_database_name }}']"
+- name: Create list of databases.
+  set_fact:
+    databases: "['camunda', '{{ camunda_database_name }}']"
 
-# - name: Create databases.
-#   postgresql_db:
-#     state: present
-#     name: "{{ item }}"
-#   with_items: "{{ databases }}"
-#   become: true
-#   become_user: postgres
+- name: Create databases.
+  postgresql_db:
+    state: present
+    name: "{{ item }}"
+  with_items: "{{ databases }}"
+  become: true
+  become_user: postgres
 
-# - name: Create Camunda schemas.
-#   command: "psql -U 'postgres' -d 'camunda' -f '{{ item }}'"
-#   with_items:
-#     - /var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql
-#     - /var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql
-#   become_user: postgres
-#   become: true
-#   register: sql_response_variable
+- name: Create Camunda schemas.
+  command: "psql -U 'postgres' -d 'camunda' -f '{{ item }}'"
+  with_items:
+    - /var/lib/camunda/sql/create/postgres_engine_7.17.0-alpha2.sql
+    - /var/lib/camunda/sql/create/postgres_identity_7.17.0-alpha2.sql
+  become_user: postgres
+  become: true
+  register: sql_response_variable
 
 
-# - name: Grant "postgres" user permissions on databases.
-#   with_items: "{{ databases }}"
+- name: Grant "postgres" user permissions on databases.
+  with_items: "{{ databases }}"
 
-# - name: Create tempfile to store `.sql` file
-#   tempfile:
-#     state: file
-#     suffix: sql
-#   register: temp_sql
+- name: Create tempfile to store `.sql` file
+  tempfile:
+    state: file
+    suffix: sql
+  register: temp_sql
 
-# - name: Store `.sql` file in tempfile
-#   template:
-#     src: setup.sql.j2
-#     dest: "{{ temp_sql.path }}"
-#     mode: 444
+- name: Store `.sql` file in tempfile
+  template:
+    src: setup.sql.j2
+    dest: "{{ temp_sql.path }}"
+    mode: 444
 
 # - name: Apply `.sql` file
 #   command: "psql -U 'postgres' -d 'camunda' -f {{ temp_sql.path }}"
@@ -60,11 +60,11 @@
 #     group: root
 #     mode: 0644
 
-- name: add camunda resources to Tomcat server.xml
-  lineinfile:
-    path: "{{ catalina_home }}/conf/server.xml"
-    insertafter: '<GlobalNamingResources>'
-    line: '<Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine" driverClassName="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/camunda" defaultTransactionIsolation="READ_COMMITTED" username="postgres" password="{{ camunda_postgresql_password }}" maxTotal="20" minIdle="5" maxIdle="20" />'
+# - name: add camunda resources to Tomcat server.xml
+#   lineinfile:
+#     path: "{{ catalina_home }}/conf/server.xml"
+#     insertafter: '<GlobalNamingResources>'
+#     line: '<Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine" driverClassName="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/camunda" defaultTransactionIsolation="READ_COMMITTED" username="postgres" password="{{ camunda_postgresql_password }}" maxTotal="20" minIdle="5" maxIdle="20" />'
 
 # - name: Edit `server.xml` file to use PostgreSQL
 #   lineinfile:
