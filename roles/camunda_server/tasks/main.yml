@@ -57,7 +57,7 @@
   lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
     insertafter: '<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />'
-    line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
+    line: '  <Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
 
 - name: copy camunda webapps to tomcat webapps dir
   copy:

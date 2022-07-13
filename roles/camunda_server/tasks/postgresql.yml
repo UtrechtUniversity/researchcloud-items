@@ -59,11 +59,11 @@
 #     group: root
 #     mode: 0644
 
-# - name: add camunda resources to Tomcat server.xml
-#   lineinfile:
-#     path: "{{ catalina_home }}/conf/server.xml"
-#     insertafter: '<GlobalNamingResources>'
-#     line: '<Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine" driverClassName="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/camunda" defaultTransactionIsolation="READ_COMMITTED" username="postgres" password="{{ camunda_postgresql_password }}" maxTotal="20" minIdle="5" maxIdle="20" />'
+- name: add camunda resources to Tomcat server.xml
+  lineinfile:
+    path: "{{ catalina_home }}/conf/server.xml"
+    insertafter: '<GlobalNamingResources>'
+    line: '<Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine" driverClassName="org.postgresql.Driver" url="jdbc:postgresql://localhost:5432/camunda" defaultTransactionIsolation="READ_COMMITTED" username="postgres" password="{{ camunda_postgresql_password }}" maxTotal="20" minIdle="5" maxIdle="20" />'
 
 # - name: Edit `server.xml` file to use PostgreSQL
 #   lineinfile:
