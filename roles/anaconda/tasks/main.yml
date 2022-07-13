@@ -34,6 +34,15 @@
     # mode: 0770
     recurse: true
 
+# The above task creates a new error, because the application binary cannot be run with setuid permissions.
+# TODO The above task and this task should be reworked to only grant the setuid permisison on the directories that require it.
+- name: Remove `s` permission from the anaconda bin directory to prevent startup problems
+  file:
+    path: "{{ anaconda_install_dir }}/bin"
+    group: anaconda_users
+    mode: u-s,g-s
+    recurse: true
+
 - name: Add users to anaconda multiple user group
   user:
     name: "{{ item.user }}"
