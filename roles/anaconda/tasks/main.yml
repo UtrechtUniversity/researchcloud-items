@@ -1,10 +1,11 @@
----
 # Following the instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered in June 2022.
 
+---
 - name: Install dependencies
   include: "dependencies_{{ ansible_pkg_mgr }}.yml"
 
-- name: Ensure download dir exists    # The get_url module in the task below does not do this by default
+# The get_url ansible module in the task below does not create a directory
+- name: Ensure download dir exists    
   file:
     path: "{{ anaconda_download_dest }}"
     state: directory

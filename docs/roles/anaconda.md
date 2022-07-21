@@ -21,6 +21,7 @@ The role follows the installation as explained on their official website. It ins
 ## See also
 [fact_regular_users](fact_regular_users.md)
 [runonce](runonce.md)
+[desktop_file](desktop_file.md)
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)
