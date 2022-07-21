@@ -1,4 +1,4 @@
-# Role <name>
+# Role anaconda
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -8,7 +8,7 @@ Role that install Anaconda, a distribution of Python and R for Data Science. See
 Debain or RHEL/CentOS.
 
 ## Description
-The role follows the installation as explained on their official website. It install any required dependencies and then Anaconda itself. The installation is done individually for each user.
+The role follows the installation as explained on their official website. It install any required dependencies and then Anaconda itself. The installation is done in a shared location and each user on the system is granted access rights to all necessary files.
 
 ## Variables
 * `anaconda_python_version`: The Python version to use for the Anaconda installation. Default: `3`.
@@ -19,11 +19,10 @@ The role follows the installation as explained on their official website. It ins
 * `anaconda_install_dir`: Where to install Anaconda. Default: `/opt/anaconda3`.
 
 ## See also
-Are there any other related roles? Add a link here.
+[fact_regular_users](fact_regular_users.md)
+[runonce](runonce.md)
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)
-
-
 
 [back to index](../index.md#Roles)
