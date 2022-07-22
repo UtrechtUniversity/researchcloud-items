@@ -5,7 +5,7 @@
 This playbook installs Anaconda Navigator for data science development purposes.
 
 ## Description
-Only runs the anaconda role, see that documenatation for more details.
+Only runs the anaconda role, see that documentation for more details.
 
 ## See also
 [anaconda role](../roles/anaconda.md)
