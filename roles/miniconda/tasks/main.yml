@@ -18,8 +18,12 @@
 - name: Install per user
   when: miniconda_userspace
   block:
+    - name: Overwrite conda installation dir
+      set_fact:
+        miniconda_install_dir: "{{ item.home }}/miniconda"
+
     - name: Install conda for each user individually
-      shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ item.home }}/miniconda"
+      shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
       become: false
       become_user: "{{ item.user }}"
       with_items:
