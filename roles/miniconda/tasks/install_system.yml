@@ -1,0 +1,10 @@
+---
+- name: Install conda in shared environments
+  shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
+
+- name: Create .condarc file for shares packages and environments
+  template:
+    src: .condarc.j2
+    dest: "{{ miniconda_install_dir }}/.condarc"
+    mode: 0755
+...

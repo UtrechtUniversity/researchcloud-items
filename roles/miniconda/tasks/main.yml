@@ -15,33 +15,19 @@
     dest: "{{ miniconda_download_dest }}/miniconda.sh"
     mode: 0774
 
+# Done in seperate task file to allow proper looping with fact_regular_users.
 - name: Install per user
   when: miniconda_userspace
-  block:
-    - name: Overwrite conda installation dir
-      set_fact:
-        miniconda_install_dir: "{{ item.home }}/miniconda"
+  include_tasks: install_user.yml
+  with_items:
+  - "{{ fact_regular_users }}"
 
-    - name: Install conda for each user individually
-      shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
-      become: false
-      become_user: "{{ item.user }}"
-      with_items:
-        - "{{ fact_regular_users }}"
-
+# Done in seperate task to be consistent, since per-user installation is also done that way.
 - name: Install system-wide
   when: miniconda_systemwide
-  block:
-    - name: Install conda in shared environments
-      shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
+  include_task: install_system.yml
 
-    - name: Create .condarc file for shares packages and environments
-      template:
-        src: .condarc.j2
-        dest: "{{ miniconda_install_dir }}/.condarc"
-        mode: 0755
-
-- name: Run `conda init` for every user
+- name: Add `conda init` for every user through run_once
   template:
     src: run_conda_init.sh.j2
     dest: "/etc/runonce.d"
