@@ -9,9 +9,9 @@
     mode: 0755
 
 # Without this, any package downloaded by another person is not retrievable from the cache by others.
-- name: Create anaconda mutli-user group
+- name: Create miniconda mutli-user group
   group:
-      name: miniconda_install_dir
+      name: miniconda_users
       state: present
 
 - name: Setuid rights on pkgs/ directory for multi-user support
