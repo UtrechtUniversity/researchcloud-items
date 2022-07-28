@@ -28,8 +28,4 @@
     append: yes
   with_items: 
     - "{{ fact_regular_users }}"
-
-- name: Set `conda init` command
-  set_fact:
-    miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
 ...

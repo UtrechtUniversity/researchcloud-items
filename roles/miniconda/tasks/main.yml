@@ -27,6 +27,11 @@
   when: miniconda_systemwide
   include_tasks: install_system.yml
 
+- name: Set `conda init` command
+  when: miniconda_systemwide
+  set_fact:
+    miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
+
 - name: Add `conda init` for every user through run_once
   template:
     src: run_conda_init.sh.j2
