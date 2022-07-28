@@ -11,12 +11,12 @@
 # Without this, any package downloaded by another person is not retrievable from the cache by others.
 - name: Create anaconda mutli-user group
   group:
-      name: miniconda_installtion_dir
+      name: miniconda_install_dir
       state: present
 
 - name: Setuid rights on pkgs/ directory for multi-user support
   file:
-    path: "{{ miniconda_installtion_dir }}/pkgs/"
+    path: "{{ miniconda_install_dir }}/pkgs/"
     group: miniconda_users
     mode: g+rwxs
     recurse: true
