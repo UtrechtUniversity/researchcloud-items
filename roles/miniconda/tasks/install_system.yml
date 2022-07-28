@@ -7,4 +7,8 @@
     src: .condarc.j2
     dest: "{{ miniconda_install_dir }}/.condarc"
     mode: 0755
+
+- name: Set `conda init` command
+  set_fact:
+    miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
 ...
