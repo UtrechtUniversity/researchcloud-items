@@ -1,7 +1,7 @@
 ---
 - name: Check if not both systemwide and userspace are true
   when: miniconda_userspace == miniconda_systemwide
-  meta: 
+  meta: end_play
 
 # The get_url ansible module in the task below does not create a directory
 - name: Ensure download dir exists    
