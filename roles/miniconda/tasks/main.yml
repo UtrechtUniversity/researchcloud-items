@@ -12,7 +12,7 @@
 - name: Download miniconda installation files
   get_url:
     url: "{{ miniconda_url }}"
-    dest: "{{ miniconda_download_dest }}"
+    dest: "{{ miniconda_download_dest }}/miniconda.sh"
     mode: 0774
 
 - name: Install per user
