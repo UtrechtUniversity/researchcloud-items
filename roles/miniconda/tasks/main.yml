@@ -25,7 +25,7 @@
 # Done in seperate task to be consistent, since per-user installation is also done that way.
 - name: Install system-wide
   when: miniconda_systemwide
-  include_task: install_system.yml
+  include_tasks: install_system.yml
 
 - name: Add `conda init` for every user through run_once
   template:
