@@ -16,10 +16,13 @@
 
 - name: Setuid rights on pkgs/ directory for multi-user support
   file:
-    path: "{{ miniconda_install_dir }}/pkgs/"
+    path: "{{ item }}"
     group: miniconda_users
     mode: g+rwxs
     recurse: true
+  loop:
+    - "{{ miniconda_install_dir }}/pkgs/"
+    - "{{ miniconda_install_dir }}/envs/"
 
 - name: Add users to miniconda multiple user group
   user:
