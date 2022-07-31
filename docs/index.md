@@ -1,5 +1,9 @@
 # Developer documentation
-(see [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).   
+This is the developer documenation for this repository.
+See [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).
+
+For design principles that one should keep in mind when creating solutions, see [design principles](design_principles.md).
+For best practices that should be followed when writing code, see [best practices](best_practices.md).
 
 Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles).
 The playbook can be used stand-alone (run them locally on the target host) 

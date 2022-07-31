@@ -1,4 +1,4 @@
-# Role <name>
+# Role rstudio
 [back to index](../index.md#Roles)
 
 ## Summary
