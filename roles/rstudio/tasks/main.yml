@@ -1,0 +1,31 @@
+---
+- name: Install R for Debian
+  when: ansible_os_family == 'Debian'
+  apt:
+    name: r-base
+    state: present
+
+- name: Install RStudio for Debian
+  when: ansible_os_family == 'Debian'
+  apt:
+    deb: https://s3.amazonaws.com/rstudio-ide-build/desktop/bionic/amd64/rstudio-2022.02.0-443-amd64.deb
+    state: present
+
+# - name: Update extra packages for CentOS
+#   when: ansible_os_family == 'CentOS'
+#   yum:
+#     name: epel-release
+#     state: latest
+
+- name: Install R on CentOS
+  when: ansible_os_family == 'CentOS'
+  yum:
+    name: R
+    state: present
+
+- name: Install RStudio for CentOS
+  when: ansible_os_family == 'CentOS'
+  yum:
+    name: https://s3.amazonaws.com/rstudio-ide-build/desktop/rhel8/x86_64/rstudio-2022.02.0-443-x86_64.rpm
+    state: present
+...

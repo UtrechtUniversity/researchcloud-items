@@ -1,6 +1,6 @@
 ---
 - name: Check if required variables are present
-  when: (app_name is not defined) and (sizes is not defined)
+  when: (desktopfile_app_name is not defined) and (sizes is not defined)
   meta: end_play
 
 - name: Preventing bug - Ensure directory exists
@@ -15,34 +15,34 @@
 
 - name: Copy icon files to /tmp 
   copy:
-    src: "{{ app_name }}_{{ item }}.png"
-    dest: "/tmp/{{ app_name }}_{{ item }}.png"
+    src: "{{ desktopfile_app_name }}_{{ item }}.png"
+    dest: "/tmp/{{ desktopfile_app_name }}_{{ item }}.png"
     mode: 0644
-  with_items: "{{ sizes }}"
+  with_items: "{{ desktopfile_sizes }}"
 
 - name: Install icons as xdg resource
-  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}_{{ item }}.png {{ app_name }}"
-  with_items: "{{ sizes }}"
+  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ desktopfile_app_name }}_{{ item }}.png {{ desktopfile_app_name }}"
+  with_items: "{{ desktopfile_sizes }}"
 
 - name: Copy desktop launcher file to /tmp
   template:
-    src: "{{ app_name }}.desktop.j2"
-    dest: "/tmp/{{ app_name }}.desktop"
+    src: "{{ desktopfile_app_name }}.desktop.j2"
+    dest: "/tmp/{{ desktopfile_app_name }}.desktop"
     mode: 0644
 
 - name: Launch application at user login
-  when: login
+  when: desktopfile_login
   template:
-    src: "{{ app_name }}.desktop.j2"
-    dest: "/etc/xdg/autostart/{{ app_name }}.desktop"
+    src: "{{ desktopfile_app_name }}.desktop.j2"
+    dest: "/etc/xdg/autostart/{{ desktopfile_app_name }}.desktop"
     mode: 0644
 
 - name: Install launcher in system-wide desktop menu
-  when: modules is not defined
-  command: "xdg-desktop-menu install --novendor /tmp/{{ app_name }}.desktop"
+  when: (modules is not defined) and (desktopfile_menu)
+  command: "xdg-desktop-menu install --novendor /tmp/{{ desktopfile_app_name }}.desktop"
 
 - name: Install launcher in system-wide desktop menu for multiple modules
-  when: modules is defined
-  command: "xdg-desktop-menu install --novendor /tmp/{{ app_name }}.desktop"
+  when: (modules is defined) and (desktopfile_menu)
+  command: "xdg-desktop-menu install --novendor /tmp/{{ desktopfile_app_name }}.desktop"
   with_items: "{{ modules }}"
 ...
