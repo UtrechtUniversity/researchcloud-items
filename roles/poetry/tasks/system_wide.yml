@@ -6,10 +6,14 @@
     mode: 0777
     timeout: 20
 
+- name: Install venv dependency
+  apt:
+    name: python3-venv
+
 - name: Install poetry system-wide
   command: python3 /tmp/install-poetry.py
   environment:
-    POETRY_HOME: /usr/bin/poetry
+    POETRY_HOME: /opt/poetry
 
 - name: Clean installation file
   file:
