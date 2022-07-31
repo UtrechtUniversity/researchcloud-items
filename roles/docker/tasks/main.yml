@@ -1,5 +1,4 @@
 ---
-
 - name: install docker
   package:
     name: "{{ item }}"
@@ -7,3 +6,6 @@
   with_items:
     - "docker.io"
     - "docker-compose"
+  notify:
+    - start docker deamon
+...

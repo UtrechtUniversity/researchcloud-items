@@ -19,6 +19,4 @@ Are there any other related roles? Add a link here.
 ## History
 <year> Written by <author> (<organization>)
 
-
-
 [back to index](../index.md#Roles)

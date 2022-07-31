@@ -28,6 +28,7 @@ SURF ResearchCloud.
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
+- [miniconda](playbooks/miniconda.md)  Python applicaiton development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
 
@@ -49,6 +50,7 @@ SURF ResearchCloud.
 - [keycloak](roles/keycloak.md)
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
+- [miniconda](roles/miniconda.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)
 - [pyenv](roles/pyenv.md)
