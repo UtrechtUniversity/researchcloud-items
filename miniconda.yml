@@ -5,7 +5,4 @@
 
   roles:
     - role: miniconda
-      vars:
-        - miniconda_userspace: False
-        - miniconda_systemwide: True
 ...
