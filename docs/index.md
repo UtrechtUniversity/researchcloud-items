@@ -22,6 +22,7 @@ SURF ResearchCloud.
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [docker](playbooks/docker.md) application container management
+- [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
@@ -29,6 +30,7 @@ SURF ResearchCloud.
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
+
 
 ## Roles
 - [anaconda](roles/anaconda.md)
@@ -52,6 +54,7 @@ SURF ResearchCloud.
 - [pyenv](roles/pyenv.md)
 - [python](roles/python.md)
 - [robotuser](roles/robotuser.md)
+- [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
 - [sshfs-configrobot](roles/sshfs-configrobot.md)
 - [sshfs-mount](roles/sshfs-mount.md)
