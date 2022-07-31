@@ -17,6 +17,7 @@ These files can be used to decorate a related catalog item in
 SURF ResearchCloud.
 
 ## Playbooks
+- [anaconda](playbooks/anaconda.md)  python data science development
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
@@ -30,6 +31,7 @@ SURF ResearchCloud.
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
 
 ## Roles
+- [anaconda](roles/anaconda.md)
 - [asreview](roles/asreview.md)
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
