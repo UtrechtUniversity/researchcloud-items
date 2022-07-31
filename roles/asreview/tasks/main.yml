@@ -20,10 +20,10 @@
   include_role:
     name: desktop_file
   vars: 
-    app_name: asreview
-    sizes:
+    desktopfile_app_name: asreview
+    desktopfile_sizes:
       - 48
       - 64
       - 96
-    login: true
+    desktopfile_login: true
 ...
