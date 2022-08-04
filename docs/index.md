@@ -1,5 +1,9 @@
 # Developer documentation
-(see [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).   
+This is the developer documenation for this repository.
+See [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).
+
+For design principles that one should keep in mind when creating solutions, see [design principles](design_principles.md).
+For best practices that should be followed when writing code, see [best practices](best_practices.md).
 
 Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles).
 The playbook can be used stand-alone (run them locally on the target host) 
@@ -22,6 +26,7 @@ SURF ResearchCloud.
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [docker](playbooks/docker.md) application container management
+- [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
@@ -30,6 +35,7 @@ SURF ResearchCloud.
 - [miniconda](playbooks/miniconda.md)  Python applicaiton development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
+
 
 ## Roles
 - [anaconda](roles/anaconda.md)
@@ -54,6 +60,7 @@ SURF ResearchCloud.
 - [pyenv](roles/pyenv.md)
 - [python](roles/python.md)
 - [robotuser](roles/robotuser.md)
+- [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
 - [sshfs-configrobot](roles/sshfs-configrobot.md)
 - [sshfs-mount](roles/sshfs-mount.md)
