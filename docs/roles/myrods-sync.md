@@ -28,7 +28,7 @@ myrodssync_dir: "/usr/local/lib/myrods-sync"
 [irods_icommands](irods_icommands.md)
 
 ## History
-2021 Written by Ton Smeele (Utrecht University)
+2021 Written by Ton Smeele (Utrecht University)   
 2022 Renamed from guisync to myrods-sync, added iRODS environment initialization
 
 
