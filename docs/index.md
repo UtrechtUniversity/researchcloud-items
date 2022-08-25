@@ -46,7 +46,7 @@ SURF ResearchCloud.
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [git_clone](roles/git_clone.md)
-- [irods_guisync](roles/irods_guisync.md)
+- [irods_guisync](roles/irods_guisync.md)  NB: deprecated
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
@@ -55,6 +55,7 @@ SURF ResearchCloud.
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
+- [myrods-sync](roles/myrods-sync.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)
 - [pyenv](roles/pyenv.md)

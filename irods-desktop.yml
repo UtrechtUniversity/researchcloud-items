@@ -5,5 +5,5 @@
     
 #  NB: please run the playbook icommands.yml before running this playbook
   roles:
-    - irods_guisync
+    - myrods-sync
   

@@ -6,6 +6,6 @@
     - irods_icommands
     - irods_iselect
     - irods_skel
-    - irods_guisync
+    - myrods-sync
     - rstudio
 ...
