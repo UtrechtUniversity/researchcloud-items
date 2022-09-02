@@ -9,6 +9,5 @@
   roles:
     - irods_repo
     - irods_icommands
-    - irods_iselect
     - irods_skel
   
