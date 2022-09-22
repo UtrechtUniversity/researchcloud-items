@@ -21,7 +21,8 @@
 #    - flask-app
 #    - camunda-server
 
-     - myrods-sync
+     - nginx-pam
+     - nginx-fastcgi
 
 #    - role: userspace_applications
 #      vars:
