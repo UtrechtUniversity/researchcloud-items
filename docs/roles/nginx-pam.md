@@ -29,7 +29,7 @@ n/a
 - [ngx_http_auth_pam module](https://github.com/sto/ngx_http_auth_pam_module)  
 
 ## History
-2022 Written by Ton Smeele (Utrecht University)
+2022 Written by Ahmad Hesam (SURF) and Ton Smeele (Utrecht University)
 
 
 [back to index](../index.md#Roles)

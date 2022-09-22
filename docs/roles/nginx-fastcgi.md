@@ -32,7 +32,7 @@ n/a
 - [ngx_http_fastcgi module](https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html)  
 
 ## History
-2022 Written by Ton Smeele (Utrecht University)
+2022 Written by Ahmad Hesam (SURF) and Ton Smeele (Utrecht University)
 
 
 [back to index](../index.md#Roles)
