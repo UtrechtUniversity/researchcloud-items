@@ -1,6 +1,17 @@
 ---
 # this script installs support for nginx-pam module and ensures
 # that nginx-pam can check credentials using totp
+#
+# example nginx configuration to protect access to location /secured:
+#   location /secured {
+#     auth_pam "Realm for secured info";
+#     auth_pam_service_name: "login";
+#     ...
+#   }
+#
+# 
+# name of authenticated user is available as nginx variable $remote_user
+#
 
 - name: install packages required for nginx-pam module
   package:
