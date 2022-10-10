@@ -38,8 +38,8 @@ The actual role can be called and passed variables as follows:
   include_role:
     name: desktop_file
   vars:
-    app_name: <app_name>
-    sizes:
+    desktopfile_app_name: <app_name>
+    desktopfile_sizes:
       - <size1 int>
       - <size2 int>
       ...
