@@ -64,7 +64,7 @@ The actual role can be called and passed variables as follows:
 ### Required files
 While not variables, the below files are assumed to exist in your playbook or roles `/files` or `/templates` folder. See the file structure example above.
 * `app_name.desktop` file: The desktop file/template to use. Strict name convention based on the `app_name` required variable.
-* `app_name-size-x-size.png` files: One file for each of your sizes of your icon. At least every `size` in the required variable `sizes` must have one representitive file. Strict name convention based on the `app_name` and `sizes` required variables.
+* `app_name-size-x-size.png` files: One file for each of your sizes of your icon. At least every `size` in the required variable `desktopfile_sizes` must have one representitive file. Strict name convention based on the `desktopfile_app_name` and `desktopfile_sizes` required variables.
 
 ### Optional variables
 * `desktopfile_menu`: Boolean. Defines whether or not to install an entry in the Application menu. Default: true.
