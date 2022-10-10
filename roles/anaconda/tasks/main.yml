@@ -62,8 +62,8 @@
   include_role:
     name: desktop_file
   vars: 
-    app_name: anaconda
-    sizes:
+    desktopfile_app_name: anaconda
+    desktopfile_sizes:
       - 48
       - 64
       - 96
