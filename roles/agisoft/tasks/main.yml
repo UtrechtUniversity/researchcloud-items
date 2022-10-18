@@ -18,7 +18,7 @@
 
 - name: ansible create installation directory 
   file:
-    path: "/opt/{{ agisoft_install_dir }}"
+    path: "{{ agisoft_install_dir }}"
     state: directory
 
 - name: Extract agisoft to opt for multiple user
