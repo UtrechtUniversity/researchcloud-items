@@ -19,7 +19,7 @@
 - name: Extract agisoft to opt for multiple user
   command:
     cmd: "tar -xvzf {{ agisoft_download_dest }}/{{ agisoft_file }} -C {{ agisoft_install_dir }}"
-    creates: "{{ anaconda_install_dir }}"
+    creates: "{{ agisoft_install_dir }}"
 
 - name: Create agisoft multi-user group
   group:
