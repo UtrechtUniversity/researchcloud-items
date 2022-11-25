@@ -15,12 +15,26 @@ When adding documentation, please consider to format your text
 using the file [template-playbooks.md](playbooks/template-playbooks.md) to
 document a playbook
 or the file [template-roles.md](roles/template-roles.md) to document a role.
+When referencing a playbook in a SURF Research Cloud catalog item, 
+add [information](catalog-item-description.md)
+to enable users to decide upon the suitability of the item for their use case.
 
 NB: The files section of roles may include [base64 encoded](icons.md) icon files. 
 These files can be used to decorate a related catalog item in 
 SURF ResearchCloud.
 
 ## Playbooks
+The status of a playbook is either Experimental or Supported. In the SURF Research Cloud catalog, this
+status should be indicated in the description field of the catalog plugin item.
+
+Supported playbooks:   
+("Status: Supported")    
+
+Currently, all our playbooks are still considered Experimental. 
+
+
+Experimental playbooks:   
+("Status: Experimental, use with caution")     
 - [anaconda](playbooks/anaconda.md)  python data science development
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
