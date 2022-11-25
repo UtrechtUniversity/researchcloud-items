@@ -1,8 +1,0 @@
----
-- name: install owncloud-client
-  hosts: localhost
-  gather_facts: true
-
-  roles:
-    - owncloud
-
