@@ -27,13 +27,13 @@ SURF ResearchCloud.
 The status of a playbook is either Experimental or Supported. In the SURF Research Cloud catalog, this
 status should be indicated in the description field of the catalog plugin item.
 
-Supported playbooks:   
+### Supported playbooks:   
 ("Status: Supported")    
 
 Currently, all our playbooks are still considered Experimental. 
 
 
-Experimental playbooks:   
+### Experimental playbooks:   
 ("Status: Experimental, use with caution")     
 - [anaconda](playbooks/anaconda.md)  python data science development
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews

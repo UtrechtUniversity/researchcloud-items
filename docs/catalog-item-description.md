@@ -19,9 +19,9 @@ and choose from the applicable list of values:
 | Tag:        | Content options: |
 | ----------- | ---------------- |
 | Status      | "Experimental, use with caution" |
-| Status      | "Supported" |
+|             | "Supported" |
 | Suitability | "non-sensitive data only" |
-| Suitability | "sensitive data" |
+|             | "sensitive data" |
 
 
 ## Description for Application / Application Offer catalog item types
@@ -30,7 +30,7 @@ In addition to the above structured information, add the following:
 | Tag:        | Content options: |
 | ----------- | ---------------- |
 | Maintenance | "Automated (security) patches configured" |
-| Maintenance | "User must manually apply (security) patches" | 
+|             | "User must manually apply (security) patches" | 
 
 
 
