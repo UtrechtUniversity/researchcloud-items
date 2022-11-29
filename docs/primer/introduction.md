@@ -34,7 +34,8 @@ Once you are done with using your workspace, just dispose of it in the SRC web p
 - Rstudio
 - Jupyter
 - Matlab
-- Python with Machine learning libraries
+- Python with Machine learning libraries   
+- Customized workspaces e.g. ASReview   
 - Windows Server (install your own software)
 - Ubuntu (install your own software)
 
