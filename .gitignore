@@ -5,6 +5,7 @@
 *.retry
 .vaultpw
 development_credentials.yml
+ansible.cfg
 
 # Vagrant
 /.vagrant
