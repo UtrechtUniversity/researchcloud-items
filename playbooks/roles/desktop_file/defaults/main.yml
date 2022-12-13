@@ -1,0 +1,6 @@
+---
+# these variables can be used to define whether the icon should also be created as a shortcut on the desktop and if the application should start at launch.
+desktopfile_menu: true
+desktopfile_desktop: false
+desktopfile_login: false
+...

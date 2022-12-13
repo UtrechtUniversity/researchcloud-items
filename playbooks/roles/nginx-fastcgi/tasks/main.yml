@@ -1,0 +1,39 @@
+---
+
+# adds support for execution of shell scripts with nginx using fastcgi
+#
+# example configuration for a location:
+#   location /example {
+#      gzip off;
+#      root /var/www/cgi-bin;
+#      fastcgi_pass unix:/var/run/fcgiwrap.socket;
+#      include /etc/nginx/fastcgi_params;
+#      fastcgi_param SCRIPT_FILENAME /var/www/cgi-bin$fastcgi_script_name;
+#      fastcgi_param REMOTE_USER $remote_user;
+#   }
+#
+#   test example:  http://localhost/example/hello
+#
+
+- name: install support for fastcgi with nginx
+  package:
+    name: "fcgiwrap"
+    state: present
+
+- name: make cgi-bin directory
+  file:
+    name: "/var/www/cgi-bin"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: install example script
+  copy:
+    src: "example-script.sh"
+    dest: "/var/www/cgi-bin/hello"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+

@@ -1,0 +1,7 @@
+---
+sshfs_username: "SSHFS_USERNAME_MISSING"
+sshfs_server: "SSHFS_SERVER_MISSING"
+sshfs_sourcepath: "SSHFS_SOURCEPATH_MISSING"
+sshfs_mountpoint: "SSHFS_MOUNTPOINT_MISSING"
+
+

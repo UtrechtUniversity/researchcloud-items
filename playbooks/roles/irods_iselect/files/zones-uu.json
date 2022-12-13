@@ -1,0 +1,174 @@
+{ 
+"youth.uu" : {
+	"description": "Yoda for YOUth cohort study",
+	"config": {
+		"irods_host" : "youth.data.uu.nl",
+		"irods_zone_name" : "nluu1p",
+		"irods_home" : "/nluu1p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+"geo.uu" : {
+	"description": "Yoda for Faculty of Geosciences",
+	"config": {
+		"irods_host" : "geo.data.uu.nl",
+		"irods_zone_name" : "nluu11p",
+		"irods_home" : "/nluu11p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+  
+"gw.uu" : {
+	"description": "Yoda for Faculty of Humanities",
+	"config": {
+		"irods_host" : "i-lab.data.uu.nl",
+		"irods_zone_name" : "nluu5p",
+		"irods_home" : "/nluu5p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+"rebo.uu" : {
+	"description": "Yoda for Faculty of Law, Economics and Governance",
+	"config": {
+		"irods_host" : "i-lab.data.uu.nl",
+		"irods_zone_name" : "nluu5p",
+		"irods_home" : "/nluu5p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+
+"gnk.uu" : {
+	"description": "Yoda for Faculty of Medicine",
+	"config": {
+		"irods_host" : "dgk.data.uu.nl",
+		"irods_zone_name" : "nluu9ot",
+		"irods_home" : "/nluu9ot/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+
+"science.uu" : {
+	"description": "Yoda for Faculty of Science",
+	"config": {
+		"irods_host" : "science.data.uu.nl",
+		"irods_zone_name" : "nluu6p",
+		"irods_home" : "/nluu6p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+
+  
+"fsw.uu" : {
+	"description": "Yoda for Faculty of Social and Behavioural Sciences",
+	"config": {
+		"irods_host" : "fsw.data.uu.nl",
+		"irods_zone_name" : "nluu10p",
+		"irods_home" : "/nluu10p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+
+
+"dgk.uu" : {
+	"description": "Yoda for Faculty of Veterinary Medicine",
+	"config": {
+		"irods_host" : "dgk.data.uu.nl",
+		"irods_zone_name" : "nluu9ot",
+		"irods_home" : "/nluu9ot/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+  
+
+
+"i-lab.uu" : {
+	"description": "Yoda for Institutions for Open Societies",
+	"config": {
+		"irods_host" : "i-lab.data.uu.nl",
+		"irods_zone_name" : "nluu5p",
+		"irods_home" : "/nluu5p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+  },	
+
+
+
+"its.uu" : {
+	"description": "Yoda for University Corporate Offices",
+	"config": {
+		"irods_host" : "its.data.uu.nl",
+		"irods_zone_name" : "nluu12p",
+		"irods_home" : "/nluu12p/home",
+		"irods_port" : 1247,
+		"irods_authentication_scheme": "pam",
+		"irods_encryption_algorithm" : "AES-256-CBC",
+		"irods_encryption_key_size" : 32,
+		"irods_encryption_num_hash_rounds" : 16,
+		"irods_encryption_salt_size" : 8,
+		"irods_client_server_negotiation" : "request_server_negotiation"
+	}
+}	
+
+
+
+}

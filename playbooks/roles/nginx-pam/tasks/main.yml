@@ -1,0 +1,43 @@
+---
+# this script installs support for nginx-pam module and ensures
+# that nginx-pam can check credentials using totp
+#
+# example nginx configuration to protect access to location /secured:
+#   location /secured {
+#     auth_pam "Realm for secured info";
+#     auth_pam_service_name: "login";
+#     ...
+#   }
+#
+# 
+# name of authenticated user is available as nginx variable $remote_user
+#
+
+- name: install packages required for nginx-pam module
+  package:
+    name: "nginx-full"
+    state: present
+  when: ansible_pkg_mgr == 'apt'
+
+- name: add nginx to shadow group 
+  user:
+    name: "www-data"
+    append: yes
+    groups: "shadow"  
+   
+- name: authorize shadow group for pam totp related scripts
+  file:
+    path: "{{ item }}"
+    mode: g+rx
+    group: "shadow"
+  with_items:
+    - "/etc/rsc"
+    - "/usr/local/bin/totp_login.sh"
+    - "/etc/rsc/workspace.json"
+
+- name: authorize shadow group to write to totp log
+  file:
+    path: "/var/log/totp_auth.log"
+    state: touch
+    mode: g+w
+    group: "shadow"

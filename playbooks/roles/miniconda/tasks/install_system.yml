@@ -1,0 +1,34 @@
+---
+- name: Install conda in shared environments
+  shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
+
+- name: Create .condarc file for shares packages and environments
+  template:
+    src: .condarc.j2
+    dest: "{{ miniconda_install_dir }}/.condarc"
+    mode: 0755
+
+# Without this, any package downloaded by another person is not retrievable from the cache by others.
+- name: Create miniconda mutli-user group
+  group:
+      name: miniconda_users
+      state: present
+
+- name: Setuid rights on pkgs/ directory for multi-user support
+  file:
+    path: "{{ item }}"
+    group: miniconda_users
+    mode: g+rwxs
+    recurse: true
+  loop:
+    - "{{ miniconda_install_dir }}/pkgs/"
+    - "{{ miniconda_install_dir }}/envs/"
+
+- name: Add users to miniconda multiple user group
+  user:
+    name: "{{ item.user }}"
+    groups: miniconda_users
+    append: yes
+  with_items: 
+    - "{{ fact_regular_users }}"
+...

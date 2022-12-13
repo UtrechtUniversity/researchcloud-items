@@ -1,0 +1,7 @@
+---
+
+- name: install icommands
+  package:
+    name: irods-icommands
+    state: present
+

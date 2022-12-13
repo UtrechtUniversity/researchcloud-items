@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "------ configuration complete ------"
+echo "Your environment is now ready for use"

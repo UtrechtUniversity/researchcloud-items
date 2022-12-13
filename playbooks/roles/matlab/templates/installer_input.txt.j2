@@ -1,0 +1,30 @@
+## THIS FILE IS MAINTAINED BY ANSIBLE, LOCAL CHANGES MAY BE LOST
+
+# location to install the matlab software
+destinationFolder={{ matlab_dir }}/{{ matlab_version }}
+
+# iso install based key
+fileInstallationKey={{ matlab_file_installation_key }}
+
+# accept Matlab license terms
+agreeToLicense=yes
+
+# installer log output
+outputFile=/tmp/matlab-install.log
+
+# enable Login Named User licensing
+enableLNU=yes
+
+# do not send usage info to Matlab
+improveMATLAB=no
+
+# location of the license server
+licensePath={{ matlab_license_dir }}/license.dat
+
+# List of products to install:
+{% for i in matlab_products %}
+{{ i }}
+{% endfor %}
+
+
+

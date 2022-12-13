@@ -1,0 +1,9 @@
+---
+- name: Install tweet collector and dependencies
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - docker
+    - tweet_collector
+...
