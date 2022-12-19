@@ -5,7 +5,7 @@
 Ensure that your laptop/workstation supports Remote Desktop connections:
 
 - Windows 10+: Support for Remote Desktop may be installed already.
-  Find the program in the windows desktop menu, or open a commandline prompt, type ***mstsc*** 
+  Find the program in the windows desktop menu, or open a commandline prompt and type ***mstsc*** 
   to start the remote desktop client program.  
   
   Alternatively, in the search box on the taskbar, type ***Remote Desktop Connection***.   
