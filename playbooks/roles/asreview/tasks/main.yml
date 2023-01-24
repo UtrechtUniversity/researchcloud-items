@@ -10,6 +10,10 @@
     virtualenv: /opt/venvs/asreview
     virtualenv_command: virtualenv
 
+- name: Install extensions
+  when: asreview_extensions
+  include_tasks: asreview_extensions.yml
+
 - name: Create function to source venv before launching ASReview LAB
   copy:
     src: set_asreview_alias
