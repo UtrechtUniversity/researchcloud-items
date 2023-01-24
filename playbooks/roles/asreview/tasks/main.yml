@@ -6,7 +6,7 @@
 
 - name: Install ASReview LAB through pip
   pip:
-    name: asreview
+    name: asreview[all]
     virtualenv: /opt/venvs/asreview
     virtualenv_command: virtualenv
 
