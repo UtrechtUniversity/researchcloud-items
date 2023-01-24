@@ -21,6 +21,7 @@
     mode: 0755
 
 - name: Install desktop file menu item through role
+  when: asreview_desktop
   include_role:
     name: desktop_file
   vars: 
