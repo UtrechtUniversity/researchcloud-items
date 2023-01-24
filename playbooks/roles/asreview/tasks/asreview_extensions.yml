@@ -1,0 +1,10 @@
+- name: Install ASReview extensions through pip
+  pip:
+    name: 
+      - asreview-insights
+      - asreview-datatools
+      - asreview-wordcloud
+      - asreview-makita
+    virtualenv: /opt/venvs/asreview
+    virtualenv_command: virtualenv
+    
