@@ -31,4 +31,10 @@
       - 64
       - 96
     desktopfile_login: true
+    
+- name: Copy asr to /usr/local/bin
+  copy:
+    src: "asr"
+    dest: "/usr/local/bin/asr"
+    mode: 0755
 ...
