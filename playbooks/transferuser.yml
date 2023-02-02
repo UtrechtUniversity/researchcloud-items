@@ -1,0 +1,9 @@
+---
+- name: add user account and script for data transfers
+  hosts: localhost
+  gather_facts: false
+
+  roles:
+     - transferuser
+
+
