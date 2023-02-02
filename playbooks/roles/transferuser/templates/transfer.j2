@@ -1,0 +1,23 @@
+#!/bin/bash
+# {{ transferuser_command }}
+# option "on" installs new public key for user {{ transferuser_name }}
+# all other uses including option "off" removes the public key 
+
+TUSER={{ transferuser_name }}
+
+# always disable the last known key
+if (-e /home/${TUSER}/authorized_keys) 
+then
+	rm /home/${TUSER}/authorized_keys
+	echo "Existing transfer key is now disabled"
+fi
+
+# ... todo: exit if not option "on"
+
+echo "Please enter the new transfer key that you wish to activate:"
+read -r TKEY
+echo ${TKEY}|cat >/home/${TUSER}/authorized_keys
+chmod 644 /home/${TUSER}/authorized_keys
+
+
+
