@@ -16,6 +16,6 @@
   template:
     src: transfer.j2
     dest: "/usr/local/bin/{{ transferuser_command }}"
-    mode: 4711
+    mode: 04755
     owner: root
     group: root
