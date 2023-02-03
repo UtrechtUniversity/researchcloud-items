@@ -48,7 +48,8 @@ Currently, all our playbooks are still considered Experimental.
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
 - [miniconda](playbooks/miniconda.md)  Python applicaiton development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
-- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
+- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
+- [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 
 ## Roles
@@ -81,6 +82,7 @@ Currently, all our playbooks are still considered Experimental.
 - [runonce](roles/runonce.md)
 - [sshfs-configrobot](roles/sshfs-configrobot.md)
 - [sshfs-mount](roles/sshfs-mount.md)
-- [sshfs-umount](roles/sshfs-umount.md)
+- [sshfs-umount](roles/sshfs-umount.md)   
+- [transferuser](roles/transferuser.md)   
 - [userspace_applications](roles/userspace_applications.md)
 - [uwsgi](roles/uwsgi.md)
