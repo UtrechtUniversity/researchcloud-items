@@ -46,48 +46,25 @@ Once you are done with using your workspace, just dispose of it in the SRC web p
 - up to 2 TB storage
 
 ## Designed with consortia and other Collaborative use in mind
-Often, workspaces will need to be used by research staff from different institutes. 
-The organizational structure may vary from an ad-hoc project team to a legal entity representing a
-consortium. 
-Solutions such as guest accounts for staff from other institutes could lead to scenarios where
-the guests are deprived from important features.
-
-To overcome such limitations, SRC instead uses the concept of a collaboration.
+Surf Research Cloud uses the concept of a 'collaboration' to facilitate working together in project teams.
 A collaboration may be viewed as a *virtual* organization, with members that can originate
-from different research institutes, or from the private sector. Members may also have joined 
-on a personal title. 
+from different research institutes, or from the private sector. A collaboration can accommodate a virtual organization the size of a European research project consortium. In contrast, it might also consist of a single member, e.g. a researcher in need of compute power or a private workspace.
+
+Managing memberships of the collaboration is done via a self-service portal (called [SRAM](https://sram.surf.nl), 
+short for SURF Research Access Management. E.g. a researcher can give (temporary) access to PhDs or students.
+
 It is important to understand that SRC assumes all members of the collaboration to be 
 contractually or otherwise bound to work together.  
 Hence the costs related to a workspace ordered by a single member of the collaboration are 
 effectively charged to the collaboration. In addition, the workspace is automatically accessible
-to  all members of the collaboration.
+to all members of the collaboration.
 
-A collaboration can accommodate a virtual organization the size of a European research project consortium.
-In contrast, it might also consist of just a single member, a researcher in need of a private workspace.
-Managing membership is done via a self-service portal (called [SRAM](https://sram.surf.nl), 
-short for SURF Research Access Management. 
+## Funding
+There are several ways to request computing time for SRC. The easiest and fastest way (and recommended first step)
+is to [contact UU Research IT](https://www.uu.nl/en/research/research-data-management/tools-services/software-and-computing/virtual-research-environments). 
+A short intake meeting will get you started. Additionally, more computing time can be requested via Surf or NWO.
 
-## Membership and Wallets
-As an Utrecht University employee or student, you can be invited by a colleague to an existing SRC collaboration.
-Alternatively issue a request via the [University Servicedesk](https://uu.topdesk.net) to have 
-a new SURF ResearchCloud collaboration set up for your project. 
-Once you are a member of a collaboration, you can start using any of its already running workspaces.
-NB: Allow upto 5 minutes for running workspaces to learn about and give access to newly added members.
-
-You need a wallet if you want to create new workspaces. A wallet is usually linked to the collaboration 
-budget. It authorizes you to perform actions with financial implications. 
-You can request a wallet via the [SRC Web portal](https://portal.live.surfresearchcloud.nl).
-We recommend that you always request a wallet as soon as you start using SRC. 
-
-## Using the Research-IT university budget
-To minimize the administrative burden on researchers and to promote the use of SURF ResearchCloud, 
-Utrecht University can accommodate your first (or modest) use of SRC with credits from its 
-annual Research-IT budget. Should you wish to draw from this budget, please mention this in your
-wallet request.  
-
-
-## GETTING STARTED
-The [SURF ResearchCloud Wiki](https://servicedesk.surfsara.nl/wiki/display/WIKI/Research+Cloud+Documentation)
-pages provide an elaborate introduction on concepts related to this cloud service. 
+## Getting started
+Contact [UU Research IT](https://www.uu.nl/en/research/research-data-management/tools-services/software-and-computing/virtual-research-environments) for an intake meeting to get started. After a 30 minute intake you will have everything ready to start your first workspace.
 
 Practical instructions to get started on SRC can be found [here](first-time-use.md).
