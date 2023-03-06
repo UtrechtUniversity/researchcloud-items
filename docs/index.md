@@ -2,8 +2,6 @@
 This is the developer documenation for this repository.
 See [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).
 
-For design principles that one should keep in mind when creating solutions, see [design principles](design_principles.md).
-For best practices that should be followed when writing code, see [best practices](best_practices.md).
 
 Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles).
 The playbook can be used stand-alone (run them locally on the target host) 
@@ -11,17 +9,13 @@ or as a SURF ResearchCloud plugin.
 
 The roles serve as reusable building blocks for these playbooks.
 
+Contributed playbooks and roles should meet criteria specified in our [item quality checklist](./item_quality_checklist.md).
+
+
 When adding documentation, please consider to format your text
 using the file [template-playbooks.md](playbooks/template-playbooks.md) to
 document a playbook
 or the file [template-roles.md](roles/template-roles.md) to document a role.
-When referencing a playbook in a SURF Research Cloud catalog item, 
-add [information](catalog-item-description.md)
-to enable users to decide upon the suitability of the item for their use case.
-
-NB: The files section of roles may include [base64 encoded](icons.md) icon files. 
-These files can be used to decorate a related catalog item in 
-SURF ResearchCloud.
 
 ## Playbooks
 The status of a playbook is either Experimental or Supported. In the SURF Research Cloud catalog, this
