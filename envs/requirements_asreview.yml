@@ -21,7 +21,7 @@ apt:
 
 
 miniconda:
-  name: custom-kernel
+  name: asreview
   channels:
   - conda-forge
   - defaults
