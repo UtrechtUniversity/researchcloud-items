@@ -1,5 +1,5 @@
 # researchcloud-items
-This repository contains [Ansible](ansible.com) installation scripts for use in conjunction with [SURF ResearchCloud](https://portal.live.surfresearchcloud.nl). ResearchCloud catalog maintainers can configure a playbook from this repo as a script source for a plugin-type catalog item.  
+This repository contains [Ansible](https://docs.ansible.com) installation scripts for use in conjunction with [SURF ResearchCloud](https://portal.live.surfresearchcloud.nl). ResearchCloud catalog maintainers can configure a playbook from this repo as a script source for a plugin-type catalog item.  
 Alternatively feel free to clone this repository on a target host and locally run a playbook using the command  
 `ansible-playbook <name-of-the-playbook>`. 
 

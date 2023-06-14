@@ -14,9 +14,9 @@ where scripts can be placed.  Installs an example script within this
 directory.
 
 An example nginx configuration to execute a script "hello" at 
-location /example/hello would be: 
+location /hello would be: 
 ```
-  location /example {
+  location / {
      gzip off;
      root /var/www/cgi-bin;
      fastcgi_pass unix:/var/run/fcgiwrap.socket;
