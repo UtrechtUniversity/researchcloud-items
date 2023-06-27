@@ -1,0 +1,6 @@
+---
+stata18_tar_dir: "/data/volume_2/stata/stata18-linux"
+stata18_tar_file: "Stata18Linux64.tar.gz"
+stata18_tmp_dir: "/tmp/statafiles"
+stata18_dir: "/usr/local/stata18"
+

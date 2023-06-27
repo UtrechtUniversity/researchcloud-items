@@ -1,0 +1,50 @@
+---
+# depends: Ubuntu + desktop GUI
+#
+# Stata18 installation requires you to have prepared 1 file:
+#  1) target machine must locally have a file with Stata software tar.gz image 
+#    NB: You should obtain this compressed tar file from Stata.
+#
+#
+
+- name: create a tmp dir to unpack Stata software to
+  file:
+    dest: "{{ stata18_tmp_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: download and unpack Stata18 distribution tar.gz
+  unarchive:
+    src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
+    remote_src: no
+    dest: "{{ stata18_tmp_dir }}"
+
+- name: create stata software target dir
+  file:
+    dest: "{{ stata18_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+# TODO: install stata
+
+      #- name: install desktop launcher
+      #include: desktop.yml
+
+#- name: create symlink to matlab executable for bash access
+#  file:
+#    dest: /usr/local/bin/matlab
+#    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
+#    state: link
+ 
+# commandline wrapper will try per-user license before network license
+#- name: create commandline wrapper to matlab executable
+#  template:
+#    owner: root
+#    group: root
+#    mode: 0755
+#    src: "matlab.j2"
+#    dest: /usr/local/bin/matlab
