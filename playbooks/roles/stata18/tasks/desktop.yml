@@ -19,28 +19,29 @@
 
 - name: set  app_name
   set_fact:
-    app_name: "matlab"
+    app_name: "stata"
 
 - name: copy icon files to /tmp 
   copy:
     src: "{{ app_name }}-{{ item }}x{{ item }}.png"
+    remote_src: yes
     dest: "/tmp/{{ app_name }}-{{ item }}x{{ item }}.png"
     mode: 0644
   with_items:
-    #    - "16"
+      - "16"
     #- "22"
     #- "32"
-    - "48"
+    #- "48"
       #- "96"
       #- "128"
 
 - name: install icons as xdg resource
   command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}"
   with_items:
-    #- "16"
+    - "16"
     #- "22"
     #- "32"
-    - "48"
+    #- "48"
       #- "96"
       #- "128"
 
@@ -50,16 +51,16 @@
     dest: "/tmp/{{ item }}.desktop"
     mode: 0644
   with_items:
-    - "matlab"
-    - "matlab-activate"
-    - "matlab-deactivate"
+    - "stata"
+    - "stata-mp"
+    - "stata-se"
 
 - name: install launcher in system-wide desktop menu
   command: "xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop"
   with_items:
-    - "matlab"
-    - "matlab-activate"
-    - "matlab-deactivate"
+    - "stata"
+    - "stata-mp"
+    - "stata-se"
 
 
 
