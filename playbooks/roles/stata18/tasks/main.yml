@@ -29,7 +29,66 @@
     owner: root
     group: root
 
-# TODO: install stata
+# instead of running the interactive Stata "install" and "stinit" scripts, 
+# we have scripted those actions here.  
+# This Ansible script expects Stata 18.0.  In case you install a different
+# Stata version, the below actions may need changes
+#
+
+# Note that we rename from X.tza to X.tar.gz to facilitate later extraction
+- name: copy compressed stata files to target dir while renaming to .tar.gz
+  copy:
+    src: "{{ stata18_tmp_dir }}/unix/linux64/{{ item }}.taz"
+    remote_src: yes
+    dest: "{{ stata18_dir }}/{{ item }}.tar.gz"
+    owner: root
+    mode: 0640
+  with_items:
+    - "ado"
+    - "base"
+    - "bins"
+    - "docs"
+#  - "statalib"   yet this item is not included 
+
+- name: copy file setrwxp to target dir
+  copy:
+    src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
+    remote_src: yes
+    dest: "{{ stata18_dir }}/setrwxp"
+    owner: root
+    mode: 0750
+
+- name: extract compressed stata files in place in target dir
+  unarchive: 
+    src: "{{ stata18_dir }}/{{ item }}.tar.gz"
+    remote_src: yes
+    dest: "{{ stata18_dir}}"
+    owner: root
+  with_items:
+    - "ado"
+    - "base"
+    - "bins"
+    - "docs"
+
+- name: clean up tar.gz files
+  file: 
+    src: "{{ stata18_dir }}/{{ item }}.tar.gz" 
+    state: absent
+  with_item:
+    - "ado"
+    - "base"
+    - "bins"
+    - "docs"
+   
+- name: run Stata setrwxp to set access rights for Stata files
+  command: "./setrwxp now"
+    chdir: "{{ stata18_dir }}"
+  
+- name: create Stata markfile to indicate presence of installed Stata
+  shell: "echo `date`>installed.180"
+    chdir: "{{ stata18_dir }}"
+
+
 
       #- name: install desktop launcher
       #include: desktop.yml
