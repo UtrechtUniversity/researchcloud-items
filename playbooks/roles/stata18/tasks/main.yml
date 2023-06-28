@@ -18,7 +18,7 @@
 - name: download and unpack Stata18 distribution tar.gz
   unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
-    remote_src: no
+    remote_src: yes
     dest: "{{ stata18_tmp_dir }}"
 
 - name: create stata software target dir
