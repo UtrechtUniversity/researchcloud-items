@@ -74,7 +74,7 @@
   file: 
     src: "{{ stata18_dir }}/{{ item }}.tar.gz" 
     state: absent
-  with_item:
+  with_items:
     - "ado"
     - "base"
     - "bins"
