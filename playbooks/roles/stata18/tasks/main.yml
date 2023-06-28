@@ -82,10 +82,12 @@
    
 - name: run Stata setrwxp to set access rights for Stata files
   shell: "./setrwxp now"
+  args:
     chdir: "{{ stata18_dir }}"
   
 - name: create Stata markfile to indicate presence of installed Stata
   shell: "echo `date`>installed.180"
+  args:
     chdir: "{{ stata18_dir }}"
 
 # NB: the license response file will fail if the corresponding Ansible vars have not been defined!
@@ -101,6 +103,7 @@
 
 - name: activate license
   shell: "./stinit <stinit_responses.txt"
+  args:
     chdir: "{{ stata18_dir }}"
 
 
