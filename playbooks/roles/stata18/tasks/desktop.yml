@@ -24,7 +24,6 @@
 - name: copy icon files to /tmp 
   copy:
     src: "{{ app_name }}-{{ item }}x{{ item }}.png"
-    remote_src: yes
     dest: "/tmp/{{ app_name }}-{{ item }}x{{ item }}.png"
     mode: 0644
   with_items:
