@@ -7,6 +7,11 @@
 #
 #
 
+- name: install curses libraries to support commandline invocation of Stata
+  package:
+    name: "libncurses5"
+    state: present
+
 - name: create a tmp dir to unpack Stata software to
   file:
     dest: "{{ stata18_tmp_dir }}"
@@ -72,7 +77,7 @@
 
 - name: clean up tar.gz files
   file: 
-    src: "{{ stata18_dir }}/{{ item }}.tar.gz" 
+    path: "{{ stata18_dir }}/{{ item }}.tar.gz" 
     state: absent
   with_items:
     - "ado"
