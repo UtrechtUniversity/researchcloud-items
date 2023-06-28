@@ -81,17 +81,31 @@
     - "docs"
    
 - name: run Stata setrwxp to set access rights for Stata files
-  command: "./setrwxp now"
+  shell: "./setrwxp now"
     chdir: "{{ stata18_dir }}"
   
 - name: create Stata markfile to indicate presence of installed Stata
   shell: "echo `date`>installed.180"
     chdir: "{{ stata18_dir }}"
 
+# NB: the license response file will fail if the corresponding Ansible vars have not been defined!
+#  We suggest to specify them as CO secrets
+#  see jinja script for variable names
+- name: create response file for license initiator
+  template:
+    owner: root
+    group: root
+    mode: 0755
+    src: "stata_input_for_stinit.j2"
+    dest: "{{ stata18_dir }}/stinit_responses.txt"
+
+- name: activate license
+  shell: "./stinit <stinit_responses.txt"
+    chdir: "{{ stata18_dir }}"
 
 
-      #- name: install desktop launcher
-      #include: desktop.yml
+- name: install desktop launcher
+  include: desktop.yml
 
 #- name: create symlink to matlab executable for bash access
 #  file:
