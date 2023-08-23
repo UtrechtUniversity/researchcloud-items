@@ -3,12 +3,19 @@
   when: ansible_os_family == 'Debian'
   apt:
     name: r-base
+    update_cache: yes
+    state: present
+
+- name: Install R dev
+  when: ansible_os_family == 'Debian'
+  apt:
+    name: r-base-dev
     state: present
 
 - name: Install RStudio for Debian
   when: ansible_os_family == 'Debian'
   apt:
-    deb: https://s3.amazonaws.com/rstudio-ide-build/desktop/bionic/amd64/rstudio-2022.02.0-443-amd64.deb
+    deb: https://download1.rstudio.org/electron/focal/amd64/rstudio-2023.06.1-524-amd64.deb
     state: present
 
 # - name: Update extra packages for CentOS
