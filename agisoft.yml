@@ -1,7 +1,0 @@
----
-- name: Install Agisoft
-  hosts: localhost
-  gather_facts: true
-  roles:
-    - agisoft
-...
