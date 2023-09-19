@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Anaconda
-Exec=anaconda-navigator
-Icon=~/anaconda3/lib/python3.7/site-packages/anaconda_navigator/app/icons/Icon1024.png
-Terminal=false
-
