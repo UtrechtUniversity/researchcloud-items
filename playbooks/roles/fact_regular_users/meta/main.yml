@@ -6,8 +6,7 @@ galaxy_info:
   license: GPLv3
   min_ansible_version: 2.6
   platfoms:
-  - name: CentOS
-    version: 7
+    - name: CentOS
+      version: 7
 
 dependencies:
-

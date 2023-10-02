@@ -1,13 +1,7 @@
 ---
-camunda_modeler_version: "4.10.0"
-camunda_modeler_release: "4.10.0"
+camunda_modeler_version: 4.10.0
+camunda_modeler_release: 4.10.0
 #https://downloads.camunda.cloud/release/camunda-modeler/4.10.0/camunda-modeler-4.10.0-linux-x64.tar.gz
-camunda_modeler_urldir: "https://downloads.camunda.cloud/release/camunda-modeler/{{ camunda_modeler_version }}"
-camunda_modeler_urlfile_prefix: "camunda-modeler-{{ camunda_modeler_release }}-linux-x64"
-camunda_modeler_dir: "/var/lib/camunda-modeler"
-
-
-
-
-
-
+camunda_modeler_urldir: https://downloads.camunda.cloud/release/camunda-modeler/{{ camunda_modeler_version }}
+camunda_modeler_urlfile_prefix: camunda-modeler-{{ camunda_modeler_release }}-linux-x64
+camunda_modeler_dir: /var/lib/camunda-modeler

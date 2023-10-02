@@ -1,16 +1,12 @@
 ---
-keycloak_version: "15.0.2"
-keycloak_tardir: "https://github.com/keycloak/keycloak/releases/download/{{ keycloak_version }}/"
-keycloak_tarfile: "keycloak-{{ keycloak_version }}.tar.gz"
-keycloak_dir: "/var/lib/keycloak/"
+keycloak_version: 15.0.2
+keycloak_tardir: https://github.com/keycloak/keycloak/releases/download/{{ keycloak_version }}/
+keycloak_tarfile: keycloak-{{ keycloak_version }}.tar.gz
+keycloak_dir: /var/lib/keycloak/
 keycloak_jboss_home: "{{ keycloak_dir }}keycloak-{{ keycloak_version }}"
 keycloak_jboss_log: "{{ keycloak_jboss_home }}/standalone/log"
 keycloak_bind_port: "8180"
-keycloak_bind_address: "127.0.0.1"
-keycloak_admin_username: "admin"
-keycloak_admin_password: "admin"
-keycloak_create_admin: True
-
-
-
-
+keycloak_bind_address: 127.0.0.1
+keycloak_admin_username: admin
+keycloak_admin_password: admin
+keycloak_create_admin: true

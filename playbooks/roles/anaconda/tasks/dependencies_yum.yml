@@ -2,15 +2,14 @@
 - name: Install dependencies
   yum:
     name:
-    - libXcomposite
-    - libXcursor
-    - libXi
-    - libXtst
-    - libXrandr
-    - alsa-lib
-    - mesa-libEGL
-    - libXdamage
-    - mesa-libGL
-    - libXScrnSaver
+      - libXcomposite
+      - libXcursor
+      - libXi
+      - libXtst
+      - libXrandr
+      - alsa-lib
+      - mesa-libEGL
+      - libXdamage
+      - mesa-libGL
+      - libXScrnSaver
     state: present
-...

@@ -10,12 +10,12 @@
   roles:
     - fact_regular_users
 
-  tasks:      
+  tasks:
     - name: use some content of variable fact_regular_users
       debug:
-        msg: "username is {{item.user}} and id is {{item.userid}}"
+        msg: username is {{ item.user }} and id is {{ item.userid }}
       with_items: "{{fact_regular_users}}"
 
     - name: list all the data on users
       debug:
-        msg: "{{fact_regular_users}}"
+        msg: "{{ fact_regular_users }}"

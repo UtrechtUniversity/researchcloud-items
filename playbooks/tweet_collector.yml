@@ -6,4 +6,3 @@
   roles:
     - docker
     - tweet_collector
-...

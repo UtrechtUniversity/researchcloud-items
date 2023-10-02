@@ -9,40 +9,39 @@
     state: directory
 
 - name: Install xdg utilities
-  package: 
-    name: "xdg-utils"
+  package:
+    name: xdg-utils
     state: present
 
-- name: Copy icon files to /tmp 
+- name: Copy icon files to /tmp
   copy:
     src: "{{ desktopfile_app_name }}_{{ item }}.png"
-    dest: "/tmp/{{ desktopfile_app_name }}_{{ item }}.png"
-    mode: 0644
+    dest: /tmp/{{ desktopfile_app_name }}_{{ item }}.png
+    mode: "0644"
   with_items: "{{ desktopfile_sizes }}"
 
 - name: Install icons as xdg resource
-  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ desktopfile_app_name }}_{{ item }}.png {{ desktopfile_app_name }}"
+  command: xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ desktopfile_app_name }}_{{ item }}.png {{ desktopfile_app_name }}
   with_items: "{{ desktopfile_sizes }}"
 
 - name: Copy desktop launcher file to /tmp
   template:
     src: "{{ desktopfile_app_name }}.desktop.j2"
-    dest: "/tmp/{{ desktopfile_app_name }}.desktop"
-    mode: 0644
+    dest: /tmp/{{ desktopfile_app_name }}.desktop
+    mode: "0644"
 
 - name: Launch application at user login
   when: desktopfile_login
   template:
     src: "{{ desktopfile_app_name }}.desktop.j2"
-    dest: "/etc/xdg/autostart/{{ desktopfile_app_name }}.desktop"
-    mode: 0644
+    dest: /etc/xdg/autostart/{{ desktopfile_app_name }}.desktop
+    mode: "0644"
 
 - name: Install launcher in system-wide desktop menu
   when: (modules is not defined) and (desktopfile_menu)
-  command: "xdg-desktop-menu install --novendor /tmp/{{ desktopfile_app_name }}.desktop"
+  command: xdg-desktop-menu install --novendor /tmp/{{ desktopfile_app_name }}.desktop
 
 - name: Install launcher in system-wide desktop menu for multiple modules
   when: (modules is defined) and (desktopfile_menu)
-  command: "xdg-desktop-menu install --novendor /tmp/{{ desktopfile_app_name }}.desktop"
+  command: xdg-desktop-menu install --novendor /tmp/{{ desktopfile_app_name }}.desktop
   with_items: "{{ modules }}"
-...

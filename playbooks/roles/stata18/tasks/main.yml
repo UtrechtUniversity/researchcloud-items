@@ -9,28 +9,28 @@
 
 - name: install curses libraries to support commandline invocation of Stata
   package:
-    name: "libncurses5"
+    name: libncurses5
     state: present
 
 - name: create a tmp dir to unpack Stata software to
   file:
     dest: "{{ stata18_tmp_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
 - name: download and unpack Stata18 distribution tar.gz
   unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
-    remote_src: yes
+    remote_src: true
     dest: "{{ stata18_tmp_dir }}"
 
 - name: create stata software target dir
   file:
     dest: "{{ stata18_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
@@ -44,54 +44,54 @@
 - name: copy compressed stata files to target dir while renaming to .tar.gz
   copy:
     src: "{{ stata18_tmp_dir }}/unix/linux64/{{ item }}.taz"
-    remote_src: yes
+    remote_src: true
     dest: "{{ stata18_dir }}/{{ item }}.tar.gz"
     owner: root
-    mode: 0640
+    mode: "0640"
   with_items:
-    - "ado"
-    - "base"
-    - "bins"
-    - "docs"
+    - ado
+    - base
+    - bins
+    - docs
 #  - "statalib"   yet this item is not included 
 
 - name: copy file setrwxp to target dir
   copy:
     src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
-    remote_src: yes
+    remote_src: true
     dest: "{{ stata18_dir }}/setrwxp"
     owner: root
-    mode: 0750
+    mode: "0750"
 
 - name: extract compressed stata files in place in target dir
-  unarchive: 
+  unarchive:
     src: "{{ stata18_dir }}/{{ item }}.tar.gz"
-    remote_src: yes
-    dest: "{{ stata18_dir}}"
+    remote_src: true
+    dest: "{{ stata18_dir }}"
     owner: root
   with_items:
-    - "ado"
-    - "base"
-    - "bins"
-    - "docs"
+    - ado
+    - base
+    - bins
+    - docs
 
 - name: clean up tar.gz files
-  file: 
-    path: "{{ stata18_dir }}/{{ item }}.tar.gz" 
+  file:
+    path: "{{ stata18_dir }}/{{ item }}.tar.gz"
     state: absent
   with_items:
-    - "ado"
-    - "base"
-    - "bins"
-    - "docs"
-   
+    - ado
+    - base
+    - bins
+    - docs
+
 - name: run Stata setrwxp to set access rights for Stata files
-  shell: "./setrwxp now"
+  shell: ./setrwxp now
   args:
     chdir: "{{ stata18_dir }}"
-  
+
 - name: create Stata markfile to indicate presence of installed Stata
-  shell: "echo `date`>installed.180"
+  shell: echo `date`>installed.180
   args:
     chdir: "{{ stata18_dir }}"
 
@@ -102,15 +102,14 @@
   template:
     owner: root
     group: root
-    mode: 0755
-    src: "stata_input_for_stinit.j2"
+    mode: "0755"
+    src: stata_input_for_stinit.j2
     dest: "{{ stata18_dir }}/stinit_responses.txt"
 
 - name: activate license
-  shell: "./stinit <stinit_responses.txt"
+  shell: ./stinit <stinit_responses.txt
   args:
     chdir: "{{ stata18_dir }}"
-
 
 - name: install desktop launcher
   include: desktop.yml
@@ -120,7 +119,7 @@
 #    dest: /usr/local/bin/matlab
 #    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
 #    state: link
- 
+
 # commandline wrapper will try per-user license before network license
 #- name: create commandline wrapper to matlab executable
 #  template:

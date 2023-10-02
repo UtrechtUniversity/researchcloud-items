@@ -3,4 +3,3 @@
   service:
     name: postgresql
     state: restarted
-...

@@ -1,5 +1,5 @@
 ---
-- name: install pyenv and miniconda 
+- name: install pyenv and miniconda
   hosts: localhost
   gather_facts: true
 
@@ -10,6 +10,5 @@
     - role: userspace_applications
       vars:
         - list_userspace_applications:
-          - "20-python-miniconda"
-          - "999ready"
-
+            - 20-python-miniconda
+            - 999ready

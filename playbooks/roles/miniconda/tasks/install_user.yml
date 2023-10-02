@@ -7,4 +7,3 @@
   shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
   become: false
   become_user: "{{ item.user }}"
-...

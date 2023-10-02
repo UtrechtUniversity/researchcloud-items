@@ -3,10 +3,7 @@
   hosts: localhost
   gather_facts: true
 
-
   roles:
     - role: robotuser
-      vars: 
-       - robotuser_generate_ssh_key: "yes"
-
-
+      vars:
+        - robotuser_generate_ssh_key: "yes"

@@ -4,4 +4,3 @@ miniconda_systemwide: false
 miniconda_download_dest: /tmp/miniconda
 miniconda_install_dir: /opt/miniconda
 miniconda_url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-...

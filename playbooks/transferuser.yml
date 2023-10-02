@@ -4,6 +4,4 @@
   gather_facts: false
 
   roles:
-     - transferuser
-
-
+    - transferuser

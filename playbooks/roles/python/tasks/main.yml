@@ -11,10 +11,9 @@
 
 # userspace configuration can be added.
 # below is a test script to serve as an example
-    
+
 # - name: place test file
 #  copy:
 #    src: "test.sh"
 #    dest: "/etc/runonce.d/test.sh"
 #    mode: 0755
-

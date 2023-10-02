@@ -8,5 +8,5 @@
     - role: userspace_applications
       vars:
         - list_userspace_applications:
-          - "21-pytorch-geoproject"
-          - "999ready"
+            - 21-pytorch-geoproject
+            - 999ready

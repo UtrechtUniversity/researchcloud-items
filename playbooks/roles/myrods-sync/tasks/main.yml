@@ -1,5 +1,4 @@
 ---
-
 - name: pip install python-irodsclient
   pip:
     name: python-irodsclient
@@ -9,7 +8,7 @@
   file:
     dest: "{{ myrodssync_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
@@ -18,7 +17,6 @@
     repo: "{{ myrodssync_git }}"
     dest: "{{ myrodssync_dir }}"
     version: main
-
 
 - name: install desktop launcher for myrods-sync
   include: desktop.yml

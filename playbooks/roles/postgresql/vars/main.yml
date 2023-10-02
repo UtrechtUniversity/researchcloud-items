@@ -2,4 +2,3 @@
 postgresql_db_name: foobar
 postgresql_db_user: postgres
 postgresql_db_password: admin
-...

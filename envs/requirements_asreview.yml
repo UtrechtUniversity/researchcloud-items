@@ -6,36 +6,33 @@ apt:
   #   # or for R-repo
   # - E298A3A825C0D65DFD57CBB651716619E084DAB9
   repos:
-  - 'deb http://archive.ubuntu.com/ubuntu focal main multiverse universe restricted'
-  - 'deb http://archive.ubuntu.com/ubuntu focal-security main multiverse universe restricted'
+    - deb http://archive.ubuntu.com/ubuntu focal main multiverse universe restricted
+    - deb http://archive.ubuntu.com/ubuntu focal-security main multiverse universe restricted
   # - 'deb [arch=amd64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse'
   # - 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
   packages:
-  - ncdu
-  # deb:
-  # # xxdiff
-  # - 'http://nl.archive.ubuntu.com/ubuntu/pool/universe/x/xxdiff/xxdiff_4.0.1+hg487+dfsg-1_amd64.deb'
-  # # libnetcdf
-  # - 'http://nl.archive.ubuntu.com/ubuntu/pool/universe/n/netcdf-cxx/libnetcdf-c++4-1_4.3.1-2build1_amd64.deb'
-  # # - 'https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2021.09.0-351-amd64.deb'
-
+    - ncdu
+# deb:
+# # xxdiff
+# - 'http://nl.archive.ubuntu.com/ubuntu/pool/universe/x/xxdiff/xxdiff_4.0.1+hg487+dfsg-1_amd64.deb'
+# # libnetcdf
+# - 'http://nl.archive.ubuntu.com/ubuntu/pool/universe/n/netcdf-cxx/libnetcdf-c++4-1_4.3.1-2build1_amd64.deb'
+# # - 'https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2021.09.0-351-amd64.deb'
 
 miniconda:
   name: asreview
   channels:
-  - conda-forge
-  - defaults
+    - conda-forge
+    - defaults
   dependencies:
-  - python=3.9.10
-  # After conda-packages pip-packages can still be installed
-  # so install pip ...
-  - pip
-  - pip:
-    - asreview[all]
-    - asreview-insights
-    - asreview-datatools
-    - asreview-wordcloud
-    - asreview-makita
+    - python=3.9.10
+    # After conda-packages pip-packages can still be installed
+    # so install pip ...
+    - pip
+    - pip:
+        - asreview[all]
+        - asreview-insights
+        - asreview-datatools
+        - asreview-wordcloud
+        - asreview-makita
   prefix: /etc/miniconda/envs
-
-    

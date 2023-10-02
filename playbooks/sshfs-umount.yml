@@ -3,10 +3,9 @@
   hosts: localhost
   gather_facts: true
 
-# when calling this Ansible script, the following variable MUST be set:
-#   sshfs_mountpoint  
-# (An earlier call to role sshfs-mount will have set the variable)
-        
+  # when calling this Ansible script, the following variable MUST be set:
+  #   sshfs_mountpoint  
+  # (An earlier call to role sshfs-mount will have set the variable)
+
   roles:
     - sshfs-umount
-

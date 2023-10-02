@@ -2,11 +2,10 @@
 - name: Install dependencies
   apt:
     pkg:
-    - libxml2-dev
-    - libfreetype6-dev
-    - libpng-dev
-    - libtiff5-dev 
-    - libjpeg-dev
-    - libcurl4-openssl-dev
+      - libxml2-dev
+      - libfreetype6-dev
+      - libpng-dev
+      - libtiff5-dev
+      - libjpeg-dev
+      - libcurl4-openssl-dev
     state: present
-...

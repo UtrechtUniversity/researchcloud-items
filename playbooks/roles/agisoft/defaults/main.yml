@@ -1,4 +1,4 @@
 ---
 agisoft_version: 1.8.4
-agisoft_download_dest: "/tmp/metashape-pro"
-agisoft_install_dir: "/opt/metashape-pro"
+agisoft_download_dest: /tmp/metashape-pro
+agisoft_install_dir: /opt/metashape-pro

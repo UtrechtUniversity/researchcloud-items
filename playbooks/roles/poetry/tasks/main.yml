@@ -6,7 +6,6 @@
 - name: Install poetry per user through runonce.d
   when: poetry_per_user
   copy:
-    src: "poetry.sh"
-    dest: "/etc/runonce.d"
-    mode: 0755
-...
+    src: poetry.sh
+    dest: /etc/runonce.d
+    mode: "0755"

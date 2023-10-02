@@ -3,13 +3,9 @@
 #  so that variable sshfs_mountpoint is still available here
 
 - name: wait until mounted filesystem is at rest
-  command: "sync"
+  command: sync
 
-- name: umount remote filesystem 
+- name: umount remote filesystem
   mount:
     path: "{{ sshfs_mountpoint }}"
     state: unmounted
-
-
-
-

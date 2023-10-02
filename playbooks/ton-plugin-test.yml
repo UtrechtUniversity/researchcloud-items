@@ -11,18 +11,18 @@
 
     - name: signal variable not found
       debug:
-        msg: "variable TON_TEST not defined"
+        msg: variable TON_TEST not defined
       when: TON_TEST is undefined
 
   roles:
-#    - python
-#    - pyenv
-#    - uwsgi
-#    - flask-app
-#    - camunda-server
+    #    - python
+    #    - pyenv
+    #    - uwsgi
+    #    - flask-app
+    #    - camunda-server
 
-     - nginx-pam
-     - nginx-fastcgi
+    - nginx-pam
+    - nginx-fastcgi
 
 #    - role: userspace_applications
 #      vars:
@@ -31,4 +31,3 @@
 #          - "10-python-poetry"
 #          - "70-tweets-collector"
 #          - "999ready"
-

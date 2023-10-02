@@ -2,31 +2,29 @@
 apt:
   repo_keys: []
   repos:
-  - 'deb http://archive.ubuntu.com/ubuntu focal main multiverse universe restricted'
-  - 'deb http://archive.ubuntu.com/ubuntu focal-security main multiverse universe restricted'
+    - deb http://archive.ubuntu.com/ubuntu focal main multiverse universe restricted
+    - deb http://archive.ubuntu.com/ubuntu focal-security main multiverse universe restricted
   packages:
-  - ncdu
-  - ffmpeg
+    - ncdu
+    - ffmpeg
 
 miniconda:
   name: whisper
   channels:
-  - pytorch
-  - nvidia
-  - conda-forge
+    - pytorch
+    - nvidia
+    - conda-forge
   dependencies:
-  - python=3.9.10
-  - pytorch==1.13.1
-  - torchvision==0.14.1
-  - torchaudio==0.13.1
-  - pytorch-cuda=11.7
-  - pandas
-  - ipykernel
-  - pip
-  - pip:
-    - ffmpeg-python
-    - git+https://github.com/openai/whisper.git
-    - git+https://github.com/m-bain/whisperx.git
+    - python=3.9.10
+    - pytorch==1.13.1
+    - torchvision==0.14.1
+    - torchaudio==0.13.1
+    - pytorch-cuda=11.7
+    - pandas
+    - ipykernel
+    - pip
+    - pip:
+        - ffmpeg-python
+        - git+https://github.com/openai/whisper.git
+        - git+https://github.com/m-bain/whisperx.git
   prefix: /etc/miniconda/envs
-
-    

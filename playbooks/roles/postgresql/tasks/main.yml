@@ -24,4 +24,3 @@
 - name: Provision db and user by default
   when: postgresql_provision
   include: provision.yml
-...
