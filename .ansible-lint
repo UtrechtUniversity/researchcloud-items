@@ -2,3 +2,5 @@
 profile: production
 exclude_paths:
   - docs
+skip_list:
+  - role-name
