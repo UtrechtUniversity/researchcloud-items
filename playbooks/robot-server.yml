@@ -1,5 +1,5 @@
 ---
-- name: prepare a robot server
+- name: Prepare a robot server
   hosts: localhost
   gather_facts: true
 

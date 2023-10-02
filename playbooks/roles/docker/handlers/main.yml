@@ -1,5 +1,5 @@
 ---
-- name: start docker deamon
+- name: Start docker deamon
   service:
     name: docker
     state: restarted

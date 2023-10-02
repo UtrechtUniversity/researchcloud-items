@@ -1,5 +1,5 @@
 ---
-- name: install Python environment management tools
+- name: Install Python environment management tools
   hosts: localhost
   gather_facts: true
 

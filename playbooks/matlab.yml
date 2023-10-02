@@ -11,7 +11,7 @@
 #
 # For more information, see documentation on the roles used in this playbook 
 #
-- name: install matlab products in researchcloud workspace
+- name: Install matlab products in researchcloud workspace
   hosts: localhost
   gather_facts: true
   roles:

@@ -1,5 +1,5 @@
 ---
-- name: install iRODS related desktop applications in researchcloud workspace
+- name: Install iRODS related desktop applications in researchcloud workspace
   hosts: localhost
   gather_facts: true
 

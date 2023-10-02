@@ -14,12 +14,12 @@
 #   test example:  http://localhost/example/hello
 #
 
-- name: install support for fastcgi with nginx
+- name: Install support for fastcgi with nginx
   package:
     name: fcgiwrap
     state: present
 
-- name: make cgi-bin directory
+- name: Make cgi-bin directory
   file:
     name: /var/www/cgi-bin
     state: directory
@@ -27,7 +27,7 @@
     group: root
     mode: "0755"
 
-- name: install example script
+- name: Install example script
   copy:
     src: example-script.sh
     dest: /var/www/cgi-bin/hello

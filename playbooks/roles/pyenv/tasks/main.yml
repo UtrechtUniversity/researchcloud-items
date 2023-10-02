@@ -1,5 +1,5 @@
 ---
-- name: install pyenv dependencies, yum package manager
+- name: Install pyenv dependencies, yum package manager
   package:
     name: "{{ item }}"
     state: present
@@ -16,7 +16,7 @@
     - libffi-devel
   when: ansible_pkg_mgr == 'yum'
 
-- name: install pyenv dependencies, apt package manager
+- name: Install pyenv dependencies, apt package manager
   package:
     name: "{{ item }}"
     state: present
@@ -39,7 +39,7 @@
     - python-openssl
   when: ansible_pkg_mgr == 'apt'
 
-- name: add pyenv install to runonce config
+- name: Add pyenv install to runonce config
   copy:
     src: pyenv-install.sh
     dest: /etc/runonce.d/01_pyenv-install.sh

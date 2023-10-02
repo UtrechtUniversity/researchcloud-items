@@ -11,7 +11,7 @@
 #
 # For more information, see documentation on the roles used in this playbook 
 #
-- name: install stata18 application in researchcloud workspace
+- name: Install stata18 application in researchcloud workspace
   hosts: localhost
   gather_facts: false
   roles:

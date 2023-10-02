@@ -13,19 +13,19 @@
 # name of authenticated user is available as nginx variable $remote_user
 #
 
-- name: install packages required for nginx-pam module
+- name: Install packages required for nginx-pam module
   package:
     name: nginx-full
     state: present
   when: ansible_pkg_mgr == 'apt'
 
-- name: add nginx to shadow group
+- name: Add nginx to shadow group
   user:
     name: www-data
     append: true
     groups: shadow
 
-- name: authorize shadow group for pam totp related scripts
+- name: Authorize shadow group for pam totp related scripts
   file:
     path: "{{ item }}"
     mode: g+rx
@@ -35,7 +35,7 @@
     - /usr/local/bin/totp_login.sh
     - /etc/rsc/workspace.json
 
-- name: authorize shadow group to write to totp log
+- name: Authorize shadow group to write to totp log
   file:
     path: /var/log/totp_auth.log
     state: touch

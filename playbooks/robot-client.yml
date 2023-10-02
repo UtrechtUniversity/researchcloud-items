@@ -1,5 +1,5 @@
 ---
-- name: create robot user
+- name: Create robot user
   hosts: localhost
   gather_facts: true
 

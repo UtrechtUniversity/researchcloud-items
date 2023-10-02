@@ -1,5 +1,5 @@
 ---
-- name: install docker
+- name: Install docker
   package:
     name: "{{ item }}"
     state: present

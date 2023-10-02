@@ -10,5 +10,5 @@
     state: present
     update_cache: true
 
-- name: clear APT cache then install ownCloud package
+- name: Clear APT cache then install ownCloud package
   apt: name=owncloud-client update_cache=yes

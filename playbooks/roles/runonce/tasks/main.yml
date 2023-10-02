@@ -3,13 +3,13 @@
 #  the scripts should be placed in /etc/runonce.d with read-access for all users
 # 
 
-- name: install runonce.sh in /etc/profile.d
+- name: Install runonce.sh in /etc/profile.d
   copy:
     src: runonce.sh
     dest: /etc/profile.d/runonce.sh
     mode: "0644"
 
-- name: ensure directory /etc/runonce.d exists
+- name: Ensure directory /etc/runonce.d exists
   file:
     path: /etc/runonce.d
     state: directory
@@ -18,7 +18,7 @@
     group: root
 
 # NB: link needs "follow:no" otherwise owner/group would be applied to its src 
-- name: add link to /etc/runonce.d in /etc/skel
+- name: Add link to /etc/runonce.d in /etc/skel
   file:
     src: /etc/runonce.d
     dest: /etc/skel/runonce.d
@@ -27,7 +27,7 @@
     state: link
     follow: false
 
-- name: add link to runonce dir in home of existing users
+- name: Add link to runonce dir in home of existing users
   file:
     src: /etc/runonce.d
     dest: /{{ item.home }}/runonce.d

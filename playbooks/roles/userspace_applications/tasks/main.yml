@@ -8,7 +8,7 @@
 # Ansible variable "list_userspace_applications" 
 #  
 
-- name: copy applications to runonce.d directory
+- name: Copy applications to runonce.d directory
   copy:
     src: "{{ item }}"
     dest: /etc/runonce.d

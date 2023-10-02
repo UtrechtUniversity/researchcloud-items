@@ -4,7 +4,7 @@
 #    name: python-is-python3
 #    state: present
 
-- name: ensure python3-pip is installed
+- name: Ensure python3-pip is installed
   package:
     name: python3-pip
     state: present

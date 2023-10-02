@@ -1,6 +1,6 @@
 ---
 # this install script depends on tomcat9 
-- name: ensure java runtime is installed
+- name: Ensure java runtime is installed
   package:
     name: default-jre
     state: present
@@ -10,7 +10,7 @@
 #    name: "default-jdk"
 #    state: present
 
-- name: create camunda target dir
+- name: Create camunda target dir
   file:
     dest: "{{ camunda_dir }}"
     state: directory
@@ -19,19 +19,19 @@
     group: root
 
 # we install the shared BPM engine
-- name: download and unpack camunda full distribution tar.gz
+- name: Download and unpack camunda full distribution tar.gz
   unarchive:
     src: "{{ camunda_tar_urldir }}/{{ camunda_tar_urlfile }}"
     remote_src: true
     dest: "{{ camunda_dir }}"
 
-- name: copy camunda bpm engine config to tomcat config
+- name: Copy camunda bpm engine config to tomcat config
   copy:
     src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
     remote_src: true
     dest: "{{ catalina_home }}/conf/bpm-platform.xml"
 
-- name: copy camunda jars to tomcat lib
+- name: Copy camunda jars to tomcat lib
   copy:
     src: "{{ camunda_dir }}/lib/"
     remote_src: true
@@ -39,19 +39,19 @@
 
 # a copy with remore_src preserves file attribs regardless of mode
 # hence we need to set these props using a separate command
-- name: set file access rights for files in tomcat lib dir
+- name: Set file access rights for files in tomcat lib dir
   command: chmod -R 0755 {{catalina_home }}/lib
 
-- name: set file access tights for tomcat ./conf/bpm-platform.xml
+- name: Set file access tights for tomcat ./conf/bpm-platform.xml
   command: chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml
 
-- name: add camunda listener to Tomcat server.xml
+- name: Add camunda listener to Tomcat server.xml
   lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
     insertafter: <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
     line: <Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />
 
-- name: add camunda resources to Tomcat server.xml
+- name: Add camunda resources to Tomcat server.xml
   lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
     insertafter: <GlobalNamingResources>
@@ -62,7 +62,7 @@
       /> <Resource name="global/camunda-bpm-platform/process-engine/ProcessApplicationService!org.camunda.bpm.ProcessApplicationService" auth="Container" type="org.camunda.bpm.ProcessApplicationService"
       description="Camunda Platform Process Application Service" factory="org.camunda.bpm.container.impl.jndi.ProcessApplicationServiceObjectFactory" />
 
-- name: copy camunda webapps to tomcat webapps dir
+- name: Copy camunda webapps to tomcat webapps dir
   copy:
     src: "{{ camunda_tomcatdir }}/webapps/{{ item }}/"
     remote_src: true

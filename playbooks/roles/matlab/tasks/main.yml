@@ -13,17 +13,17 @@
 #
 # As an alternative approach to 2) one could provide the variables as part of an Ansible playbook
 #
-- name: check if the configuration file exists
+- name: Check if the configuration file exists
   stat:
     path: "{{ matlab_configfile_path }}"
   register: matlab_c
 
-- name: if config file exists, load its content into Ansible vars
+- name: If config file exists, load its content into Ansible vars
   include_vars:
     file: "{{ matlab_configfile_path }}"
   when: matlab_c.stat.exists
 
-- name: create mountpoint /mnt/matlab-iso
+- name: Create mountpoint /mnt/matlab-iso
   file:
     dest: /mnt/matlab-iso
     state: directory
@@ -31,7 +31,7 @@
     owner: root
     group: root
 
-- name: mount Matlab software iso image as /mnt/matlab-iso
+- name: Mount Matlab software iso image as /mnt/matlab-iso
   mount:
     path: /mnt/matlab-iso
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
@@ -39,7 +39,7 @@
     opts: loop
     state: mounted
 
-- name: prepare a silent install inputfile
+- name: Prepare a silent install inputfile
   template:
     owner: root
     group: root
@@ -47,7 +47,7 @@
     src: installer_input.txt.j2
     dest: /root/matlab_installer_input.txt
 
-- name: prepare the license.dat file
+- name: Prepare the license.dat file
   template:
     owner: root
     group: root
@@ -55,7 +55,7 @@
     src: license.dat.j2
     dest: /root/license.dat
 
-- name: create Matlab target dir
+- name: Create Matlab target dir
   file:
     dest: "{{ matlab_dir }}"
     state: directory
@@ -64,7 +64,7 @@
     group: root
 
 # NB: may take 30 min and 20 GB disk space for full product install
-- name: install Matlab products using silent installation. check log in /tmp for progress
+- name: Install Matlab products using silent installation. check log in /tmp for progress
   command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
   args:
     chdir: /mnt/matlab-iso
@@ -75,15 +75,15 @@
 #  debug:
 #    msg: "rc = {{matlab_i.rc}}"
 
-- name: ensure filesystems are at rest before unmount
+- name: Ensure filesystems are at rest before unmount
   command: sync
 
-- name: unmount Matlab software iso image, no longer needed
+- name: Unmount Matlab software iso image, no longer needed
   mount:
     path: /mnt/matlab-iso
     state: unmounted
 
-- name: install desktop launcher
+- name: Install desktop launcher
   include: desktop.yml
 
 #- name: create symlink to matlab executable for bash access
@@ -93,7 +93,7 @@
 #    state: link
 
 # commandline wrapper will try per-user license before network license
-- name: create commandline wrapper to matlab executable
+- name: Create commandline wrapper to matlab executable
   template:
     owner: root
     group: root

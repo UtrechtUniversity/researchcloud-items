@@ -3,7 +3,7 @@
 # nginx (plugin) already installed and configured using SURF config parameters
 # 
 #
-- name: ensure uwsgi service is installed
+- name: Ensure uwsgi service is installed
   package:
     name: "{{ item }}"
     state: present
@@ -11,7 +11,7 @@
     - uwsgi
     - uwsgi-plugin-python3
 
-- name: configure uwsgi within nginx for locations starting with '/w'
+- name: Configure uwsgi within nginx for locations starting with '/w'
   copy:
     src: nginx-uwsgi.conf
     dest: /etc/nginx/app-location-conf.d/uwsgi.conf
@@ -24,7 +24,7 @@
 #    dest: "/etc/uwsgi/apps-available/example.ini"
 #    mode: 0644    
 
-- name: start uwsgi service at boot
+- name: Start uwsgi service at boot
   service:
     name: uwsgi
     state: started

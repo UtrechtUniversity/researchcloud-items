@@ -19,15 +19,15 @@
 #     as json_query expects ascii strings
 
 # jmespath is required for filter 
-- name: ensure jmespath is installed
+- name: Ensure jmespath is installed
   pip:
     name: jmespath
 
-- name: read database /etc/passwd
+- name: Read database /etc/passwd
   getent:
     database: passwd
 
-- name: set fact regular_users
+- name: Set fact regular_users
   set_fact:
     fact_regular_users: "{{ getent_passwd | dict2items | to_json | from_json | json_query('[?to_number(value[1]) >`999` && starts_with(value[4], `/home/`) && key!=`ubuntu`
       ].{user: key, userid: to_number(value[1]), groupid: to_number(value[2]), description: value[3], home: value[4], shell: value[5]}') }}"

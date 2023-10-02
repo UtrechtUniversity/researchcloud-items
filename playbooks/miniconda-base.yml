@@ -1,5 +1,5 @@
 ---
-- name: install pyenv and miniconda
+- name: Install pyenv and miniconda
   hosts: localhost
   gather_facts: true
 
