@@ -5,7 +5,7 @@
     name: default-jre
     state: present
 
-#- name: install jar tool
+# - name: install jar tool
 #  package: 
 #    name: "default-jdk"
 #    state: present

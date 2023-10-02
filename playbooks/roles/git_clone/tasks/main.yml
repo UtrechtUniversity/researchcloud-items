@@ -15,7 +15,7 @@
   with_items:
     - "{{ repos }}"
   environment:
-    GIT_TERMINAL_PROMPT: 0 #Disables stdout prompt (e.g. password prompt)
+    GIT_TERMINAL_PROMPT: 0 # Disables stdout prompt (e.g. password prompt)
 
 - name: Clone each repo from list if URL DOES end with '.git'
   when: "'.git' in item"
@@ -25,4 +25,4 @@
   with_items:
     - "{{ repos }}"
   environment:
-    GIT_TERMINAL_PROMPT: 0 #Disables stdout prompt (e.g. password prompt)
+    GIT_TERMINAL_PROMPT: 0 # Disables stdout prompt (e.g. password prompt)

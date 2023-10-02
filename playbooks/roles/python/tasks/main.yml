@@ -1,5 +1,5 @@
 ---
-#- name: ensure symbolic link for python exists and is python3, require Ubuntu20
+# - name: ensure symbolic link for python exists and is python3, require Ubuntu20
 #  package:
 #    name: python-is-python3
 #    state: present

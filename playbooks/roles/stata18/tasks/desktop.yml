@@ -28,21 +28,21 @@
     mode: "0644"
   with_items:
     - "16"
-    #- "22"
-    #- "32"
-    #- "48"
-#- "96"
-#- "128"
+    # - "22"
+    # - "32"
+    # - "48"
+# - "96"
+# - "128"
 
 - name: Install icons as xdg resource
   command: xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}
   with_items:
     - "16"
-    #- "22"
-    #- "32"
-    #- "48"
-#- "96"
-#- "128"
+    # - "22"
+    # - "32"
+    # - "48"
+# - "96"
+# - "128"
 
 - name: Copy desktop launcher file to /tmp
   template:

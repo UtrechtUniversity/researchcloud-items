@@ -71,7 +71,7 @@
   register: matlab_i
 
 # TODO: even if unsuccessful, the matlab install script will report success :(
-#- name: check install result
+# - name: check install result
 #  debug:
 #    msg: "rc = {{matlab_i.rc}}"
 
@@ -86,7 +86,7 @@
 - name: Install desktop launcher
   include: desktop.yml
 
-#- name: create symlink to matlab executable for bash access
+# - name: create symlink to matlab executable for bash access
 #  file:
 #    dest: /usr/local/bin/matlab
 #    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
