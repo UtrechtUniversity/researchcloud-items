@@ -1,4 +1,4 @@
-# Following the instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered in June 2022.
+# Following instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered June 2022
 
 ---
 # - name: Install dependencies ## ANY dependencies to install???
