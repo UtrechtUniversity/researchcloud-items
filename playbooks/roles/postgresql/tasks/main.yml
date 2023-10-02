@@ -13,7 +13,7 @@
 
 - name: Initilize PostgreSQL if not yet.
   when: not postgresql_data.exists
-  shell: postgresql-setup initdb
+  command: postgresql-setup initdb
 
 - name: Start PostgreSQL service
   service:

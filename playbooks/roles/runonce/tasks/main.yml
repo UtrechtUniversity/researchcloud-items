@@ -35,4 +35,4 @@
     group: "{{ item.user }}"
     state: link
     follow: false
-  with_items: "{{fact_regular_users}}"
+  with_items: "{{ fact_regular_users }}"

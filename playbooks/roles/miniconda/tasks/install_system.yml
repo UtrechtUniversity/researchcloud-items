@@ -1,6 +1,6 @@
 ---
 - name: Install conda in shared environments
-  shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
+  command: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
 
 - name: Create .condarc file for shares packages and environments
   template:

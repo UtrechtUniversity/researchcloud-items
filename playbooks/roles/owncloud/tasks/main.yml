@@ -11,4 +11,6 @@
     update_cache: true
 
 - name: Clear APT cache then install ownCloud package
-  apt: name=owncloud-client update_cache=yes
+  apt:
+    name: owncloud-client
+    update_cache: true

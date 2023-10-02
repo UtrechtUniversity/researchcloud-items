@@ -29,4 +29,4 @@
     state: link
 
 - name: Add desktop menu entry and mime-type binding for Camunda modeler
-  shell: "{{ camunda_modeler_dir }}/support/xdg_register.sh"
+  command: "{{ camunda_modeler_dir }}/support/xdg_register.sh"

@@ -14,7 +14,7 @@
     - name: Use some content of variable fact_regular_users
       debug:
         msg: username is {{ item.user }} and id is {{ item.userid }}
-      with_items: "{{fact_regular_users}}"
+      with_items: "{{ fact_regular_users }}"
 
     - name: List all the data on users
       debug:

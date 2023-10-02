@@ -5,7 +5,8 @@
   when: repositories == 'default'
 
 - name: Create list of repos to checkout
-  set_fact: repos="{{ repositories.split(';') }}"
+  set_fact:
+    repos: "{{ repositories.split(';') }}"
 
 - name: Clone each repo from list if URL does NOT end with '.git'
   when: "'.git' not in item"
