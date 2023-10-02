@@ -30,6 +30,7 @@
           [myconfig]
           Blah=Ton
           host={'{{ uu_icommands_server | default('hostname missing', true) }}'}
-
-    - debug:
+ 
+    - name: Print debug message for iCommands
+      debug:
         msg: 'service_url: {"url": "https://{{ ansible_host }}", "tag": "web", "description": "iCommands"}'
