@@ -1,6 +1,6 @@
 ---
 
 dependencies:
-  - irods_repo
-  - irods_icommands
-  - irods_skel
+  - role: irods_repo
+  - role: irods_icommands
+  - role: irods_skel

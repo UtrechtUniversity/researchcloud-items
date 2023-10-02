@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - pip
-  - pyenv
+  - role: pip
+  - role: pyenv
   - role: runonce
     when: poetry_per_user

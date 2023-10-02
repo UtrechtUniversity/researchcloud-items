@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-  - irods_icommands
+  - role: irods_icommands
