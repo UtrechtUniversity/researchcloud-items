@@ -1,7 +1,7 @@
 ---
 #  ensure that when users login for the first time, a set of scripts are run (once)
 #  the scripts should be placed in /etc/runonce.d with read-access for all users
-# 
+#
 
 - name: Install runonce.sh in /etc/profile.d
   copy:
@@ -17,7 +17,7 @@
     owner: root
     group: root
 
-# NB: link needs "follow:no" otherwise owner/group would be applied to its src 
+# NB: link needs "follow:no" otherwise owner/group would be applied to its src
 - name: Add link to /etc/runonce.d in /etc/skel
   file:
     src: /etc/runonce.d

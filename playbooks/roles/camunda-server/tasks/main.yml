@@ -1,12 +1,12 @@
 ---
-# this install script depends on tomcat9 
+# this install script depends on tomcat9
 - name: Ensure java runtime is installed
   package:
     name: default-jre
     state: present
 
 # - name: install jar tool
-#  package: 
+#  package:
 #    name: "default-jdk"
 #    state: present
 

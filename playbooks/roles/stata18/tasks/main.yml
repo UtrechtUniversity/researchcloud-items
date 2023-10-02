@@ -2,7 +2,7 @@
 # depends: Ubuntu + desktop GUI
 #
 # Stata18 installation requires you to have prepared 1 file:
-#  1) target machine must locally have a file with Stata software tar.gz image 
+#  1) target machine must locally have a file with Stata software tar.gz image
 #    NB: You should obtain this compressed tar file from Stata.
 #
 #
@@ -34,8 +34,8 @@
     owner: root
     group: root
 
-# instead of running the interactive Stata "install" and "stinit" scripts, 
-# we have scripted those actions here.  
+# instead of running the interactive Stata "install" and "stinit" scripts,
+# we have scripted those actions here.
 # This Ansible script expects Stata 18.0.  In case you install a different
 # Stata version, the below actions may need changes
 #
@@ -53,7 +53,7 @@
     - base
     - bins
     - docs
-#  - "statalib"   yet this item is not included 
+#  - "statalib"   yet this item is not included
 
 - name: Copy file setrwxp to target dir
   copy:

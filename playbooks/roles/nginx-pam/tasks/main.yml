@@ -9,7 +9,7 @@
 #     ...
 #   }
 #
-# 
+#
 # name of authenticated user is available as nginx variable $remote_user
 #
 

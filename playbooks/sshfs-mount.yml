@@ -17,9 +17,9 @@
   # when calling this Ansible script, the following variables MUST be set:
   #   sshfs_server    - ip address of server that shares filesystem
   #
-  # Recommended:  
+  # Recommended:
   # - set mode of "/home/{{ robot_user_name }}/shared-data" recursively
-  #   read+execute for the robot user and owned by some other user e.g. root. 
+  #   read+execute for the robot user and owned by some other user e.g. root.
   #   This ensures that other workspaces cannot overwrite or erase server data
 
   roles:

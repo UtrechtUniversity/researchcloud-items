@@ -19,7 +19,7 @@
 
 # below is a hack to split the task of mounting the remote filesystem
 # in two parts so that privileged part of update /etc/fstab is done by root
-# Note that to make this work, only the 'state' differs  
+# Note that to make this work, only the 'state' differs
 - name: Add remote filesystem to /etc/fstab
   mount:
     src: sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}

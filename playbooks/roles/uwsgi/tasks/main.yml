@@ -1,7 +1,7 @@
 ---
-# Note that below config of uwsgi depends on 
+# Note that below config of uwsgi depends on
 # nginx (plugin) already installed and configured using SURF config parameters
-# 
+#
 #
 - name: Ensure uwsgi service is installed
   package:
@@ -22,7 +22,7 @@
 #  copy:
 #    src: "uwsgi-example.ini"
 #    dest: "/etc/uwsgi/apps-available/example.ini"
-#    mode: 0644    
+#    mode: 0644
 
 - name: Start uwsgi service at boot
   service:

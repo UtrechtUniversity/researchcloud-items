@@ -2,7 +2,7 @@
 # depends: Ubuntu + desktop GUI
 #
 # Matlab installation requires you to have prepared 2 files:
-#  1) target machine must locally have a file with Matlab software ISO image 
+#  1) target machine must locally have a file with Matlab software ISO image
 #    NB: You should obtain this ISO image from MathWorks Inc.
 #
 #  2) target machine must locally have a file with configuration information

@@ -5,8 +5,8 @@
 # multiple icon files:  ( {{ s }} refers to a size in pixels
 #    {{ app-name }}-{{s}}x{{s}}.png
 #
-# launcher file:   
-#    {{ app-name }}.desktop  
+# launcher file:
+#    {{ app-name }}.desktop
 #
 # customize this script for an application by changing the set_fact task
 # so that app_name refers to the application
