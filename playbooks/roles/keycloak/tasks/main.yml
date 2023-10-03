@@ -82,8 +82,8 @@
     state: started
 
 - name: Install desktop launcher
-  include: desktop.yml
+  include_tasks: desktop.yml
 
 - name: Create admin user
-  include: admin.yml
+  include_tasks: admin.yml
   when: keycloak_create_admin

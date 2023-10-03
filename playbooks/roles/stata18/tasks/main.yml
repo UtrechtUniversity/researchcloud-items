@@ -112,7 +112,7 @@
     chdir: "{{ stata18_dir }}"
 
 - name: Install desktop launcher
-  include: desktop.yml
+  include_tasks: desktop.yml
 
 # - name: create symlink to matlab executable for bash access
 #  file:

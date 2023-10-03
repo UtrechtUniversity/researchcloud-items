@@ -27,4 +27,4 @@
     - IrodsChooserDialog.py
 
 - name: Install desktop launcher for irods_guisync
-  include: desktop.yml
+  include_tasks: desktop.yml

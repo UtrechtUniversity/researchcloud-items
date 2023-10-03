@@ -19,4 +19,4 @@
     version: main
 
 - name: Install desktop launcher for myrods-sync
-  include: desktop.yml
+  include_tasks: desktop.yml
