@@ -1,6 +1,7 @@
 ---
-profile: production
+profile: basic
 exclude_paths:
   - docs
+  - .github
 skip_list:
   - role-name
