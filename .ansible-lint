@@ -5,3 +5,4 @@ exclude_paths:
   - .github
 skip_list:
   - role-name
+  - var-naming
