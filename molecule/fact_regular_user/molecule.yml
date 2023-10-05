@@ -1,0 +1,20 @@
+---
+driver:
+  name: docker
+# dependency:
+#   name: galaxy
+#   options:
+#     ignore-certs: True
+#     ignore-errors: True
+#     role-file: molecule/requirements.yml
+platforms:
+  - name: src-ubuntu20
+    image: src-basic-workspace
+    pre_build_image: true
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: '../../roles'
+  config_options:
+    defaults:
+      collections_path: ${ANSIBLE_COLLECTIONS_PATH}
