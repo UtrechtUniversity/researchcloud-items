@@ -1,0 +1,17 @@
+---
+
+- name: Add default group for all users
+  ansible.builtin.include_role:
+    name: default_group
+  vars:
+    default_group_group:
+      groupname: "{{ set_gid_groupname }}"
+
+- name: Create all shared directories with setgid
+  file:
+    path: "{{ item | trim }}"
+    owner: "root"
+    group: "{{ set_gid_groupname }}"
+    mode: "02770"
+    state: directory
+  with_items: "{{ set_gid_paths | split(',') }}"

@@ -1,0 +1,9 @@
+---
+- name: Create directories in which all files are automatically writeable by members of the 'shared' group.
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: set_gid
+      vars:
+        set_gid_groupname: "{{ group_name }}"
+        set_gid_paths: "{{ paths }}"
