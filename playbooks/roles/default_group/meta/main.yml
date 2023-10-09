@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: create a new group and ensure new users are added to this by default
+  license: GPLv3
+  min_ansible_version: '2.6'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+dependencies:
+  - role: fact_regular_users
