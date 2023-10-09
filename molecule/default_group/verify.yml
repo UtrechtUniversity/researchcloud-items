@@ -1,0 +1,40 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Create test user
+      ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
+    - name: List testuser groups
+      ansible.builtin.command: groups testuser
+      register: list_groups_olduser
+    - name: List testuser2 groups
+      ansible.builtin.command: groups testuser2
+      register: list_groups_newuser
+    - name: List testuser2 gids
+      ansible.builtin.command: id -G testuser2
+      register: list_gids_newuser
+    - name: Find EXTRA_GROUPS
+      register: extra_groups
+      command: "grep EXTRA_GROUPS= /etc/adduser.conf"
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ list_groups_olduser.stdout }}"
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ list_groups_newuser.stdout }}"
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ list_gids_newuser.stdout }}"
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ extra_groups.stdout }}"
+
+    - name: Assert testusers have correct groups and gids
+      ansible.builtin.assert:
+        that:
+            #TODO: after adding plugin-co to test image these should also contain davfs2 group
+          - 'list_groups_newuser.stdout == "testuser2 : testuser2 testgroup1 testgroup2"'
+          - 'list_groups_olduser.stdout == "testuser : testuser testgroup1 testgroup2"'
+          - 'list_gids_newuser.stdout == "1002 5000 5001"'
