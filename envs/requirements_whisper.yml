@@ -9,7 +9,7 @@ apt:
   - ffmpeg
 
 miniconda:
-  name: whisper
+  name: whisperX
   channels:
   - pytorch
   - nvidia
