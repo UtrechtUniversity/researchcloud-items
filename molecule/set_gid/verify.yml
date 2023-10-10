@@ -3,23 +3,26 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: ls shared folders
-      ansible.builtin.shell: "ls -l -d /shared"
+    - name: List shared folders
+      ansible.builtin.command: "ls -l -d /shared"
       register: list_dir1
+      changed_when: false
     - name: Debug
       ansible.builtin.debug:
         msg: "{{ list_dir1.stdout }}"
 
-    - name: ls shared folders
-      ansible.builtin.shell: "ls -l -d /home/testuser/shared"
+    - name: List shared folders
+      ansible.builtin.command: "ls -l -d /home/testuser/shared"
       register: list_dir2
+      changed_when: false
     - name: Debug
       ansible.builtin.debug:
         msg: "{{ list_dir2.stdout }}"
 
-    - name: ls shared folders
-      ansible.builtin.shell: "ls -l -d /scratch"
+    - name: List shared folders
+      ansible.builtin.command: "ls -l -d /scratch"
       register: list_dir3
+      changed_when: false
     - name: Debug
       ansible.builtin.debug:
         msg: "{{ list_dir3.stdout }}"
