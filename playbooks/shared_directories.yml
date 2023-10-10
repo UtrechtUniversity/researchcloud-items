@@ -3,6 +3,10 @@
   hosts: localhost
   gather_facts: true
   roles:
+    - role: default_group
+      vars:
+        default_group_group:
+          groupname: "{{ group_name }}"
     - role: set_gid
       vars:
         set_gid_groupname: "{{ group_name }}"
