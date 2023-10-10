@@ -3,9 +3,6 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Create second testuser
-      ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
-
     - name: ls shared folders
       ansible.builtin.shell: "ls -l -d /shared"
       register: list_dir1
@@ -19,6 +16,13 @@
     - name: Debug
       ansible.builtin.debug:
         msg: "{{ list_dir2.stdout }}"
+
+    - name: ls shared folders
+      ansible.builtin.shell: "ls -l -d /scratch"
+      register: list_dir3
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ list_dir3.stdout }}"
 
     # - name: Assert shared folder has correct mode and ownership
     #   ansible.builtin.assert:

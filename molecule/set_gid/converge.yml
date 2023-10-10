@@ -7,5 +7,5 @@
       ansible.builtin.include_role:
         name: set_gid
       vars:
-        set_gid_paths: '/shared, /home/testuser/shared'
+        set_gid_paths: '/shared, /home/testuser/shared,/scratch'
         set_gid_groupname: 'testgroup'
