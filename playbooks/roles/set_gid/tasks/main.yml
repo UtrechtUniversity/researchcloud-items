@@ -1,7 +1,7 @@
 ---
 
 - name: Add default group for all users
-  ansible.builtin.include_role:
+  include_role:
     name: default_group
   vars:
     default_group_group:
@@ -14,4 +14,4 @@
     group: "{{ set_gid_groupname }}"
     mode: "02770"
     state: directory
-  with_items: "{{ set_gid_paths | split(',') }}"
+  with_items: "{{ set_gid_paths.split(',') }}"
