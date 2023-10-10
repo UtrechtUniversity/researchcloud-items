@@ -8,10 +8,11 @@
       groupname: "{{ set_gid_groupname }}"
 
 - name: Create all shared directories with setgid
-  file:
+  ansible.builtin.file:
     path: "{{ item | trim }}"
     owner: "root"
     group: "{{ set_gid_groupname }}"
     mode: "02770"
     state: directory
+    recurse: true
   with_items: "{{ set_gid_paths.split(',') }}"
