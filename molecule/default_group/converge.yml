@@ -8,11 +8,11 @@
         name: default_group
       vars:
         default_group_group:
-            groupname: testgroup1
-            gid: 5000
+          groupname: testgroup1
+          gid: 5000
     - name: Testing default_group by adding testgroup2
       ansible.builtin.include_role:
         name: default_group
       vars:
         default_group_group:
-            groupname: testgroup2
+          groupname: testgroup2

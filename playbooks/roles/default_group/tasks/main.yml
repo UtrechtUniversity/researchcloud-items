@@ -3,7 +3,7 @@
 - name: Ensure desired group exist
   ansible.builtin.group:
     name: "{{ default_group_group.groupname }}"
-    gid: "{{ default_group_group.gid|default(omit) }}"
+    gid: "{{ default_group_group.gid | default(omit) }}"
     state: present
 
 - name: Add users to new group (used by pam_group)

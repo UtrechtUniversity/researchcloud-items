@@ -3,6 +3,12 @@
   hosts: all
   gather_facts: true
   tasks:
+    - name: Create testgroup
+      ansible.builtin.include_role:
+        name: default_group
+      vars:
+        default_group_group:
+          groupname: testgroup
     - name: Testing role set_gid
       ansible.builtin.include_role:
         name: set_gid
