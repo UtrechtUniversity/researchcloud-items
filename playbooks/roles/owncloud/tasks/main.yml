@@ -1,15 +1,16 @@
 ---
 - name: Get ownCloud APT GPG key
   apt_key:
-    url: https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ubuntu_version}}/Release.key
+    url: https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ ubuntu_version }}/Release.key
     state: present
 
 - name: Configure ownCloud apt repository
   apt_repository:
-    repo: deb https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ubuntu_version}}/ /
+    repo: deb https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ ubuntu_version }}/ /
     state: present
-    update_cache: True
+    update_cache: true
 
-- name: clear APT cache then install ownCloud package
-  apt: name=owncloud-client update_cache=yes
-
+- name: Clear APT cache then install ownCloud package
+  apt:
+    name: owncloud-client
+    update_cache: true

@@ -1,21 +1,21 @@
 ---
-- name: create transfer user
+- name: Create transfer user
   user:
     name: "{{ transferuser_name }}"
     state: present
 
-- name: ensure that .ssh dir exists for the transfer user
+- name: Ensure that .ssh dir exists for the transfer user
   file:
-    path: "/home/{{ transferuser_name }}/.ssh"
+    path: /home/{{ transferuser_name }}/.ssh
     state: directory
-    mode: 0751
+    mode: "0751"
     owner: "{{ transferuser_name }}"
 
 # NB: the transfer script needs setuid priv
-- name: install transfer command
+- name: Install transfer command
   template:
     src: transfer.j2
-    dest: "/usr/local/bin/{{ transferuser_command }}"
-    mode: 0755
+    dest: /usr/local/bin/{{ transferuser_command }}
+    mode: "0755"
     owner: root
     group: root

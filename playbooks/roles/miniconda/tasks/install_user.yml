@@ -4,7 +4,6 @@
     miniconda_install_dir: "{{ item.home }}/miniconda"
 
 - name: Install conda for each user individually
-  shell: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
+  command: "{{ miniconda_download_dest }}/miniconda.sh -b -p {{ miniconda_install_dir }}"
   become: false
   become_user: "{{ item.user }}"
-...

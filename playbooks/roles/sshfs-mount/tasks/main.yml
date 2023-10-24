@@ -1,42 +1,39 @@
 ---
-- name: install package sshfs
+- name: Install package sshfs
   package:
     name: sshfs
     state: present
 
-- name: ensure that local mountpoint exists
+- name: Ensure that local mountpoint exists
   file:
     path: "{{ sshfs_mountpoint }}"
     state: directory
     owner: "{{ sshfs_username }}"
 
-- name: enable user_allow_other in fuse config
+- name: Enable user_allow_other in fuse config
   lineinfile:
     path: /etc/fuse.conf
-    regexp: '^#user_allow_other$'
-    line: 'user_allow_other'
+    regexp: ^#user_allow_other$
+    line: user_allow_other
     state: present
 
 # below is a hack to split the task of mounting the remote filesystem
 # in two parts so that privileged part of update /etc/fstab is done by root
-# Note that to make this work, only the 'state' differs  
-- name: add remote filesystem to /etc/fstab
+# Note that to make this work, only the 'state' differs
+- name: Add remote filesystem to /etc/fstab
   mount:
-    src: "sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
+    src: sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}
     path: "{{ sshfs_mountpoint }}"
-    fstype: "fuse"
-    opts: "_netdev,user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
+    fstype: fuse
+    opts: _netdev,user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5
     state: present
 
-- name: mount remote filesystem using credentials of robot user
+- name: Mount remote filesystem using credentials of robot user
   become: true
   become_user: "{{ sshfs_username }}"
   mount:
-    src: "sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}"
+    src: sshfs#{{ sshfs_username }}@{{ sshfs_server }}:{{ sshfs_sourcepath }}
     path: "{{ sshfs_mountpoint }}"
-    fstype: "fuse"
-    opts: "_netdev,user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
+    fstype: fuse
+    opts: _netdev,user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5
     state: mounted
-
-
-

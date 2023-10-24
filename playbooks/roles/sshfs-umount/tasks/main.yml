@@ -2,14 +2,10 @@
 # make sure the role sshfs_mount has been called prior to this role and in the SAME playbook
 #  so that variable sshfs_mountpoint is still available here
 
-- name: wait until mounted filesystem is at rest
-  command: "sync"
+- name: Wait until mounted filesystem is at rest
+  command: sync
 
-- name: umount remote filesystem 
+- name: Umount remote filesystem
   mount:
     path: "{{ sshfs_mountpoint }}"
     state: unmounted
-
-
-
-

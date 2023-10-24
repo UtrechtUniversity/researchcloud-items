@@ -1,4 +1,3 @@
 ---
-agisoft_url: "https://s3-eu-west-1.amazonaws.com/download.agisoft.com/metashape-pro_1_8_4_amd64.tar.gz"
-agisoft_file: "metashape-pro_1_8_4_amd64.tar.gz"
-...
+agisoft_url: https://s3-eu-west-1.amazonaws.com/download.agisoft.com/metashape-pro_1_8_4_amd64.tar.gz
+agisoft_file: metashape-pro_1_8_4_amd64.tar.gz

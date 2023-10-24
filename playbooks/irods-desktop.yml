@@ -1,9 +1,8 @@
 ---
-- name: install iRODS related desktop applications in researchcloud workspace
+- name: Install iRODS related desktop applications in researchcloud workspace
   hosts: localhost
   gather_facts: true
-    
-#  NB: please run the playbook icommands.yml before running this playbook
+
+  #  NB: please run the playbook icommands.yml before running this playbook
   roles:
     - myrods-sync
-  

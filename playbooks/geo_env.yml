@@ -1,12 +1,12 @@
 ---
-- name: create environment and install dependencies
+- name: Create environment and install dependencies
   hosts: localhost
   gather_facts: true
 
   roles:
-    #TODO: Replace userspace applications with separate roles
+    # TODO: Replace userspace applications with separate roles
     - role: userspace_applications
       vars:
-        - list_userspace_applications:
-          - "21-pytorch-geoproject"
-          - "999ready"
+        list_userspace_applications:
+          - 21-pytorch-geoproject
+          - 999ready

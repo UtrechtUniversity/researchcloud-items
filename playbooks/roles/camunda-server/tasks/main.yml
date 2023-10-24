@@ -1,77 +1,90 @@
 ---
-# this install script depends on tomcat9 
-- name: ensure java runtime is installed
+# this install script depends on tomcat9
+- name: Ensure java runtime is installed
   package:
-    name: "default-jre"
+    name: default-jre
     state: present
 
-#- name: install jar tool
-#  package: 
+# - name: install jar tool
+#  package:
 #    name: "default-jdk"
 #    state: present
-    
 
-- name: create camunda target dir
+- name: Create camunda target dir
   file:
     dest: "{{ camunda_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
 # we install the shared BPM engine
-- name: download and unpack camunda full distribution tar.gz
+- name: Download and unpack camunda full distribution tar.gz
   unarchive:
     src: "{{ camunda_tar_urldir }}/{{ camunda_tar_urlfile }}"
-    remote_src: yes
+    remote_src: true
     dest: "{{ camunda_dir }}"
 
-- name: copy camunda bpm engine config to tomcat config
+- name: Copy camunda bpm engine config to tomcat config
   copy:
     src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
-    remote_src: yes
+    remote_src: true
     dest: "{{ catalina_home }}/conf/bpm-platform.xml"
 
-- name: copy camunda jars to tomcat lib
+- name: Copy camunda jars to tomcat lib
   copy:
     src: "{{ camunda_dir }}/lib/"
-    remote_src: yes
+    remote_src: true
     dest: "{{ catalina_home }}/lib/"
 
 # a copy with remore_src preserves file attribs regardless of mode
 # hence we need to set these props using a separate command
-- name: set file access rights for files in tomcat lib dir
-  command: "chmod -R 0755 {{catalina_home }}/lib"
+- name: Set file access rights for files in tomcat lib dir
+  command: chmod -R 0755 {{ catalina_home }}/lib
 
-- name: set file access tights for tomcat ./conf/bpm-platform.xml
-  command: "chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml"
+- name: Set file access tights for tomcat ./conf/bpm-platform.xml
+  command: chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml
 
-- name: add camunda listener to Tomcat server.xml
+- name: Add camunda listener to Tomcat server.xml
   lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
-    insertafter: '<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />'
-    line: '<Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />'
+    insertafter: <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+    line: <Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />
 
-- name: add camunda resources to Tomcat server.xml
+- name: Add camunda resources to Tomcat server.xml
   lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
-    insertafter: '<GlobalNamingResources>'
-    line: '<Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine" driverClassName="org.h2.Driver" url="jdbc:h2:/tmp/camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE" defaultTransactionIsolation="READ_COMMITTED" username="sa" password="sa" maxTotal="20" minIdle="5" maxIdle="20" /> <Resource name="global/camunda-bpm-platform/process-engine/ProcessEngineService!org.camunda.bpm.ProcessEngineService" auth="Container" type="org.camunda.bpm.ProcessEngineService" description="Camunda Platform Process Engine Service" factory="org.camunda.bpm.container.impl.jndi.ProcessEngineServiceObjectFactory" /> <Resource name="global/camunda-bpm-platform/process-engine/ProcessApplicationService!org.camunda.bpm.ProcessApplicationService" auth="Container" type="org.camunda.bpm.ProcessApplicationService" description="Camunda Platform Process Application Service" factory="org.camunda.bpm.container.impl.jndi.ProcessApplicationServiceObjectFactory" />'
-              
-- name: copy camunda webapps to tomcat webapps dir
+    insertafter: <GlobalNamingResources>
+    line: >
+      <Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource"
+      factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine"
+      driverClassName="org.h2.Driver" url="jdbc:h2:/tmp/camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"
+      defaultTransactionIsolation="READ_COMMITTED"
+      username="sa" password="sa" maxTotal="20" minIdle="5" maxIdle="20"
+      />
+      <Resource name="global/camunda-bpm-platform/process-engine/ProcessEngineService!org.camunda.bpm.ProcessEngineService"
+      auth="Container" type="org.camunda.bpm.ProcessEngineService" description="Camunda Platform Process Engine Service"
+      factory="org.camunda.bpm.container.impl.jndi.ProcessEngineServiceObjectFactory"
+      />
+      <Resource name="global/camunda-bpm-platform/process-engine/ProcessApplicationService!org.camunda.bpm.ProcessApplicationService" auth="Container"
+      type="org.camunda.bpm.ProcessApplicationService" description="Camunda Platform Process Application Service"
+      factory="org.camunda.bpm.container.impl.jndi.ProcessApplicationServiceObjectFactory"
+      />
+
+- name: Copy camunda webapps to tomcat webapps dir
   copy:
     src: "{{ camunda_tomcatdir }}/webapps/{{ item }}/"
-    remote_src: yes
+    remote_src: true
     dest: "{{ catalina_home }}/webapps/{{ item }}"
     owner: tomcat
     group: tomcat
-    mode: 0755
+    mode: "0755"
   with_items:
-    - "engine-rest"
-    - "camunda"
-    - "camunda-welcome"
-    - "h2"
-    - "camunda-invoice"
+    - engine-rest
+    - camunda
+    - camunda-welcome
+    - h2
+    - camunda-invoice
   notify: Restart tomcat9
 
 # - name: provide applicationContext configuration
@@ -98,7 +111,3 @@
 #    group: root
 #    mode: 0644
 #  notify: Restart nginx
-
-
-
- 

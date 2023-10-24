@@ -4,19 +4,20 @@
 #
 # Note: this plugin expects that a robotuser already exists
 #   - must have executed robot-client playbook to create the robotuser
-# 
+#
 # include in the plugin for this playbook the following vars as parameter:
 #    - matlab_iso_dir   (mandatory) location of matlab related files on robot server
 #    - robotuser_name   (optional) username of the robotuser if different from default
 #
-# For more information, see documentation on the roles used in this playbook 
+# For more information, see documentation on the roles used in this playbook
 #
-- name: install matlab products in researchcloud workspace
+- name: Install matlab products in researchcloud workspace
   hosts: localhost
   gather_facts: true
+  collections:
+    - ansible.posix
   roles:
     - sshfs-configrobot
     - sshfs-mount
     - matlab
     - sshfs-umount
-  

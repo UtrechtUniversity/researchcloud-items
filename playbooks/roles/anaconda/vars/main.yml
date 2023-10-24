@@ -1,4 +1,3 @@
 ---
-anaconda_url: "https://repo.anaconda.com/archive/Anaconda{{ anaconda_python_version }}-{{ anaconda_version }}-Linux-{{ ansible_architecture }}.sh"
-anaconda_file: "Anaconda{{ anaconda_python_version }}-{{ anaconda_version }}-Linux-{{ ansible_architecture }}.sh"
-...
+anaconda_url: https://repo.anaconda.com/archive/Anaconda{{ anaconda_python_version }}-{{ anaconda_version }}-Linux-{{ ansible_architecture }}.sh
+anaconda_file: Anaconda{{ anaconda_python_version }}-{{ anaconda_version }}-Linux-{{ ansible_architecture }}.sh

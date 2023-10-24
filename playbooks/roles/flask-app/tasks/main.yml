@@ -1,32 +1,31 @@
 ---
 # cooperates with role uwsgi
 #
-- name: pip install flask sitewide
+- name: Pip install flask sitewide
   pip:
     name: flask
 
-- name: create /var/www/uwsgi dir for python web applications
+- name: Create /var/www/uwsgi dir for python web applications
   file:
-    path: "/var/www/uwsgi"
+    path: /var/www/uwsgi
     state: directory
-    mode: 0755
+    mode: "0755"
 
-- name: copy example/test app.py to /var/www/uwsgi
+- name: Copy example/test app.py to /var/www/uwsgi
   copy:
-    src: "app.py"
-    dest: "/var/www/uwsgi/app.py"
-    mode: 0755
+    src: app.py
+    dest: /var/www/uwsgi/app.py
+    mode: "0755"
 
-- name: copy uwsgi config for app.py to /etc/uwsgi/apps-available
+- name: Copy uwsgi config for app.py to /etc/uwsgi/apps-available
   copy:
-    src: "uwsgi-app.ini"
-    dest: "/etc/uwsgi/apps-available/uwsgi-app.ini"
-    mode: 0644
+    src: uwsgi-app.ini
+    dest: /etc/uwsgi/apps-available/uwsgi-app.ini
+    mode: "0644"
 
-- name: enable uwsgi config for app.py
+- name: Enable uwsgi config for app.py
   file:
-    src: "/etc/uwsgi/apps-available/uwsgi-app.ini"
-    dest: "/etc/uwsgi/apps-enabled/uwsgi-app.ini"
+    src: /etc/uwsgi/apps-available/uwsgi-app.ini
+    dest: /etc/uwsgi/apps-enabled/uwsgi-app.ini
     state: link
   notify: Restart uwsgi
-

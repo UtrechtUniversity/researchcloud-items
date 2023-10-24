@@ -2,7 +2,7 @@
 # depends: Ubuntu + desktop GUI
 #
 # Matlab installation requires you to have prepared 2 files:
-#  1) target machine must locally have a file with Matlab software ISO image 
+#  1) target machine must locally have a file with Matlab software ISO image
 #    NB: You should obtain this ISO image from MathWorks Inc.
 #
 #  2) target machine must locally have a file with configuration information
@@ -13,27 +13,25 @@
 #
 # As an alternative approach to 2) one could provide the variables as part of an Ansible playbook
 #
-- name: check if the configuration file exists
+- name: Check if the configuration file exists
   stat:
     path: "{{ matlab_configfile_path }}"
-  register: matlab_c 
+  register: matlab_c
 
-- name: if config file exists, load its content into Ansible vars
+- name: If config file exists, load its content into Ansible vars
   include_vars:
     file: "{{ matlab_configfile_path }}"
   when: matlab_c.stat.exists
 
-
-- name: create mountpoint /mnt/matlab-iso
+- name: Create mountpoint /mnt/matlab-iso
   file:
-    dest: "/mnt/matlab-iso"
+    dest: /mnt/matlab-iso
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-
-- name: mount Matlab software iso image as /mnt/matlab-iso
+- name: Mount Matlab software iso image as /mnt/matlab-iso
   mount:
     path: /mnt/matlab-iso
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
@@ -41,66 +39,64 @@
     opts: loop
     state: mounted
 
-- name: prepare a silent install inputfile
+- name: Prepare a silent install inputfile
   template:
     owner: root
     group: root
-    mode: 0644
-    src: "installer_input.txt.j2"
-    dest: "/root/matlab_installer_input.txt"
+    mode: "0644"
+    src: installer_input.txt.j2
+    dest: /root/matlab_installer_input.txt
 
-
-- name: prepare the license.dat file
+- name: Prepare the license.dat file
   template:
     owner: root
     group: root
-    mode: 0644
-    src: "license.dat.j2"
-    dest: "/root/license.dat"
+    mode: "0644"
+    src: license.dat.j2
+    dest: /root/license.dat
 
-
-- name: create Matlab target dir
+- name: Create Matlab target dir
   file:
     dest: "{{ matlab_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
 # NB: may take 30 min and 20 GB disk space for full product install
-- name: install Matlab products using silent installation. check log in /tmp for progress
+- name: Install Matlab products using silent installation. check log in /tmp for progress
   command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
   args:
     chdir: /mnt/matlab-iso
   register: matlab_i
 
-    # TODO: even if unsuccessful, the matlab install script will report success :(
-    #- name: check install result
-    #  debug:
-    #    msg: "rc = {{matlab_i.rc}}"
+# TODO: even if unsuccessful, the matlab install script will report success :(
+# - name: check install result
+#  debug:
+#    msg: "rc = {{matlab_i.rc}}"
 
-- name: ensure filesystems are at rest before unmount
-  command: "sync"
+- name: Ensure filesystems are at rest before unmount
+  command: sync
 
-- name: unmount Matlab software iso image, no longer needed
+- name: Unmount Matlab software iso image, no longer needed
   mount:
     path: /mnt/matlab-iso
     state: unmounted
 
-- name: install desktop launcher
-  include: desktop.yml
+- name: Install desktop launcher
+  include_tasks: desktop.yml
 
-#- name: create symlink to matlab executable for bash access
+# - name: create symlink to matlab executable for bash access
 #  file:
 #    dest: /usr/local/bin/matlab
 #    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
 #    state: link
- 
+
 # commandline wrapper will try per-user license before network license
-- name: create commandline wrapper to matlab executable
+- name: Create commandline wrapper to matlab executable
   template:
     owner: root
     group: root
-    mode: 0755
-    src: "matlab.j2"
+    mode: "0755"
+    src: matlab.j2
     dest: /usr/local/bin/matlab

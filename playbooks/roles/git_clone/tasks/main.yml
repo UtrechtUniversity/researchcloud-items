@@ -2,28 +2,28 @@
 # End playbook if the default value was not overwrittien (argument needs a default value)
 - name: End playbook if no repository supplied
   meta: end_play
-  when: "repositories == 'default'"
+  when: repositories == 'default'
 
 - name: Create list of repos to checkout
-  set_fact: repos="{{ repositories.split(';') }}"
+  set_fact:
+    repos: "{{ repositories.split(';') }}"
 
 - name: Clone each repo from list if URL does NOT end with '.git'
   when: "'.git' not in item"
   git:
-    repo: '{{ item }}'
+    repo: "{{ item }}"
     dest: "{{ git_dir }}/{{ item | basename }}"
   with_items:
-  -  "{{ repos }}"
+    - "{{ repos }}"
   environment:
-    GIT_TERMINAL_PROMPT: 0  #Disables stdout prompt (e.g. password prompt)
+    GIT_TERMINAL_PROMPT: "0" # Disables stdout prompt (e.g. password prompt)
 
 - name: Clone each repo from list if URL DOES end with '.git'
   when: "'.git' in item"
   git:
-    repo: '{{ item }}'
+    repo: "{{ item }}"
     dest: "{{ git_dir }}/{{ item[:-4] | basename }}"
   with_items:
-  -  "{{ repos }}"
+    - "{{ repos }}"
   environment:
-    GIT_TERMINAL_PROMPT: 0  #Disables stdout prompt (e.g. password prompt)
-...
+    GIT_TERMINAL_PROMPT: "0" # Disables stdout prompt (e.g. password prompt)

@@ -1,11 +1,11 @@
-# Following the instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered in June 2022.
+# Following instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered June 2022.
 
 ---
 - name: Install dependencies
-  include: "dependencies_{{ ansible_pkg_mgr }}.yml"
+  include_tasks: dependencies_{{ ansible_pkg_mgr }}.yml
 
 # The get_url ansible module in the task below does not create a directory
-- name: Ensure download dir exists    
+- name: Ensure download dir exists
   file:
     path: "{{ anaconda_download_dest }}"
     state: directory
@@ -14,7 +14,7 @@
   get_url:
     url: "{{ anaconda_url }}"
     dest: "{{ anaconda_download_dest }}"
-    mode: 0774
+    mode: "0774"
 
 - name: Install anaconda for mutliple user
   command:
@@ -23,8 +23,8 @@
 
 - name: Create anaconda mutli-user group
   group:
-      name: anaconda_users
-      state: present
+    name: anaconda_users
+    state: present
 
 # Dev note: in case of multi-user issues: the following two tasks are your best bet to start troubleshooting.
 # `s` permission added due to bug: https://github.com/conda/conda/issues/7227
@@ -48,23 +48,22 @@
   user:
     name: "{{ item.user }}"
     groups: anaconda_users
-    append: yes
-  with_items: 
+    append: true
+  with_items:
     - "{{ fact_regular_users }}"
 
 - name: Run conda-init for every user
   template:
     src: run_conda_init.sh.j2
-    dest: "/etc/runonce.d"
-    mode: 0755
+    dest: /etc/runonce.d
+    mode: "0755"
 
 - name: Install desktop file menu item through role
   include_role:
     name: desktop_file
-  vars: 
+  vars:
     desktopfile_app_name: anaconda
     desktopfile_sizes:
       - 48
       - 64
       - 96
-...

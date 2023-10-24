@@ -1,5 +1,5 @@
 ---
-- name: install keycloak in researchcloud workspace (assumes desktop/nginx)
+- name: Install keycloak in researchcloud workspace (assumes desktop/nginx)
   hosts: localhost
   gather_facts: true
   roles:

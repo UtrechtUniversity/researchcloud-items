@@ -1,40 +1,38 @@
 ---
 #  ensure that when users login for the first time, a set of scripts are run (once)
 #  the scripts should be placed in /etc/runonce.d with read-access for all users
-# 
+#
 
-- name: install runonce.sh in /etc/profile.d
+- name: Install runonce.sh in /etc/profile.d
   copy:
-    src: "runonce.sh"
-    dest: "/etc/profile.d/runonce.sh"
-    mode: 0644
+    src: runonce.sh
+    dest: /etc/profile.d/runonce.sh
+    mode: "0644"
 
-- name: ensure directory /etc/runonce.d exists
+- name: Ensure directory /etc/runonce.d exists
   file:
-    path: "/etc/runonce.d"
+    path: /etc/runonce.d
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
- 
-# NB: link needs "follow:no" otherwise owner/group would be applied to its src 
-- name: add link to /etc/runonce.d in /etc/skel
+
+# NB: link needs "follow:no" otherwise owner/group would be applied to its src
+- name: Add link to /etc/runonce.d in /etc/skel
   file:
-    src: "/etc/runonce.d"
-    dest: "/etc/skel/runonce.d"
+    src: /etc/runonce.d
+    dest: /etc/skel/runonce.d
     owner: root
     group: root
     state: link
-    follow: no
+    follow: false
 
-- name: add link to runonce dir in home of existing users
+- name: Add link to runonce dir in home of existing users
   file:
-    src: "/etc/runonce.d"
-    dest: "/{{item.home}}/runonce.d"
-    owner: "{{item.user}}"
-    group: "{{item.user}}"
+    src: /etc/runonce.d
+    dest: /{{ item.home }}/runonce.d
+    owner: "{{ item.user }}"
+    group: "{{ item.user }}"
     state: link
-    follow: no
-  with_items: "{{fact_regular_users}}"
-  
-
+    follow: false
+  with_items: "{{ fact_regular_users }}"

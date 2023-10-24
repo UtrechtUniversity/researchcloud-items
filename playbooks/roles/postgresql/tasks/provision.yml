@@ -20,11 +20,10 @@
 - name: Grant user access to database.
   postgresql_privs:
     type: database
-    database: 
-    roles: 
-    grant_option: no
+    database:
+    roles:
+    grant_option: false
     privs: all
   become: true
   become_user: postgres
   notify: restart postgres
-...

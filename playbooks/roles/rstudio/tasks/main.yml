@@ -3,7 +3,7 @@
   when: ansible_os_family == 'Debian'
   apt:
     name: r-base
-    update_cache: yes
+    update_cache: true
     state: present
 
 - name: Install R dev
@@ -35,4 +35,3 @@
   yum:
     name: https://s3.amazonaws.com/rstudio-ide-build/desktop/rhel8/x86_64/rstudio-2022.02.0-443-x86_64.rpm
     state: present
-...

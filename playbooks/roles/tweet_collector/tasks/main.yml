@@ -4,12 +4,12 @@
     repo: https://github.com/SytseGroenwold/tweet_collector.git
     dest: /opt/tweet_collector
     version: refactors
-  
+
 - name: Change permission of tweet_collector folder
   file:
     path: /opt/tweet_collector
-    mode: 0777
-    recurse: yes
+    mode: "0777"
+    recurse: true
 
 - name: Ensure virtualenvwhich is installed
   pip:
@@ -20,7 +20,7 @@
   command: virtualenv /opt/venvs/tweet_collector
 
 - name: Build tweet_collector to install through pip later
-  shell:
+  command:
     cmd: /opt/poetry/bin/poetry build
     chdir: /opt/tweet_collector
 
@@ -34,5 +34,4 @@
   copy:
     src: set_tweetcollector_alias
     dest: /etc/runonce.d
-    mode: 0755
-...
+    mode: "0755"

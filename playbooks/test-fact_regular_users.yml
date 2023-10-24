@@ -4,18 +4,18 @@
 #
 # NB: this role requires Ansible 2.6+
 #
-- name: demonstrate role fact_regular_users
+- name: Demonstrate role fact_regular_users
   hosts: localhost
   gather_facts: true
   roles:
     - fact_regular_users
 
-  tasks:      
-    - name: use some content of variable fact_regular_users
+  tasks:
+    - name: Use some content of variable fact_regular_users
       debug:
-        msg: "username is {{item.user}} and id is {{item.userid}}"
-      with_items: "{{fact_regular_users}}"
+        msg: username is {{ item.user }} and id is {{ item.userid }}
+      with_items: "{{ fact_regular_users }}"
 
-    - name: list all the data on users
+    - name: List all the data on users
       debug:
-        msg: "{{fact_regular_users}}"
+        msg: "{{ fact_regular_users }}"

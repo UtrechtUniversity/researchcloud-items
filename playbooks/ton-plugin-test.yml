@@ -1,28 +1,28 @@
 ---
-- name: install environment for use by "Ton plugin TEST"
+- name: Install environment for use by "Ton plugin TEST"
   hosts: localhost
   gather_facts: true
 
   tasks:
-    - name: test receipt of CO parameter
+    - name: Test receipt of CO parameter
       debug:
         msg: "{{ TON_TEST }}"
       when: TON_TEST is defined
 
-    - name: signal variable not found
+    - name: Signal variable not found
       debug:
-        msg: "variable TON_TEST not defined"
+        msg: variable TON_TEST not defined
       when: TON_TEST is undefined
 
   roles:
-#    - python
-#    - pyenv
-#    - uwsgi
-#    - flask-app
-#    - camunda-server
+    #    - python
+    #    - pyenv
+    #    - uwsgi
+    #    - flask-app
+    #    - camunda-server
 
-     - nginx-pam
-     - nginx-fastcgi
+    - nginx-pam
+    - nginx-fastcgi
 
 #    - role: userspace_applications
 #      vars:
@@ -31,4 +31,3 @@
 #          - "10-python-poetry"
 #          - "70-tweets-collector"
 #          - "999ready"
-

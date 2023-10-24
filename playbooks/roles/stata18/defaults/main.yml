@@ -1,17 +1,16 @@
 ---
-stata18_tar_dir: "/home/{{ robotuser_name }}/remote-data/stata/stata18-linux"
-stata18_tar_file: "Stata18Linux64.tar.gz"
-stata18_tmp_dir: "/tmp/statafiles"
-stata18_dir: "/usr/local/stata18"
+stata18_tar_dir: /home/{{ robotuser_name }}/remote-data/stata/stata18-linux
+stata18_tar_file: Stata18Linux64.tar.gz
+stata18_tmp_dir: /tmp/statafiles
+stata18_dir: /usr/local/stata18
 
 # the following variables have no default, they need to be specified
 # as parameter to the role, e.g. include them as CO secret
 #
 # stata18_lic_serial     Stata license "serial number"
 # stata18_lic_code       Stata license "code"
-# stata18_lic_auth       Stata license "authorization" 
+# stata18_lic_auth       Stata license "authorization"
 # stata18_lic_name       name of the primary user of the license
 # stata18_lic_org        name of the organization entitled to the license
-#                        (the above info is displayed when Stata starts) 
+#                        (the above info is displayed when Stata starts)
 #
-

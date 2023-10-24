@@ -1,34 +1,32 @@
 ---
-- name: ensure java runtime is installed
+- name: Ensure java runtime is installed
   package:
-    name: "default-jre"
+    name: default-jre
     state: present
 
-- name: download camunda modeler
+- name: Download camunda modeler
   get_url:
     url: "{{ camunda_modeler_urldir }}/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
-    dest: "/tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
+    dest: /tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz
 
-- name: unpack modeler tar.gz file in tmp location
+- name: Unpack modeler tar.gz file in tmp location
   unarchive:
-    src:  "/tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
-    dest: "/tmp"
+    src: /tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz
+    dest: /tmp
 
-- name: make sure camunda-modeler target dir does not yet exist
+- name: Make sure camunda-modeler target dir does not yet exist
   file:
     dest: "{{ camunda_modeler_dir }}"
     state: absent
 
-- name: move unpacked modeler directory content to /var/lib
+- name: Move unpacked modeler directory content to /var/lib
   command: mv "/tmp/{{ camunda_modeler_urlfile_prefix }}" "{{ camunda_modeler_dir }}"
-  
-- name: add link to Camunda modeler executable in /usr/bin
+
+- name: Add link to Camunda modeler executable in /usr/bin
   file:
     src: "{{ camunda_modeler_dir }}/camunda-modeler"
-    dest: "/usr/bin/camunda-modeler"
+    dest: /usr/bin/camunda-modeler
     state: link
 
-- name: add desktop menu entry and mime-type binding for Camunda modeler
-  shell: "{{ camunda_modeler_dir }}/support/xdg_register.sh"
-
- 
+- name: Add desktop menu entry and mime-type binding for Camunda modeler
+  command: "{{ camunda_modeler_dir }}/support/xdg_register.sh"

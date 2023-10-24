@@ -1,20 +1,19 @@
 ---
-#- name: ensure symbolic link for python exists and is python3, require Ubuntu20
+# - name: ensure symbolic link for python exists and is python3, require Ubuntu20
 #  package:
 #    name: python-is-python3
 #    state: present
 
-- name: ensure python3-pip is installed
+- name: Ensure python3-pip is installed
   package:
     name: python3-pip
     state: present
 
 # userspace configuration can be added.
 # below is a test script to serve as an example
-    
+
 # - name: place test file
 #  copy:
 #    src: "test.sh"
 #    dest: "/etc/runonce.d/test.sh"
 #    mode: 0755
-

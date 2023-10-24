@@ -5,60 +5,56 @@
 # multiple icon files:  ( {{ s }} refers to a size in pixels
 #    {{ app-name }}-{{s}}x{{s}}.png
 #
-# launcher file:   
-#    {{ app-name }}.desktop  
+# launcher file:
+#    {{ app-name }}.desktop
 #
 # customize this script for an application by changing the set_fact task
 # so that app_name refers to the application
 # and add/delete resolution sizes in the with_items for the icon files
 #
-- name: install xdg utilities
-  package: 
-    name: "xdg-utils"
+- name: Install xdg utilities
+  package:
+    name: xdg-utils
     state: present
 
-- name: set  app_name
+- name: Set  app_name
   set_fact:
-    app_name: "irods"
+    app_name: irods
 
-- name: copy icon files to /tmp 
+- name: Copy icon files to /tmp
   copy:
     src: "{{ app_name }}-{{ item }}x{{ item }}.png"
-    dest: "/tmp/{{ app_name }}-{{ item }}x{{ item }}.png"
-    mode: 0644
+    dest: /tmp/{{ app_name }}-{{ item }}x{{ item }}.png
+    mode: "0644"
   with_items:
     #    - "16"
-    #- "22"
-    #- "32"
+    # - "22"
+    # - "32"
     - "48"
-      #- "96"
-      #- "128"
+# - "96"
+# - "128"
 
-- name: install icons as xdg resource
-  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}"
+- name: Install icons as xdg resource
+  command: xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ app_name }}-{{ item }}x{{ item }}.png {{ app_name }}
   with_items:
-    #- "16"
-    #- "22"
-    #- "32"
+    # - "16"
+    # - "22"
+    # - "32"
     - "48"
-      #- "96"
-      #- "128"
+# - "96"
+# - "128"
 
-- name: copy desktop launcher file to /tmp
+- name: Copy desktop launcher file to /tmp
   template:
     src: "{{ item }}.desktop.j2"
-    dest: "/tmp/{{ item }}.desktop"
-    mode: 0644
+    dest: /tmp/{{ item }}.desktop
+    mode: "0644"
   with_items:
-    - "irods_guisync"
-    - "irods_iselect"
+    - irods_guisync
+    - irods_iselect
 
-- name: install launcher in system-wide desktop menu
-  command: "xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop"
+- name: Install launcher in system-wide desktop menu
+  command: xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop
   with_items:
-    - "irods_guisync"
-    - "irods_iselect"
-
-
-
-
+    - irods_guisync
+    - irods_iselect

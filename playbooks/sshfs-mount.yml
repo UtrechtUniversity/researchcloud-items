@@ -1,27 +1,26 @@
 ---
-- name: create robot user and mount remote disk
+- name: Create robot user and mount remote disk
   hosts: localhost
   gather_facts: true
 
   tasks:
-    - name: test receipt of CO parameter
+    - name: Test receipt of CO parameter
       debug:
         msg: "{{ TON_TEST }}"
       when: TON_TEST is defined
 
-    - name: signal variable not found
+    - name: Signal variable not found
       debug:
-        msg: "variable TON_TEST not defined"
+        msg: variable TON_TEST not defined
       when: TON_TEST is undefined
 
-# when calling this Ansible script, the following variables MUST be set:
-#   sshfs_server    - ip address of server that shares filesystem
-#
-# Recommended:  
-# - set mode of "/home/{{ robot_user_name }}/shared-data" recursively
-#   read+execute for the robot user and owned by some other user e.g. root. 
-#   This ensures that other workspaces cannot overwrite or erase server data
-        
+  # when calling this Ansible script, the following variables MUST be set:
+  #   sshfs_server    - ip address of server that shares filesystem
+  #
+  # Recommended:
+  # - set mode of "/home/{{ robot_user_name }}/shared-data" recursively
+  #   read+execute for the robot user and owned by some other user e.g. root.
+  #   This ensures that other workspaces cannot overwrite or erase server data
+
   roles:
     - sshfs-mount
-

@@ -1,11 +1,11 @@
 ---
-- name: add config to nginx to act as reverse proxy for keycloak
+- name: Add config to nginx to act as reverse proxy for keycloak
   copy:
-    src: "keycloak.conf"
-    dest: "/etc/nginx/app-location-conf.d/keycloak.conf"
-    mode: 0644
+    src: keycloak.conf
+    dest: /etc/nginx/app-location-conf.d/keycloak.conf
+    mode: "0644"
 
-- name: restart nginx
+- name: Restart nginx
   systemd:
-    name: "nginx"
+    name: nginx
     state: restarted

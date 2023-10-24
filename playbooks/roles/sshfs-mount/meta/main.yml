@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-- sshfs-configrobot 
+  - role: sshfs-configrobot

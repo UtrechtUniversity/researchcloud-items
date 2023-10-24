@@ -1,5 +1,4 @@
 ---
 dependencies:
-  - pip
-  - runonce
-...
+  - role: pip
+  - role: runonce

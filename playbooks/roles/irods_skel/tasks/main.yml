@@ -1,17 +1,14 @@
 ---
-   - name: add .irods to new user skeleton
-     file:
-       path: /etc/skel/.irods
-       state: directory
-       mode: '0755'
+- name: Add .irods to new user skeleton
+  file:
+    path: /etc/skel/.irods
+    state: directory
+    mode: "0755"
 
-   - name: create default irods_environment.json in skel
-     template:
-       src: irods_environment.json.j2
-       dest: /etc/skel/.irods/irods_environment.json
-       owner: root
-       group: root
-       mode: '0600'
-       
-
-
+- name: Create default irods_environment.json in skel
+  template:
+    src: irods_environment.json.j2
+    dest: /etc/skel/.irods/irods_environment.json
+    owner: root
+    group: root
+    mode: "0600"

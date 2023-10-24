@@ -1,36 +1,36 @@
 ---
-- name: install iRODS iCommands toolset in researchcloud workspace
+- name: Install iRODS iCommands toolset in researchcloud workspace
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: wait for the system to become available
+    - name: Wait for the system to become available
       wait_for_connection:
-              timeout: 300 
+        timeout: 300
 
-    - name: gather facts
+    - name: Gather facts
       setup:
 
-    - name: enable iRODS repository
+    - name: Enable iRODS repository
       yum_repository:
-         name: iRODS
-         description: YUM repositories from iRODS Consortium
-         baseurl: https://packages.irods.org/yum/pool/centos7/x86_64/
-         gpgkey: https://packages.irods.org/irods-signing-key.asc
-         gpgcheck: yes
+        name: iRODS
+        description: YUM repositories from iRODS Consortium
+        baseurl: https://packages.irods.org/yum/pool/centos7/x86_64/
+        gpgkey: https://packages.irods.org/irods-signing-key.asc
+        gpgcheck: true
 
-    - name: install icommands
+    - name: Install icommands
       yum:
-         name: irods-icommands-4.2.7-1
-         state: present
+        name: irods-icommands-4.2.7-1
+        state: present
 
-    - name: prep config irods
+    - name: Prep config irods
       copy:
         dest: /etc/irods-environment.txt
         content: |
-           [myconfig]
-           Blah=Ton
-           host={'{{ uu_icommands_server | default('hostname missing', true) }}'}
+          [myconfig]
+          Blah=Ton
+          host={'{{ uu_icommands_server | default('hostname missing', true) }}'}
 
-    - debug:
+    - name: Print debug message for iCommands
+      debug:
         msg: 'service_url: {"url": "https://{{ ansible_host }}", "tag": "web", "description": "iCommands"}'
-

@@ -1,12 +1,10 @@
 ---
-- name: check if the robotuser connection info file exist
+- name: Check if the robotuser connection info file exist
   stat:
-    path: "/home/{{ robotuser_name }}/connection-info.yml"
+    path: /home/{{ robotuser_name }}/connection-info.yml
   register: robotuser_c
 
-- name: if config file exists, load its content into Ansible vars
+- name: If config file exists, load its content into Ansible vars
   include_vars:
-    file: "/home/{{ robotuser_name }}/connection-info.yml"
+    file: /home/{{ robotuser_name }}/connection-info.yml
   when: robotuser_c.stat.exists
-
-

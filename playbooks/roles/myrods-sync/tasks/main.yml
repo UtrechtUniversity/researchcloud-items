@@ -1,24 +1,22 @@
 ---
-
-- name: pip install python-irodsclient
+- name: Pip install python-irodsclient
   pip:
     name: python-irodsclient
     executable: pip3
 
-- name: create target directory for myrods-sync files
+- name: Create target directory for myrods-sync files
   file:
     dest: "{{ myrodssync_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-- name: checkout myrods-sync repository
+- name: Checkout myrods-sync repository
   git:
     repo: "{{ myrodssync_git }}"
     dest: "{{ myrodssync_dir }}"
     version: main
 
-
-- name: install desktop launcher for myrods-sync
-  include: desktop.yml
+- name: Install desktop launcher for myrods-sync
+  include_tasks: desktop.yml

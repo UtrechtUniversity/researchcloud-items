@@ -4,14 +4,14 @@
 #
 # Note: this plugin expects that a robotuser already exists
 #   - must have executed robot-client playbook to create the robotuser
-# 
+#
 # include in the plugin for this playbook the following vars as parameter:
 #    - stata18_dir   (mandatory) location of stata related files on robot server
 #    - robotuser_name   (optional) username of the robotuser if different from default
 #
-# For more information, see documentation on the roles used in this playbook 
+# For more information, see documentation on the roles used in this playbook
 #
-- name: install stata18 application in researchcloud workspace
+- name: Install stata18 application in researchcloud workspace
   hosts: localhost
   gather_facts: false
   roles:
@@ -19,4 +19,3 @@
     - sshfs-mount
     - stata18
     - sshfs-umount
-  

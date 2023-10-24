@@ -1,31 +1,30 @@
 ---
-
-- name: pip install python-irodsclient
+- name: Pip install python-irodsclient
   pip:
     name: python-irodsclient
     executable: pip3
 
-- name: create target directory for guisync files
+- name: Create target directory for guisync files
   file:
     dest: "{{ irods_guisync_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-- name: copy irods_guisync files to target dir
+- name: Copy irods_guisync files to target dir
   copy:
     src: "{{ item }}"
     dest: "{{ irods_guisync_dir }}/{{ item }}"
-    mode: 0755
+    mode: "0755"
   with_items:
-    - "guisync.py"
-    - "guisync.css"
-    - "UU_logo_2021_EN_RGB_transparant.png"
-    - "MainWindow.py"
-    - "LogWindow.py"
-    - "IrodsStore.py"
-    - "IrodsChooserDialog.py"
+    - guisync.py
+    - guisync.css
+    - UU_logo_2021_EN_RGB_transparant.png
+    - MainWindow.py
+    - LogWindow.py
+    - IrodsStore.py
+    - IrodsChooserDialog.py
 
-- name: install desktop launcher for irods_guisync
-  include: desktop.yml
+- name: Install desktop launcher for irods_guisync
+  include_tasks: desktop.yml

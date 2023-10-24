@@ -1,5 +1,4 @@
 ---
-
 # adds support for execution of shell scripts with nginx using fastcgi
 #
 # example configuration for a location:
@@ -15,25 +14,23 @@
 #   test example:  http://localhost/example/hello
 #
 
-- name: install support for fastcgi with nginx
+- name: Install support for fastcgi with nginx
   package:
-    name: "fcgiwrap"
+    name: fcgiwrap
     state: present
 
-- name: make cgi-bin directory
+- name: Make cgi-bin directory
   file:
-    name: "/var/www/cgi-bin"
+    name: /var/www/cgi-bin
     state: directory
-    owner: "root"
-    group: "root"
+    owner: root
+    group: root
     mode: "0755"
 
-- name: install example script
+- name: Install example script
   copy:
-    src: "example-script.sh"
-    dest: "/var/www/cgi-bin/hello"
-    owner: "root"
-    group: "root"
+    src: example-script.sh
+    dest: /var/www/cgi-bin/hello
+    owner: root
+    group: root
     mode: "0755"
-
-

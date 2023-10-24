@@ -1,7 +1,7 @@
 ---
 anaconda_python_version: 3
-anaconda_version: "2022.05"   # See https://docs.anaconda.com/anaconda/reference/release-notes/
+anaconda_version: "2022.05" # See https://docs.anaconda.com/anaconda/reference/release-notes/
 anaconda_ip: "0.0.0.0"
 anaconda_port: 8888
-anaconda_download_dest: "/tmp/anaconda{{ anaconda_python_version }}"
-anaconda_install_dir: "/opt/anaconda{{ anaconda_python_version }}"
+anaconda_download_dest: /tmp/anaconda{{ anaconda_python_version }}
+anaconda_install_dir: /opt/anaconda{{ anaconda_python_version }}

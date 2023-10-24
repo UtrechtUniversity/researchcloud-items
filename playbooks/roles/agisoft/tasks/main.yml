@@ -1,4 +1,4 @@
-# Following the instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered in June 2022.
+# Following instructions on https://docs.anaconda.com/anaconda/install/linux/ and https://docs.anaconda.com/anaconda/install/multi-user/, gathered June 2022
 
 ---
 # - name: Install dependencies ## ANY dependencies to install???
@@ -14,17 +14,17 @@
   get_url:
     url: "{{ agisoft_url }}"
     dest: "{{ agisoft_download_dest }}"
-    mode: 0774
+    mode: "0774"
 
 - name: Extract agisoft to opt for multiple user
   unarchive:
     src: "{{ agisoft_download_dest }}/{{ agisoft_file }}"
-    dest: "/opt"
-    mode: 0755
+    dest: /opt
+    mode: "0755"
 
 - name: Create license file
   copy:
-    dest:  "{{ agisoft_install_dir }}/license.lic"
+    dest: "{{ agisoft_install_dir }}/license.lic"
     content: "{{ content }}"
 
 - name: Install desktop file menu item through role
@@ -34,4 +34,3 @@
     desktopfile_app_name: agisoft
     desktopfile_sizes:
       - 48
-...

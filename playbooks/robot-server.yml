@@ -1,12 +1,9 @@
 ---
-- name: prepare a robot server
+- name: Prepare a robot server
   hosts: localhost
   gather_facts: true
 
-
   roles:
     - role: robotuser
-      vars: 
-       - robotuser_generate_ssh_key: "yes"
-
-
+      vars:
+        robotuser_generate_ssh_key: "yes"

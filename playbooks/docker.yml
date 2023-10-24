@@ -1,7 +1,6 @@
 ---
-- name: install Docker toolset in researchcloud workspace
+- name: Install Docker toolset in researchcloud workspace
   hosts: localhost
   gather_facts: true
   roles:
     - docker
-

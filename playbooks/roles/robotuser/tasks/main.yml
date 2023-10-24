@@ -8,57 +8,55 @@
 # NB: The "client" mode is also used to simply load the Ansible robotuser variables
 #     using their defaults (and leave tasks 'unchanged')
 #
-- name: create robot user
+- name: Create robot user
   user:
     name: "{{ robotuser_name }}"
     generate_ssh_key: "{{ robotuser_generate_ssh_key }}"
     state: present
 
-- name: authorize ssh incoming access for server robot user
+- name: Authorize ssh incoming access for server robot user
   command: cp "/home/{{ robotuser_name }}/.ssh/id_rsa.pub" "/home/{{ robotuser_name }}/.ssh/authorized_keys"
   when: robotuser_generate_ssh_key == "yes"
 
-
-- name: ensure that .ssh dir exists
+- name: Ensure that .ssh dir exists
   file:
-    path: "/home/{{ robotuser_name }}/.ssh"
+    path: /home/{{ robotuser_name }}/.ssh
     state: directory
-    mode: 0751
+    mode: "0751"
     owner: "{{ robotuser_name }}"
   when: robotuser_generate_ssh_key == "no"
 
 # NB: to avoid loss of a key, script will not overwrite an existing key
-- name: install private key for client robot user 
+- name: Install private key for client robot user
   template:
     src: id_rsa.j2
-    dest: "/home/{{ robotuser_name }}/.ssh/id_rsa"
-    force: no
-    mode: 0700
+    dest: /home/{{ robotuser_name }}/.ssh/id_rsa
+    force: false
+    mode: "0700"
     owner: "{{ robotuser_name }}"
   when: robotuser_generate_ssh_key == "no"
 
-- name: install connection info file in home dir of robot user
+- name: Install connection info file in home dir of robot user
   template:
     src: connection-info.yml.j2
-    dest: "/home/{{ robotuser_name }}/connection-info.yml"
-    mode: 0744
+    dest: /home/{{ robotuser_name }}/connection-info.yml
+    mode: "0744"
     owner: "{{ robotuser_name }}"
   when: robotuser_generate_ssh_key == "no"
 
 # NB: if server ip is in other domain then below task is vulnerable to man-in-the-middle
 #     use with care
-- name: obtain robot server fingerprint
-  command: "ssh-keyscan {{ robotuser_server }}"
+- name: Obtain robot server fingerprint
+  command: ssh-keyscan {{ robotuser_server }}
   register: robotuser_f
   when: robotuser_generate_ssh_key == "no"
 
-- name: register robot server as known host
+- name: Register robot server as known host
   lineinfile:
-    dest: "/home/{{ robotuser_name }}/.ssh/known_hosts"
+    dest: /home/{{ robotuser_name }}/.ssh/known_hosts
     create: "yes"
     owner: "{{ robotuser_name }}"
-    mode: 0600
+    mode: "0600"
     line: "{{ item }}"
   with_items: "{{ robotuser_f.stdout_lines }}"
   when: robotuser_generate_ssh_key == "no"
-

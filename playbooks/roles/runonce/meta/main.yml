@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-- fact_regular_users
+  - role: fact_regular_users

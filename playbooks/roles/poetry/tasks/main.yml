@@ -1,12 +1,11 @@
 ---
 - name: Install poetry system-wide
   when: poetry_system_wide
-  include: system_wide.yml
+  include_tasks: system_wide.yml
 
 - name: Install poetry per user through runonce.d
   when: poetry_per_user
   copy:
-    src: "poetry.sh"
-    dest: "/etc/runonce.d"
-    mode: 0755
-...
+    src: poetry.sh
+    dest: /etc/runonce.d
+    mode: "0755"

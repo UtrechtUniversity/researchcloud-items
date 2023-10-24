@@ -3,7 +3,7 @@
   get_url:
     url: https://install.python-poetry.org
     dest: /tmp/install-poetry.py
-    mode: 0777
+    mode: "0777"
     timeout: 20
 
 - name: Install venv dependency
@@ -19,4 +19,3 @@
   file:
     path: /tmp/install-poetry.py
     state: absent
-...

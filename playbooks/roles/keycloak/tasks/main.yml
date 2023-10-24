@@ -1,54 +1,54 @@
 ---
-- name: ensure java runtime is installed
+- name: Ensure java runtime is installed
   package:
-    name: "default-jre"
+    name: default-jre
     state: present
 
-- name: create keycloak user
+- name: Create keycloak user
   user:
     name: keycloak
 
-- name: create keycloak target dir
+- name: Create keycloak target dir
   file:
     dest: "{{ keycloak_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-- name: download keycloak tar
+- name: Download keycloak tar
   get_url:
     url: "{{ keycloak_tardir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
 
-- name: extract keycloak tar
+- name: Extract keycloak tar
   unarchive:
     src: "{{ keycloak_dir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
-    remote_src: yes
+    remote_src: true
     owner: keycloak
     group: keycloak
 
-- name: add keycloak log dir
+- name: Add keycloak log dir
   file:
     dest: "{{ keycloak_jboss_log }}"
-    mode: 0755
+    mode: "0755"
     owner: keycloak
     group: keycloak
     state: directory
 
-- name: keycloak data directory
+- name: Keycloak data directory
   file:
     dest: "{{ keycloak_jboss_home }}/standalone/data"
-    mode: 0755
+    mode: "0755"
     owner: keycloak
     group: keycloak
     state: directory
 
-- name: keycloak tmp directory
+- name: Keycloak tmp directory
   file:
     dest: "{{ keycloak_jboss_home }}/standalone/tmp"
-    mode: 0755
+    mode: "0755"
     owner: keycloak
     group: keycloak
     state: directory
@@ -63,29 +63,27 @@
 #    state: directory
 #    recurse: yes
 
-- name: add keycloak as a service to systemd
+- name: Add keycloak as a service to systemd
   template:
     owner: root
     group: root
-    mode: 0644
-    src: "keycloak.service.j2"
-    dest: "/etc/systemd/system/keycloak.service"
+    mode: "0644"
+    src: keycloak.service.j2
+    dest: /etc/systemd/system/keycloak.service
 
-- name: enable keycloak
+- name: Enable keycloak
   systemd:
     name: keycloak
-    enabled: yes
+    enabled: true
 
-- name: start keycloak service
+- name: Start keycloak service
   systemd:
     name: keycloak
-    state: started 
+    state: started
 
-- name: install desktop launcher
-  include: desktop.yml
+- name: Install desktop launcher
+  include_tasks: desktop.yml
 
-- name: create admin user
-  include: admin.yml
+- name: Create admin user
+  include_tasks: admin.yml
   when: keycloak_create_admin
-
- 

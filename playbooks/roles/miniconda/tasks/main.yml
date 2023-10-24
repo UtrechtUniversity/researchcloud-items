@@ -4,7 +4,7 @@
   meta: end_play
 
 # The get_url ansible module in the task below does not create a directory
-- name: Ensure download dir exists    
+- name: Ensure download dir exists
   file:
     path: "{{ miniconda_download_dest }}"
     state: directory
@@ -13,14 +13,14 @@
   get_url:
     url: "{{ miniconda_url }}"
     dest: "{{ miniconda_download_dest }}/miniconda.sh"
-    mode: 0774
+    mode: "0774"
 
 # Done in seperate task file to allow proper looping with fact_regular_users.
 - name: Install per user
   when: miniconda_userspace
   include_tasks: install_user.yml
   with_items:
-  - "{{ fact_regular_users }}"
+    - "{{ fact_regular_users }}"
 
 # Done in seperate task to be consistent, since per-user installation is also done that way.
 - name: Install system-wide
@@ -35,6 +35,5 @@
 - name: Add `conda init` for every user through run_once
   template:
     src: run_conda_init.sh.j2
-    dest: "/etc/runonce.d"
-    mode: 0755
-...
+    dest: /etc/runonce.d
+    mode: "0755"

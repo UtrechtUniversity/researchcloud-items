@@ -13,17 +13,16 @@
 - name: Create function to source venv before launching ASReview LAB
   copy:
     src: set_asreview_alias
-    dest: "/etc/runonce.d"
-    mode: 0755
+    dest: /etc/runonce.d
+    mode: "0755"
 
 - name: Install desktop file menu item through role
   include_role:
     name: desktop_file
-  vars: 
+  vars:
     desktopfile_app_name: asreview
     desktopfile_sizes:
       - 48
       - 64
       - 96
     desktopfile_login: true
-...

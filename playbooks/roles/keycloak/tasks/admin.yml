@@ -1,11 +1,10 @@
 ---
-
-- name: create admin user
+- name: Create admin user
   shell: "{{ keycloak_jboss_home }}/bin/add-user-keycloak.sh -u {{ keycloak_admin_username }} -p {{ keycloak_admin_password }}"
   args:
     executable: /bin/bash
 
-- name: restart keycloak
+- name: Restart keycloak
   systemd:
     name: keycloak
     state: restarted

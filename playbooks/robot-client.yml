@@ -1,14 +1,12 @@
 ---
-- name: create robot user 
+- name: Create robot user
   hosts: localhost
   gather_facts: true
 
+  # when calling this Ansible script, the following variables MUST be set:
+  #   robotuser_key   - private key for robot user
+  #   robotuser_server    - robot server
+  #   robotuser_sourcepath - path to served files e.g. /data/volume_2
 
-# when calling this Ansible script, the following variables MUST be set:
-#   robotuser_key   - private key for robot user
-#   robotuser_server    - robot server
-#   robotuser_sourcepath - path to served files e.g. /data/volume_2
-        
   roles:
     - robotuser
-

@@ -1,15 +1,14 @@
 ---
-- name: install pyenv and miniconda 
+- name: Install pyenv and miniconda
   hosts: localhost
   gather_facts: true
 
   roles:
     - python
     - pyenv
-    #TODO: Replace userspace applications with separate roles
+    # TODO: Replace userspace applications with separate roles
     - role: userspace_applications
       vars:
-        - list_userspace_applications:
-          - "20-python-miniconda"
-          - "999ready"
-
+        list_userspace_applications:
+          - 20-python-miniconda
+          - 999ready
