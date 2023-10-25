@@ -7,7 +7,7 @@ cat >> ~/.bashrc <<'INPUTEND'
 asreview() {
     if [[ $@ == "lab" ]]; then
         command source /opt/venvs/asreview/bin/activate
-        command asreview lab | more
+        command asreview lab >> ~/asreview.log
     fi
 }
 INPUTEND
