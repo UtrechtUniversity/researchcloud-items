@@ -1,0 +1,24 @@
+---
+driver:
+  name: docker
+  local: &local
+    pull: false
+  ci: &ci
+    pull: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+platforms:
+  - name: workspace-src-ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    pre_build_image: true
+    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
+    # Otherwise include &loca (ensures the image is not pulled).
+    <<: ${CI-*local}
+provisioner:
+  name: ansible
+  env:
+    PLAYBOOK_PATH: 'miniconda-base.yml'
+    REMOTE_PLUGIN_PARAMETERS: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role
