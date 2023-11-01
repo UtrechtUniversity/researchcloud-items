@@ -1,0 +1,123 @@
+---
+name: Molecule
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  define_scenarios:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: "${{ github.repository }}"
+      - name: Get changed playbooks
+        id: changed-playbooks-yaml
+        uses: tj-actions/changed-files@v39
+        with:
+          json: true
+          quotepath: false
+          files_yaml: |
+            playbooks:
+              - 'playbooks/*.yml'
+      - name: Get changed roles
+        id: changed-roles-yaml
+        uses: tj-actions/changed-files@v39
+        with:
+          json: true
+          dir_names: true
+          dir_names_max_depth: 3
+          dir_names_include_files: true
+          quotepath: false
+          files_yaml: |
+            roles:
+              - 'playbooks/roles/**/**'
+      - id: set-playbooks-matrix
+        run: echo "matrix=${{ steps.changed-playbooks-yaml.outputs.playbooks_all_changed_files }}" >> $GITHUB_OUTPUT
+      - id: set-roles-matrix
+        run: echo "matrix=${{ steps.changed-roles-yaml.outputs.roles_all_changed_files }}" >> $GITHUB_OUTPUT
+      - name: Debug
+        run: echo ${{ steps.set-playbooks-matrix.outputs.matrix }}
+      - name: Debug
+        run: echo ${{ steps.set-roles-matrix.outputs.matrix }}
+    outputs:
+      playbooks_matrix: ${{ steps.set-playbooks-matrix.outputs.matrix }}
+      roles_matrix: ${{ steps.set-roles-matrix.outputs.matrix }}
+
+  molecule_playbooks:
+    needs: define_scenarios
+    runs-on: ubuntu-latest
+    if: ${{ needs.define_scenarios.outputs.playbooks_matrix != '[]' && needs.define_scenarios.outputs.playbooks_matrix != '' }}
+    env:
+      DOCKER_USER: ${{ github.actor }}
+      DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
+      DOCKER_REGISTRY: ghcr.io
+    strategy:
+      fail-fast: false
+      matrix:
+        playbooks: ${{ fromJSON(needs.define_scenarios.outputs.playbooks_matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Filename to scenario name
+        id: set-scenario
+        run: echo "scenario_name=playbook-`basename -s .yml ${{ matrix.playbooks }}`" >> $GITHUB_OUTPUT
+      - name: Check if scenario exists
+        id: check_scenario_exists
+        run: |
+          if [[ -d molecule/${{ steps.set-scenario.outputs.scenario_name }} ]]; then
+            echo "exitcode=true" >> $GITHUB_OUTPUT
+          else
+            echo "exitcode=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Molecule tests for playbooks
+        uses: gofrolist/molecule-action@v2
+        if: ${{ steps.check_scenario_exists.outputs.exitcode == 'true' }}
+        with:
+          molecule_options: -e molecule/default/ci.env.yml -c molecule/default/molecule.yml
+          molecule_command: test
+          molecule_args: --scenario-name ${{ steps.set-scenario.outputs.scenario_name }}
+        env:
+          ANSIBLE_FORCE_COLOR: '1'
+
+  molecule_roles:
+    needs: define_scenarios
+    runs-on: ubuntu-latest
+    if: ${{ needs.define_scenarios.outputs.roles_matrix != '[]' && needs.define_scenarios.outputs.roles_matrix != '' }}
+    env:
+      DOCKER_USER: ${{ github.actor }}
+      DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
+      DOCKER_REGISTRY: ghcr.io
+    strategy:
+      fail-fast: false
+      matrix:
+        roles: ${{ fromJSON(needs.define_scenarios.outputs.roles_matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Filename to scenario name
+        id: set-scenario
+        run: echo "scenario_name=role-`basename -s .yml ${{ matrix.roles }}`" >> $GITHUB_OUTPUT
+      - name: Check if scenario exists
+        id: check_scenario_exists
+        run: |
+          if [[ -d molecule/${{ steps.set-scenario.outputs.scenario_name }} ]]; then
+            echo "exitcode=true" >> $GITHUB_OUTPUT
+          else
+            echo "exitcode=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Molecule tests for playbooks
+        uses: gofrolist/molecule-action@v2
+        if: ${{ steps.check_scenario_exists.outputs.exitcode == 'true' }}
+        with:
+          molecule_options: -e molecule/default/ci.env.yml -c molecule/default/molecule.yml
+          molecule_command: test
+          molecule_args: --scenario-name ${{ steps.set-scenario.outputs.scenario_name }}
+        env:
+          ANSIBLE_FORCE_COLOR: '1'

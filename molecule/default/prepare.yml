@@ -1,0 +1,16 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Copy plugin
+      ansible.posix.synchronize:
+        src: "{{ remote_plugin.script_folder }}/"
+        dest: "/rsc/plugins/{{ remote_plugin.script_folder | basename }}"
+        archive: false
+        recursive: true
+        rsync_opts:
+          - '--exclude=".*"'
+        ssh_connection_multiplexing: true
+      vars:
+        remote_plugin:
+          script_folder: "{{ lookup('env', 'PROJECT_DIR') }}/{{ lookup('env', 'PLAYBOOK_DIR') }}"
