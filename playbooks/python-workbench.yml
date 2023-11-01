@@ -1,16 +1,15 @@
 ---
-- name: install Python environment management tools 
+- name: Install Python environment management tools
   hosts: localhost
   gather_facts: true
 
   roles:
     - python
     - pyenv
-    #TODO: Replace userspace applications with separate roles
+    # TODO: Replace userspace applications with separate roles
     - role: userspace_applications
       vars:
-        - list_userspace_applications:
-          - "05-python-3.9.9"
-          - "10-python-poetry"
-          - "999ready"
-
+        list_userspace_applications:
+          - 05-python-3.9.9
+          - 10-python-poetry
+          - 999ready

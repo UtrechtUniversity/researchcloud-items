@@ -40,7 +40,6 @@
     - name: Assert testusers have correct groups and gids
       ansible.builtin.assert:
         that:
-            # TODO: after adding plugin-co to test image these should also contain davfs2 group
           - 'list_groups_newuser.stdout == "testuser2 : testuser2 testgroup1 testgroup2"'
           - 'list_groups_olduser.stdout == "testuser : testuser testgroup1 testgroup2"'
-          - 'list_gids_newuser.stdout == "1002 5000 5001"'
+          - 'list_gids_newuser.stdout == "1004 5000 5001"' # 1004 is the gid for testuser2 as testuser1 has 1001, and sudoers and fuse have 1002 and 1003 

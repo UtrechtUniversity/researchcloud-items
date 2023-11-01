@@ -6,6 +6,3 @@
       - name: Testing role fact_regular_users
         ansible.builtin.include_role:
           name: fact_regular_users
-
-# - name: Include a playbook from a collection
-#   ansible.builtin.import_playbook: ../../playbooks/python-workbench.yml

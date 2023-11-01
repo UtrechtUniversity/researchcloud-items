@@ -1,5 +1,5 @@
 ---
-
+# Take the component parameter `set_gid_paths` and create a setgid directory for each path.
 - name: Create all shared directories with setgid
   ansible.builtin.file:
     path: "{{ item | trim }}"
