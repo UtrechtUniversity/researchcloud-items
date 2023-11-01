@@ -69,42 +69,30 @@ Optionally, your scenario can also contain a `verify.yml` to [perform additional
 
 You can override the settings from `molecule/default/molecule.yml` for individual scenario's in that scenario's own `molecule.yml`. This file is located in `molecule/<scenario-name>/molecule.yml`.
 
-Each scenario's `molecule.yml` should define at least the `PLAYBOOK_PATH` Ansible environment variable, like this:
+You can override, for instance, the platforms on which molecule is supposed to test:
 
 ```yaml
-# molecule/playbook-security_updates/molecule.yml
-provisioner:
-  name: ansible
-  env:
-    PLAYBOOK_PATH: 'security_updates.yml' # The path to the playbook we want to test in this scenario
-```
-
-But you can additionally override, for instance, the platforms on which molecule is supposed to test:
-
-```yaml
-# Tests are run on Ubuntu focal by default, this will cause the scenario to use the jammy image instead
+# Tests are run on Ubuntu focal and jammy by default, this will cause the scenario to use the focal-desktop image instead
 platforms:
-  - name: workspace-src-ubuntu_jammy
-    image: src-ubuntu_jammy
+  - name: workspace-src-ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
     pre_build_image: true
 ```
 
 ...or you can specify multiple platforms!
 
-You can also use environment variables to tweak the settings defined in `default/molecule.yml`, e.g.:
-
-`ANSIBLE_VERBOSITY=1 molecule test -s playbook-security_updates`
 
 ### Setting component parameters for a playbook
 
-In a scenario's `molecule.yml`, you can set the following to pass component parameters on to the playbook that will be executed on the container workspace:
+In a scenario's `molecule.yml`, you can override the following settings to pass component parameters on to the playbook that will be executed on the container workspace:
 
 ```yaml
 provisioner:
   name: ansible
   env:
     PLAYBOOK_PATH: 'my-playbook.yml'
-    REMOTE_PLUGIN_PARAMETERS: # Your parameters go here
+    REMOTE_PLUGIN_PARAMETERS:
+    # Your parameters go here
 ```
 
 ### Assertions in `verify.yml`
