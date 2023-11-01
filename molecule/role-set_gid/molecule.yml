@@ -3,3 +3,4 @@ provisioner:
   name: ansible
   playbooks:
     converge: ./converge.yml
+    prepare: ../default/localhost_prepare.yml
