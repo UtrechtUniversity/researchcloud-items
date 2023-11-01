@@ -21,6 +21,7 @@ jobs:
         id: changed-playbooks-yaml
         uses: tj-actions/changed-files@v39
         with:
+          path: "${{ github.repository }}"
           json: true
           quotepath: false
           files_yaml: |
@@ -30,6 +31,7 @@ jobs:
         id: changed-roles-yaml
         uses: tj-actions/changed-files@v39
         with:
+          path: "${{ github.repository }}"
           json: true
           dir_names: true
           dir_names_max_depth: 3
