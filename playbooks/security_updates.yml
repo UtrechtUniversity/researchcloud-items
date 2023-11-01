@@ -1,0 +1,12 @@
+---
+# Unattended security updates are enabled by default on Ubuntu.
+# However, on cloud VMs, this feature can cause issues with a dpkg lock conflict during provisioning:
+# It is therefore currently disabled on SURF Research Cloud.
+# This Playbook runs the security updates, avoiding the lock conflict (as ansible will wait until the upgrade is done).
+# It then enables periodic, unattended security updates.
+
+- name: Enable unattended security upgrades on Ubuntu
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: security_updates

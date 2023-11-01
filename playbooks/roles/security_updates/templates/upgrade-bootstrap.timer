@@ -1,0 +1,9 @@
+[Unit]
+Description=Start unattended upgrades timers {{ security_updates_delay_time }}d after boot.
+
+[Install]
+WantedBy=timers.target
+
+[Timer]
+OnBootSec={{ security_updates_delay_time }}d
+Persistent=true
