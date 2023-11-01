@@ -21,3 +21,4 @@ provisioner:
   name: ansible
   env:
     PLAYBOOK_PATH: 'python-workbench.yml'
+    REMOTE_PLUGIN_PARAMETERS: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role

@@ -13,4 +13,4 @@
           script_folder: "{{ lookup('env', 'PROJECT_DIR') }}/{{ lookup('env', 'PLAYBOOK_DIR') }}"
           path: "{{ lookup('env', 'PLAYBOOK_PATH') }}"
           arguments: '-i 127.0.0.1, --skip-tags notest,molecule-notest'
-          parameters:
+          parameters: "{{ lookup('env', 'REMOTE_PLUGIN_PARAMS') }}"

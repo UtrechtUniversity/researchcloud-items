@@ -6,7 +6,7 @@ From the project root, run:
 
 ...where <scenario-name> is the name of one of the subdirectories of the `molecule` directory, e.g. `playbook-security_updates`. 
 
-Using `-c molecule/default/molecule.yml` ensures molecule uses the default configuration [for testing SRC images](#Testing-SRC-workspaces). By default (unless overriden in a scenario's own `molecule.yml`), this will test the scenario on both Ubuntu Focal and Ubuntu Jammy.
+Using `-c molecule/default/molecule.yml` ensures molecule uses the default configuration [for testing SRC images](#Testing-SRC-workspaces). By default (unless [overriden](#Overriding-the-default-configuration-for-a-scenario) in a scenario's own `molecule.yml`), this will test the scenario on both Ubuntu Focal and Ubuntu Jammy.
 
 ### Images
 
@@ -63,7 +63,7 @@ provisioner:
     PLAYBOOK_PATH: 'new_scenario.yml' # The path to the playbook we want to test in this scenario. Relative to PLAYBOOK_DIR defined in default/molecule.yml
 ```
 
-Optionally, your scenario can also contain a `verify.yml` to [perform additional assertions](#assertions-in-verify-yml) after `converge` is run.
+Optionally, your scenario can also contain a `verify.yml` to [perform additional assertions](#assertions-in-verifyyml) after `converge` is run.
 
 ### Overriding the default configuration for a scenario
 
@@ -94,6 +94,18 @@ platforms:
 You can also use environment variables to tweak the settings defined in `default/molecule.yml`, e.g.:
 
 `ANSIBLE_VERBOSITY=1 molecule test -s playbook-security_updates`
+
+### Setting component parameters for a playbook
+
+In a scenario's `molecule.yml`, you can set the following to pass component parameters on to the playbook that will be executed on the container workspace:
+
+```yaml
+provisioner:
+  name: ansible
+  env:
+    PLAYBOOK_PATH: 'my-playbook.yml'
+    REMOTE_PLUGIN_PARAMETERS: # Your parameters go here
+```
 
 ### Assertions in `verify.yml`
 
@@ -132,4 +144,4 @@ Currently, this means that a test for the scenario `playbook-python-workbench` i
 
 ### Which images are used?
 
-The default `molecule.yml` is configured to use the images from [this package](https://github.com/UtrechtUniversity/SRC-test-workspace/i), which are designed to mimick SURF Research Cloud (SRC) workspaces. On CI, the latest images for each OS flavour (tags are e.g. `ubuntu_focal`, `ubuntu_jammy`, `ubuntu_focal-desktop`) are automatically pulled from the Github Container Registry (https://ghcr.io).
+The default `molecule.yml` is configured to use the images from [this package](https://github.com/UtrechtUniversity/SRC-test-workspace/), which are designed to mimick SURF Research Cloud (SRC) workspaces. On CI, the latest images for each OS flavour (tags are e.g. `ubuntu_focal`, `ubuntu_jammy`, `ubuntu_focal-desktop`) are automatically pulled from the Github Container Registry (https://ghcr.io).
