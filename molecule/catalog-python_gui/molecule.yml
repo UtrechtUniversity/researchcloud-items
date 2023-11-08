@@ -1,6 +1,6 @@
 ---
 driver:
-  name: docker
+  name: podman
   local: &local
     pull: false
   ci: &ci
@@ -13,14 +13,24 @@ driver:
 platforms:
   - name: workspace-src-ubuntu_focal-desktop
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    command: /sbin/init
+    privileged: true
     pre_build_image: true
+    published_ports:
+      - 3389/tcp
+      - 8080/tcp
     # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &loca (ensures the image is not pulled).
+    # Otherwise include &local (ensures the image is not pulled).
     <<: ${CI-*local}
 provisioner:
   name: ansible
   env:
     components:
-      - name: miniconda-base
-        path: miniconda-base.yml
-        # parameters: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role
+      - name: python-workbench
+        path: python-workbench.yml
+      - name: guacamole
+        git: https://github.com/dometto/plugin-guacamole.git
+        refspec: master
+        path: plugin-guacamole.yml
+        parameters:
+          guacamole_guacd_host: 0.0.0.0
