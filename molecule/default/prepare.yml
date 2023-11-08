@@ -2,15 +2,23 @@
 - name: Prepare
   hosts: all
   tasks:
-    - name: Copy plugin
+
+    - name: Clone git component
+      when: item.git is defined
+      ansible.builtin.git:
+          repo: "{{ item.git }}"
+          dest: "/rsc/plugins/{{ item.name }}"
+          refspec: "{{ item.refspec | default(omit) }}"
+      with_items: "{{ lookup('env', 'components') }}"
+
+    - name: Copy local component
+      when: item.git is not defined
       ansible.posix.synchronize:
-        src: "{{ remote_plugin.script_folder }}/"
-        dest: "/rsc/plugins/{{ remote_plugin.script_folder | basename }}"
+        src: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}"
+        dest: "/rsc/plugins/{{ item.name }}"
         archive: false
         recursive: true
         rsync_opts:
           - '--exclude=".*"'
         ssh_connection_multiplexing: true
-      vars:
-        remote_plugin:
-          script_folder: "{{ lookup('env', 'PROJECT_DIR') }}/{{ lookup('env', 'PLAYBOOK_DIR') }}"
+      with_items: "{{ lookup('env', 'components') }}"

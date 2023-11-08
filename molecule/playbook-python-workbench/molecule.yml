@@ -20,5 +20,6 @@ platforms: # Test only on ubuntu focal due to pyenv role bug on jammy: https://g
 provisioner:
   name: ansible
   env:
-    PLAYBOOK_PATH: 'python-workbench.yml'
-    REMOTE_PLUGIN_PARAMETERS: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role
+    components:
+      - name: 'python-workbench'
+        path: 'python-workbench.yml'

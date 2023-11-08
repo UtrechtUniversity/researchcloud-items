@@ -20,5 +20,7 @@ platforms:
 provisioner:
   name: ansible
   env:
-    PLAYBOOK_PATH: 'miniconda-base.yml'
-    REMOTE_PLUGIN_PARAMETERS: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role
+    components:
+      - name: miniconda-base
+        path: miniconda-base.yml
+        # parameters: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role

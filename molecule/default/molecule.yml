@@ -29,9 +29,8 @@ provisioner:
     converge: ../default/converge.yml
     prepare: ../default/prepare.yml
   env:
-    PROJECT_DIR: ${PROJECT_DIR:-"../../"}
     EXTERNAL_PLUGIN: ${EXTERNAL_PLUGIN:-test/src-external-plugin/plugin-external-plugin.yml} # Relative to PROJECT_DIR
-    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"playbooks/"} # Relative to PROJECT_DIR
+    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../playbooks/"}
     REMOTE_ANSIBLE_VERSION: ${REMOTE_ANSIBLE_VERSION:-"2.9"} # Currently unused
     REMOTE_PLUGIN_PARAMETERS: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role
     ANSIBLE_VERBOSITY: ${ANSIBLE_VERBOSITY:-"2"}
