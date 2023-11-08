@@ -26,11 +26,8 @@ provisioner:
   name: ansible
   env:
     components:
-      # - name: python-workbench
-      #   path: python-workbench.yml
-      - name: xrdp
-        git: https://github.com/dometto/plugin-xrdp.git
-        path: plugin-desktop.yml
+      - name: python-workbench
+        path: python-workbench.yml
       - name: guacamole
         git: https://github.com/dometto/plugin-guacamole.git
         refspec: master
