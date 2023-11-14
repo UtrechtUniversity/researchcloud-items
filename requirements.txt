@@ -1,0 +1,3 @@
+molecule~=6.0
+molecule-plugins @ git+https://github.com/dometto/molecule-plugins@disable_registry_login
+jmespath

@@ -1,22 +1,15 @@
 ---
 driver:
   name: docker
-  local: &local
-    pull: false
-  ci: &ci
-    pull: true
+platforms:
+  - name: workspace-src-ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    pre_build_image: true
     registry:
       url: $DOCKER_REGISTRY
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-platforms:
-  - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
-    pre_build_image: true
-    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &loca (ensures the image is not pulled).
-    <<: ${CI-*local}
 provisioner:
   name: ansible
   env:

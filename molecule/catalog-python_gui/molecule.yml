@@ -1,27 +1,19 @@
 ---
 driver:
   name: podman
-  local: &local
-    pull: false
-  ci: &ci
-    pull: true
+platforms:
+  - name: workspace-src-ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 3389/tcp
+      - 8080/tcp
     registry:
       url: $DOCKER_REGISTRY
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-platforms:
-  - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
-    command: /sbin/init
-    privileged: true
-    pre_build_image: true
-    published_ports:
-      - 3389/tcp
-      - 8080/tcp
-    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &local (ensures the image is not pulled).
-    <<: ${CI-*local}
 provisioner:
   name: ansible
   env:

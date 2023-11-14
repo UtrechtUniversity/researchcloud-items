@@ -1,10 +1,8 @@
 ---
-# This playbook ensures that dependencies on the Ansible controller (localhost) are installed
+# This playbook ensures that dependencies on the Ansible controller (your localhost) are installed
 
 - name: "Prepare dependencies on ansible controller"
   hosts: "localhost"
   tasks:
-    # jmespath is required for filter 
-    - name: ensure jmespath is installed
-      pip:
-        name: jmespath
+    - name: Ensure requirements are installed
+      ansible.builtin.command: "pip install -r {{ lookup('env', 'REQUIREMENTS_FILE') }}"

@@ -7,15 +7,15 @@
       when: item.git is defined
       ansible.builtin.git:
           repo: "{{ item.git }}"
-          dest: "/rsc/plugins/{{ item.name }}"
+          dest: "/rsc/plugins/{{ item.name }}/"
           refspec: "{{ item.refspec | default(omit) }}"
       with_items: "{{ lookup('env', 'components') }}"
 
     - name: Copy local component
       when: item.git is not defined
       ansible.posix.synchronize:
-        src: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}"
-        dest: "/rsc/plugins/{{ item.name }}"
+        src: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}/"
+        dest: "/rsc/plugins/{{ item.name }}/"
         archive: false
         recursive: true
         rsync_opts:

@@ -1,10 +1,8 @@
 ---
 driver:
   name: docker
-  local: &local
-    pull: false
-  ci: &ci
-    pull: true
+  image_settings: &image_settings
+    pre_build_image: true
     registry:
       url: $DOCKER_REGISTRY
       credentials:
@@ -13,23 +11,17 @@ driver:
 platforms: # Test on ubuntu focal and jammy by default
   - name: workspace-src-ubuntu_focal
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
-    pre_build_image: true
-    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &loca (ensures the image is not pulled).
-    <<: ${CI-*local}
+    <<: *image_settings
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
-    pre_build_image: true
-    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &loca (ensures the image is not pulled).
-    <<: ${CI-*local}
+    <<: *image_settings
 provisioner:
   name: ansible
   playbooks:
     converge: ../default/converge.yml
     prepare: ../default/prepare.yml
   env:
-    PROJECT_DIR: ${PROJECT_DIR:-"../../"}
-    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../playbooks/"}
+    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../"}
     ANSIBLE_VERBOSITY: ${ANSIBLE_VERBOSITY:-"2"}
-    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH:-'../../playbooks/roles'}
+    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH:-'../../roles'}
+    REQUIREMENTS_FILE: ${REQUIREMENTS_FILE:-"../../requirements.txt"}
