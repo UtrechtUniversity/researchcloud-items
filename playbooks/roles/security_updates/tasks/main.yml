@@ -15,7 +15,7 @@
     command: unattended-upgrades -v
     tags: molecule-notest
 
-  - name: Run updates # dry run
+  - name: Run updates # dry run when in a molecule run
     command: unattended-upgrades --dry-run
     changed_when: false
     when: "'molecule-notest' in ansible_skip_tags"

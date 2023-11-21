@@ -79,6 +79,7 @@ jobs:
       DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
       DOCKER_REGISTRY: ghcr.io
       ANSIBLE_FORCE_COLOR: '1'
+      REQUIREMENTS_FILE: molecule/default/requirements.txt
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.define_scenarios.outputs.matrix) }}
@@ -88,7 +89,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - run: pip install -r requirements.txt
+      - run: pip install -r ${{ env.REQUIREMENTS_FILE }}
       - name: Check if scenario exists
         id: check_scenario_exists
         run: |
