@@ -10,3 +10,7 @@
   gather_facts: true
   roles:
     - role: security_updates
+      vars:
+        security_updates_firstrun: "{{ security_updates_firstrun }}"
+        security_updates_periodic: "{{ security_updates_periodic }}"
+        security_updates_delay_time: "{{ security_updates_delay_time }}"

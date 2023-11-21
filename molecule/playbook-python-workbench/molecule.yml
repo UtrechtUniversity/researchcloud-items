@@ -16,4 +16,3 @@ provisioner:
     components:
       - name: 'python-workbench'
         path: 'python-workbench.yml'
-# TEST

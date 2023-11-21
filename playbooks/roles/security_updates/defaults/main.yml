@@ -1,4 +1,4 @@
 ---
 security_updates_firstrun: true
 security_updates_periodic: true
-security_updates_delay_time: 1
+security_updates_delay_time: 30
