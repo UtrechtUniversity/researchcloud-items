@@ -42,6 +42,7 @@ Currently, all our playbooks are still considered Experimental.
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
 - [miniconda](playbooks/miniconda.md)  Python applicaiton development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
+- [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
@@ -74,6 +75,7 @@ Currently, all our playbooks are still considered Experimental.
 - [robotuser](roles/robotuser.md)
 - [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
+- [security_updates](roles/security_updates.md)
 - [sshfs-configrobot](roles/sshfs-configrobot.md)
 - [sshfs-mount](roles/sshfs-mount.md)
 - [sshfs-umount](roles/sshfs-umount.md)   
