@@ -15,111 +15,90 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          path: "${{ github.repository }}"
-      - name: Get changed playbooks
-        id: changed-playbooks-yaml
-        uses: tj-actions/changed-files@v39
-        with:
-          path: "${{ github.repository }}"
-          json: true
-          quotepath: false
-          files_yaml: |
-            playbooks:
-              - 'playbooks/*.yml'
       - name: Get changed roles
-        id: changed-roles-yaml
-        uses: tj-actions/changed-files@v39
+        id: changed-roles
+        uses: tj-actions/changed-files@v40
         with:
-          path: "${{ github.repository }}"
-          json: true
           dir_names: true
           dir_names_max_depth: 3
-          dir_names_include_files: true
-          quotepath: false
-          files_yaml: |
-            roles:
-              - 'playbooks/roles/**/**'
-      - id: set-playbooks-matrix
-        run: echo "matrix=${{ steps.changed-playbooks-yaml.outputs.playbooks_all_changed_files }}" >> $GITHUB_OUTPUT
-      - id: set-roles-matrix
-        run: echo "matrix=${{ steps.changed-roles-yaml.outputs.roles_all_changed_files }}" >> $GITHUB_OUTPUT
-      - name: Debug
-        run: echo ${{ steps.set-playbooks-matrix.outputs.matrix }}
-      - name: Debug
-        run: echo ${{ steps.set-roles-matrix.outputs.matrix }}
+          files: |
+              playbooks/roles/**/**
+      - name: Get changed scenarios
+        id: changed-scenarios
+        uses: tj-actions/changed-files@v40
+        with:
+          dir_names: true
+          dir_names_max_depth: 2
+          files: |
+              molecule/playbook-*/*.yml
+              molecule/role-*/*.yml
+      - name: Get changed playbooks
+        id: changed-playbooks
+        uses: tj-actions/changed-files@v40
+        with:
+          files: |
+              playbooks/*.yml
+      - name: Set matrix based on changed files
+        id: set-scenario-matrix
+        run: |
+          ROLES=(${{ steps.changed-roles.outputs.all_changed_files }})
+          ROLES=("${ROLES[@]/#playbooks\/roles\//role-}") # playbooks/roles/foo -> role-foo
+          echo "DEBUG ROLES: ${ROLES[*]}"
+
+          PLAYBOOKS=(${playbooks})
+          PLAYBOOKS=("${PLAYBOOKS[@]/#playbooks\//playbook-}") # playbooks/foo.yml -> playbook-foo.yml
+          PLAYBOOKS=("${PLAYBOOKS[@]/%.yml/}") # playbook-foo.yml -> playbook-foo
+          echo "DEBUG PLAYBOOKS: ${PLAYBOOKS[*]}"
+
+          SCENARIOS=(${{ steps.changed-scenarios.outputs.all_changed_files }})
+          SCENARIOS=("${SCENARIOS[@]/#molecule\//}") # molecule/playbook-foo -> playbook-foo
+          echo "DEBUG SCENARIOS: ${SCENARIOS[*]}"
+
+          ALL_CHANGES="${PLAYBOOKS[*]} ${ROLES[*]} ${SCENARIOS[*]}"
+          echo "DEBUG ALL_CHANGES: $ALL_CHANGES"
+
+          # Construct a unique bash array out of ALL_CHANGES
+          MATRIX=($(echo "$ALL_CHANGES" | xargs -n 1 | sort -u))
+
+          # Create a valid json array out of the bash array using jq
+          MATRIX=$(printf '%s\n' "${MATRIX[@]}" | jq -R . | jq -c -s .)
+
+          # Store the results
+          echo matrix={\"scenarios\": $MATRIX} >> $GITHUB_OUTPUT
+          echo scenarios=$MATRIX >> $GITHUB_OUTPUT
+          echo "DEBUG SCENARIOS: $MATRIX"
     outputs:
-      playbooks_matrix: ${{ steps.set-playbooks-matrix.outputs.matrix }}
-      roles_matrix: ${{ steps.set-roles-matrix.outputs.matrix }}
+      matrix: ${{ steps.set-scenario-matrix.outputs.matrix }}
 
-  molecule_playbooks:
+  molecule:
     needs: define_scenarios
     runs-on: ubuntu-latest
-    if: ${{ needs.define_scenarios.outputs.playbooks_matrix != '[]' && needs.define_scenarios.outputs.playbooks_matrix != '' }}
+    if: ${{ needs.define_scenarios.outputs.matrix != '[""]' && needs.define_scenarios.outputs.matrix != '' }}
     env:
       DOCKER_USER: ${{ github.actor }}
       DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
       DOCKER_REGISTRY: ghcr.io
+      ANSIBLE_FORCE_COLOR: '1'
+      REQUIREMENTS_FILE: molecule/default/requirements.txt
     strategy:
       fail-fast: false
-      matrix:
-        playbooks: ${{ fromJSON(needs.define_scenarios.outputs.playbooks_matrix) }}
+      matrix: ${{ fromJSON(needs.define_scenarios.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Filename to scenario name
-        id: set-scenario
-        run: echo "scenario_name=playbook-`basename -s .yml ${{ matrix.playbooks }}`" >> $GITHUB_OUTPUT
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install -r ${{ env.REQUIREMENTS_FILE }}
       - name: Check if scenario exists
         id: check_scenario_exists
         run: |
-          if [[ -d molecule/${{ steps.set-scenario.outputs.scenario_name }} ]]; then
+          if [[ -d molecule/${{ matrix.scenarios }}  ]]; then
             echo "exitcode=true" >> $GITHUB_OUTPUT
           else
             echo "exitcode=false" >> $GITHUB_OUTPUT
           fi
-      - name: Molecule tests for playbooks
-        uses: gofrolist/molecule-action@v2
+      - name: Molecule tests for playbook
         if: ${{ steps.check_scenario_exists.outputs.exitcode == 'true' }}
-        with:
-          molecule_options: -e molecule/default/ci.env.yml -c molecule/default/molecule.yml
-          molecule_command: test
-          molecule_args: --scenario-name ${{ steps.set-scenario.outputs.scenario_name }}
-        env:
-          ANSIBLE_FORCE_COLOR: '1'
-
-  molecule_roles:
-    needs: define_scenarios
-    runs-on: ubuntu-latest
-    if: ${{ needs.define_scenarios.outputs.roles_matrix != '[]' && needs.define_scenarios.outputs.roles_matrix != '' }}
-    env:
-      DOCKER_USER: ${{ github.actor }}
-      DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
-      DOCKER_REGISTRY: ghcr.io
-    strategy:
-      fail-fast: false
-      matrix:
-        roles: ${{ fromJSON(needs.define_scenarios.outputs.roles_matrix) }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Filename to scenario name
-        id: set-scenario
-        run: echo "scenario_name=role-`basename -s .yml ${{ matrix.roles }}`" >> $GITHUB_OUTPUT
-      - name: Check if scenario exists
-        id: check_scenario_exists
         run: |
-          if [[ -d molecule/${{ steps.set-scenario.outputs.scenario_name }} ]]; then
-            echo "exitcode=true" >> $GITHUB_OUTPUT
-          else
-            echo "exitcode=false" >> $GITHUB_OUTPUT
-          fi
-      - name: Molecule tests for playbooks
-        uses: gofrolist/molecule-action@v2
-        if: ${{ steps.check_scenario_exists.outputs.exitcode == 'true' }}
-        with:
-          molecule_options: -e molecule/default/ci.env.yml -c molecule/default/molecule.yml
-          molecule_command: test
-          molecule_args: --scenario-name ${{ steps.set-scenario.outputs.scenario_name }}
-        env:
-          ANSIBLE_FORCE_COLOR: '1'
+          molecule -c molecule/default/molecule.yml test --scenario-name  ${{ matrix.scenarios }}

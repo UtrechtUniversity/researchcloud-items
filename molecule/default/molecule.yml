@@ -1,10 +1,8 @@
 ---
 driver:
   name: docker
-  local: &local
-    pull: false
-  ci: &ci
-    pull: true
+  image_settings: &image_settings
+    pre_build_image: true
     registry:
       url: $DOCKER_REGISTRY
       credentials:
@@ -13,25 +11,17 @@ driver:
 platforms: # Test on ubuntu focal and jammy by default
   - name: workspace-src-ubuntu_focal
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
-    pre_build_image: true
-    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &loca (ensures the image is not pulled).
-    <<: ${CI-*local}
+    <<: *image_settings
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
-    pre_build_image: true
-    # Include &ci (ensures the image is pulled from the repository) if CI env variable is set
-    # Otherwise include &loca (ensures the image is not pulled).
-    <<: ${CI-*local}
+    <<: *image_settings
 provisioner:
   name: ansible
   playbooks:
     converge: ../default/converge.yml
     prepare: ../default/prepare.yml
   env:
-    EXTERNAL_PLUGIN: ${EXTERNAL_PLUGIN:-test/src-external-plugin/plugin-external-plugin.yml} # Relative to PROJECT_DIR
-    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../playbooks/"}
-    REMOTE_ANSIBLE_VERSION: ${REMOTE_ANSIBLE_VERSION:-"2.9"} # Currently unused
-    REMOTE_PLUGIN_PARAMETERS: # Override this in a scenario's molecule.yml to pass parameters to your playbook or role
+    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../"}
     ANSIBLE_VERBOSITY: ${ANSIBLE_VERBOSITY:-"2"}
-    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH:-'../../playbooks/roles'}
+    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH:-'../../roles'}
+    REQUIREMENTS_FILE: ${REQUIREMENTS_FILE:-"../../requirements.txt"}

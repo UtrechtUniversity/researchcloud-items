@@ -1,0 +1,6 @@
+[Unit]
+Description=Service that bootstraps the apt-daily updates and upgrades services
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/start_upgrade_timers.sh

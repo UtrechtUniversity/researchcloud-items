@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: true
+  gather_facts: false
   tasks:
 
     - name: Debug -- list all components to be executed
@@ -16,6 +16,6 @@
       vars:
         remote_plugin:
           script_type: 'Ansible PlayBook'
-          arguments: '-i 127.0.0.1, --skip-tags notest,molecule-notest'
+          arguments: "-i 127.0.0.1, --skip-tags {{ ansible_skip_tags | join(',') }}"
           parameters: "{{ item.parameters | default('{}') }}"
       with_items: "{{ lookup('env', 'components') }}"
