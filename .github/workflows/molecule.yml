@@ -69,11 +69,12 @@ jobs:
           echo "DEBUG SCENARIOS: $MATRIX"
     outputs:
       matrix: ${{ steps.set-scenario-matrix.outputs.matrix }}
+      scenarios: ${{ steps.set-scenario-matrix.outputs.scenarios }}
 
   molecule:
     needs: define_scenarios
     runs-on: ubuntu-latest
-    if: ${{ needs.define_scenarios.outputs.matrix != '[""]' && needs.define_scenarios.outputs.matrix != '' }}
+    if: ${{ needs.define_scenarios.outputs.scenarios != '[""]' && needs.define_scenarios.outputs.scenarios != '' }}
     env:
       DOCKER_USER: ${{ github.actor }}
       DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
