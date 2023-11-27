@@ -19,7 +19,7 @@ To add Molecule tests to your SRC component or catalog item repository, follow t
 1. include the contents of this repository as a subtree, under `molecule/ext/molecule-src`
   * `git remote add molecule-src https://github.com/UtrechtUniversity/SRC-molecule.git`
   * `git subtree add --prefix molecule/ext/molecule-src molecule-src main --squash`
-1. copy the default `.env.yml` file to your repository root: `cp molecule/ext/molecule-src/default/env.yml .env.yml`
+1. copy the default `.env.yml` file to your repository root: `cp molecule/ext/molecule-src/env.yml .env.yml`
   * optionally edit the contents of `.env.yml`, if your playbooks are not in the default location (the repository root)
 1. run `pip install -r molecule/ext/molecule-src/requirements.txt`
 
