@@ -80,7 +80,8 @@ jobs:
       DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
       DOCKER_REGISTRY: ghcr.io
       ANSIBLE_FORCE_COLOR: '1'
-      REQUIREMENTS_FILE: molecule/default/requirements.txt
+      MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
+      REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.define_scenarios.outputs.matrix) }}
@@ -102,4 +103,4 @@ jobs:
       - name: Molecule tests for playbook
         if: ${{ steps.check_scenario_exists.outputs.exitcode == 'true' }}
         run: |
-          molecule -c molecule/default/molecule.yml test --scenario-name  ${{ matrix.scenarios }}
+          molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name  ${{ matrix.scenarios }}
