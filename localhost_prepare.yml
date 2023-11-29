@@ -1,8 +1,0 @@
----
-# This playbook ensures that dependencies on the Ansible controller (your localhost) are installed
-
-- name: "Prepare dependencies on ansible controller"
-  hosts: "localhost"
-  tasks:
-    - name: Ensure requirements are installed
-      ansible.builtin.command: "pip install -r {{ lookup('env', 'REQUIREMENTS_FILE') }}"
