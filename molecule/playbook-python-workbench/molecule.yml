@@ -1,6 +1,4 @@
 ---
-driver:
-  name: docker
 platforms: # Test only on ubuntu focal due to pyenv role bug on jammy: https://github.com/UtrechtUniversity/researchcloud-items/issues/51
   - name: workspace-src-ubuntu_focal
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
