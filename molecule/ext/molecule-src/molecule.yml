@@ -1,6 +1,6 @@
 ---
 driver:
-  name: docker
+  name: ${DRIVER-podman}
   image_settings: &image_settings
     pre_build_image: true
     registry:
@@ -18,8 +18,8 @@ platforms: # Test on ubuntu focal and jammy by default
 provisioner:
   name: ansible
   playbooks:
-    converge: ../default/converge.yml
-    prepare: ../default/prepare.yml
+    converge: ../ext/molecule-src/converge.yml
+    prepare: ../ext/molecule-src/prepare.yml
   env:
     PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../"}
     ANSIBLE_VERBOSITY: ${ANSIBLE_VERBOSITY:-"2"}
