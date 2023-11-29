@@ -1,6 +1,6 @@
 ---
 driver:
-  name: docker
+  name: ${DRIVER-podman}
   image_settings: &image_settings
     pre_build_image: true
     registry:
