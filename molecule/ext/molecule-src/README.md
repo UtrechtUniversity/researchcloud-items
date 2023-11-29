@@ -58,4 +58,10 @@ platforms:
         username: $DOCKER_USER
 ```
 
+## Specifying a Driver
+
+The molecule tests can use either Docker or Podman (default). You can override the default driver in your scenario's `molecule.yml`. Or even easier: set an environment variable like `DRIVER=docker`.
+
 ## Adding additional assertions
+
+Add a `verify.yml` to your scenario and see the [Molecule docs](https://ansible.readthedocs.io/projects/molecule/configuration/#verifier).
