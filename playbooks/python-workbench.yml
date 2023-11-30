@@ -2,7 +2,7 @@
 - name: Install Python environment management tools
   hosts: localhost
   gather_facts: true
-  
+
   roles:
     - python
     - pyenv
@@ -10,6 +10,6 @@
     - role: userspace_applications
       vars:
         list_userspace_applications:
-          - 05-python-3.9.9
+          - "05-python-3.9.9"
           - 10-python-poetry
           - 999ready
