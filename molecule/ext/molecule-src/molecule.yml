@@ -1,0 +1,27 @@
+---
+driver:
+  name: ${DRIVER-podman}
+  image_settings: &image_settings
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+platforms: # Test on ubuntu focal and jammy by default
+  - name: workspace-src-ubuntu_focal
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
+    <<: *image_settings
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    <<: *image_settings
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../ext/molecule-src/converge.yml
+    prepare: ../ext/molecule-src/prepare.yml
+  env:
+    PLAYBOOK_DIR: ${PLAYBOOK_DIR:-"../../"}
+    ANSIBLE_VERBOSITY: ${ANSIBLE_VERBOSITY:-"2"}
+    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH:-'../../roles'}
+    REQUIREMENTS_FILE: ${REQUIREMENTS_FILE:-"../../requirements.txt"}
