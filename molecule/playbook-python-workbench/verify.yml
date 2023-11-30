@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    # Just check whether the userspace definitions have been installed, as there are no separate tests for the userspace role yet.
+    - name: Check whether poetry runonce defintion is installed
+      ansible.builtin.stat:
+        path: /home/testuser/runonce.d/10-python-poetry
+      register: poetry_stat
+
+    - name: Assert poetry definition exists
+      ansible.builtin.assert:
+        that:
+          - poetry_stat.stat.exists

@@ -6,7 +6,7 @@
     - name: Create test user
       ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
       register: adduser
-      changed_when: 'adduser.rc == 0'
+      changed_when: adduser.rc == 0
     - name: List testuser groups
       ansible.builtin.command: groups testuser
       changed_when: false
@@ -22,7 +22,7 @@
     - name: Find EXTRA_GROUPS
       register: extra_groups
       changed_when: false
-      command: "grep EXTRA_GROUPS= /etc/adduser.conf"
+      command: grep EXTRA_GROUPS= /etc/adduser.conf
 
     - name: Debug
       ansible.builtin.debug:
@@ -42,4 +42,4 @@
         that:
           - 'list_groups_newuser.stdout == "testuser2 : testuser2 testgroup1 testgroup2"'
           - 'list_groups_olduser.stdout == "testuser : testuser testgroup1 testgroup2"'
-          - 'list_gids_newuser.stdout == "1004 5000 5001"' # 1004 is the gid for testuser2 as testuser1 has 1001, and sudoers and fuse have 1002 and 1003 
+          - list_gids_newuser.stdout == "1004 5000 5001" # 1004 is the gid for testuser2 as testuser1 has 1001, and sudoers and fuse have 1002 and 1003

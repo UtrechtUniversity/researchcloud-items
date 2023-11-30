@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - name: List shared folders
-      ansible.builtin.command: "ls -l -d /shared"
+      ansible.builtin.command: ls -l -d /shared
       register: list_dir1
       changed_when: false
     - name: Debug
@@ -12,7 +12,7 @@
         msg: "{{ list_dir1.stdout }}"
 
     - name: List shared folders
-      ansible.builtin.command: "ls -l -d /home/testuser/shared"
+      ansible.builtin.command: ls -l -d /home/testuser/shared
       register: list_dir2
       changed_when: false
     - name: Debug
@@ -20,7 +20,7 @@
         msg: "{{ list_dir2.stdout }}"
 
     - name: List shared folders
-      ansible.builtin.command: "ls -l -d /scratch"
+      ansible.builtin.command: ls -l -d /scratch
       register: list_dir3
       changed_when: false
     - name: Debug
