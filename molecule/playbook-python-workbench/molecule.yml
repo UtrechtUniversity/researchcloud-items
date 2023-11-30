@@ -12,5 +12,5 @@ provisioner:
   name: ansible
   env:
     components:
-      - name: 'python-workbench'
-        path: 'python-workbench.yml'
+      - name: python-workbench
+        path: python-workbench.yml
