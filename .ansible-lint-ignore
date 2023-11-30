@@ -1,0 +1,6 @@
+# Using this file instead of "skip_list" in .ansible-list is recommended, as "skip_list" will completely suppress all warnings.
+# By contrast, exceptions listed in this file will be printed in the linter output as "ignored".
+
+# Ignore rules in specific files as follows:
+# playbooks/transferuser.yml yaml[empty-lines]
+

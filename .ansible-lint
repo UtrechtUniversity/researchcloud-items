@@ -1,0 +1,9 @@
+---
+profile: basic
+exclude_paths:
+  - docs
+  - .github
+  - molecule/ext # since this is a subtree, linting should be taken care of upstream
+skip_list:
+  - role-name
+  - var-naming
