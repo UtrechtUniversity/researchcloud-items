@@ -1,5 +1,0 @@
----
-# This file is just to specify requirements for running the liter on the SRC-Molecule repository.
-collections:
-  - name: ansible.posix
-  - name: community.general
