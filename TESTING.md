@@ -6,7 +6,7 @@ From the project root, run:
 
 ...where <scenario-name> is the name of one of the subdirectories of the `molecule` directory, e.g. `playbook-security_updates`. 
 
-Using `-c molecule/ext/molecule-src/molecule.yml` ensures molecule uses the default configuration [for testing Research Cloud images](#Testing-SRC-workspaces). By default (unless [overriden](#Overriding-the-default-configuration-for-a-scenario) in a scenario's own `molecule.yml`), this will test the scenario on both Ubuntu Focal and Ubuntu Jammy.
+Using `-c molecule/ext/molecule-src/molecule.yml` ensures molecule uses the default configuration [for testing Research Cloud images](https://github.com/UtrechtUniversity/SRC-molecule#scenarios).
 
 **For more information on the molecule testing setup, see: https://github.com/UtrechtUniversity/SRC-molecule/blob/main/README.md**
 
@@ -38,7 +38,7 @@ There are some tricky aspects to the workflow file that derive from the fact tha
 
 Currently, this means that a test for the scenario `playbook-python-workbench` is *only* triggered when the file `playbooks/python-workbench.yml` is modified. The scenario is **not** run when the files in `molecule/playbook-python-workbench.yml` are changed, and **also not** when any of the *roles* that the playbook relies on are changed. Since we may anyway move to a setup where every component has its own repository, it is presently not worth it to implement these triggers.
 
-**Note: the CI tests expect the scenario for `playbook-foo.yml` to live in `molecule/playbook-foo`.**
+**Note: the CI tests expect the scenario for `playbook-foo.yml` to live in `molecule/playbook-foo`. A scenario for a role `bar` should live in `molecule/role-bar.**
 
 ## Which images are used?
 
