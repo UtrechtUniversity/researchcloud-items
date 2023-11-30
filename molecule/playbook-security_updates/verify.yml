@@ -4,13 +4,12 @@
   gather_facts: false
   tasks:
     - name: Turn off apt timers (active by default on the image)
-      ansible.builtin.command: "{{ item }}"
-      with_items:
-        - systemctl stop apt-daily.timer apt-daily-upgrade.timer
-        - systemctl disable apt-daily.timer apt-daily-upgrade.timer
+      ansible.builtin.systemd:
+        name: apt-daily-upgrade.timer
+        state: stopped
 
     - name: List bootstrap timer
-      ansible.builtin.command: "systemctl list-timers upgrade-bootstrap"
+      ansible.builtin.shell: echo `systemctl list-timers upgrade-bootstrap`
       register: bootstrap_timer
       changed_when: false
 
@@ -20,10 +19,12 @@
           - '"upgrade-bootstrap.service" in bootstrap_timer.stdout'
 
     - name: Run the bootstrap service
-      ansible.builtin.command: "systemctl start upgrade-bootstrap"
+      ansible.builtin.systemd:
+        name: upgrade-bootstrap
+        state: started
 
     - name: List apt timers
-      ansible.builtin.command: "systemctl list-timers *apt*"
+      ansible.builtin.shell: echo `systemctl list-timers *apt*`
       register: apt_timers
       changed_when: false
 
@@ -33,7 +34,7 @@
           - '"2 timers listed" in apt_timers.stdout'
 
     - name: List bootstrap timer
-      ansible.builtin.command: "systemctl list-timers upgrade-bootstrap"
+      ansible.builtin.shell: echo `systemctl list-timers upgrade-bootstrap`
       register: bootstrap_timer
       changed_when: false
 
