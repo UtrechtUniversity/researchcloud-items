@@ -10,6 +10,7 @@
         dest: /rsc/plugins/{{ item.name }}/
         refspec: "{{ item.refspec | default(omit) }}"
       with_items: "{{ lookup('env', 'components') }}"
+      tags: skip_ansible_lint # linter complains about idempotence of git module
 
     - name: Copy local component
       when: item.git is not defined

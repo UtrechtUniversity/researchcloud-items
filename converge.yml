@@ -9,7 +9,7 @@
       with_items: "{{ lookup('env', 'components') }}"
 
     - name: Test the component by executing it using ansible on the workspace
-      ansible.builtin.command: ansible-playbook --connection=local -v -b {{ remote_plugin.arguments }} --extra-vars='{{ remote_plugin.parameters }}' /rsc/plugins/{{
+      ansible.builtin.command: ansible-playbook -c local -v -b {{ remote_plugin.arguments }} --extra-vars='{{ remote_plugin.parameters }}' /rsc/plugins/{{
         item.name }}/{{ item.path }}
       register: ansible_on_workspace
       changed_when: "'changed=0' not in ansible_on_workspace.stdout_lines[-1]"
