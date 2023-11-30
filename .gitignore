@@ -1,0 +1,5 @@
+.DS_Store
+molecule/ext/molecule-src/requirements.yml
+molecule/ext/molecule-src/.ansible-lint
+molecule/ext/molecule-src/.github
+molecule/ext/molecule-src/README.md
