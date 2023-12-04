@@ -27,8 +27,12 @@
       ansible.builtin.debug:
         msg: "{{ list_dir3.stdout }}"
 
-    # - name: Assert shared folder has correct mode and ownership
-    #   ansible.builtin.assert:
-    #     that:
-    #       - 'list_dir.stdout == "testuser2 : testuser2 testgroup1 testgroup2"'
-    #       - 'list_dir2.stdout == "1002 5000 5001"'
+    - name: Assert shared folder has correct mode and ownership
+      ansible.builtin.assert:
+        that:
+          - "'drwxrws' in  {{ item }}.stdout"
+          - "'root testgroup' in {{ item }}.stdout"
+      with_items:
+        - list_dir1
+        - list_dir2
+        - list_dir3
