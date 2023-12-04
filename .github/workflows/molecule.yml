@@ -80,6 +80,7 @@ jobs:
       DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
       DOCKER_REGISTRY: ghcr.io
       ANSIBLE_FORCE_COLOR: '1'
+      ANSIBLE_STDOUT_CALLBACK: yaml
       MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
       REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
     strategy:
