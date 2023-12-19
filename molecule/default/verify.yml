@@ -1,0 +1,181 @@
+---
+- name: Verify
+  hosts: all
+  pre_tasks:
+    - name: Start aptly web service
+      ansible.builtin.shell: |
+        systemd-run --uid=1000 --gid=1000 -u aptly-web /bin/bash -c 'aptly serve -listen 127.0.0.1:8080'
+      args:
+        executable: /bin/bash
+
+    - name: Download test package
+      ansible.builtin.get_url:
+        url: https://packages.hetzner.com/hcloud/deb/hc-utils_0.0.4-1_all.deb
+        dest: /tmp/hc-utils_0.0.4-1_all.deb
+
+  tasks:
+    - name: Upload package via API
+      ansible.builtin.shell: |
+        curl -s -X POST -F file=@/tmp/hc-utils_0.0.4-1_all.deb http://localhost:9091/api/files/hc-utils-0.0.4
+      register: reg_upload_via_api
+
+    - name: Get files from upload directory
+      ansible.builtin.find:
+        paths: "/srv/aptly/.aptly/upload/hc-utils-0.0.4"
+      register: reg_upload_directory
+
+    - name: Assert that file has been uploaded via API
+      ansible.builtin.assert:
+        that:
+          - "'hc-utils-0.0.4/hc-utils_0.0.4-1_all.deb' in reg_upload_via_api.stdout"
+          - "reg_upload_directory.files[0].path == '/srv/aptly/.aptly/upload/hc-utils-0.0.4/hc-utils_0.0.4-1_all.deb'"
+        success_msg: "File has been uploaded"
+
+    - name: Add test package to repo via API
+      ansible.builtin.uri:
+        url: http://localhost:9091/api/repos/jammy-experimental/file/hc-utils-0.0.4
+        method: POST
+        status_code: 200
+        body_format: json
+      register: reg_add_package_to_repo_via_api
+
+    - name: Get files from upload directory
+      ansible.builtin.find:
+        paths: "/srv/aptly/.aptly/upload"
+      register: reg_upload_directory_after_repo_add
+
+    - name: Assert that file has been added correctly
+      ansible.builtin.assert:
+        that:
+          - "reg_add_package_to_repo_via_api.json.Report.Added[0] == 'hc-utils_0.0.4-1_all added'"
+          - "reg_upload_directory_after_repo_add.matched == 0"
+        success_msg: "File has been added to repository"
+
+    - name: Publish repository
+      ansible.builtin.uri:
+        url: "http://localhost:9091/api/publish/:./jammy"
+        method: PUT
+        body_format: json
+        status_code: 200
+        body:
+          ForceOverwrite: true
+      register: reg_repo_publish
+
+    - name: Get files from experimental pool
+      ansible.builtin.find:
+        paths: "/srv/aptly/.aptly/public/pool/experimental/h/hc-utils/"
+      register: reg_repo_directory
+
+    - name: Assert that repository has been published with hc-utils
+      ansible.builtin.assert:
+        that:
+          - "reg_repo_directory.files[0].path == '/srv/aptly/.aptly/public/pool/experimental/h/hc-utils/hc-utils_0.0.4-1_all.deb'"
+          - "reg_repo_publish.json.Path == './jammy'"
+        success_msg: "Repository has been published"
+
+    - name: Ensure test apt key is present
+      ansible.builtin.copy:
+        dest: "/etc/apt/trusted.gpg.d/aptly_local.asc"
+        content: "{{ aptly__gpg_public_key }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Ensure test aptly repository is present
+      ansible.builtin.apt_repository:
+        repo: "deb http://localhost:8080 jammy main experimental"
+        filename: aptly_local
+        state: present
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Get hc-utils details via apt policy
+      ansible.builtin.shell: |
+        apt policy hc-utils
+      register: reg_apt_policy_hc_utils
+      args:
+        executable: /bin/bash
+
+    - name: Assert that hc-utils is visible in apt policy
+      ansible.builtin.assert:
+        that:
+          - "'http://localhost:8080 jammy/experimental amd64 Packages' in reg_apt_policy_hc_utils.stdout"
+        success_msg: "hc-utils is available from local aptly in apt policy"
+
+    - name: Ensure test aptly repository is present
+      ansible.builtin.apt_repository:
+        repo: "deb http://localhost:8080/aptly nightly main"
+        filename: aptly_local_experimental
+        state: present
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Get aptly details via apt policy
+      ansible.builtin.shell: |
+        apt policy aptly
+      register: reg_apt_policy_aptly
+      args:
+        executable: /bin/bash
+
+    - name: Assert that mirrored aptly package is visible in apt policy
+      ansible.builtin.assert:
+        that:
+          - "'http://localhost:8080/aptly nightly/main amd64 Packages' in reg_apt_policy_aptly.stdout"
+        success_msg: "aptly is available from local aptly in apt policy"
+
+    - name: Slurp mirror env file
+      ansible.builtin.slurp:
+        src: /etc/aptly/mirror/aptly-stable.conf.yaml
+      register: reg_mirrorfile
+
+    - name: Assert that environment variables for mirror are set correctly
+      ansible.builtin.assert:
+        that:
+          - "\"mirror_distribution: 'squeeze'\" in reg_mirrorfile.content | b64decode"
+          - "\"mirror_prefix: 'aptly'\" in reg_mirrorfile.content | b64decode"
+          - "\"mirror_origin: 'its.your-fault.de'\" in reg_mirrorfile.content | b64decode"
+        success_msg: "mirror environment variables are set correctly"
+
+    - name: Import role to check if removal works
+      ansible.builtin.import_role:
+        name: ansible-role-aptly
+      vars:
+        aptly__repositories:
+          - name: jammy
+            distribution: jammy
+            label: cloud_platform
+            state: absent
+            components:
+              - main
+              - experimental
+              - testing
+            architectures:
+              - amd64
+              - arm64
+
+    - name: Get jammy-main repository
+      ansible.builtin.command: "sudo -u {{ aptly__user }} aptly repo show jammy-main"
+      failed_when: false
+      register: reg_repository_after_removal
+
+    - name: Assert that jammy-main is absent
+      ansible.builtin.assert:
+        that:
+          - "reg_repository_after_removal.rc >= 1"
+          - "'repo with name jammy-main not found' in reg_repository_after_removal.stderr"
+        success_msg: "jammy repository has been removed"
+
+    - name: Get jammy publish
+      ansible.builtin.command: "sudo -u {{ aptly__user }} aptly publish show jammy"
+      failed_when: false
+      register: reg_publish_after_removal
+
+    - name: Assert that jammy is not published
+      ansible.builtin.assert:
+        that:
+          - "reg_publish_after_removal.rc >= 1"
+          - "'./jammy not found' in reg_publish_after_removal.stderr"

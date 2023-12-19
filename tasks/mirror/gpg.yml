@@ -1,0 +1,41 @@
+---
+- name: Import GPG keys from string
+  tags: [ aptly-mirror-gpg ]
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ item.string }}" | {{ aptly__config.gpgProvider }} \
+    --no-default-keyring --keyring {{ aptly__user_home_directory }}/.gnupg/trustedkeys.gpg \
+    --batch --pinentry-mode loopback --import
+  loop: "{{ aptly__mirror['keys'] | selectattr('string', 'defined') | list }}"
+  register: reg_aptly_gpg_string
+  changed_when: "'unchanged: 1' not in reg_aptly_gpg_string.stderr"
+  args:
+    executable: /bin/bash
+
+- name: Import GPG keys from file
+  tags: [ aptly-mirror-gpg ]
+  ansible.builtin.shell: |
+    set -o pipefail
+    {{ aptly__config.gpgProvider }} \
+    --batch --pinentry-mode loopback \
+    --no-default-keyring --keyring {{ aptly__user_home_directory }}/.gnupg/trustedkeys.gpg \
+    --import {{ item.file }}
+  loop: "{{ aptly__mirror['keys'] | selectattr('file', 'defined') | list }}"
+  register: reg_aptly_gpg_file
+  changed_when: "'unchanged: 1' not in reg_aptly_gpg_file.stderr"
+  args:
+    executable: /bin/bash
+
+- name: Import GPG keys from URL
+  tags: [ aptly-mirror-gpg ]
+  ansible.builtin.shell: |
+    set -o pipefail
+    echo "{{ lookup('ansible.builtin.url', item.url, split_lines=false) }}" |
+    {{ aptly__config.gpgProvider }} \
+    --no-default-keyring --keyring {{ aptly__user_home_directory }}/.gnupg/trustedkeys.gpg \
+    --batch --pinentry-mode loopback --import
+  loop: "{{ aptly__mirror['keys'] | selectattr('url', 'defined') | list }}"
+  register: reg_aptly_gpg_url
+  changed_when: "'unchanged: 1' not in reg_aptly_gpg_url.stderr"
+  args:
+    executable: /bin/bash

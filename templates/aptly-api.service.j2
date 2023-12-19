@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Aptly API
+After=network.target
+Wants=network-online.target
+
+[Service]
+User={{ aptly__user }}
+Group={{ aptly__user }}
+Type=simple
+ExecStart=/usr/bin/aptly api serve -listen={{ aptly__api_listen_address }}:{{ aptly__api_listen_port }} {{ aptly__api_extra_arguments | join(' ') }}
+Restart=on-abnormal
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
