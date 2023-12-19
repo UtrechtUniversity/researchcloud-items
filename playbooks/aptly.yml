@@ -1,0 +1,60 @@
+---
+- name: Use aptly to serve apt packages
+  hosts: localhost
+  gather_facts: true
+  pre_tasks:
+    - name: Get Service Status
+      no_log: true
+      systemd:
+        name: nginx
+      register: nginx_status
+
+    - name: Stop if nginx is not installed
+      fail:
+        msg: The nginx service must be installed and active for the aptly component to work.
+      when: nginx_status.status.ActiveState != 'active'
+
+    - name: Parse aptly packages as yaml
+      set_fact:
+        packages: "{{ packages|d([]) + [item|from_yaml] }}"
+      loop: "{{ aptly_packages.split('\\n') | list }}"
+
+    - name: Parse aptly repositories as yaml
+      set_fact:
+        repos: "{{ repos|d([]) + [item|from_yaml] }}"
+      loop: "{{ aptly_repositories.split('\\n') | list }}"
+
+  roles:
+    - role: ext/hetzner.aptly
+      vars:
+        aptly__user: "{{ aptly_user | default('aptly') }}"
+        aptly__gpg_private_key: "{{ aptly_gpg_private_key.split('\\n') | join('\n') }}"
+        aptly__gpg_public_key: "{{ aptly_gpg_public_key.split('\\n') | join('\n') }}"
+        aptly__repositories: "{{ repos }}"
+        aptly__api_enable: "{{ aptly_api_enable | default('false') | bool }}"
+    - role: aptly_add
+      vars:
+        webserver_group: www-data
+        aptly__packages: "{{ packages }}"
+        aptly__user:  "{{ aptly_user | default('aptly') }}"
+        aptly__homedir: /srv/aptly
+
+  tasks:
+
+    - name: Create nginx location block
+      copy:
+        content: |
+          location /apt {
+            alias /srv/aptly/.aptly/public;
+            autoindex on;
+          }
+        dest: /etc/nginx/app-location-conf.d/aptly.conf
+        mode: 0644
+        force: false
+      notify: Restart nginx
+  
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

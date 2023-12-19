@@ -1,0 +1,12 @@
+---
+- name: Create test .deb location
+  ansible.builtin.file:
+    dest: /pkgs
+    mode: 0755
+    state: directory
+
+# - name: Get deb
+#   ansible.builtin.get_url:
+#     url: https://dlcdn.apache.org//directory/apacheds/dist/2.0.0.AM27/apacheds-2.0.0.AM27-amd64.deb
+#     mode: 0777
+#     dest: /pkgs/

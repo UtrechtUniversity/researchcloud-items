@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Get release file
+      ansible.builtin.get_url:
+        validate_certs: false
+        url: "http://127.0.0.1/apt/dists/{{ item }}/Release.gpg"
+        dest: /tmp/Test
+      with_items:
+        - jammy
+        - focal

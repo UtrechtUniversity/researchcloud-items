@@ -1,0 +1,33 @@
+---
+- name: Make aptly files readable for webserver
+  block:
+    - name: Set webserver group
+      file:
+        path: "{{ item }}"
+        owner: "{{ aptly__user }}"
+        group: "{{ webserver_group }}"
+        recurse: false
+      with_items:
+        - "{{ aptly__homedir }}"
+        - "{{ aptly__homedir }}/.aptly"
+    - name: Setgid www-data
+      file:
+        path: "{{ aptly__homedir }}/.aptly/public"
+        owner: "{{ aptly__user }}"
+        mode: 02750
+        group: "{{ webserver_group }}"
+
+- name: Create aptly_add_packages script
+  template:
+    src: aptly_add_packages.sh.j2
+    dest: /usr/local/bin/aptly_add_packages.sh
+    owner: "{{ aptly__user }}"
+    group: root
+    mode: 0755
+
+- name: Trigger aply_add script for the first time
+  command:
+    cmd: /usr/local/bin/aptly_add_packages.sh
+  register: aptly_add
+  changed_when: "'added' in aptly_add.stdout"
+  tags: molecule-idempotence-notest
