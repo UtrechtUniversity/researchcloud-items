@@ -1,0 +1,140 @@
+---
+- name: Verify
+  hosts: all
+  pre_tasks:
+    - name: Start aptly web service
+      ansible.builtin.shell: |
+        systemd-run --uid=1000 --gid=1000 -u aptly-web /bin/bash -c 'aptly serve -listen 127.0.0.1:8080'
+      args:
+        executable: /bin/bash
+  tasks:
+    - name: Ensure test apt key is present
+      ansible.builtin.copy:
+        dest: "/etc/apt/trusted.gpg.d/aptly_local.asc"
+        content: "{{ aptly__gpg_public_key }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Ensure test aptly repository is present
+      ansible.builtin.apt_repository:
+        repo: "deb http://localhost:8080/aptly focal main"
+        filename: aptly_local
+        state: present
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Get aptly details via apt policy
+      ansible.builtin.shell: |
+        apt policy aptly
+      register: reg_apt_policy_aptly
+      args:
+        executable: /bin/bash
+
+    - name: Assert that aptly is visible in apt policy
+      ansible.builtin.assert:
+        that:
+          - "'http://localhost:8080/aptly focal/main amd64 Packages' in reg_apt_policy_aptly.stdout"
+        success_msg: "aptly is available from local aptly in apt policy"
+
+    - name: Slurp mirror env file
+      ansible.builtin.slurp:
+        src: /etc/aptly/mirror/aptly.conf.yaml
+      register: mirrorfile
+
+    - name: Assert that environment variables for mirror are set correctly
+      ansible.builtin.assert:
+        that:
+          - "\"mirror_childrens:\" in mirrorfile.content | b64decode"
+          - "\"mirror_distribution: 'focal'\" in mirrorfile.content | b64decode"
+          - "\"mirror_prefix: 'aptly'\" in mirrorfile.content | b64decode"
+          - "\"mirror_origin: 'its.your-fault.de'\" in mirrorfile.content | b64decode"
+        success_msg: "mirror environment variables are set correctly"
+
+    - name: Import role
+      ansible.builtin.import_role:
+        name: ansible-role-aptly
+      vars:
+        aptly__mirrors:
+          - name: aptly
+            distribution: focal
+            state: present
+            publish_prefix: aptly
+            origin: its.your-fault.de
+            no_block_mirror_task: false
+            childrens:
+              - name: stable
+                distribution: squeeze
+                archive_url: "http://repo.aptly.info/"
+                ignore_signatures: false
+                components:
+                  - main
+                architectures:
+                  - amd64
+                keys:
+                  - url: "http://www.aptly.info/pubkey.txt"
+              - name: nightly
+                distribution: nightly
+                archive_url: "http://repo.aptly.info/"
+                ignore_signatures: false
+                state: absent
+                components:
+                  - main
+                architectures:
+                  - amd64
+                keys:
+                  - url: "http://www.aptly.info/pubkey.txt"
+
+    - name: Get snapshots
+      ansible.builtin.command: aptly snapshot list
+      register: reg_snapshot_list
+
+    - name: Assert that nightly snapshots are absent
+      ansible.builtin.assert:
+        that:
+          - "'aptly-nightly-day' not in reg_snapshot_list.stdout"
+
+    - name: Import role
+      ansible.builtin.import_role:
+        name: ansible-role-aptly
+      vars:
+        aptly__mirrors:
+          - name: aptly
+            distribution: focal
+            state: absent
+            publish_prefix: aptly
+            origin: its.your-fault.de
+            no_block_mirror_task: false
+            childrens:
+              - name: stable
+                distribution: squeeze
+                archive_url: "http://repo.aptly.info/"
+                state: present
+                ignore_signatures: false
+                components:
+                  - main
+                architectures:
+                  - amd64
+                keys:
+                  - url: "http://www.aptly.info/pubkey.txt"
+
+    - name: Get snapshots
+      ansible.builtin.command: aptly snapshot list
+      register: reg_snapshot_list
+
+    - name: Assert that snapshots are absent
+      ansible.builtin.assert:
+        that:
+          - "'aptly-stable-day' not in reg_snapshot_list.stdout"
+          - "'aptly-day' not in reg_snapshot_list.stdout"
+
+    - name: Get publishes
+      ansible.builtin.command: aptly publish list
+      register: reg_publish_list
+
+    - name: Assert that publish is absent
+      ansible.builtin.assert:
+        that:
+          - "'focal' not in reg_publish_list.stdout"

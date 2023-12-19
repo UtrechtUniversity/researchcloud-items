@@ -1,0 +1,98 @@
+---
+- name: Set fact if it is a children
+  ansible.builtin.set_fact:
+    mirror_name: "{{ aptly__mirror_base.name + '-' + aptly__mirror.name }}"
+  when: mirror_children is defined and mirror_children
+
+- name: Set fact if it is not a children
+  ansible.builtin.set_fact:
+    mirror_name: "{{ aptly__mirror.name }}"
+  when: mirror_children is not defined
+
+- name: Run present state tasks
+  when: (aptly__mirror_base.state | default('present') == 'present') or
+        (mirror_children is defined and mirror_children and aptly__mirror.state | default('present') == 'present')
+  block:
+    - name: Run present state tasks with aptly user
+      become: true
+      become_method: "{{ aptly__become_method }}"
+      become_user: "{{ aptly__user }}"
+      block:
+        - name: Import GPG-related tasks
+          ansible.builtin.import_tasks: gpg.yml
+
+        - name: Ensure mirror exists
+          ansible.builtin.shell: |
+            aptly mirror create \
+            -architectures="{{ aptly__mirror.architectures | join(',') }}" \
+            {% if aptly__mirror.filter is defined and aptly__mirror.filter | length %}
+            -filter='{{ aptly__mirror.filter }}' \
+            {% if aptly__mirror.filter_with_deps is defined and aptly__mirror.filter_with_deps %}
+            -filter-with-deps \
+            {% endif %}
+            {% endif %}
+            {% if aptly__mirror.ignore_signatures is defined and aptly__mirror.ignore_signatures %}
+            -ignore-signatures \
+            {% endif %}
+            {% if aptly__mirror.with_sources is defined and aptly__mirror.with_sources %}
+            -with-sources \
+            {% endif %}
+            {% if aptly__mirror.with_installer is defined and aptly__mirror.with_installer %}
+            -with-installer \
+            {% endif %}
+            {% if aptly__mirror.with_udebs is defined and aptly__mirror.with_udebs %}
+            -with-udebs \
+            {% endif %}
+            "{{ mirror_name }}" "{{ aptly__mirror.archive_url }}" "{{ aptly__mirror.distribution | default('./') }}" \
+            {{ aptly__mirror.components | join(' ') }}
+          args:
+            executable: /bin/bash
+          register: reg_aptly_mirror_exist
+          changed_when: "'successfully added' in reg_aptly_mirror_exist.stdout"
+          failed_when: "'already exists' not in reg_aptly_mirror_exist.stderr and reg_aptly_mirror_exist.rc >= 1"
+
+        - name: Ensure mirror config is up-to-date
+          ansible.builtin.shell: |
+            aptly mirror edit \
+            -architectures="{{ aptly__mirror.architectures | join(',') }}" \
+            {% if aptly__mirror.filter is defined and aptly__mirror.filter | length %}
+            -filter='{{ aptly__mirror.filter }}' \
+            {% if aptly__mirror.filter_with_deps is defined and aptly__mirror.filter_with_deps %}
+            -filter-with-deps \
+            {% endif %}
+            {% endif %}
+            -ignore-signatures={{ aptly__mirror.ignore_signatures | default('false') }} \
+            -with-sources={{ aptly__mirror.with_sources | default('false') }} \
+            -with-installer={{ aptly__mirror.with_installer | default('false') }} \
+            -with-udebs={{ aptly__mirror.with_udebs | default('false') }} \
+            -archive-url="{{ aptly__mirror.archive_url }}" \
+            "{{ mirror_name }}"
+          args:
+            executable: /bin/bash
+          changed_when: false
+          register: reg_aptly_mirror_config_update
+          retries: 100
+          delay: 10
+          until: "'mirror is locked by' not in reg_aptly_mirror_config_update and reg_aptly_mirror_config_update.rc == 0"
+          when: "'already exists' in reg_aptly_mirror_exist.stderr"
+
+    - name: Ensure children mirror config is latest
+      ansible.builtin.template:
+        src: mirror.conf.yaml.j2
+        dest: "/etc/aptly/mirror/{{ mirror_name }}.conf.yaml"
+        owner: root
+        group: root
+        mode: "0755"
+      when: mirror_children is defined and mirror_children
+
+- name: Run absent state tasks
+  when: (aptly__mirror_base.state | default('present') == 'absent') or
+        (mirror_children is defined and mirror_children and aptly__mirror.state | default('present') == 'absent')
+  block:
+    - name: Ensure mirror config is absent
+      ansible.builtin.file:
+        path: "/etc/aptly/mirror/{{ mirror_name }}.conf.yaml"
+        state: absent
+
+    - name: Import absent tasks
+      ansible.builtin.import_tasks: absent.yml

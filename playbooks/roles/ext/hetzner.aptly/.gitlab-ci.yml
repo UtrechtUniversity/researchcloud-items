@@ -1,0 +1,8 @@
+---
+stages: [ lint, test ]
+
+include:
+  - { project: cloud/platform/templates/ci, file: ansible/role.yml }
+
+molecule default: { extends: .molecule }
+molecule mirror-merge: { extends: .molecule }

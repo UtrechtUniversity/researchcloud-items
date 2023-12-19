@@ -1,0 +1,10 @@
+---
+- name: Ensure aptly dependencies are present
+  tags: [ install ]
+  apt:
+    name:
+      - aptly
+      - bzip2
+      - gnupg2
+      - zstd
+    state: present

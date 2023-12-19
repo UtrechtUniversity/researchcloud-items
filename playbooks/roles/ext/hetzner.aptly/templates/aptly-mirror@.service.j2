@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Synchronize aptly mirror %i
+Wants=network-online.target
+
+[Service]
+User={{ aptly__user }}
+Group={{ aptly__user }}
+Type=oneshot
+ExecStart=/usr/local/bin/aptly-mirror-update --api-url "http://{{ aptly__api_listen_address }}:{{ aptly__api_listen_port }}/api" %i

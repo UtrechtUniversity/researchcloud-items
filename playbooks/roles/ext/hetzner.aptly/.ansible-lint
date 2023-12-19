@@ -1,0 +1,23 @@
+# merge-with-defaults
+offline: true
+skip_list:
+  - package-latest
+  - no-changed-when
+  - avoid-implicit[copy-content]
+  - experimental
+  - no-free-form
+exclude_paths:
+  - /root/.cache
+  - molecule/default/converge.yml
+  - molecule/default/verify.yml
+  - molecule/mirror-merge/converge.yml
+  - molecule/mirror-merge/verify.yml
+  - .git/
+  - .cache/
+  - .gitlab-ci.yml
+  - .github/
+warn_list:
+  - ignore-errors
+enable_list:
+  - yaml
+extra_vars: {}

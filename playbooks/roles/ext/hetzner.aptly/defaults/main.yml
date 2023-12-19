@@ -1,0 +1,44 @@
+---
+aptly__repo: squeeze
+
+aptly__become_method: sudo
+aptly__user: aptly
+aptly__groups:
+  - "www-data"
+aptly__user_home_directory: "/srv/aptly"
+aptly__user_shell: "/bin/bash"
+
+aptly__mirrors: []
+aptly__repositories: []
+
+aptly__gpg_private_key: ""
+aptly__gpg_public_key: ""
+
+aptly__api_enable: true
+aptly__api_listen_address: "127.0.0.1"
+aptly__api_listen_port: 9091
+aptly__api_extra_arguments:
+  - "-no-lock"
+
+aptly__config:
+  rootDir: "{{ aptly__user_home_directory }}/.aptly"
+  downloadConcurrency: 4
+  downloadSpeedLimit: 0
+  architectures: []
+  dependencyFollowSuggests: false
+  dependencyFollowRecommends: false
+  dependencyFollowAllVariants: false
+  dependencyFollowSource: false
+  depenedencyVersobeResolve: false
+  gpgDisableSign: false
+  gpgDisableVerify: false
+  gpgProvider: "gpg"
+  downloadSourcePackages: false
+  skipLegacyPool: true
+  ppaDistributorID: "ubuntu"
+  ppaCodeName: ""
+  FileSystemPublishEndpoints: {}
+  S3PublishEndpoints: {}
+  SwiftPublishEndpoints: {}
+  enableMetricsEndpoint: true
+  AsyncAPI: false
