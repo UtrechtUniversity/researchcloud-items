@@ -30,3 +30,11 @@
       ansible.builtin.apt:
         update_cache: true
       when: ansible_os_family == 'Debian'
+
+    - name: Set extra_preparations var
+      ansible.builtin.set_fact:
+        extra_preparations: "{{ lookup('env', 'extra_prepare_tasks' | default(omit)) }}"
+
+    - name: Execute optional extra preparations
+      ansible.builtin.include_tasks: "{{ extra_preparations }}"
+      when: extra_preparations != ""

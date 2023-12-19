@@ -17,5 +17,5 @@
         remote_plugin:
           script_type: Ansible PlayBook
           arguments: -i 127.0.0.1, --skip-tags {{ ansible_skip_tags | join(',') }}
-          parameters: "{{ item.parameters | default('{}') }}"
+          parameters: "{{ item.parameters | default({}) | to_json }}"
       with_items: "{{ lookup('env', 'components') }}"
