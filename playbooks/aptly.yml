@@ -31,14 +31,16 @@
 
     # When the gpg keys were set as a component parameter, '\n' needs to be replaced by true newlines
     - name: Set gpg key variables
-      when: 'aptly_gpg_private is defined'
+      when:
+        - aptly_gpg_private_key | default('') | length > 0
+        - aptly_gpg_public_key | default('') | length > 0
       set_fact:
         aptly_gpg_private_key: "{{ aptly_gpg_private_key.split('\\n') | join('\n') }}"
         aptly_gpg_public_key: "{{ aptly_gpg_public_key.split('\\n') | join('\n') }}"
 
-    # Create new gpg keypair when none were provided in the parameters
+    # Create new gpg keypair when none was provided in the parameters
     - name: Create gpg keys
-      when: 'aptly_gpg_private_key is not defined or aptly_gpg_public_key is not defined'
+      when: (aptly_gpg_private_key | default('') | length == 0) or (aptly_gpg_public_key | default('') | length == 0)
       block:
         - name: Generate keys
           import_role:
