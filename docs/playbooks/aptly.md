@@ -27,7 +27,7 @@ To publish repositories, Aptly must have access to a valid GPG Keypair. This com
 * creates a new keypair when none is provided by the user.
   * the new public key is served by `nginx` alongside the apt repositories (URL: `<workspace_fqdn>/apt/aptly_pubkey.asc`), so that it can easily be downloaded.
 
-To add packages to repositories, the component creates the script `/usr/local/bin/aptly_add_packages.sh`. The script is run once when this component is executed, but you can also use it at any later time to add more packages to the repositories defined by this component. See the [aptly_add role](../roles/security_updates.md) for documentation.
+To add packages to repositories, the component creates the script `/usr/local/bin/aptly_add_packages.sh`. The script is run once when this component is executed, but you can also use it at any later time to add more packages to the repositories defined by this component. See the [aptly_add role](../roles/aptly_add.md) for documentation.
 
 ## Variables
 
@@ -59,6 +59,7 @@ This adds all `.deb` files `/pkgs/jammy` to the `jammy-main` channel, and all `.
 - `aptly_gpg_public_key`: String GPG public key. ResearchCloud will turn newlines into `\n` characters, so these are replaced by true newlines in the playbook.
 - `aptly_user`: String name for the aptly user (default: `aptly`).
 - `aptly_home`: String homedirectory for the aptly user (default: `/srv/aptly`).
+- `aptly_api_enable`: Boolean whether to enable the Aptly API (served on port `9091`).
 
 ### GPG
 
