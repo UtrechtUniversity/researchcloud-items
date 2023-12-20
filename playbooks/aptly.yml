@@ -50,7 +50,7 @@
             gpg_useremail: "{{ aptly_gpg_useremail | default('aptly@localhost') }}"
             gpg_algo: "{{ aptly_gpg_algo | default('future-default') }}"
             gpg_expire: "{{ aptly_gpg_expire | default(360) }}"
-            gpg_passphrase: "{{ aptly_gpg_useremail | default(None) }}"
+            gpg_passphrase: "{{ aptly_gpg_passphrase | default(None) }}"
             gpg_pubkeyfileexport: aptly.asc
             gpg_privkeyfile: aptly.priv
             gpg_home: "/root"
