@@ -1,0 +1,174 @@
+---
+- name: Check entropy state
+  command: "cat /proc/sys/kernel/random/entropy_avail"
+  changed_when: false
+  register: entropy
+- name: Entropy state
+  debug:
+    var: entropy
+
+- name: Debian | Update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: "{{ gpgkey_generate_apt_cache_valid_time | default('3600') }}"
+  when: ansible_os_family == 'Debian'
+  become: yes
+- name: Debian | Ensure have enough randomness
+  apt:
+    name:
+      - rng-tools
+      - gnupg
+      ## https://docs.ansible.com/ansible/become.html#becoming-an-unprivileged-user
+      - acl
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{ gpg_apt_cache_valid_time }}"
+  when: >
+    (ansible_distribution == 'Debian' and ansible_distribution_version|int >= 7) or
+    (ansible_distribution == 'Ubuntu' and ansible_distribution_version|int >= 14)
+  become: yes
+  register: pkg_result
+  until: pkg_result is success
+- name: Debian | Ensure have enough randomness
+  apt:
+    name:
+      - rng-tools
+      - gnupg
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{ gpg_apt_cache_valid_time }}"
+  when: >
+    (ansible_distribution == 'Debian' and ansible_distribution_version|int < 7) or
+    (ansible_distribution == 'Ubuntu' and ansible_distribution_version|int < 14)
+  become: yes
+  register: pkg_result
+  until: pkg_result is success
+
+- name: Check entropy state
+  command: "cat /proc/sys/kernel/random/entropy_avail"
+  changed_when: false
+  register: entropy2
+- name: Entropy state
+  debug:
+    var: entropy2
+
+- name: Ensure .gnupg config directory exists with right permissions
+  file:
+    dest: "{{ gpg_home }}/.gnupg"
+    state: directory
+    mode: "0700"
+    owner: "{{ gpg_generator_user }}"
+
+- name: Set default gpg options
+  template:
+    src: "{{ gpg_conf_file_template }}"
+    dest: "{{ gpg_home }}/.gnupg/gpg.conf"
+    mode: "0600"
+    owner: "{{ gpg_generator_user }}"
+
+- name: Write GPG passphrase to file
+  copy:
+    content: "{{ gpg_passphrase }}"
+    dest: "{{ gpg_home + '/' + gpg_passphrase_file }}"
+    mode: "0600"
+    owner: "{{ gpg_generator_user }}"
+  register: passphrase_file_created
+
+- name: Import gpg21
+  import_tasks: gpg21.yml
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int > 16
+
+## Note: matching on realname or email doesn't allow to create multiple keys. alternative?
+- name: Check existing secret key
+  shell:
+    cmd: |
+      set -o pipefail
+      gpg --batch --homedir {{ gpg_home }}/.gnupg --list-secret-keys | grep '{{ gpg_realname }}'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  become: yes
+  become_user: "{{ gpg_generator_user }}"
+  register: gpgkeys
+  no_log: "{{ gpg_no_log }}"
+  failed_when: gpgkeys.rc > 1
+- name: Debug | gpg keys
+  debug:
+    var: gpgkeys
+    verbosity: 2
+  no_log: "{{ gpg_no_log }}"
+
+- name: Generate gpg key  # noqa no-changed-when
+  command: >
+    gpg --batch --homedir "{{ gpg_home }}/.gnupg"
+        --passphrase-file "{{ gpg_home + '/' + gpg_passphrase_file }}"
+        --quick-generate-key "{{ gpg_realname }} {{ gpg_useremail }}"
+        future-default default "{{ gpg_expire | default('10y') }}"
+  args:
+    chdir: "{{ gpg_home }}"
+  become: yes
+  become_user: "{{ gpg_generator_user }}"
+  when: gpgkeys is defined and not gpgkeys.stdout
+  register: genkey
+  no_log: "{{ gpg_no_log }}"
+
+- name: Debug | genkey
+  debug:
+    var: genkey
+    verbosity: 1
+
+- name: Get user gpg fingerprint
+  shell: |
+    set -o pipefail
+    gpg --homedir {{ gpg_home }}/.gnupg --list-keys --keyid-format LONG {{ gpg_useremail }} | awk -F'[ /]' '/sub/ { print $5 }' | tee {{ gpg_home }}/{{ gpg_fingerprint }}
+  args:
+    executable: /bin/bash
+    creates: "{{ gpg_home }}/{{ gpg_fingerprint }}"
+  register: gpg_user_fingerprint
+  become: yes
+  become_user: "{{ gpg_generator_user }}"
+
+- name: Get user armored public key
+  command: >
+    gpg --batch --homedir "{{ gpg_home }}/.gnupg"
+        --output "{{ gpg_home }}/{{ gpg_pubkeyfileexport }}"
+        --armor --export "{{ gpg_useremail }}"
+  args:
+    creates: "{{ gpg_home }}/{{ gpg_pubkeyfileexport }}"
+  become: yes
+  become_user: "{{ gpg_generator_user }}"
+
+- name: Get user armored secret key
+  command: >
+    gpg --batch --homedir "{{ gpg_home }}/.gnupg"
+        --passphrase-file "{{ gpg_home + '/' + gpg_passphrase_file }}"
+        --output "{{ gpg_home }}/{{ gpg_privkeyfile }}"
+        --armor --export-secret-key "{{ gpg_useremail }}"
+  args:
+    creates: "{{ gpg_home }}/{{ gpg_privkeyfile }}"
+  become: yes
+  become_user: "{{ gpg_generator_user }}"
+
+- name: Debug | gpg_pull
+  debug:
+    var: gpg_pull
+- name: Fetch files to orchestrator
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ gpg_pulldir }}/"
+    flat: "yes"
+  with_items:
+    # - "{{ gpg_home }}/{{ gpg_privkeyfile }}"
+    # - "{{ gpg_home }}/{{ gpg_pubkeyfile }}"
+    - "{{ gpg_home }}/{{ gpg_pubkeyfileexport }}"
+    - "{{ gpg_home }}/{{ gpg_fingerprint }}"
+  when: gpg_pull is defined and gpg_pull
+
+- name: Fetch privatekey file to orchestrator
+  fetch:
+    src: "{{ item }}"
+    dest: "{{ gpg_pulldir }}/"
+    flat: "yes"
+  with_items:
+    - "{{ gpg_home }}/{{ gpg_privkeyfile }}"
+  when: gpg_pull is defined and gpg_pull and gpg_pull_privatekey is defined and gpg_pull_privatekey
