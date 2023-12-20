@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: true
   tasks:
-    - name: Get release file
+    - name: Get release files
       ansible.builtin.get_url:
         validate_certs: false
         url: "http://127.0.0.1/apt/dists/{{ item }}/Release.gpg"
@@ -11,3 +11,9 @@
       with_items:
         - jammy
         - focal
+
+    - name: Get pubkey
+      ansible.builtin.get_url:
+        validate_certs: false
+        url: http://127.0.0.1/apt/aptly_pubkey.asc
+        dest: /tmp/key.asc

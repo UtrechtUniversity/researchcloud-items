@@ -16,31 +16,87 @@
 
     - name: Parse aptly packages as yaml
       set_fact:
-        packages: "{{ packages|d([]) + [item|from_yaml] }}"
+        packages: "{{ packages | d([]) + [item | from_yaml] }}"
       loop: "{{ aptly_packages.split('\\n') | list }}"
 
     - name: Parse aptly repositories as yaml
       set_fact:
-        repos: "{{ repos|d([]) + [item|from_yaml] }}"
+        repos: "{{ repos | d([]) + [item | from_yaml] }}"
       loop: "{{ aptly_repositories.split('\\n') | list }}"
+
+    - name: Set aptly user vars
+      set_fact:
+        aptly_user: "{{ aptly_user | default('aptly') }}"
+        aptly_home: /srv/aptly
+
+    # When the gpg keys were set as a component parameter, '\n' needs to be replaced by true newlines
+    - name: Set gpg key variables
+      when: 'aptly_gpg_private is defined'
+      set_fact:
+        aptly_gpg_private_key: "{{ aptly_gpg_private_key.split('\\n') | join('\n') }}"
+        aptly_gpg_public_key: "{{ aptly_gpg_public_key.split('\\n') | join('\n') }}"
+
+    # Create new gpg keypair when none were provided in the parameters
+    - name: Create gpg keys
+      when: 'aptly_gpg_private_key is not defined or aptly_gpg_public_key is not defined'
+      block:
+        - name: Generate keys
+          import_role:
+            name: ext/juju4.gpgkey_generate
+          vars:
+            gpg_pull: false # Don't pull the created keys to the orchestrator
+            gpg_generator_user: root # aptly user does not exist yet
+            gpg_realname: "{{ aptly_gpg_realname | default('Aptly on Research Cloud') }}"
+            gpg_useremail: "{{ aptly_gpg_useremail | default('aptly@localhost') }}"
+            gpg_algo: "{{ aptly_gpg_algo | default('future-default') }}"
+            gpg_expire: "{{ aptly_gpg_expire | default(360) }}"
+            gpg_passphrase: "{{ aptly_gpg_useremail | default(None) }}"
+            gpg_pubkeyfileexport: aptly.asc
+            gpg_privkeyfile: aptly.priv
+            gpg_home: "/root"
+        - name: Cat GPG private key
+          command: cat /root/aptly.priv
+          changed_when: false
+          no_log: true
+          register: aptly_gpg_private_cat
+        - name: Cat GPG public key
+          command: cat /root/aptly.asc
+          changed_when: false
+          no_log: true
+          register: aptly_gpg_public_cat
+        - name: Set GPG key vars
+          set_fact:
+            aptly_gpg_private_key: "{{ aptly_gpg_private_cat.stdout }}"
+            aptly_gpg_public_key: "{{ aptly_gpg_public_cat.stdout }}"
+          no_log: true
 
   roles:
     - role: ext/hetzner.aptly
       vars:
-        aptly__user: "{{ aptly_user | default('aptly') }}"
-        aptly__gpg_private_key: "{{ aptly_gpg_private_key.split('\\n') | join('\n') }}"
-        aptly__gpg_public_key: "{{ aptly_gpg_public_key.split('\\n') | join('\n') }}"
+        aptly__user_home_directory: "{{ aptly_home }}"
+        aptly__user: "{{ aptly_user }}"
+        aptly__gpg_private_key: "{{ aptly_gpg_private_key }}"
+        aptly__gpg_public_key: "{{ aptly_gpg_public_key }}"
         aptly__repositories: "{{ repos }}"
         aptly__api_enable: "{{ aptly_api_enable | default('false') | bool }}"
     - role: aptly_add
       vars:
         webserver_group: www-data
         aptly__packages: "{{ packages }}"
-        aptly__user:  "{{ aptly_user | default('aptly') }}"
-        aptly__homedir: /srv/aptly
+        aptly__user: "{{ aptly_user }}"
+        aptly__homedir: "{{ aptly_home }}"
 
   tasks:
 
+    - name: Copy pubkey to repo
+      copy:
+        content: "{{ aptly_gpg_public_key }}"
+        dest: "{{ aptly_home }}/.aptly/public/aptly_pubkey.asc"
+        owner: aptly
+        group: www-data
+        mode: '0644'
+
+    # NB: aptly homedir is hardcoded because copy does not support templating
     - name: Create nginx location block
       copy:
         content: |
@@ -49,10 +105,10 @@
             autoindex on;
           }
         dest: /etc/nginx/app-location-conf.d/aptly.conf
-        mode: 0644
+        mode: '0644'
         force: false
       notify: Restart nginx
-  
+
   handlers:
     - name: Restart nginx
       service:
