@@ -31,12 +31,10 @@
 
     # When the gpg keys were set as a component parameter, '\n' needs to be replaced by true newlines
     - name: Set gpg key variables
-      when:
-        - aptly_gpg_private_key | default('') | length > 0
-        - aptly_gpg_public_key | default('') | length > 0
+      when: (aptly_gpg_private_key | default('') | length > 0) and (aptly_gpg_public_key | default('') | length > 0)
       set_fact:
-        aptly_gpg_private_key: "{{ aptly_gpg_private_key.split('\\n') | join('\n') }}"
-        aptly_gpg_public_key: "{{ aptly_gpg_public_key.split('\\n') | join('\n') }}"
+        gpg_private_key: "{{ aptly_gpg_private_key.split('\\n') | join('\n') }}"
+        gpg_public_key: "{{ aptly_gpg_public_key.split('\\n') | join('\n') }}"
 
     # Create new gpg keypair when none was provided in the parameters
     - name: Create gpg keys
@@ -68,8 +66,8 @@
           register: aptly_gpg_public_cat
         - name: Set GPG key vars
           set_fact:
-            aptly_gpg_private_key: "{{ aptly_gpg_private_cat.stdout }}"
-            aptly_gpg_public_key: "{{ aptly_gpg_public_cat.stdout }}"
+            gpg_private_key: "{{ aptly_gpg_private_cat.stdout }}"
+            gpg_public_key: "{{ aptly_gpg_public_cat.stdout }}"
           no_log: true
 
   roles:
@@ -77,8 +75,8 @@
       vars:
         aptly__user_home_directory: "{{ aptly_home }}"
         aptly__user: "{{ aptly_user }}"
-        aptly__gpg_private_key: "{{ aptly_gpg_private_key }}"
-        aptly__gpg_public_key: "{{ aptly_gpg_public_key }}"
+        aptly__gpg_private_key: "{{ gpg_private_key }}"
+        aptly__gpg_public_key: "{{ gpg_public_key }}"
         aptly__repositories: "{{ repos }}"
         aptly__api_enable: "{{ aptly_api_enable | default('false') | bool }}"
     - role: aptly_add
@@ -92,7 +90,7 @@
 
     - name: Copy pubkey to repo
       copy:
-        content: "{{ aptly_gpg_public_key }}"
+        content: "{{ gpg_public_key }}"
         dest: "{{ aptly_home }}/.aptly/public/aptly_pubkey.asc"
         owner: aptly
         group: www-data
