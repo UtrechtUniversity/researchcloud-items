@@ -1,0 +1,44 @@
+---
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence # the nginx plugin, which we are executed in preparation of the tests for this playbook, is not idempotent
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 80/tcp
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    extra_prepare_tasks: ../../playbook-aptly/extra_prepare.yml
+    components:
+      - name: nginx
+        git: https://gitlab.com/dometto/plugin-nginx.git
+        path: plugin-nginx.yml
+        parameters:
+          nginx_enable_auth: false
+          nginx_enable_ssl: false
+          rsc_nginx_service_url: _
+      - name: aptly
+        path: aptly.yml
+        parameters: # The GPG keys defined below are mocks for testing purposes.
+          aptly_packages: '{name: jammy, component: main, packages: /pkgs, architectures: [amd64, arm64]}\n{name: focal, component: main, packages: /pkgs, architectures: [amd64]}'
+          aptly_repositories: '{name: jammy, distribution: jammy, label: test, state: present, components: [main, experimental], architectures: [amd64, arm64]}\n{name: focal, distribution: focal, label: test, state: present, components: [main, experimental], architectures: [amd64]}'

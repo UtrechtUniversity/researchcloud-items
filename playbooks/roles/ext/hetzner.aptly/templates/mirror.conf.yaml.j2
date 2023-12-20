@@ -1,0 +1,24 @@
+---
+{{ ansible_managed | comment }}
+
+{% if mirror_children is defined and mirror_children %}
+mirror_parent: '{{ aptly__mirror_base.name }}'
+{% endif %}
+{% if aptly__mirror_base.childrens is defined and mirror_children is not defined %}
+mirror_childrens:
+{% for children in aptly__mirror.childrens %}
+{% if children.state | default('present') == 'present' %}
+  - '{{ aptly__mirror.name }}-{{ children.name }}'
+{% endif %}
+{% endfor %}
+{% endif %}
+mirror_distribution: '{{ aptly__mirror.distribution }}'
+{% if aptly__mirror_base.label is defined and aptly__mirror_base.label | length %}
+mirror_label: '{{ aptly__mirror_base.label }}'
+{% endif %}
+{% if aptly__mirror_base.publish_prefix is defined and aptly__mirror_base.publish_prefix | length %}
+mirror_prefix: '{{ aptly__mirror_base.publish_prefix }}'
+{% endif %}
+{% if aptly__mirror_base.origin is defined and aptly__mirror_base.origin | length %}
+mirror_origin: '{{ aptly__mirror_base.origin }}'
+{% endif %}

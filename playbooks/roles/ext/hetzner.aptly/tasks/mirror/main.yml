@@ -1,0 +1,60 @@
+---
+- name: Import mirror tasks if no children is defined
+  ansible.builtin.include_tasks: mirror.yml
+  vars:
+    aptly__mirror: "{{ aptly__mirror_base }}"
+  when: aptly__mirror_base.childrens is not defined or aptly__mirror_base.childrens | length == 0
+
+- name: Import mirror tasks for children
+  ansible.builtin.include_tasks: mirror.yml
+  vars:
+    mirror_children: true
+  when:
+    - aptly__mirror_base.childrens is defined
+    - aptly__mirror_base.childrens | length
+  loop: "{{ aptly__mirror_base.childrens | flatten(levels=1) }}"
+  loop_control:
+    loop_var: aptly__mirror
+
+- name: Include absent tasks if childrens are defined
+  ansible.builtin.include_tasks: absent.yml
+  vars:
+    mirror_name: "{{ aptly__mirror_base.name }}"
+  when:
+    - aptly__mirror_base.childrens is defined and aptly__mirror_base.childrens | length
+    - aptly__mirror_base.state | default('present') == 'absent'
+
+- name: Ensure mirror base config is latest
+  vars:
+    aptly__mirror: "{{ aptly__mirror_base }}"
+  ansible.builtin.template:
+    src: mirror.conf.yaml.j2
+    dest: "/etc/aptly/mirror/{{ aptly__mirror_base.name }}.conf.yaml"
+    owner: root
+    group: root
+    mode: "0755"
+  register: reg_aptly_mirror_config
+  when: aptly__mirror_base.state | default('present') == 'present'
+
+- name: Ensure mirror base config is absent
+  ansible.builtin.file:
+    path: "/etc/aptly/mirror/{{ aptly__mirror_base.name }}.conf.yaml"
+    state: absent
+  when: aptly__mirror_base.state | default('present') == 'absent'
+
+- name: "Ensure mirror update timer is {{ 'started' if state == 'present' else 'stopped' }}"
+  vars:
+    state: "{{ aptly__mirror_base.state | default('present') }}"
+  ansible.builtin.systemd:
+    name: "aptly-mirror@{{ aptly__mirror_base.name }}.timer"
+    enabled: "{{ true if state == 'present' else false if state == 'absent' }}"
+    state: "{{ 'started' if state == 'present' else 'stopped' if state == 'absent' }}"
+
+- name: "Ensure mirror update service is {{ 'started' if state == 'present' else 'stopped' }}"
+  vars:
+    state: "{{ aptly__mirror_base.state | default('present') }}"
+  ansible.builtin.systemd:
+    name: "aptly-mirror@{{ aptly__mirror_base.name }}.service"
+    state: "{{ 'started' if state == 'present' else 'stopped' if state == 'absent' }}"
+    no_block: "{{ aptly__mirror_base.no_block_mirror_task | default(true) | bool }}"
+  when: reg_aptly_mirror_config.changed  # noqa: no-handler

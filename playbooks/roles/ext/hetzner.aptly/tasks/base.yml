@@ -1,0 +1,105 @@
+---
+- name: Ensure aptly user exists
+  user:
+    name: "{{ aptly__user }}"
+    groups: "{{ aptly__groups }}"
+    append: true
+    shell: "{{ aptly__user_shell }}"
+    home: "{{ aptly__user_home_directory }}"
+
+- name: Ensure that aptly config is latest
+  copy:
+    dest: "/etc/aptly.conf"
+    content: "{{ aptly__config | to_nice_json }}"
+    owner: "{{ aptly__user }}"
+    group: "{{ aptly__user }}"
+    mode: "0664"
+
+- name: Ensure aptly static directory exists
+  file:
+    path: "{{ aptly__user_home_directory }}/static"
+    mode: "0755"
+    state: directory
+    owner: "{{ aptly__user }}"
+    group: "{{ aptly__user }}"
+
+- name: Ensure GPG secret key is latest
+  no_log: true
+  copy:
+    dest: "{{ aptly__user_home_directory }}/.sec_key.gpg"
+    mode: "0644"
+    owner: "{{ aptly__user }}"
+    group: "{{ aptly__user }}"
+    content: "{{ aptly__gpg_private_key }}"
+
+- name: Ensure GPG public key is latest
+  no_log: true
+  copy:
+    dest: "{{ aptly__user_home_directory }}/static/public.key"
+    mode: "0644"
+    owner: "{{ aptly__user }}"
+    group: "{{ aptly__user }}"
+    content: "{{ aptly__gpg_public_key }}"
+
+- name: Ensure GPG keys are imported for aptly user
+  no_log: true
+  shell: |
+    gpg --pinentry-mode loopback --no-tty --import {{ aptly__user_home_directory }}/static/public.key ;
+    gpg --pinentry-mode loopback --no-tty --allow-secret-key-import --import {{ aptly__user_home_directory }}/.sec_key.gpg
+  become: true
+  become_user: "{{ aptly__user }}"
+  become_method: "{{ aptly__become_method }}"
+  register: reg_import_gpg_keys
+  changed_when: "'unchanged: 1' not in reg_import_gpg_keys.stderr"
+  args:
+    executable: /bin/bash
+
+- name: Ensure API service is latest
+  template:
+    src: aptly-api.service.j2
+    dest: /etc/systemd/system/aptly-api.service
+    mode: "0644"
+  when: aptly__api_enable
+  notify:
+    - Reload systemd
+    - Enable aptly-api
+    - Restart aptly-api
+
+- name: Setup mirror services
+  when: aptly__mirrors is defined and aptly__mirrors | length > 0
+  block:
+    - name: Ensure mirror instance service is latest
+      template:
+        src: aptly-mirror@.service.j2
+        dest: /etc/systemd/system/aptly-mirror@.service
+        mode: "0644"
+      notify:
+        - Reload systemd
+
+    - name: Ensure mirror instance timer is latest
+      template:
+        src: aptly-mirror@.timer.j2
+        dest: /etc/systemd/system/aptly-mirror@.timer
+        mode: "0644"
+      notify:
+        - Reload systemd
+
+    - name: Ensure mirror update script is latest
+      copy:
+        src: aptly-mirror-update.py
+        dest: /usr/local/bin/aptly-mirror-update
+        mode: "0755"
+        owner: root
+        group: root
+
+    - name: Ensure mirror env directory exists
+      file:
+        path: /etc/aptly/mirror
+        recurse: true
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+- name: Flush handlers
+  meta: flush_handlers
