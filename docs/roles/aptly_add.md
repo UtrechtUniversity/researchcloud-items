@@ -15,6 +15,8 @@ Debian/Ubuntu operating system.
 2. Triggers this script for a first run.
 3. Ensures all files added to the repository in this way are readable by the webserver.
  
+The `aptly_add_packages.sh` performs an `su` to the Aptly user, so it must be run by a user with appropriate privileges.
+
 ## Variables
 
 All these variables are required:
