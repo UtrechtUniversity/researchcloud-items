@@ -30,6 +30,7 @@ Currently, all our playbooks are still considered Experimental.
 ### Experimental playbooks:   
 ("Status: Experimental, use with caution")     
 - [anaconda](playbooks/anaconda.md)  python data science development
+- [aptly](playbooks/aptly.md) serve apt repositories on the workspace
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
@@ -49,6 +50,7 @@ Currently, all our playbooks are still considered Experimental.
 
 ## Roles
 - [anaconda](roles/anaconda.md)
+- [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [asreview](roles/asreview.md)
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
