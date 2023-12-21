@@ -5,8 +5,8 @@
   yum_repository:
     name: iRODS
     description: RENCI iRODS Repository
-    baseurl: https://packages.irods.org/yum/pool/centos{{irods_repo_yum_major_version}}/{{ansible_architecture}}
-    gpgkey: https://packages.irods.org/irods-signing-key.asc
+    baseurl: '{{ irods_repo_url }}/yum/pool/centos{{ irods_repo_yum_major_version }}/{{ ansible_architecture }}'
+    gpgkey: '{{ irods_repo_url }}/irods-signing-key.asc'
     gpgcheck: yes
   when: ansible_pkg_mgr  == 'yum'
 
@@ -18,13 +18,13 @@
 
 - name: add iRODS repository apt-key
   apt_key:
-    url: https://packages.irods.org/irods-signing-key.asc
+    url: '{{ irods_repo_url }}/irods-signing-key.asc'
     state: present
   when: ansible_pkg_mgr == 'apt'
 
 - name: add iRODS repository for apt package manager
   apt_repository:
-    repo: 'deb https://packages.irods.org/apt/ {{irods_repo_apt_release}} main'
+    repo: 'deb {{ irods_repo_url }}/apt/ {{ irods_repo_apt_release }} main'
     state: present
     filename: renci-irods
     update_cache: yes
