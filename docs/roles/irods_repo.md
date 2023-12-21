@@ -14,11 +14,13 @@ See related roles to install software packages.
 
 ## Variables
 The following variables and defaults are available:
+<!-- {% raw %} -->
 ```
-irods_repo_yum_major_version: "\{\{ ansible_distribution_major_version \}\}"
-irods_repo_apt_release: "\{\{ ansible_distribution_release \}\}"
+irods_repo_yum_major_version: "{{ ansible_distribution_major_version }}"
+irods_repo_apt_release: "{{ ansible_distribution_release }}"
 irods_repo_url: "https://packages.irods.org"
 ```
+<!-- {% endraw %} -->
 
 ## See also
 - [irods_icommands](./irods_icommands.md)  
