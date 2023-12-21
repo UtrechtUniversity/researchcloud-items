@@ -1,2 +1,14 @@
 .DS_Store
 **/.DS_Store
+
+# Editor swapfiles
+*~
+
+# Ansible 
+*.retry
+.vaultpw
+development_credentials.yml
+ansible.cfg
+
+# Vagrant
+/.vagrant
