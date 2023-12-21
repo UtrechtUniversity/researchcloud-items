@@ -15,3 +15,14 @@ Some of the code maintained in this repo is derived from other sources. As a con
 
 ## Contributing
 We are very happy with any contributions in terms of new Ansible scripts for Research Plug-ins and/or documentation. Read the contributing [guidelines](/CONTRIBUTING.md).
+
+## CI
+
+[Molecule](https://ansible.readthedocs.io/projects/molecule/) tests are run in GitHub Actions for pull requests and pushes to the `main` branch. In order to avoid running expensive tests (spinning up [SRC workspace containers](https://github.com/UtrechtUniversity/SRC-test-workspace) for every scenario), the workflow checks which files have been modified, and thus need to be tested again.
+
+There are two kinds of tests:
+
+1. Role tests. Molecule scenarios should be given a `role-` prefix.
+1. Playbook tests. Molecule scenarios should be given a `playbook-` prefix.
+
+By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/roles/pyenv/tasks/main.yml`, the scenario `molecule/role-pyenv` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/playbook-python-workbench/molecule.yml`).

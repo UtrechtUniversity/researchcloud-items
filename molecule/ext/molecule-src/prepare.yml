@@ -1,0 +1,40 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Clone git component
+      when: item.git is defined
+      ansible.builtin.git:
+        repo: "{{ item.git }}"
+        dest: /rsc/plugins/{{ item.name }}/
+        refspec: "{{ item.refspec | default(omit) }}"
+      with_items: "{{ lookup('env', 'components') }}"
+      tags: skip_ansible_lint # linter complains about idempotence of git module
+
+    - name: Copy local component
+      when: item.git is not defined
+      ansible.posix.synchronize:
+        src: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}/"
+        dest: /rsc/plugins/{{ item.name }}/
+        archive: false
+        recursive: true
+        rsync_opts:
+          - --exclude=".*"
+        ssh_connection_multiplexing: true
+      with_items: "{{ lookup('env', 'components') }}"
+
+    # Apt cache is normally updated at deploy time by the SRC-OS component.
+    # Make sure it is fresh so our tests use recent apt repo information.
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      when: ansible_os_family == 'Debian'
+
+    - name: Set extra_preparations var
+      ansible.builtin.set_fact:
+        extra_preparations: "{{ lookup('env', 'extra_prepare_tasks' | default(omit)) }}"
+
+    - name: Execute optional extra preparations
+      ansible.builtin.include_tasks: "{{ extra_preparations }}"
+      when: extra_preparations != ""

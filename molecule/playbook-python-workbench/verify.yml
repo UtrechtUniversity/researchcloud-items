@@ -2,4 +2,19 @@
 - name: Verify
   hosts: all
   gather_facts: false
-  # tasks:
+  tasks:
+    # Just check whether the userspace definitions have been installed, and trust the userspace role to do its job
+    - name: Check whether poetry runonce defintion is installed
+      ansible.builtin.stat:
+        path: "/home/testuser/runonce.d/{{ item }}"
+      register: expected_files
+      with_items:
+        - 05-python-3.9.9
+        - 10-python-poetry
+        - 999ready
+
+    - name: Assert expected files exist
+      ansible.builtin.assert:
+        that:
+          - "{{ item }}.stat.exists"
+      with_items: "{{ expected_files.results }}"

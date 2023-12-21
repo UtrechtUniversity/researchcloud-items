@@ -1,0 +1,48 @@
+---
+- name: Run absent state tasks with aptly user
+  become: true
+  become_method: "{{ aptly__become_method }}"
+  become_user: "{{ aptly__user }}"
+  block:
+    - name: Publish tasks
+      block:
+        - name: Get publishes via API
+          ansible.builtin.uri:
+            url: "http://{{ aptly__api_listen_address }}:{{ aptly__api_listen_port }}/api/publish"
+            method: GET
+            status_code: 200
+            return_content: true
+            body_format: json
+          register: reg_publishes
+
+        - name: Set fact for publishes to delete
+          ansible.builtin.set_fact:
+            reg_matching_publish: "{{ reg_publishes.json | json_query(thequery) }}"
+          vars:
+            thequery: "[?Sources[?starts_with(Name, '{{ mirror_name }}-day')]]"
+          when: reg_publishes.json | length > 0
+
+        - name: Remove publish
+          ansible.builtin.command: "aptly publish drop {{ reg_matching_publish[0].Distribution }} {{ reg_matching_publish[0].Prefix }}"
+          when: reg_matching_publish is defined and reg_matching_publish
+
+    - name: Snapshot tasks
+      block:
+        - name: Get snapshots via API
+          ansible.builtin.uri:
+            url: "http://{{ aptly__api_listen_address }}:{{ aptly__api_listen_port }}/api/snapshots"
+            method: GET
+            status_code: 200
+            return_content: true
+            body_format: json
+          register: reg_snapshots
+
+        - name: Set fact for snapshots to delete
+          ansible.builtin.set_fact:
+            reg_snapshots_to_delete: "{{ reg_snapshots.json | selectattr('Name', 'match', '^' + mirror_name + '-day.*$') | map(attribute='Name') | list }}"
+          when: reg_snapshots.json | length > 0
+
+        - name: Remove snapshots
+          ansible.builtin.command: "aptly snapshot drop -force {{ item }}"
+          loop: "{{ reg_snapshots_to_delete }}"
+          when: reg_snapshots.json | length > 0

@@ -1,0 +1,51 @@
+---
+- name: Run state present tasks
+  become: true
+  become_method: "{{ aptly__become_method }}"
+  become_user: "{{ aptly__user }}"
+  when: aptly__repository.state | default('present') == 'present'
+  block:
+    - name: Ensure repository exists
+      shell: |
+        aptly repo create -distribution="{{ aptly__repository.distribution }}" -component="{{ item }}" \
+        -architectures="{{ aptly__repository.architectures | join(',') }}" \
+        {{ aptly__repository.name }}-{{ item }}
+      args:
+        creates: "{{ aptly__config.rootDir }}/public/dists/{{ aptly__repository.distribution }}/{{ item }}"
+        executable: /bin/bash
+      loop: "{{ aptly__repository.components | flatten(levels=1) }}"
+      register: reg_aptly_repo_creation
+      failed_when: "'already exists' not in reg_aptly_repo_creation.stderr | default('') and reg_aptly_repo_creation.rc >= 1"
+
+    - name: Publish repository
+      shell: |
+        aptly publish repo -batch -architectures="{{ aptly__repository.architectures | join(',') }}" \
+        -component="{{ aptly__repository.components | join(',') }}" \
+        {% if aptly__repository.origin is defined and aptly__repository.origin | length %}-origin="{{ aptly__repository.origin }}"{% endif %} \
+        {% if aptly__repository.label is defined and aptly__repository.label | length %}-label="{{ aptly__repository.label }}"{% endif %} \
+        {{ [aptly__repository.name + '-'] | product(aptly__repository.components) | map('join') | list | join(' ') }}
+      args:
+        creates: "{{ aptly__config.rootDir }}/public/dists/{{ aptly__repository.distribution }}/Release"
+        executable: /bin/bash
+      when: reg_aptly_repo_creation.changed  # noqa: no-handler
+
+- name: Run absent tasks
+  become: true
+  become_method: "{{ aptly__become_method }}"
+  become_user: "{{ aptly__user }}"
+  when: aptly__repository.state | default('present') == 'absent'
+  block:
+    - name: Get published repository
+      command: "aptly publish show {{ aptly__repository.distribution }} {{ aptly__repository.publish_prefix | default('') }}"
+      register: reg_aptly_publish_show
+      failed_when: false
+
+    - name: Remove publish
+      command: "aptly publish drop {{ aptly__repository.distribution }} {{ aptly__repository.publish_prefix | default('') }}"
+      when: "'Distribution:' in reg_aptly_publish_show.stdout and reg_aptly_publish_show.rc == 0"
+
+    - name: Remove repository
+      command: "aptly repo drop {{ aptly__repository.name }}-{{ item }}"
+      loop: "{{ aptly__repository.components | flatten(levels=1) }}"
+      register: reg_aptly_repo_delete
+      failed_when: "('not found' not in reg_aptly_repo_delete.stderr | default ('') and reg_aptly_repo_delete.rc >= 1)"

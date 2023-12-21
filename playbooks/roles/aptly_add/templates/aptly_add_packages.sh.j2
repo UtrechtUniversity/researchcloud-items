@@ -1,0 +1,10 @@
+#!/bin/bash
+
+{% for item in aptly__packages %}
+# Add packages from {{ item.packages }} to the repository {{ item.name}}-{{item.component}} ({{item.architectures}}), and then publish the repo.
+su -c \
+  "aptly repo add -architectures=\"{{ item.architectures | join(',') }}\" {{ item.name }}-{{ item.component }} {{ item.packages }} \
+  && aptly publish -batch -architectures=\"{{ item.architectures | join(',') }}\" update {{ item.name }}" \
+  - {{ aptly__user }}
+
+{% endfor %}

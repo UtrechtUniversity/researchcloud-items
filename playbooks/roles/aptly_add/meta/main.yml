@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: A simple role that installs that automates adding packages to existing aptly repositories.
+  license: GPLv3
+  min_ansible_version: '2.9'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy

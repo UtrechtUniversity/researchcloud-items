@@ -1,0 +1,7 @@
+# Using this file instead of "skip_list" in .ansible-lint is recommended, as "skip_list" will completely suppress all warnings.
+# By contrast, exceptions listed in this file will be printed in the linter output as "ignored".
+
+# Ignore rules in specific files as follows:
+# playbooks/transferuser.yml yaml[empty-lines]
+
+molecule/playbook-aptly/molecule.yml yaml[line-length] # molecule test parameters are long

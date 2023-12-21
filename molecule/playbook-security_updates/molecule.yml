@@ -1,0 +1,21 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    command: /sbin/init
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: security_updates
+        path: security_updates.yml
+        parameters:
+          security_updates_firstrun: "true"
+          security_updates_periodic: "true"
+          security_updates_delay_time: 15

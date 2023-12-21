@@ -1,0 +1,61 @@
+---
+- name: End play if not on Ubuntu
+  meta: end_play
+  when: ansible_distribution != "Ubuntu"
+
+- name: Install package
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    update_cache: true
+    state: present
+
+- name: Debug
+  ansible.builtin.debug:
+    var: security_updates_firstrun
+- name: Debug
+  ansible.builtin.debug:
+    var: security_updates_periodic
+- name: Debug
+  ansible.builtin.debug:
+    var: security_updates_delay_time
+
+- name: Install security updates
+  block:
+  - name: Run updates
+    command: unattended-upgrades -v
+    tags: molecule-notest
+
+  - name: Run update in test mode # dry run when in a molecule run
+    command: unattended-upgrades --dry-run
+    changed_when: false
+    when: "'molecule-notest' in ansible_skip_tags"
+  when: security_updates_firstrun | bool
+
+- name: Enable periodic updates
+  block:
+    - name: Install bootstrap script
+      copy:
+        src: start_upgrade_timers.sh
+        dest: /usr/local/bin/start_upgrade_timers.sh
+        owner: root
+        mode: 0740
+
+    - name: Install bootstrapping service definition
+      copy:
+        src: upgrade-bootstrap.service
+        dest: /etc/systemd/system/upgrade-bootstrap.service
+        owner: root
+        mode: 0740
+
+    - name: Install bootstrapping timer definition
+      template:
+        src: upgrade-bootstrap.timer
+        dest: /etc/systemd/system/upgrade-bootstrap.timer
+
+    - name: Enable bootstrap timer
+      command: "{{ item }}"
+      with_items:
+        - systemctl enable upgrade-bootstrap.timer
+        - systemctl start upgrade-bootstrap.timer
+      tags: molecule-idempotence-notest
+  when: security_updates_periodic | bool

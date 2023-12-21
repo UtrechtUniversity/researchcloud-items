@@ -1,0 +1,21 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Debug -- list all components to be executed
+      ansible.builtin.debug:
+        msg: "{{ item.name }}"
+      with_items: "{{ lookup('env', 'components') }}"
+
+    - name: Test the component by executing it using ansible on the workspace
+      ansible.builtin.command: >
+        ansible-playbook -c local -v -b {{ remote_plugin.arguments }} --extra-vars='{{ remote_plugin.parameters }}' /rsc/plugins/{{ item.name}}/{{ item.path }}
+      register: ansible_on_workspace
+      changed_when: "'changed=0' not in ansible_on_workspace.stdout_lines[-1]"
+      vars:
+        remote_plugin:
+          script_type: Ansible PlayBook
+          arguments: -i 127.0.0.1, --skip-tags {{ ansible_skip_tags | join(',') }}
+          parameters: "{{ item.parameters | default({}) | to_json }}"
+      with_items: "{{ lookup('env', 'components') }}"

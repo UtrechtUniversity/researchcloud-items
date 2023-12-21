@@ -1,0 +1,6 @@
+# Default requirements file for running SRC molecule tests
+molecule~=6.0
+molecule-plugins @ git+https://github.com/dometto/molecule-plugins@disable_registry_login
+jmespath~=1.0
+docker~=6.0
+podman~=4.0

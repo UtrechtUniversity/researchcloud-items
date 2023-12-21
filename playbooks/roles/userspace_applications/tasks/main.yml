@@ -1,17 +1,16 @@
 ---
 # userspace-applications
-# 
+#
 # copies scripts (files and/or directories with scripts) to runonce.d for subsequent
 # installation upon first-time logon by a user
 #
-# the playbook must provide the list of files/dirs in an 
-# Ansible variable "list_userspace_applications" 
-#  
+# the playbook must provide the list of files/dirs in an
+# Ansible variable "list_userspace_applications"
+#
 
-- name: copy applications to runonce.d directory
+- name: Copy applications to runonce.d directory
   copy:
     src: "{{ item }}"
-    dest: "/etc/runonce.d"
-    mode: 0755
+    dest: /etc/runonce.d
+    mode: "0755"
   with_items: "{{ list_userspace_applications }}"
-

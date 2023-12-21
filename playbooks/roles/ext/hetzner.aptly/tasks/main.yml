@@ -1,0 +1,34 @@
+---
+- name: Import install tasks
+  import_tasks: install.yml
+
+- name: Import base tasks
+  import_tasks: base.yml
+
+- name: Import repository tasks
+  tags: [ repositories ]
+  include_tasks:
+    file: repository/main.yml
+    apply:
+      tags: repositories
+  loop: "{{ aptly__repositories | flatten(levels=1) }}"
+  loop_control:
+    loop_var: aptly__repository
+
+- name: Fail if mirrors are defined but API is disabled
+  tags: [ mirror ]
+  assert:
+    that:
+      - aptly__api_enable is defined and aptly__api_enable
+    fail_msg: "API is not enabled but mirrors are defined. Please enable the API at least for local reachability"
+  when: aptly__mirrors is defined and aptly__mirrors | length > 0
+
+- name: Include base mirror tasks
+  tags: [ mirror ]
+  include_tasks:
+    file: mirror/main.yml
+    apply:
+      tags: mirror
+  loop: "{{ aptly__mirrors | flatten(levels=1) }}"
+  loop_control:
+    loop_var: aptly__mirror_base
