@@ -8,24 +8,24 @@ As a general guideline, documentation must be maintained in the same environment
 related program source code. This guideline aims to protect consistency between source code and documentation.  
 
 The guideline translates to the following concrete requirements:   
-- workspace compositions listed in the SURF ResearchCloud catalog are effectively specifications (= programs) that reference 
-other catalog items. Hence these composition items should be documented in the catalog itself.   
-- other catalog items (plugins) merely reference externally held installation scripts. Their "Ansible Playbook" 
-scripts are located elsewhere, in a Git repository. The plugin/playbook documentation should be maintained in 
-that Git repository.  It suffices to have the catalog item document a refererence to the URL of the documentation in the 
-Git repository.  Any other descriptive catalog item information should be derived from the documentation kept in Git.         
+- catalog items listed in the SURF ResearchCloud catalog are effectively composition specifications (= programs) that reference 
+catalog components. Hence these composition items should be documented in the catalog itself.   
+- catalog components merely reference externally held installation scripts. Their "Ansible Playbook" 
+scripts are located elsewhere, in a Git repository (such as this one). The component/playbook documentation should be maintained in 
+that Git repository.  It suffices to have the catalog component document a refererence to the URL of the documentation in the 
+Git repository.  Any other descriptive catalog component information should be derived from the documentation kept in Git.         
 - Ansible Roles should be documented in the Git repository that lists their source code.
 
 ### Content
-As a general guideline, documentation concerning workspace compositions ("application", "application offer") should
-target end users. Documentation for other catalog items ("plugins") should target dveelopers/integrators.
+As a general guideline, documentation concerning catalog items should
+target end users. Documentation for catalog components should target developers/integrators.
 
-Next to descriptive information, the ResearchCloud catalog must document at least for each catalog item:
-- name and contact information for the author/maintainer of the item   
+Next to descriptive information, the ResearchCloud catalog should document at least for each catalog item/component:
+- name and contact information for the author/maintainer of the item or component   
 - indication of provided level of support to users ("Status: Experimental, use with care" or "Status: Supported")    
 - url of documentation (as mentioned in above paragraph)
 
-Catalog items that comprise entire workspace compositions must, in addition to the above, also provide:      
+Catalog items should, in addition to the above, also provide:      
 - indication of suitability ("Suitability: non-sensitive data only", "Suitability: sensitive data")    
 - indication of maintenance level ("Maintenance: automated (security) patches configured", 
 "Maintenance: User must manually apply (security) patches")   
@@ -45,14 +45,14 @@ SURF ResearchCloud.
 
 
 ## Functionality Scope
-Ansible Playbooks (ResearchCloud plugins) should be able to run independent of any other Playbooks. This guideline 
+Ansible Playbooks (ResearchCloud components) should be able to run independent of any other Playbooks. This guideline 
 ensures that the Playbook can be reused within the context of different workspace compositions.
 Dependencies should be managed within, and hidden by, the Playbook. For instance a Role referenced in the Playbook
 could list the other Roles that it depends on. 
 
 Note that the installation script specified by a Playbook will run in isolation from other Playbook installation scripts. 
-For instance Ansible variables are scoped to a single ResearchCloud plugin (Playbook) and their value will not be 
-passed on to the next plugin Playbook script.
+For instance Ansible variables are scoped to a single ResearchCloud component (Playbook) and their value will not be 
+passed on to the next component Playbook script.
 
 Ansible Roles should follow the principe "doing one thing well".  
 For more information, see [Design Principles](./design_principles.md).
@@ -68,23 +68,23 @@ Parameters provided to Ansible Playbooks must follow the naming conventions for 
 Source code must always be accompanied by an explicit License. It suffices to mention a common license applicable to the
 entire Git repository, except where source code deviates from such convention.
 
-Licences must be compatible with licenses for any other software it depends on. 
+Licences should be compatible with licenses for any other software it depends on. 
 The [Public License Selector](https://ufal.github.io/public-license-selector) is a tool that has been developed as 
 part of a European Research program. It assists you to select an appropriate and compatible license for software and data.
 
 
 ## Support and Maintenance
-A Catalog item should be marked either "experimental" or "supported".
-Supported items are expected to be actively maintained and proactively checked for any defects on an annual basis 
+A Catalog item/component should be marked either "experimental" or "supported".
+Supported items/components are expected to be actively maintained and proactively checked for any defects on an annual basis 
 or more frequent. They have been tested in use case workspace compositions.
 They must be fully documented according to the specifications in this guideline.
-They may not comprise of any catalog items that are experimental.
+Supported catalog items may not comprise of any catalog components that are experimental.
 
-Unsupported items should include a disclaimer to indicate their experimental status. This alerts end users to double-check
+Unsupported items/components should include a disclaimer to indicate their experimental status. This alerts end users to double-check
 compliance with policies.
 
 ## Security 
-Responsibilities of users with regard to security must be listed in the documentation of workspace compositions.  
+Catalog item documentation should list the responsibilities of users with regard to security.  
 As a rule of thumb, it should be clear to end users what level of responsibility they will assume when deploying
 a workspace.
 
@@ -93,7 +93,7 @@ workspace type to a specified community/collaboration.
 
 ## Best practices
 ### Test-driven development
-While unit tests are not present in these plugins made for SURF Research Cloud, there are other tools that can help you: [Ansible testing modules](https://docs.ansible.com/ansible/latest/reference_appendices/test_strategies.html), [Ansible Lint](https://ansible-lint.readthedocs.io/en/latest/) and [Ansible Provisioning in Vagrant VMs](https://www.vagrantup.com/docs/provisioning/ansible).
+While unit tests are not present in these components made for SURF Research Cloud, there are other tools that can help you: [Ansible testing modules](https://docs.ansible.com/ansible/latest/reference_appendices/test_strategies.html), [Ansible Lint](https://ansible-lint.readthedocs.io/en/latest/) and [Ansible Provisioning in Vagrant VMs](https://www.vagrantup.com/docs/provisioning/ansible).
 Try to incorporate as much of TDD into developing playbooks and roles: first determine when your code is succesfull or when it should fail, and then code around those requirements.
 
 ### Specific roles
