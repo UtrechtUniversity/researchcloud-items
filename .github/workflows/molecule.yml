@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Get changed roles
         id: changed-roles
-        uses: tj-actions/changed-files@v40
+        uses: tj-actions/changed-files@v41
         with:
           dir_names: true
           dir_names_max_depth: 3
@@ -25,7 +25,7 @@ jobs:
               playbooks/roles/**/**
       - name: Get changed scenarios
         id: changed-scenarios
-        uses: tj-actions/changed-files@v40
+        uses: tj-actions/changed-files@v41
         with:
           dir_names: true
           dir_names_max_depth: 2
@@ -34,7 +34,7 @@ jobs:
               molecule/role-*/*.yml
       - name: Get changed playbooks
         id: changed-playbooks
-        uses: tj-actions/changed-files@v40
+        uses: tj-actions/changed-files@v41
         with:
           files: |
               playbooks/*.yml
