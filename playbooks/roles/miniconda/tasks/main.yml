@@ -1,19 +1,29 @@
 ---
-- name: Check if not both systemwide and userspace are true
+- name: Check if not both systemwide and userspace are true or false
   when: miniconda_userspace == miniconda_systemwide
   meta: end_play
+
+- name: Create miniconda multi-user group and add new users to it automatically
+  include_role:
+    name: default_group
+  vars:
+    default_group_group:
+      groupname: "{{ miniconda_groupname }}"
 
 # The get_url ansible module in the task below does not create a directory
 - name: Ensure download dir exists    
   file:
     path: "{{ miniconda_download_dest }}"
     state: directory
+    group: "{{ miniconda_groupname }}"
+    mode: 0754
 
 - name: Download miniconda installation files
   get_url:
     url: "{{ miniconda_url }}"
-    dest: "{{ miniconda_download_dest }}/miniconda.sh"
-    mode: 0774
+    dest: "{{ miniconda_download_dest }}/{{ miniconda_install_script }}"
+    mode: 0754
+    group: "{{ miniconda_groupname }}"
 
 # Done in seperate task file to allow proper looping with fact_regular_users.
 - name: Install per user
@@ -30,11 +40,11 @@
 - name: Set `conda init` command
   when: miniconda_systemwide
   set_fact:
-    miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
+    miniconda_conda_init: "{{ miniconda_install_dir }}/condabin/conda init"
 
 - name: Add `conda init` for every user through run_once
   template:
     src: run_conda_init.sh.j2
-    dest: "/etc/runonce.d"
+    dest: /etc/runonce.d/run_conda_init.sh
     mode: 0755
 ...
