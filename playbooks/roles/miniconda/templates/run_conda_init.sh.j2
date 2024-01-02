@@ -1,6 +1,15 @@
 #!/bin/bash
-#
-echo "Adding asreview command function that launches virtualenv"
+set -e
+
+{% if miniconda_userspace -%}
+MINICONDA_DEST=~/miniconda
+if [[ ! -d "$MINICONDA_DEST" ]]; then
+    echo "Installing miniconda"
+    {{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p "$MINICONDA_DEST"
+fi
+{% endif -%}
+
+echo "Running miniconda init"
 #
 {{ miniconda_conda_init }}
 #
