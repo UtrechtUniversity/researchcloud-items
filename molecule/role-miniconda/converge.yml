@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    # This scenario tests the role with the 'miniconda_systemwide' parameter set to true.
+    # The scenario 'playbook-miniconda' utilizes the role with the parameter set to false, so no separate role test for that use case is needed.
+    - name: Testing systemwide miniconda installation
+      include_role:
+        name: miniconda
+      vars:
+        miniconda_systemwide: true
+        miniconda_userspace: false

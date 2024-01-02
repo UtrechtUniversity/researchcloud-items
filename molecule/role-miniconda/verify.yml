@@ -1,0 +1,35 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Stat miniconda global
+      ansible.builtin.stat:
+        path: /opt/miniconda/condabin/conda
+      register: miniconda_systemwide
+
+    - name: Create test user
+      ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
+
+    - name: Stat miniconda user
+      ansible.builtin.stat:
+        path: /home/testuser2/miniconda/condabin/conda
+      register: miniconda_userspace
+
+    - name: Assert miniconda installed globally
+      ansible.builtin.assert:
+        that:
+          - miniconda_systemwide.stat.exists is true
+          - miniconda_userspace.stat.exists is false
+
+    - name: Runonce for testuser2
+      ansible.builtin.command: su -l -c "/etc/runonce.d/run_conda_init.sh testuser2"
+    
+    - name: Look for proof that conda init was run
+      ansible.builtin.command: su -l -c "grep 'conda initialize' ~/.bashrc" testuser2
+      register: conda_init
+
+    - name: Assert conda initialized
+      ansible.builtin.assert:
+        that:
+          - '"conda initialize >>>" in conda_init.stdout'
