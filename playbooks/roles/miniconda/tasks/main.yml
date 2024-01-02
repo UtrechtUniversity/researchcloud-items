@@ -16,15 +16,13 @@
   file:
     path: "{{ miniconda_download_dest }}"
     state: directory
-    group: "{{ miniconda_groupname }}"
-    mode: "0754"
+    mode: "0755"
 
 - name: Download miniconda installation files
   get_url:
     url: "{{ miniconda_url }}"
     dest: "{{ miniconda_download_dest }}/{{ miniconda_install_script }}"
-    mode: "0754"
-    group: "{{ miniconda_groupname }}"
+    mode: "0755"
 
 # Done in seperate task file to allow proper looping with fact_regular_users.
 - name: Install per user
