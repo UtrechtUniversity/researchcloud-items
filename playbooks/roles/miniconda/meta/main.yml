@@ -1,5 +1,5 @@
 ---
 dependencies:
-  - fact_regular_users
-  - runonce
+  - role: fact_regular_users
+  - role: runonce
 ...
