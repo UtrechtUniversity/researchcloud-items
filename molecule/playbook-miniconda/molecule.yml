@@ -1,0 +1,12 @@
+---
+# This scenario tests the role with the 'miniconda_systemwide' parameter set to false.
+# Since we cannot currently have multiple scenarios for a playbook, system-wide installation is tested by the scenario 'role-miniconda'.
+# To have multiple scenarios for a playbook in CI, we should first move to a one-repo per component setup.
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: miniconda_userspace
+        path: miniconda.yml
+        parameters:
+          miniconda_userspace: true
