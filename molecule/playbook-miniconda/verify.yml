@@ -13,16 +13,16 @@
         path: /home/testuser/miniconda/condabin/conda
       register: miniconda_userspace
 
-    - name: Stat miniconda testuser2
-      ansible.builtin.stat:
-        path: /home/testuser2/miniconda/bin/conda
-      register: miniconda_userspace2
-
     - name: Create test user
       ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
 
     - name: Runonce for new testuser
       ansible.builtin.command: su - -l -c /etc/runonce.d/run_conda_init.sh testuser2
+
+    - name: Stat miniconda testuser2
+      ansible.builtin.stat:
+        path: /home/testuser2/miniconda/bin/conda
+      register: miniconda_userspace2
 
     - name: Look for proof that conda init was run
       ansible.builtin.command: grep conda /home/testuser2/.bashrc
@@ -41,4 +41,4 @@
           - '"conda initialize >>>" in conda_init.stdout'
 
     - name: Test conda list
-      ansible.builtin.command: su - -l -c "conda list" testuser2
+      ansible.builtin.command: su - -l -c "/home/testuser2/miniconda/bin/conda list" testuser2
