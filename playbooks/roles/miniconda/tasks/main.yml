@@ -4,6 +4,7 @@
   meta: end_play
 
 - name: Create miniconda multi-user group and add new users to it automatically
+  when: miniconda_systemwide
   include_role:
     name: default_group
   vars:
@@ -40,7 +41,7 @@
 - name: Set `conda init` command
   when: miniconda_systemwide
   set_fact:
-    miniconda_conda_init: "{{ miniconda_install_dir }}/condabin/conda init"
+    miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
 
 - name: Add `conda init` for every user through run_once
   template:

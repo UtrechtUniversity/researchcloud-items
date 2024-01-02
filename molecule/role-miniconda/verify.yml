@@ -35,4 +35,4 @@
           - '"conda initialize >>>" in conda_init.stdout'
 
     - name: Test conda list
-      ansible.builtin.command: su - -l -c "conda list" testuser2
+      ansible.builtin.command: su - -l -c "/data/ext/miniconda/bin/conda list" testuser2

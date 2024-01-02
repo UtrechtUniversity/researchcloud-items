@@ -15,7 +15,7 @@
 
     - name: Stat miniconda testuser2
       ansible.builtin.stat:
-        path: /home/testuser2/miniconda/condabin/conda
+        path: /home/testuser2/miniconda/bin/conda
       register: miniconda_userspace2
 
     - name: Create test user
