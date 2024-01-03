@@ -1,7 +1,8 @@
 ---
 miniconda_userspace: true
 miniconda_systemwide: false
-miniconda_install_script: miniconda.sh
+miniconda_auto_init: true
+miniconda_install_script: miniconda_install.sh
 miniconda_groupname: miniconda_users
 miniconda_download_dest: /usr/local/miniconda
 miniconda_install_dir: /opt/miniconda

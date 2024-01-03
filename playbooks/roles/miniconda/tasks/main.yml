@@ -41,9 +41,9 @@
   set_fact:
     miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
 
-- name: Add `conda init` for every user through run_once
+- name: Place runonce script to init conda for each user
   template:
-    src: run_conda_init.sh.j2
-    dest: /etc/runonce.d/run_conda_init.sh
+    src: runonce_conda.sh.j2
+    dest: /etc/runonce.d/runonce_conda.sh
     mode: "0755"
 ...

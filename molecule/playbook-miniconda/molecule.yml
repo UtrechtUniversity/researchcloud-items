@@ -9,4 +9,4 @@ provisioner:
       - name: miniconda_userspace
         path: miniconda.yml
         parameters:
-          miniconda_userspace: true
+          miniconda_userspace: 'true'

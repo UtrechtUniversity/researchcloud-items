@@ -17,7 +17,7 @@
       ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
 
     - name: Runonce for new testuser
-      ansible.builtin.command: su - -l -c /etc/runonce.d/run_conda_init.sh testuser2
+      ansible.builtin.command: su - -l -c /etc/runonce.d/runonce_conda.sh testuser2
 
     - name: Stat miniconda testuser2
       ansible.builtin.stat:
