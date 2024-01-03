@@ -9,9 +9,11 @@ if [[ ! -d "$MINICONDA_DEST" ]]; then
 fi
 {% endif -%}
 
+{% if miniconda_auto_init -%}
 echo "Running miniconda init"
 #
 {{ miniconda_conda_init }}
 #
 # In case conda does not recognize the shell, it needs to be specified like below
 # {{ miniconda_conda_init }} bash
+{% endif -%}
