@@ -1,0 +1,67 @@
+---
+- name: Install required apt packages
+  block:
+  - name: Add apt repository keys
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: "{{item}}"
+    with_items: "{{req.apt.repo_keys}}"
+    when: req.apt.repo_keys is defined
+
+  - name: Add apt repositories
+    apt_repository:
+      repo: "{{item}}"
+      state: present
+    with_items: "{{req.apt.repos}}"
+    when: req.apt.repos is defined
+    
+  - name: Call apt update
+    command: "apt update"
+
+  - name: Install packages
+    # using Ansible's "apt:" function is nicer than "command:"
+    # but Ansible 2.9 does not provide the allow_downgrades
+    # option, which we need.
+    command: "apt install --yes --allow-downgrades {{req.apt.packages | join(' ')}}"
+    when: req.apt.packages is defined
+    
+  - name: Install deb files
+    apt:
+      deb: "{{item}}"
+      allow_unauthenticated: yes
+    with_items: "{{req.apt.deb}}"
+    when: req.apt.deb is defined
+  when: req.apt is defined
+
+- name: Custom-install CRAN packages
+  block:
+  - name: Per package
+    command: >-
+      Rscript --slave --no-save --no-restore-history -e "
+      if (('{{ item }}' %in% installed.packages()[,'Package'])){
+        q();
+      }
+
+      err <- try(
+        install.packages(pkgs='{{ item }}', repos='{{ req.cran_repository }}')
+      );
+
+      if (inherits(err, "try-error")) {
+        print('__failed__');
+        q( status=1 );
+      } else {
+        print('__added__');
+        q();
+      }"
+    register: r_result
+    # Any non-zero return code triggers Ansible "failed", by default.
+    # But often, the install *did* succeed.
+    # Therefore, ignoring the default "failed" detection altogether.
+    failed_when: False
+    with_items: "{{req.cran_packages}}"
+    when: req.cran_packages is defined
+    
+  - name: Output CRAN install log
+    debug:
+      msg: "{{ item.item }}"
+    loop: "{{ r_result.results }}"
