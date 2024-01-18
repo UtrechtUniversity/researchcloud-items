@@ -1,0 +1,25 @@
+---
+
+- name: Retrieve the specified requirements-file
+  block:
+  - name: Remove "run-dir"-directory
+    file:
+      path: run-dir
+      state: absent
+
+  - name: Ensure (empty) "run"-directory
+    file:
+      path: run-dir
+      state: directory
+
+  - name: Clone the repo of the requirements-file
+    git:
+      repo: "{{ requirements_file_repo_url }}"
+      version: "{{ requirements_file_tag }}"
+      dest: run-dir
+      version: main
+
+  - name: Load requirements file into the "req" variable
+    include_vars:
+      file: "run-dir/{{ requirements_file_path | regex_replace('^/','') }}"
+      name: req
