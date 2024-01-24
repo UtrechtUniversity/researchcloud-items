@@ -11,6 +11,7 @@
 
     - name: Look for proof that conda init was run
       ansible.builtin.command: grep conda /home/testuser2/.bashrc
+      failed_when: false
       register: conda_init
 
     - name: Stat miniconda global
@@ -29,10 +30,10 @@
           - miniconda_systemwide.stat.exists is true
           - miniconda_userspace.stat.exists is false
 
-    - name: Assert conda initialized
+    - name: Assert conda not initialized
       ansible.builtin.assert:
         that:
-          - '"conda initialize >>>" in conda_init.stdout'
+          - '"conda initialize >>>" not in conda_init.stdout'
 
     - name: Test conda list
       ansible.builtin.command: su - -l -c "/data/ext/miniconda/bin/conda list" testuser2

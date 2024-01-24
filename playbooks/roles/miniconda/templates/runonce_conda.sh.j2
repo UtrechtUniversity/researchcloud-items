@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-{% if miniconda_userspace -%}
+{% if install_userspace -%}
 MINICONDA_DEST=~/miniconda
 if [[ ! -d "$MINICONDA_DEST" ]]; then
     echo "Installing miniconda"
@@ -9,7 +9,7 @@ if [[ ! -d "$MINICONDA_DEST" ]]; then
 fi
 {% endif -%}
 
-{% if miniconda_auto_init -%}
+{% if auto_init -%}
 echo "Running miniconda init"
 #
 {{ miniconda_conda_init }}

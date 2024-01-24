@@ -5,10 +5,12 @@
   tasks:
     # This scenario tests the role with the 'miniconda_systemwide' parameter set to true.
     # The scenario 'playbook-miniconda' utilizes the role with the parameter set to false, so no separate role test for that use case is needed.
+    # Similarly, test with the auto_init
     - name: Testing systemwide miniconda installation
       include_role:
         name: miniconda
       vars:
-        miniconda_systemwide: true
-        miniconda_userspace: false
+        miniconda_systemwide: 'true'
+        miniconda_userspace: 'false'
         miniconda_install_dir: /data/ext/miniconda
+        miniconda_auto_init: 'false'
