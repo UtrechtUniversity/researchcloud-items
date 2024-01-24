@@ -11,6 +11,6 @@
   roles:
     - role: security_updates
       vars:
-        security_updates_firstrun: "{{ security_updates_firstrun }}"
-        security_updates_periodic: "{{ security_updates_periodic }}"
-        security_updates_delay_time: "{{ security_updates_delay_time }}"
+        security_updates_firstrun: "{{ security_updates_firstrun | default(omit) }}"
+        security_updates_periodic: "{{ security_updates_periodic | default(omit) }}"
+        security_updates_delay_time: "{{ security_updates_delay_time | default(omit) }}"

@@ -9,17 +9,8 @@
     update_cache: true
     state: present
 
-- name: Debug
-  ansible.builtin.debug:
-    var: security_updates_firstrun
-- name: Debug
-  ansible.builtin.debug:
-    var: security_updates_periodic
-- name: Debug
-  ansible.builtin.debug:
-    var: security_updates_delay_time
-
 - name: Install security updates
+  when: "{{ security_updates_firstrun | bool }}"
   block:
   - name: Run updates
     command: unattended-upgrades -v
@@ -29,9 +20,9 @@
     command: unattended-upgrades --dry-run
     changed_when: false
     when: "'molecule-notest' in ansible_skip_tags"
-  when: security_updates_firstrun | bool
 
 - name: Enable periodic updates
+  when: "{{ security_updates_periodic | bool }}"
   block:
     - name: Install bootstrap script
       copy:
@@ -58,4 +49,4 @@
         - systemctl enable upgrade-bootstrap.timer
         - systemctl start upgrade-bootstrap.timer
       tags: molecule-idempotence-notest
-  when: security_updates_periodic | bool
+
