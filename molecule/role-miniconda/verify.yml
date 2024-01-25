@@ -9,10 +9,23 @@
     - name: Runonce for new testuser
       ansible.builtin.command: su - -l -c /etc/runonce.d/runonce_conda.sh testuser2
 
-    - name: Look for proof that conda init was run
-      ansible.builtin.command: grep conda /home/testuser2/.bashrc
-      failed_when: false
-      register: conda_init
+    - name: Ensure condabin is added to path so user can run conda init on demand
+      lineinfile:
+        name: /home/testuser2/.bashrc
+        line: export PATH=$PATH:/data/ext/miniconda/condabin
+        state: present
+      check_mode: yes
+      register: condabin
+      failed_when: (condabin is changed) or (condabin is failed)
+
+    - name: Ensure conda is not auto-initialized
+      lineinfile:
+        name: /home/testuser2/.bashrc
+        line: conda initialize >>>
+        state: present
+      check_mode: yes
+      register: conda_auto_inited
+      failed_when: (conda_auto_inited is not changed) or (conda_auto_inited is failed)
 
     - name: Stat miniconda global
       ansible.builtin.stat:
@@ -29,11 +42,6 @@
         that:
           - miniconda_systemwide.stat.exists is true
           - miniconda_userspace.stat.exists is false
-
-    - name: Assert conda not initialized
-      ansible.builtin.assert:
-        that:
-          - '"conda initialize >>>" not in conda_init.stdout'
 
     - name: Test conda list
       ansible.builtin.command: su - -l -c "/data/ext/miniconda/bin/conda list" testuser2

@@ -7,6 +7,8 @@ if [[ ! -d "$MINICONDA_DEST" ]]; then
     echo "Installing miniconda"
     {{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p "$MINICONDA_DEST"
 fi
+{% else -%}
+MINICONDA_DEST="{{ miniconda_install_dir }}"
 {% endif -%}
 
 {% if auto_init -%}
@@ -16,4 +18,15 @@ echo "Running miniconda init"
 #
 # In case conda does not recognize the shell, it needs to be specified like below
 # {{ miniconda_conda_init }} bash
+{% else -%}
+# Add miniconda/condabin (but not miniconda/bin) to the user's bash path so they can manually run `conda init`
+if [[ -z $PATH ]]; then
+    # If $PATH is empty, create it
+    echo "export PATH=\"$MINICONDA_DEST/condabin\"" >> ~/.bash_profile
+    export PATH="$MINICONDA_DEST/condabin"
+else
+    # Else append to $PATH
+    echo "export PATH=\"\$PATH:$MINICONDA_DEST/condabin\"" >> ~/.bash_profile
+    export PATH="$PATH:$MINICONDA_DEST/condabin"
+fi
 {% endif -%}
