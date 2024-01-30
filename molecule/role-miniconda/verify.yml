@@ -11,10 +11,10 @@
 
     - name: Ensure condabin is added to path so user can run conda init on demand
       lineinfile:
-        name: /home/testuser2/.bashrc
+        name: /home/testuser2/.bash_profile
         line: export PATH=$PATH:/data/ext/miniconda/condabin
         state: present
-      check_mode: yes
+      check_mode: true
       register: condabin
       failed_when: (condabin is changed) or (condabin is failed)
 
@@ -23,7 +23,7 @@
         name: /home/testuser2/.bashrc
         line: conda initialize >>>
         state: present
-      check_mode: yes
+      check_mode: true
       register: conda_auto_inited
       failed_when: (conda_auto_inited is not changed) or (conda_auto_inited is failed)
 

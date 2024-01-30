@@ -20,6 +20,7 @@ echo "Running miniconda init"
 # {{ miniconda_conda_init }} bash
 {% else -%}
 # Add miniconda/condabin (but not miniconda/bin) to the user's bash path so they can manually run `conda init`
+# Note: we assume the user's shell is bash!
 if [[ -z $PATH ]]; then
     # If $PATH is empty, create it
     echo "export PATH=\"$MINICONDA_DEST/condabin\"" >> ~/.bash_profile
