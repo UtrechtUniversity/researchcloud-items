@@ -7,7 +7,7 @@
       ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
 
     - name: Runonce for new testuser
-      ansible.builtin.command: sudo -H -i -u testuser2 bash /etc/profile.d/runonce.sh
+      ansible.builtin.command: su - -l -c /home/testuser2/runonce.d/runonce_conda.sh testuser2
 
     - name: Ensure condabin is added to path so user can run conda init on demand
       lineinfile:
