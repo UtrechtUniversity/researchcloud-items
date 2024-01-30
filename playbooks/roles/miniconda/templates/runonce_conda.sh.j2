@@ -23,22 +23,28 @@ echo "Running miniconda init"
 
 if [[ -n "$ZSH_VERSION" ]]; then
   PROFILE_FILE=~/.zprofile
+  RC_FILE=~/.zshrc
 else
   # Assume bash, since runonce supports only zsh and bash anyway.
   PROFILE_FILE=~/.bash_profile
+  RC_FILE=~/.bashrc
 fi
 
 if [[ ! -f "$PROFILE_FILE" ]]; then
   touch "$PROFILE_FILE"
 fi
 
+if [[ ! -f "$RC_FILE" ]]; then
+  touch "$RC_FILE"
+fi
+
 if [[ -z "$PATH" ]]; then
     # If $PATH is empty, create it
-    echo "export PATH=\"$MINICONDA_DEST/condabin\"" >> "$PROFILE_FILE"
+    echo "export PATH=\"$MINICONDA_DEST/condabin\"" | tee -a "$PROFILE_FILE" "$RC_FILE"
     export PATH="$MINICONDA_DEST/condabin"
 else
     # Else append to $PATH
-    echo "export PATH=\"\$PATH:$MINICONDA_DEST/condabin\"" >> "$PROFILE_FILE"
+    echo "export PATH=\"\$PATH:$MINICONDA_DEST/condabin\"" | tee -a "$PROFILE_FILE" "$RC_FILE"
     export PATH="$PATH:$MINICONDA_DEST/condabin"
 fi
 {% endif -%}
