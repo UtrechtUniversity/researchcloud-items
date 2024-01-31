@@ -30,14 +30,6 @@ else
   RC_FILE=~/.bashrc
 fi
 
-if [[ ! -f "$PROFILE_FILE" ]]; then
-  touch "$PROFILE_FILE"
-fi
-
-if [[ ! -f "$RC_FILE" ]]; then
-  touch "$RC_FILE"
-fi
-
 if [[ -z "$PATH" ]]; then
     # If $PATH is empty, create it
     echo "export PATH=\"$MINICONDA_DEST/condabin\"" | tee -a "$PROFILE_FILE" "$RC_FILE"
