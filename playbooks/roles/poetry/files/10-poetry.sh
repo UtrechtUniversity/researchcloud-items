@@ -1,4 +1,5 @@
-#!/bin/bash install python module poetry
+#!/bin/bash
+# install python module poetry
 #
 echo "Installing Python poetry"
 export POETRY_ROOT="~/.local/bin"
