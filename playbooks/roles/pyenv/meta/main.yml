@@ -1,4 +1,12 @@
 ---
-
+galaxy_info:
+  author: Ton Smeele
+  description: Install pyenv using runonce
+  license: GPLv3
+  min_ansible_version: '2.9'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
 dependencies:
   - role: runonce
