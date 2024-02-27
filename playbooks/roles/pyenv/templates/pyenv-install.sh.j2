@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+# installs pyenv in userspace
+# installs default python version if set
+
+DEFAULT_PYTHON_VERSION="{{ pyenv_default_python }}"
+
+cd
+curl https://pyenv.run | bash
+
+cat >>~/.bashrc <<'INPUTEND'
+# added by runonce as pyenv config
+if [ -z "$PYENV_ROOT" ]; then
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+fi
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+INPUTEND
+
+# also add pyenv to current login shell 
+# so that pyenv commands can be used in other runonce actions
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+
+if [[ -n "$DEFAULT_PYTHON_VERSION" ]]; then
+    echo "Installing python $DEFAULT_PYTHON_VERSION from pyenv"
+    pyenv install "$DEFAULT_PYTHON_VERSION"
+    pyenv global "$DEFAULT_PYTHON_VERSION"
+    echo "Python release $DEFAULT_PYTHON_VERSION activated as 'global' pyenv release"
+    cat >> ~/.bashrc <<'INPUTEND'
+# added by runonce as python config
+alias python=python3
+INPUTEND
+fi

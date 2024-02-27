@@ -38,7 +38,7 @@
   when: ansible_pkg_mgr == 'apt'
 
 - name: Add pyenv install to runonce config
-  copy:
-    src: pyenv-install.sh
+  template:
+    src: pyenv-install.sh.j2
     dest: /etc/runonce.d/01_pyenv-install.sh
     mode: "0755"
