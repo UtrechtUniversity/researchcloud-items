@@ -1,0 +1,58 @@
+---
+name: Molecule Roles
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  get_changed_roles:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.changed-roles.outputs.all_changed_files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get changed roles
+        id: changed-roles
+        uses: tj-actions/changed-files@v41
+        with:
+          json: true
+          escape_json: false
+          dir_names: true
+          dir_names_max_depth: 3
+          files: |
+              playbooks/roles/**/**
+      - name: List all changed files
+        run: echo '${{ steps.changed-roles.outputs.all_changed_files }}'
+
+  molecule:
+    needs: [get_changed_roles]
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_USER: ${{ github.actor }}
+      DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
+      DOCKER_REGISTRY: ghcr.io
+      ANSIBLE_FORCE_COLOR: '1'
+      ANSIBLE_STDOUT_CALLBACK: yaml
+      MOLECULE_CONFIG: ../../../molecule/ext/molecule-src/molecule.yml
+      REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
+    strategy:
+      fail-fast: false
+      matrix:
+        roles: ${{ fromJSON(needs.get_changed_roles.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install -r ${{ env.REQUIREMENTS_FILE }}
+      - run: ansible-galaxy install -r requirements.yml
+      - name: Molecule tests for role
+        run: |
+          cd ${{ matrix.roles }} && if [[ -d molecule ]]; then molecule -c ${{ env.MOLECULE_CONFIG }} test --all; fi
