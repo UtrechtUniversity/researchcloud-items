@@ -4,12 +4,8 @@
   gather_facts: true
 
   roles:
-    - python
-    - pyenv
-    # TODO: Replace userspace applications with separate roles
-    - role: userspace_applications
+    - role: python
+    - role: pyenv
       vars:
-        list_userspace_applications:
-          - 05-python-3.9.9
-          - 10-python-poetry
-          - 999ready
+        pyenv_default_python: "{{ default_python_version | default('3.9.18') }}"
+    - role: poetry

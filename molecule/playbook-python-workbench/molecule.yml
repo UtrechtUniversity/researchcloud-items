@@ -5,3 +5,5 @@ provisioner:
     components:
       - name: python-workbench
         path: python-workbench.yml
+        parameters:
+          default_python_version: '3.8'

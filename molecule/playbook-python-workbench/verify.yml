@@ -3,18 +3,27 @@
   hosts: all
   gather_facts: false
   tasks:
-    # Just check whether the userspace definitions have been installed, and trust the userspace role to do its job
+    # Just check whether the correct runonce definitions have been installed, and trust them to do their job
+    # These definitions are tested in the role tests
     - name: Check whether poetry runonce defintion is installed
       ansible.builtin.stat:
         path: "/home/testuser/runonce.d/{{ item }}"
       register: expected_files
       with_items:
-        - 05-python-3.9.9
-        - 10-python-poetry
-        - 999ready
+        - 01_pyenv-install.sh
+        - 10-poetry.sh
 
     - name: Assert expected files exist
       ansible.builtin.assert:
         that:
-          - "{{ item }}.stat.exists"
+          - item.stat.exists == True
       with_items: "{{ expected_files.results }}"
+
+    - name: Find default pyenv python version
+      ansible.builtin.command: grep DEFAULT_PYTHON_VERSION /etc/runonce.d/01_pyenv-install.sh
+      register: python_version
+
+    - name: Assert correct python version
+      ansible.builtin.assert:
+        that:
+          - '"3.8" in python_version.stdout_lines[0]'
