@@ -1,6 +1,5 @@
 ---
 dependencies:
-- pip
-- role: runonce
-  when: poetry_per_user
-...
+  - role: pip
+  - role: runonce
+    when: poetry_per_user
