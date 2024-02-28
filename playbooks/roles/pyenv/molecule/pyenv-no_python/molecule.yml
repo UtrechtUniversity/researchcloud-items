@@ -1,0 +1,18 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ../default/prepare.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+role_name_check: 1
+platforms:
+  - name: workspace-src-ubuntu_focal
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
