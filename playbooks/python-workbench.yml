@@ -7,5 +7,5 @@
     - role: pip
     - role: pyenv
       vars:
-        pyenv_default_python: "{{ default_python_version | default('') }}"
+        pyenv_default_python: "{{ default_python_version | default(omit) }}"
     - role: poetry
