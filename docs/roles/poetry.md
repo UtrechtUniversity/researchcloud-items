@@ -17,7 +17,8 @@ The actual installation is run at user login time through the runonce role.
 None.
 
 ## See also
-[runeonce role](../roles/runonce.md)
+
+- [runeonce role](../roles/runonce.md)
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)

@@ -16,11 +16,13 @@ The Linux distribution influences which Python3 and pip3 versions are installed 
 
 ## Variables
 
-- `default_python_version`: String. This version of Python to be automatically installed for each in user via `pyenv`, at first login. This version is also set as the default version for that user (with `pyenv global`). If this parameter is set to an empty string, no version of Python will be installed automatically. Default: `3.9.18`.
+- `default_python_version`: String. The version of Python to be automatically installed for each in user via `pyenv`, at first login. This version is also set as the default version for that user (with `pyenv global`). If this parameter is omitted or set to `system`, `pyenv` will not install a specific version but install use the system's python version by default . Default: `3.9.18`.
 
 ## See also
 
 - role [runonce](../roles/runonce.md)
+- role [pyenv](../roles/pyenv.md)
+- role [runonce](../roles/poetry.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
