@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: A simple role that installs roles using ansible-galaxy. Assumes Ansible is already installed.
+  license: GPLv3
+  min_ansible_version: '2.9'
+  # platforms:
+  #   - name: Ubuntu
+  #     versions:
+  #       - focal
+  #       - jammy
+  #   - name: Debian
