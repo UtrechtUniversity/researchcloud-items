@@ -1,0 +1,13 @@
+---
+- name: Check if ansible-galaxy exists
+  ansible.builtin.raw: which ansible-galaxy
+  check_mode: false
+  changed_when: false
+  register: which_galaxy
+  failed_when: which_galaxy.rc > 1
+
+- name: Install each required role
+  ansible.builtin.command: "ansible-galaxy role install {{ item }}"
+  register: galaxy_result
+  changed_when: "'installed successfully' in galaxy_result.stdout"
+  with_items: "{{ install_role_roles }}"

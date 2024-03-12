@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Testing userspace pyenv role
+      include_role:
+        name: install_role
+      vars:
+        install_role_roles:
+        # Just some test roles:
+          - ANXS.postgresql
+          - ANXS.generic-users
