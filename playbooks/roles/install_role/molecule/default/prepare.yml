@@ -1,0 +1,42 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Create roles dir
+      ansible.builtin.file:
+        dest: /rsc/roles
+        state: directory
+
+    - name: Copy the role to the workspace
+      ansible.posix.synchronize:
+        src: ../../../
+        dest: /rsc/roles/install_role/
+        archive: false
+        recursive: true
+        ssh_connection_multiplexing: true
+
+    - name: Copy test playbook to the workspace
+      ansible.builtin.copy:
+        dest: /rsc/test.yml
+        content: |
+          - name: Test dependency installation
+            hosts: localhost
+            tasks:
+              - name: Testing install_role role
+                include_role:
+                  name: install_role
+                vars:
+                  install_role_roles:
+                  # Just some test roles:
+                    - ANXS.postgresql
+                    - git+https://github.com/ANXS/generic-users.git,1c6c6ee
+
+              - name: Testing installed role
+                include_role:
+                  name: generic-users
+                vars:
+                  genericusers_groups:
+                    - name: "dbadmins"
+                      gid: 5000           # (Optional)
+                      system: no          # (Optional)

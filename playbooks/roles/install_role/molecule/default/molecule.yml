@@ -1,0 +1,7 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ./prepare.yml
+role_name_check: 1
