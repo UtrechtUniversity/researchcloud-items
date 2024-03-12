@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Run the test playbook
+      ansible.builtin.command: >
+        ansible-playbook -vv -c local -i localhost, /rsc/test.yml
+      register: ansible_on_workspace
+      changed_when: "'changed=0' not in ansible_on_workspace.stdout_lines[-1]"
