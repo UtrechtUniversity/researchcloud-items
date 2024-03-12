@@ -10,9 +10,9 @@ Unix-environment.
 ## Description
 Miniconda can be installed either for each user individually, or once and be shared amongst all users. 
 Both options cannot be selected simultaneously.
-By default it is installed multiple times, for each user individually.
+By default it is installed systemwide. If the option to install for all users is selected, it will be installed at the first login of each user.
 It follows the official documentation's recommended way of installation.
-When it is installed, alles users share both a list of environments and their packages.
+When it is installed, allows users to share both a list of environments and their packages.
 Possible to-do would be to toggle whether user share packages amongst each other.
 
 ## Variables
