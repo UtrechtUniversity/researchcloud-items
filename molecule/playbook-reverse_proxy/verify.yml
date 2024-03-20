@@ -1,0 +1,69 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Start testing backend # starts a simple python http server that serves up the contents of the / directory
+      ansible.builtin.shell: cd /; nohup python3 -m http.server </dev/null >/dev/null 2>&1 &
+      register: python_server
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: python_server
+
+    - name: Test / location
+      ansible.builtin.uri:
+        url: http://localhost/bin/
+        method: GET
+        return_content: true
+      register: root_location
+
+    - name: Test /test_basicauth location
+      ansible.builtin.uri:
+        url: http://localhost/test_basicauth
+        url_username: test2
+        url_password: letmein
+        method: GET
+        return_content: true
+      register: basicauth_location
+
+    - name: Test /test_sramauth location
+      ansible.builtin.uri:
+        url: http://localhost/test_sramauth/
+        method: GET
+        follow_redirects: safe
+      register: sramauth_location
+
+    - name: Test /test_basicauth/api location without password
+      ansible.builtin.uri:
+        url: http://localhost/test_basicauth/api
+        method: GET
+        return_content: true
+      register: api_location
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: sramauth_location
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: root_location
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: basicauth_location
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: api_location
+
+    - name: Assert reverse proxies working correctly
+      ansible.builtin.assert:
+        that:
+          - sramauth_location.redirected is true
+          - sramauth_location.url == "http://localhost/?client_id=foo&redirect_uri=http://localhost/oauth2_callback?rdpath=/test_sramauth/&response_type=token&scope=openid&response_format=query_param"
+          - basicauth_location.status == 200
+          - "'bin' in basicauth_location.content"
+          - root_location.status == 200
+          - "'whoami' in root_location.content"
+          - "'whoami' in api_location.content"

@@ -1,0 +1,36 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    command: /sbin/init
+    pre_build_image: true
+    privileged: true
+    published_ports:
+      - 80/tcp
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+    components:
+      - name: nginx
+        git: https://gitlab.com/dometto/plugin-nginx.git
+        path: plugin-nginx.yml
+        version: molecule_compatibility
+        parameters:
+          rsc_nginx_authorization_endpoint: http://localhost
+          rsc_nginx_user_info_endpoint: http://localhost
+          rsc_nginx_service_url: http://localhost
+          nginx_enable_ssl: false
+          nginx_enable_auth: true
+          rsc_nginx_oauth2_application:
+            client_id: foo
+      - name: reverse_proxy
+        path: reverse_proxy.yml
+        parameters:
+          reverse_proxy_locations: '{name: test_noauth, location: /, backend: "http://localhost:8000"}\n{name: test_basicauth, location: = /test_basicauth, auth: {type: basic, auth_info: htpasswd}, backend: "http://localhost:8000/" }\n{name: test_sramauth, location: /test_sramauth, auth: {type: sram}, backend: "http://localhost:8000/"}\n{name: test_authoff, location: = /test_basicauth/api, auth: {type: noauth}, backend: "http://localhost:8000/bin/"}'
+          reverse_proxy_auth_info: '{name: htpasswd, username: test, password: letmein}\n{name: htpasswd, username: test2, password: letmein}'
