@@ -1,0 +1,23 @@
+---
+apt:
+  repo_keys: []
+  repos:
+  - 'deb http://archive.ubuntu.com/ubuntu focal main multiverse universe restricted'
+  - 'deb http://archive.ubuntu.com/ubuntu focal-security main multiverse universe restricted'
+  packages:
+  - ncdu
+
+miniconda:
+  name: tensorflow
+  channels:
+  - nvidia
+  - conda-forge
+  dependencies:
+  - python=3.10
+  - ipykernel
+  - pip
+  - pip:
+    - tensorflow[and-cuda]
+  prefix: /etc/miniconda/envs
+
+    
