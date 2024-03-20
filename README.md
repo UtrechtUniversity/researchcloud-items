@@ -8,28 +8,47 @@ Follow the installation and setup instructions below, then run:
 
 `molecule -c molecule/ext/molecule-src/molecule.yml test -s <scenario-name>`
 
-...where <scenario-name> is the name of one of the subdirectories of the `molecule` directory, e.g. `playbook-security_updates`. 
+...where `<scenario-name>` is the name of one of the subdirectories of the `molecule` directory, e.g. `playbook-security_updates`. 
 
 ### Requirements
 
 1. Docker and/or Podman (to spin up test containers)
-1. Python and pip
+1. Python and pip   
 1. Ansible
+1. Molecule
 1. Access to the [test container images](https://github.com/UtrechtUniversity/SRC-test-workspace)
 
-The default `molecule.yml` is configured to use the images from [this package](https://github.com/UtrechtUniversity/SRC-test-workspace/i), but you can override this to use other images.
+Before you start, run `pip install -r molecule/ext/molecule-src/requirements.txt` to install Molecule itself and other python dependencies.
 
+The default `molecule.yml` is configured to use the images from [this package](https://github.com/UtrechtUniversity/SRC-test-workspace/), but you can override this to use other images.
+
+### Getting the container images
+
+The default `molecule.yml` is configured to use the images from [this package](https://github.com/UtrechtUniversity/SRC-test-workspace/), but you can also override this to use other images. There are two ways to provide Molecule with access to the right images:
+
+1. Manually pull the images from the container registry. If the images are already available locally, there is no need to authenticate with the container registry.
+   * `docker login ghcr.io` (or `podman login`)
+   * enter your github username and a valid token
+   * `docker pull <imgname>` (or `podman pull`)
+   * See [the package](https://github.com/UtrechtUniversity/SRC-test-workspace/) for the image names
+2. If you set the right variables when running `molecule`, it will pull the images automatically.
+   * `export DOCKER_REGISTRY=ghcr.io`
+   * `export DOCKER_USER=githubusername`
+   * `export DOCKER_PW=githubtoken`
+   
 ### Install SRC-specific configuration
+
+NB: this is not necessary for running tests on a repository already containing the configuration files from this repository, only to add tests to a repository that does not contain them yet.
 
 To add Molecule tests to your SRC component or catalog item repository, follow these steps:
 
-1. create a `molecule` directory in your repository's root: `mkdir molecule`
-1. include the contents of this repository as a subtree, under `molecule/ext/molecule-src`
+* create a `molecule` directory in your repository's root: `mkdir molecule`
+* include the contents of this repository as a subtree, under `molecule/ext/molecule-src`
   * `git remote add molecule-src https://github.com/UtrechtUniversity/SRC-molecule.git`
   * `git subtree add --prefix molecule/ext/molecule-src molecule-src main --squash`
-1. copy the default `.env.yml` file to your repository root: `cp molecule/ext/molecule-src/default.env.yml .env.yml`
+* copy the default `.env.yml` file to your repository root: `cp molecule/ext/molecule-src/default.env.yml .env.yml`
   * optionally edit the contents of `.env.yml`, if your playbooks are not in the default location (the repository root)
-1. run `pip install -r molecule/ext/molecule-src/requirements.txt`
+* run `pip install -r molecule/ext/molecule-src/requirements.txt`
 
 That's it for setup! You're now ready to start [adding your own scenarios](#adding-scenarios).
 
@@ -64,10 +83,14 @@ provisioner:
   name: ansible
   env:
     components:
-      - name: 'my-component'
-        path: 'my-component.yaml'
+      - name: my-component
+        path: my-component.yaml
         parameters: # Define all parameters needed by the component here
           my_component_param1: 'Foo'
+      - name: my-git-component # You can also provide components that should be cloned onto the workspace using git
+        git: https://github.com/foo/bar.git
+        version: my_branch
+        path: playbook.ymk
 ```
 
 The above config file does not provide a `platforms` key, so tests for this scenario will use the default platforms (containers) specified in `molecule/ext/molecule-src/molecule.yml` (Ubuntu Focal and Ubuntu Jammy). You can override this by adding your own platform definition, e.g.:
@@ -122,3 +145,38 @@ Both of these methods ensure that the container is not destroyed after molecule 
   * see that the container `workspace-src-ubuntu_focal` is still running
 2. `docker exec -it workspace-src-ubuntu_focal bash`
   * login to the container as root
+
+### The component cannot be found on the workspace
+
+Problem: the `converge` step fails with the following error message in Ansible's `stderr` result:
+
+```
+'ERROR! the playbook: /rsc/plugins/componentname/playbookname.yml could not be found'
+```
+
+This can occassionally occur when Molecule thinks it has already run the `prepare` step on your container, but actually hasn't. (This happens, for instance, when the `converge` step uses as an old container that is still running because you used `--destroy=never` in a previous run.)
+
+Try resetting your molecule cache:
+
+`molecule -c molecule/ext/molecule-src/molecule.yml reset -s playbook-aptly`
+
+This will stop the container and flush the cache. Sometimes manually removing the cache may also be useful during troubleshooting:
+
+`rm -rf ~/.cache/molecule`
+
+### Container unreachable error
+
+Molecule runs sometimes fail with an error message like the following:
+
+```
+task path: /home/user/researchcloud-items/molecule/ext/molecule-src/prepare.yml:2
+fatal: [workspace-src-ubuntu_jammy]: UNREACHABLE! => changed=false 
+  msg: 'Failed to create temporary directory. In some cases, you may have been able to authenticate and did not have permissions on the target directory. Consider changing the remote tmp path in ansible.cfg to a path rooted in "/tmp", for more error information use -vvv. Failed command was: ( umask 77 && mkdir -p "` echo ~/.ansible/tmp `"&& mkdir "` echo ~/.ansible/tmp/ansible-tmp-1710760454.6766412-70112-138145577949983 `" && echo ansible-tmp-1710760454.6766412-70112-138145577949983="` echo ~/.ansible/tmp/ansible-tmp-1710760454.6766412-70112-138145577949983 `" ), exited with result 1'
+  unreachable: true
+```
+
+This may occur when trying to initalize a container with the command parameter set to `/sbin/init`, i.e. when trying to run a container controlled by `systemd`. Some component tests may need this, because they are testing functionality of `systemd` services. However, in some circumstances, starting a container with `/sbin/init` fails:
+
+* Docker support for `systemd` is not excellent, try using Podman instead.
+* The error also occurs when using container emulation (e.g. using an `amd64` image on an `arm64` host). Get a native image instead.
+* Adding the `privileged: true` option to the platform usually takes care of the problem (even when using Docker!), but this is only recommended as a workaround [for security reasons](https://www.trendmicro.com/en_vn/research/19/l/why-running-a-privileged-container-in-docker-is-a-bad-idea.html).

@@ -8,7 +8,7 @@
       ansible.builtin.git:
         repo: "{{ item.git }}"
         dest: /rsc/plugins/{{ item.name }}/
-        refspec: "{{ item.refspec | default(omit) }}"
+        version: "{{ item.version | default(omit) }}"
       with_items: "{{ lookup('env', 'components') }}"
       tags: skip_ansible_lint # linter complains about idempotence of git module
 
