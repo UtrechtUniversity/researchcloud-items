@@ -83,10 +83,25 @@ jobs:
       ANSIBLE_STDOUT_CALLBACK: yaml
       MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
       REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
+      CRUN_VER: 1.11.2
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.define_scenarios.outputs.matrix) }}
     steps:
+      - name: Workaround crun issue on ubuntu # https://github.com/UtrechtUniversity/SRC-catalog-items/issues/3
+        run: |
+          mkdir -p "${HOME}/.local/bin"
+          curl -L "https://github.com/containers/crun/releases/download/${CRUN_VER}/crun-${CRUN_VER}-linux-amd64" -o "${HOME}/.local/bin/crun"
+          chmod +x "${HOME}/.local/bin/crun"
+          crun --version
+          mkdir -p "${HOME}/.config/containers"
+          cat << EOF > "${HOME}/.config/containers/containers.conf"
+          [engine.runtimes]
+          crun = [
+            "${HOME}/.local/bin/crun",
+            "/usr/bin/crun"
+          ]
+          EOF
       - name: Checkout
         uses: actions/checkout@v4
       - uses: actions/setup-python@v4
