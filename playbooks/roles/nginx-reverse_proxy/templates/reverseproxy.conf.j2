@@ -10,16 +10,16 @@ location {{ item.location | default('') }} {
     client_max_body_size {{ item.client_max_body_size | default('10G') }};
 
     {% if item.auth is defined  %}
-    {% if item.auth.type == 'sram' %}
+    {% if item.auth == 'sram' %}
     ### Authentication
     error_page 401 = @custom_401;
     auth_request /validate;
     auth_request_set $username $upstream_http_username;
     proxy_set_header REMOTE_USER $username;
-    {% elif item.auth.type  == 'basic' %}
+    {% elif item.auth  == 'basic' %}
     auth_basic "{{ auth.message | default('Secure') }}";
-    auth_basic_user_file {{ htpasswd_location }}/{{ item.auth.auth_info }};
-    {% elif item.auth.type == 'noauth' %}
+    auth_basic_user_file {{ htpasswd_location }}/{{ item.htpasswd }};
+    {% elif item.auth == 'noauth' %}
     auth_basic "off";
     auth_request "off";
     {% endif %}
