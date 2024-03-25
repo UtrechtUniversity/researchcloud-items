@@ -5,3 +5,5 @@
 # playbooks/transferuser.yml yaml[empty-lines]
 
 molecule/playbook-aptly/molecule.yml yaml[line-length] # molecule test parameters are long
+molecule/playbook-reverse_proxy/molecule.yml yaml[line-length] # molecule test parameters are long
+molecule/playbook-reverse_proxy/verify.yml yaml[line-length] # URL expectations are too long

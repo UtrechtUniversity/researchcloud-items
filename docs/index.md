@@ -44,6 +44,7 @@ Currently, all our playbooks are still considered Experimental.
 - [miniconda](playbooks/miniconda.md)  Python applicaiton development
 - [python-workbench](playbooks/python-workbench.md)  Python application development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
+- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
@@ -69,7 +70,8 @@ Currently, all our playbooks are still considered Experimental.
 - [miniconda](roles/miniconda.md)
 - [myrods-sync](roles/myrods-sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
-- [nginx-pam](roles/nginx-pam.md)   
+- [nginx-pam](roles/nginx-pam.md)
+- [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)
 - [pyenv](roles/pyenv.md)
