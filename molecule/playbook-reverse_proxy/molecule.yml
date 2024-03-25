@@ -32,5 +32,5 @@ provisioner:
       - name: reverse_proxy
         path: reverse_proxy.yml
         parameters:
-          reverse_proxy_locations: '{name: test_noauth, location: /, backend: "http://localhost:8000"}\n{name: test_basicauth, location: = /test_basicauth, auth: {type: basic, auth_info: htpasswd}, backend: "http://localhost:8000/" }\n{name: test_sramauth, location: /test_sramauth, auth: {type: sram}, backend: "http://localhost:8000/"}\n{name: test_authoff, location: = /test_basicauth/api, auth: {type: noauth}, backend: "http://localhost:8000/bin/"}'
-          reverse_proxy_auth_info: '{name: htpasswd, username: test, password: letmein}\n{name: htpasswd, username: test2, password: letmein}'
+          reverse_proxy_locations: '- {name: test_noauth, location: /, backend: "http://localhost:8000"}\n- {name: test_basicauth, location: = /test_basicauth, auth: basic, htpasswd: myauth, backend: "http://localhost:8000/" }\n- {name: test_sramauth, location: /test_sramauth, auth: sram, backend: "http://localhost:8000/"}\n- {name: test_authoff, location: = /test_basicauth/api, auth: noauth, backend: "http://localhost:8000/bin/"}'
+          reverse_proxy_auth_info: '- {name: myauth, username: test, password: letmein}\n- {name: myauth, username: test2, password: letmein}'
