@@ -7,7 +7,7 @@
 - name: Install ASReview LAB through pip
   ansible.builtin.pip:
     name: asreview[all]
-    virtualenv: /opt/venvs/asreview
+    virtualenv: "{{ venv_location }}"
     virtualenv_command: virtualenv
 
 - name: Create function to source venv before launching ASReview LAB

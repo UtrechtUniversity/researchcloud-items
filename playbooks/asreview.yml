@@ -1,6 +1,6 @@
 ---
-- name: Install ASReview LAB system-wide
+- name: Install ASReview LAB system-wide (login via CLI or desktop)
   hosts: localhost
   gather_facts: true
   roles:
-    - asreview
+    - role: asreview_local

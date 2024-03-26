@@ -1,0 +1,11 @@
+[Unit]
+Description=ASReview
+
+[Service]
+After=multi-user.target
+Type=simple
+Restart=always
+ExecStart={{ venv_location }}/bin/asreview lab
+
+[Install]
+WantedBy=multi-user.target
