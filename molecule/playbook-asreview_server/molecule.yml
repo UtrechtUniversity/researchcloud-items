@@ -1,0 +1,39 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+    components:
+      - name: asreview
+        path: asreview_server.yml
+        parameters:
+          asreview_server_http_username: tester
+          asreview_server_http_password: letmein
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge not necessary since we include the role in the verify step
+    # - idempotence # randomized secure key in the asreview_server role not idempotent
+    - verify
+    - cleanup
+    - destroy

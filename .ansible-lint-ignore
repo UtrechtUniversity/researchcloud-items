@@ -10,3 +10,5 @@ playbooks/roles/stata18/molecule/default/prepare.yml inline-env-var # this is a 
 
 molecule/playbook-aptly/molecule.yml yaml[line-length] # molecule test parameters are long
 molecule/playbook-reverse_proxy/molecule.yml yaml[line-length] # molecule test parameters are long
+molecule/playbook-reverse_proxy/verify.yml yaml[line-length] # URL expectations are too long
+molecule/playbook-asreview/verify.yml yaml[line-length] # URL expectations are too long

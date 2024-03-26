@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test ASReview
+      ansible.builtin.uri:
+        url: http://localhost
+        method: GET
+        url_username: tester
+        url_password: letmein
+      register: asreview_login
+
+    - name: Test ASReview remote user is logged in
+      ansible.builtin.uri:
+        url: http://localhost/auth/get_profile
+        method: GET
+        return_content: true
+        url_username: tester
+        url_password: letmein
+        headers:
+          Cookie: "{{ asreview_login.cookies_string }}" # use the session cookie returned from the previous connection
+      register: asreview_profile_result
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"tester" in asreview_profile_result.content'

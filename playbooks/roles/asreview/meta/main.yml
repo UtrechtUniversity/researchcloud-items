@@ -1,4 +1,13 @@
 ---
+galaxy_info:
+  author: Dawa Ometto
+  description: A role that installs ASReview running as a systemd service on port 5000.
+  license: GPLv3
+  min_ansible_version: '2.9'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
 dependencies:
   - pip
   - runonce
