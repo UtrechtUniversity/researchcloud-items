@@ -21,10 +21,16 @@ When developing your own component for a webapp, it may be better to utilize the
 
 ## Description
 
-This component allows you to configure a list of *locations* which will be turned into reverse proxies. You can configure the proxy backend, timeouts and limits, and authentication options, including SRAM authentication and HTTP basic auth. When using HTTP basic auth, you must set the `htpasswd` attribute to refer to a file defined in the `reverse_proxy_auth_info` variable.
+This component allows you to configure a list of *locations* which will be turned into reverse proxies. You can configure the proxy backend, timeouts and limits, and authentication options, including SRAM authentication and HTTP basic auth.
+
+When using HTTP basic auth, you must set the `htpasswd` attribute to refer to a file existing under the location `/etc/nginx/passwd/`. You can either:
+
+1. Create this file yourself (e.g. in a different component).
+2. Let this component create it for you. **In that case, you must set the relevant information in a CO secret.** See the `reverse_proxy_auth_info` variable below.
+
 ## Variables
 
-`reverse_proxy_locations`: String of YAML dict objects (one on every newline) defining reverse proxy locations. Example:
+`reverse_proxy_locations`: Required. String. A list of YAML dict objects defining reverse proxy locations. Example:
 
 ```yaml
 - {name: test_noauth, location: /, backend: "http://localhost:8000"} # no authentication for /
@@ -35,13 +41,14 @@ This component allows you to configure a list of *locations* which will be turne
 
 For location attributes allowing you to configure standard nginx reverse proxy options, see the [role documentation](../roles/nginx-reverse_proxy.md).
 
-`reverse_proxy_auth_info`: String of YAML dict objects (one on every newline) defining authentication information that will be stored in an htpasswd file. The name of the htpasswd file should correspond to the one set in the `reverse_proxy_locations` variable. **This parameter should be set as a CO secret.** Example:
+`reverse_proxy_auth_info`: Optional. String. A list of YAML objects defining authentication information that will be turned into valid htpasswd files. The name of the htpasswd file should correspond to the one set in the `reverse_proxy_locations` variable. Example:
 
 ```yaml
 - {name: myfile1, username: test, password: letmein}
 - {name: myfile1, username: test2, password: letmein} # second user for myfile1
 - {name: myfile2, username: test3, password: letmein} # a second file myfile2
 ```
+**This parameter should be [set as a CO secret](https://servicedesk.surf.nl/wiki/display/WIKI/Secrets+and+workspace+info%3A+special+parameter+source+types). By default, the secret that will be looked up is called `reverse_proxy_auth_info`, but you may change this in your Catalog Item.**
 
 ## See also
 
