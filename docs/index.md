@@ -58,6 +58,7 @@ Currently, all our playbooks are still considered Experimental.
 - [docker](roles/docker.md)
 - [fact_regular_users](roles/fact_regular_users.md)
 - [git_clone](roles/git_clone.md)
+- [install_roles](roles/install_role.md)
 - [irods_guisync](roles/irods_guisync.md)  NB: deprecated
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
