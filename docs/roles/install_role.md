@@ -1,4 +1,4 @@
-# Role runonce
+# Role install_role
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -25,13 +25,13 @@ Works on all systems that have `ansible-galaxy` installed.
 
 ```yaml
 - name: Install role dependencies
-    include_role:
+  include_role:
     name: install_role
-    vars:
+  vars:
     install_role_roles:
     # Just some test roles:
-        - ANXS.postgresql
-        - git+https://github.com/ANXS/generic-users.git,1c6c6ee
+      - ANXS.postgresql
+      - git+https://github.com/ANXS/generic-users.git,1c6c6ee
 ```
 
 Your playbook, or other roles you reference, may now make us of the roles installed in this way.
