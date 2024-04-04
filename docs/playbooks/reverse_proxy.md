@@ -39,7 +39,7 @@ When using HTTP basic auth, you must set the `htpasswd` attribute to refer to a 
 - {name: test_authoff, location: = /test_basicauth/api, auth: noauth, backend: "http://localhost:8000/bin/"} # turn off sram auth for sublocation /test_sramauth/api
 ```
 
-For location attributes allowing you to configure standard nginx reverse proxy options, see the [role documentation](../roles/nginx-reverse_proxy.md).
+You can add keys to these dicts corresponding to nginx configuration detectives. E.g. `alias: /bla` will add an `alias /bla;` directive to the configuraiton.
 
 `reverse_proxy_auth_info`: Optional. String. A list of YAML objects defining authentication information that will be turned into valid htpasswd files. The name of the htpasswd file should correspond to the one set in the `reverse_proxy_locations` variable. Example:
 

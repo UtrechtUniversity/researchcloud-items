@@ -1,4 +1,4 @@
 ---
 nginx_apps_location: /etc/nginx/app-location-conf.d
-htpasswd_location: /etc/nginx/passwd/
+htpasswd_location: /etc/nginx/passwd
 ...
