@@ -32,9 +32,10 @@ All these variables are required:
 ```yaml
 - name: root # required
   location: / # required
-  backend: http://localhost:8000/ # required -- the webapp running on localhost
+  backend: http://localhost:8000/ #  the webapp running on localhost -- not required! you can instead use e.g. 'alias' as well.
   # auth: # setting the auth attribute is not required
-  # The options below correspond to nginx reverse proxy options: https://nginx.org/en/docs/http/ngx_http_proxy_module.html
+  # The options below are example of common nginx options
+  # Any "key: value" pair you add will be translated to "key value;" in the nginx config
   proxy_read_timeout: 
   proxy_connect_timeout:
   proxy_send_timeout:
@@ -44,19 +45,16 @@ All these variables are required:
 - name: basicauthlocation
   location: /test_basicauth/ # uri
   backend: http://localhost:8000/ # the webapp running on localhost
-  auth:
-    type: basic
-    auth_info: myfile1 # which of the htpasswd files to use for auth, see the nginx_reverse_proxy_auth_info variable
+  auth: basic
+  htpasswd: myfile1 # which of the htpasswd files to use for auth, see the nginx_reverse_proxy_auth_info variable
 - name: sramauthlocation
   location: /test_sramauth
   backend: http://localhost:8000/ # the webapp running on localhost
-  auth:
-    type: sram
+  auth: sram
 - name: api
   location: /test_sramauth/api
   backend: http://localhost:8000/ # the webapp running on localhost
-  auth:
-    type: noauth # explicitly disables auth for the location -- useful to make exceptions for sublocations of otherwise protected locations
+  auth: noauth # explicitly disables auth for the location -- useful to make exceptions for sublocations of otherwise protected locations
 
 ```
 - `htpasswd_location`: String. Where to store and look for `htpasswd` files. Default: `/etc/nginx/passwd`.
@@ -66,7 +64,7 @@ All these variables are required:
 - name: myfile1 # will be stored under <htpasswd_location>/myfile1
   username: tester
   password: letmein
-- name: myfile1,
+- name: myfile1
   username: tester2
   password: letmein
 - name: myfile2

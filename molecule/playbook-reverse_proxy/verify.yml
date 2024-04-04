@@ -36,7 +36,7 @@
 
     - name: Test /test_basicauth/api location without password
       ansible.builtin.uri:
-        url: http://localhost/test_basicauth/api
+        url: http://localhost/test_basicauth/api/mime.types # /etc/nginx/mime.types
         method: GET
         return_content: true
       register: api_location
@@ -66,4 +66,4 @@
           - "'bin' in basicauth_location.content"
           - root_location.status == 200
           - "'whoami' in root_location.content"
-          - "'whoami' in api_location.content"
+          - "' application/x-xpinstall' in api_location.content"
