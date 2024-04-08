@@ -7,7 +7,7 @@
   with_items: "{{ nginx_reverse_proxy_locations }}"
 
 - name: Prepare for creating htpasswd files
-  when: nginx_reverse_proxy_auth_info | length > 0
+  when: nginx_reverse_proxy_auth_info | default('') | length > 0
   block:
     - name: Install dependencies for htpasswd module
       pip:
