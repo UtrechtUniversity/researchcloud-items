@@ -29,6 +29,7 @@ Debian/Ubuntu operating system.
 All these variables are required:
 
 - `nginx_reverse_proxy_locations`: Required. List of dict objects defining the reverse proxy. Examples:
+
 ```yaml
 - name: root # required
   location: / # required
@@ -57,6 +58,7 @@ All these variables are required:
   auth: noauth # explicitly disables auth for the location -- useful to make exceptions for sublocations of otherwise protected locations
 
 ```
+
 - `htpasswd_location`: String. Where to store and look for `htpasswd` files. Default: `/etc/nginx/passwd`.
 - `nginx_reverse_proxy_auth_info`: Optional. List of dict objects defining `htpasswd` files for use with HTTP basic auth. These files will be generated using the provided username/password combinations. Example:
 
