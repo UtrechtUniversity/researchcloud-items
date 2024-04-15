@@ -21,7 +21,7 @@ When developing your own component for a webapp, it may be better to utilize the
 
 ## Description
 
-This component allows you to configure a list of *locations* which will be turned into reverse proxies. You can configure the proxy backend, timeouts and limits, and authentication options, including SRAM authentication and HTTP basic auth.
+This component allows you to configure a list of *locations* which will be turned into reverse proxies. You can configure the proxy proxy_pass, timeouts and limits, and authentication options, including SRAM authentication and HTTP basic auth.
 
 When using HTTP basic auth, you must set the `htpasswd` attribute to refer to a file existing under the location `/etc/nginx/passwd/`. You can either:
 
@@ -33,13 +33,13 @@ When using HTTP basic auth, you must set the `htpasswd` attribute to refer to a 
 `reverse_proxy_locations`: Required. String. A list of YAML dict objects defining reverse proxy locations. Example:
 
 ```yaml
-- {name: test_noauth, location: /, backend: "http://localhost:8000"} # no authentication for /
-- {name: test_basicauth, location: = /test_basicauth, auth: basic, htpasswd: myfile1, backend: "http://localhost:8000/" } # http basic auth using the file myfile1 (see below)
-- {name: test_sramauth, location: /test_sramauth, auth: sram, backend: "http://localhost:8000/"} # sram auth for /test_sramauth
-- {name: test_authoff, location: = /test_basicauth/api, auth: noauth, backend: "http://localhost:8000/bin/"} # turn off sram auth for sublocation /test_sramauth/api
+- {name: test_noauth, location: /, proxy_pass: "http://localhost:8000"} # no authentication for /
+- {name: test_basicauth, location: = /test_basicauth, auth: basic, htpasswd: myfile1, proxy_pass: "http://localhost:8000/" } # http basic auth using the file myfile1 (see below)
+- {name: test_sramauth, location: /test_sramauth, auth: sram, proxy_pass: "http://localhost:8000/"} # sram auth for /test_sramauth
+- {name: test_authoff, location: = /test_basicauth/api, auth: noauth, proxy_pass: "http://localhost:8000/bin/"} # turn off sram auth for sublocation /test_sramauth/api
 ```
 
-You can add keys to these dicts corresponding to nginx configuration detectives. E.g. `alias: /bla` will add an `alias /bla;` directive to the configuraiton.
+You can add keys to these dicts corresponding to nginx configuration detectives. E.g. `alias: /bla` will add an `alias /bla;` directive to the configuraiton. See the relevant [role](../roles/nginx-reverse_proxy.md) for more documentation of options and defaults.
 
 `reverse_proxy_auth_info`: Optional. String. A list of YAML objects defining authentication information that will be turned into valid htpasswd files. The name of the htpasswd file should correspond to the one set in the `reverse_proxy_locations` variable. Example:
 
