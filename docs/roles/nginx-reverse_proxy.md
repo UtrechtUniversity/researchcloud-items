@@ -26,35 +26,34 @@ Debian/Ubuntu operating system.
  
 ## Variables
 
-All these variables are required:
-
 - `nginx_reverse_proxy_locations`: Required. List of dict objects defining the reverse proxy. Examples:
 
 ```yaml
 - name: root # required
   location: / # required
-  backend: http://localhost:8000/ #  the webapp running on localhost -- not required! you can instead use e.g. 'alias' as well.
+  proxy_pass: http://localhost:8000/ #  the webapp running on localhost -- not required! you can instead use e.g. 'alias' as well.
   # auth: # setting the auth attribute is not required
   # The options below are example of common nginx options
   # Any "key: value" pair you add will be translated to "key value;" in the nginx config
-  proxy_read_timeout: 
-  proxy_connect_timeout:
-  proxy_send_timeout:
-  send_timeout:
-  x_forwarded_for:
-  proxy_redirect: 
+  proxy_read_timeout: # Default when proxy_pass is set: 300
+  proxy_connect_timeout: # Default when proxy_pass is set: 300
+  proxy_send_timeout: # Default when proxy_pass is set: 300
+  send_timeout: # Default when proxy_pass is set: 300
+  x_forwarded_for: # Default when proxy_pass is set: '$proxy_add_x_forwarded_for'
+  proxy_redirect: # Default when proxy_pass is set: 'off'
+  your_directive_here: # Will translate to "your_option_here <value>;".
 - name: basicauthlocation
   location: /test_basicauth/ # uri
-  backend: http://localhost:8000/ # the webapp running on localhost
+  proxy_pass: http://localhost:8000/ # the webapp running on localhost
   auth: basic
   htpasswd: myfile1 # which of the htpasswd files to use for auth, see the nginx_reverse_proxy_auth_info variable
 - name: sramauthlocation
   location: /test_sramauth
-  backend: http://localhost:8000/ # the webapp running on localhost
+  proxy_pass: http://localhost:8000/ # the webapp running on localhost
   auth: sram
 - name: api
   location: /test_sramauth/api
-  backend: http://localhost:8000/ # the webapp running on localhost
+  proxy_pass: http://localhost:8000/ # the webapp running on localhost
   auth: noauth # explicitly disables auth for the location -- useful to make exceptions for sublocations of otherwise protected locations
 
 ```
