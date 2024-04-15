@@ -1,0 +1,29 @@
+---
+name: Ansible Lint
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  define_scenarios:
+    runs-on: ubuntu-latest
+    env:
+      lint_playbooks:
+        - python-workbench
+        - reverse_proxy
+        - aptly
+        - miniconda
+        - security_updates
+        - shared_directories
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install linter
+        run: pip install ansible-lint
+      - name: Run linter
+        run: ansible-lint ${{ join(env.lint_playbooks, ',') }}

@@ -1,5 +1,5 @@
 ---
-profile: basic
+profile: production
 exclude_paths:
   - docs
   - .github
@@ -9,3 +9,4 @@ exclude_paths:
 skip_list:
   - role-name
   - var-naming
+  - fqcn[action-core]
