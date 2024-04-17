@@ -55,6 +55,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 ### Supported
 
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
+- [default_group](roles/default_group.md) set desired groups as default for regular users
 - [fact_regular_users](roles/fact_regular_users.md)
 - [install_role](roles/install_role.md)
 - [miniconda](roles/miniconda.md)
