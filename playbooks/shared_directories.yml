@@ -7,7 +7,13 @@
       vars:
         default_group_group:
           groupname: "{{ group_name }}"
-    - role: set_gid
-      vars:
-        set_gid_groupname: "{{ group_name }}"
-        set_gid_paths: "{{ paths }}"
+  tasks:
+    - name: Create all shared directories with setgid
+      ansible.builtin.file:
+        path: "{{ item | trim }}"
+        owner: "root"
+        group: "{{ group_name }}"
+        mode: "02770"
+        state: directory
+        recurse: true
+      with_items: "{{ paths.split(',') }}"

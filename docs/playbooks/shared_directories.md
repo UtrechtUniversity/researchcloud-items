@@ -23,7 +23,6 @@ Workspaces come with a `/scratch` directory meant for collaboration between user
 ## See also
 
 Role [default_group](../roles/default_group.md)
-Role [set_gid](../roles/set_gid.md)
 
 ## History
 2023 Written by Dawa Ometto (Utrecht University)
