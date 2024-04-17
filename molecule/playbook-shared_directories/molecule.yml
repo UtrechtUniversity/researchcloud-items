@@ -1,0 +1,10 @@
+---
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: shared_directories
+        path: shared_directories.yml
+        parameters:
+          paths: /shared, /home/testuser/shared,/scratch
+          group_name: testgroup

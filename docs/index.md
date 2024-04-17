@@ -29,6 +29,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
+- [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 
 ### Experimental
