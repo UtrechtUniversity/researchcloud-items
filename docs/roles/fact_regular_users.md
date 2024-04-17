@@ -32,7 +32,7 @@ Example use in a playbook task:
         src: "info.txt"
         dst: "/{{ item.home }}/info.txt"
         owner: "{{ item.user }}"
-        group: "{{ itemn.user }}"
+        group: "{{ item.user }}"
         mode: 0644
       with_items: "{{ fact_regular_users }}"
 ```
