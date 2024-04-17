@@ -18,19 +18,22 @@ document a playbook
 or the file [template-roles.md](roles/template-roles.md) to document a role.
 
 ## Playbooks
-The status of a playbook is either Experimental or Supported. In the SURF Research Cloud catalog, this
+The status of a playbook is either Experimental or Supported. Supported playbooks are subjected to automated [testing](./index.md#Test-driven-development) and must be fully documented.
+
+For public items in the SURF Research Cloud catalog, this
 status should be indicated in the description field of the catalog plugin item.
 
-### Supported playbooks:   
-("Status: Supported")    
+### Supported
 
-Currently, all our playbooks are still considered Experimental. 
-
-
-### Experimental playbooks:   
-("Status: Experimental, use with caution")     
-- [anaconda](playbooks/anaconda.md)  python data science development
 - [aptly](playbooks/aptly.md) serve apt repositories on the workspace
+- [miniconda](playbooks/miniconda.md)  Python development
+- [python-workbench](playbooks/python-workbench.md)  Python development
+- [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
+- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
+
+### Experimental
+
+- [anaconda](playbooks/anaconda.md)  python data science development
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
@@ -41,25 +44,35 @@ Currently, all our playbooks are still considered Experimental.
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda-base](playbooks/miniconda-base.md)   Python application development
-- [miniconda](playbooks/miniconda.md)  Python applicaiton development
-- [python-workbench](playbooks/python-workbench.md)  Python application development
-- [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
-- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 
 ## Roles
-- [anaconda](roles/anaconda.md)
+
+The status of a role is either Experimental or Supported. Supported roles are subjected to automated [testing](./index.md#Test-driven-development) and must be fully documented.
+
+### Supported
+
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
+- [fact_regular_users](roles/fact_regular_users.md)
+- [install_role](roles/install_role.md)
+- [miniconda](roles/miniconda.md)
+- [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
+- [poetry](roles/poetry.md)
+- [pip](roles/pip.md)
+- [pyenv](roles/pyenv.md)
+- [python](roles/python.md)
+
+### Experimental
+
+- [anaconda](roles/anaconda.md)
 - [asreview](roles/asreview.md)
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
 - [desktop-file](roles/desktop_file.md)
 - [docker](roles/docker.md)
-- [fact_regular_users](roles/fact_regular_users.md)
 - [git_clone](roles/git_clone.md)
-- [install_role](roles/install_role.md)
 - [irods_guisync](roles/irods_guisync.md)  NB: deprecated
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
@@ -68,15 +81,9 @@ Currently, all our playbooks are still considered Experimental.
 - [keycloak](roles/keycloak.md)
 - [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
-- [miniconda](roles/miniconda.md)
 - [myrods-sync](roles/myrods-sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
 - [nginx-pam](roles/nginx-pam.md)
-- [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
-- [poetry](roles/poetry.md)
-- [pip](roles/pip.md)
-- [pyenv](roles/pyenv.md)
-- [python](roles/python.md)
 - [robotuser](roles/robotuser.md)
 - [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
