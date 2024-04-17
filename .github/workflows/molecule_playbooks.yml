@@ -1,5 +1,5 @@
 ---
-name: Molecule
+name: Molecule Playbooks
 on:
   push:
     branches:
@@ -15,14 +15,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Get changed roles
-        id: changed-roles
-        uses: tj-actions/changed-files@v41
-        with:
-          dir_names: true
-          dir_names_max_depth: 3
-          files: |
-              playbooks/roles/**/**
       - name: Get changed scenarios
         id: changed-scenarios
         uses: tj-actions/changed-files@v41
@@ -31,7 +23,6 @@ jobs:
           dir_names_max_depth: 2
           files: |
               molecule/playbook-*/*.yml
-              molecule/role-*/*.yml
       - name: Get changed playbooks
         id: changed-playbooks
         uses: tj-actions/changed-files@v41
@@ -41,10 +32,6 @@ jobs:
       - name: Set matrix based on changed files
         id: set-scenario-matrix
         run: |
-          ROLES=(${{ steps.changed-roles.outputs.all_changed_files }})
-          ROLES=("${ROLES[@]/#playbooks\/roles\//role-}") # playbooks/roles/foo -> role-foo
-          echo "DEBUG ROLES: ${ROLES[*]}"
-
           PLAYBOOKS=(${playbooks})
           PLAYBOOKS=("${PLAYBOOKS[@]/#playbooks\//playbook-}") # playbooks/foo.yml -> playbook-foo.yml
           PLAYBOOKS=("${PLAYBOOKS[@]/%.yml/}") # playbook-foo.yml -> playbook-foo
@@ -54,7 +41,7 @@ jobs:
           SCENARIOS=("${SCENARIOS[@]/#molecule\//}") # molecule/playbook-foo -> playbook-foo
           echo "DEBUG SCENARIOS: ${SCENARIOS[*]}"
 
-          ALL_CHANGES="${PLAYBOOKS[*]} ${ROLES[*]} ${SCENARIOS[*]}"
+          ALL_CHANGES="${PLAYBOOKS[*]} ${SCENARIOS[*]}"
           echo "DEBUG ALL_CHANGES: $ALL_CHANGES"
 
           # Construct a unique bash array out of ALL_CHANGES
