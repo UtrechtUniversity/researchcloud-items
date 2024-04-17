@@ -32,6 +32,7 @@ jobs:
 
   molecule:
     needs: [get_changed_roles]
+    if: ${{ needs.get_changed_roles.outputs.matrix != '[""]' && needs.get_changed_roles.outputs.matrix != '' }}
     runs-on: ubuntu-latest
     env:
       DOCKER_USER: ${{ github.actor }}
