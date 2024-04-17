@@ -22,7 +22,7 @@ We are very happy with any contributions in terms of new Ansible scripts for Res
 
 There are two kinds of tests:
 
-1. Role tests. Molecule scenarios should be given a `role-` prefix.
-1. Playbook tests. Molecule scenarios should be given a `playbook-` prefix.
+1. Role tests. Molecule scenarios should be stored in the `playbooks/roles/<role>/molecule/` directory.
+1. Playbook tests. Molecule scenarios should be stored in the `molecule/` directory and given a `playbook-` prefix.
 
 By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/roles/pyenv/tasks/main.yml`, the scenario `molecule/role-pyenv` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/playbook-python-workbench/molecule.yml`).
