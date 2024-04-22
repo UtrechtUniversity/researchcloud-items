@@ -1,0 +1,7 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Run ibridges
+      ansible.builtin.shell: . /etc/profile.d/uu-custom-pip.sh && ibridges
