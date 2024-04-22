@@ -1,0 +1,7 @@
+---
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: ibridges
+        path: ibridges.yml

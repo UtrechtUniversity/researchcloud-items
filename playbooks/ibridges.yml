@@ -1,0 +1,9 @@
+---
+- name: Install iBridges client systemwide
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - name: pip_install_systemwide
+      vars:
+        pip_install_systemwide_packages: ibridges
