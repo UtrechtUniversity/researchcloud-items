@@ -1,0 +1,7 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Run icommand
+      ansible.builtin.command: ihelp
