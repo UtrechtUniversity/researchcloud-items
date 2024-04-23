@@ -1,13 +1,13 @@
 ---
 # adds iRODS repository, method depends on distro
 
-- name: enable iRODS repository, yum package manager
+- name: Enable iRODS repository, yum package manager
   yum_repository:
     name: iRODS
     description: RENCI iRODS Repository
     baseurl: '{{ irods_repo_url }}/yum/pool/centos{{ irods_repo_yum_major_version }}/{{ ansible_architecture }}'
     gpgkey: '{{ irods_repo_url }}/irods-signing-key.asc'
-    gpgcheck: yes
+    gpgcheck: true
   when: ansible_pkg_mgr  == 'yum'
 
 - name: Download irods key
@@ -21,6 +21,5 @@
     repo: "deb [signed-by={{ irods_key_location }}] {{ irods_repo_url }}/apt/ {{ ansible_distribution_release }} main"
     state: present
     filename: renci-irods
-    update_cache: yes
+    update_cache: true
   when: ansible_pkg_mgr  == 'apt'
-
