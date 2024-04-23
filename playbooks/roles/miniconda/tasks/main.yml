@@ -4,6 +4,7 @@
   set_fact:
     install_systemwide: "{{ miniconda_systemwide | bool }}"
     install_userspace: "{{ miniconda_userspace | bool }}"
+    install_userspace_preinstall: "{{ miniconda_userspace_preinstall | bool }}"
     auto_init: "{{ miniconda_auto_init | bool }}"
 
 - name: Check if not both systemwide and userspace are true or false
@@ -33,7 +34,7 @@
 
 # Done in seperate task file to allow proper looping with fact_regular_users.
 - name: Install per user
-  when: install_userspace
+  when: install_userspace and install_userspace_preinstall
   include_tasks: install_user.yml
   with_items:
     - "{{ fact_regular_users }}"

@@ -17,6 +17,7 @@ Possible to-do would be to toggle whether user share packages amongst each other
 
 ## Variables
 - `miniconda_userspace:`: Boolean determining whether each user should gets their own installation. Default: true
+- `miniconda_userspace_preinstall`: Boolean determining whether miniconda should be installed for each user when the component is executed, **so before the user first logs in**. Default: false.
 - `miniconda_systemwide`: Boolean determining whether all users share one installation. Default: false
 - `miniconda_auto_init`: Boolean determining whether `conda init` should be run automatically for each user. Useful if you do no want users' shells on the workspace to use conda's version of python by default. Default: true. If set to false, `<condadir>/condabin` will still be added to users' path, so they can run `conda init` manually.
 - `miniconda_download_dest`: Directory to store the download files. Default: /usr/local/miniconda

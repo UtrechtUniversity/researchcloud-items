@@ -1,5 +1,6 @@
 ---
 miniconda_userspace: true
+miniconda_userspace_preinstall: false
 miniconda_systemwide: false
 miniconda_auto_init: true
 miniconda_install_script: miniconda_install.sh
