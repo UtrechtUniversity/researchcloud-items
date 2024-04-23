@@ -1,5 +1,5 @@
 ---
-- name: Install iBridges client systemwide
+- name: Install iBridges and iCommands systemwide
   hosts: localhost
   gather_facts: true
 
@@ -7,3 +7,6 @@
     - role: pip_install_systemwide
       vars:
         pip_install_systemwide_packages: ibridges
+    - role: irods_repo
+    - role: irods_icommands
+    - role: irods_skel
