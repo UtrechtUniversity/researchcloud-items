@@ -37,4 +37,4 @@
       {%- set query = "[?roles.contains(@, '" ~ group ~ "')].username" -%}
       {%- set _ = _group_info.update({group: (fact_co_users | json_query(query) | list) }) -%}
       {%- endfor -%}
-      {{ _group_info | to_json }}
+      {{ _group_info }}
