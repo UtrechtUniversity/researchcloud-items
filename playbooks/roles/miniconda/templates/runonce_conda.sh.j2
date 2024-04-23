@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
 
-{% if install_userspace and not install_userspace_preinstall -%}
+{% if install_userspace -%}
 MINICONDA_DEST=~/miniconda
 if [[ ! -d "$MINICONDA_DEST" ]]; then
     echo "Installing miniconda"
     {{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p "$MINICONDA_DEST"
 fi
-{% elif not install_userspace -%}
+{% else -%}
 MINICONDA_DEST="{{ miniconda_install_dir }}"
 {% endif -%}
 
