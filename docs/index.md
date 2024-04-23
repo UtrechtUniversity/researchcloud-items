@@ -26,6 +26,8 @@ status should be indicated in the description field of the catalog plugin item.
 ### Supported
 
 - [aptly](playbooks/aptly.md) serve apt repositories on the workspace
+- [ibridges](playbooks/ibridges.yml) userfriendly commandline client for iRODS
+- [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
@@ -40,7 +42,6 @@ status should be indicated in the description field of the catalog plugin item.
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [docker](playbooks/docker.md) application container management
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
-- [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
@@ -63,6 +64,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)
+- [pip_install_systemwide](roles/pip_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)
 - [python](roles/python.md)
 
