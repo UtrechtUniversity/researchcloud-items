@@ -1,0 +1,40 @@
+---
+- name: Get workspace.json file
+  command: cat /etc/rsc/workspace.json
+  changed_when: false
+  register: _workspace_info_file
+
+- name: Parse workspace.json info
+  set_fact:
+    fact_workspace_info: "{{ _workspace_info_file['stdout'] | from_json }}"
+
+- name: Get CO info from user info endpoint
+  uri:
+    url: "{{ fact_workspace_info['co_user_api_endpoint'] }}"
+    return_content: true
+    headers:
+      Authorization: "{{ fact_workspace_info['co_token'] }}"
+  register: _co_info
+
+- name: Set co_users fact
+  set_fact:
+    fact_co_users: "{{ _co_info['content'] | from_json }}"
+
+- name: Set co_groups
+  set_fact:
+    _co_groups: "{{ fact_co_users | map(attribute='roles') | flatten | unique }}"
+
+# jmespath is required for jquery filter 
+- name: ensure jmespath is installed
+  pip:
+    name: jmespath
+
+- name: Set fact_co_groups fact
+  set_fact:
+    fact_co_groups: |
+      {%- set _group_info={} -%}
+      {%- for group in _co_groups -%}
+      {%- set query = "[?roles.contains(@, '" ~ group ~ "')].username" -%}
+      {%- set _ = _group_info.update({group: (fact_co_users | json_query(query) | list) }) -%}
+      {%- endfor -%}
+      {{ _group_info | to_json }}

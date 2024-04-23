@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Testing role fact_regular_users
+      ansible.builtin.include_role:
+        name: fact_workspace_info

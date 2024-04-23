@@ -1,0 +1,12 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Testing role
+      ansible.builtin.include_role:
+        name: fact_workspace_info
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ workspace_info }}"
