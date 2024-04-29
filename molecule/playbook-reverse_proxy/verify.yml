@@ -18,9 +18,9 @@
         return_content: true
       register: root_location
 
-    - name: Test /test_basicauth location
+    - name: Test /test_basicauth2 location
       ansible.builtin.uri:
-        url: http://localhost/test_basicauth
+        url: http://localhost/test_basicauth2
         url_username: test2
         url_password: letmeintoo
         method: GET

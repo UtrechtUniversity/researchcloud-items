@@ -50,10 +50,12 @@ You can add keys to these dicts corresponding to nginx configuration detectives.
 ```
 **This parameter should be [set as a CO secret](https://servicedesk.surf.nl/wiki/display/WIKI/Secrets+and+workspace+info%3A+special+parameter+source+types). By default, the secret that will be looked up is called `reverse_proxy_auth_info`, but you may change this in your Catalog Item.*
 
-If one of the entries in `reverse_proxy_auth_info` blocks do not contain a password or username, default usernames and passwords will be added to the htpassword file. **By default these are empty.** You can override them by setting the following parameters:
+**If you want to use a single username/password for a reverse proxy location, you can leave the `reverse_proxy_auth_info` parameter empty, and instead use the default credentials, as described below.**
 
-- `basic_auth_default_username`
-- `basic_auth_default_password`
+If one of the `htpasswd` files defined in `reverse_proxy_locations` is not found in `reverse_proxy_auth_info`, that htpasswd file will be created using the following default credentials, which can be overriden:
+
+- `basic_auth_default_username`: Optional. String. The default username to be used if none is set in `reverse_proxy_auth_info`. Default: `''`.
+- `basic_auth_default_password`: Optional. String. The default password to be used if none set in `reverse_proxy_auth_info`. Default: `''`.
 
 ## See also
 
