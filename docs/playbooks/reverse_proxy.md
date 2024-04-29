@@ -48,7 +48,12 @@ You can add keys to these dicts corresponding to nginx configuration detectives.
 - {name: myfile1, username: test2, password: letmein} # second user for myfile1
 - {name: myfile2, username: test3, password: letmein} # a second file myfile2
 ```
-**This parameter should be [set as a CO secret](https://servicedesk.surf.nl/wiki/display/WIKI/Secrets+and+workspace+info%3A+special+parameter+source+types). By default, the secret that will be looked up is called `reverse_proxy_auth_info`, but you may change this in your Catalog Item.**
+**This parameter should be [set as a CO secret](https://servicedesk.surf.nl/wiki/display/WIKI/Secrets+and+workspace+info%3A+special+parameter+source+types). By default, the secret that will be looked up is called `reverse_proxy_auth_info`, but you may change this in your Catalog Item.*
+
+If one of the entries in `reverse_proxy_auth_info` blocks do not contain a password or username, default usernames and passwords will be added to the htpassword file. **By default these are empty.** You can override them by setting the following parameters:
+
+- `basic_auth_default_username`
+- `basic_auth_default_password`
 
 ## See also
 
