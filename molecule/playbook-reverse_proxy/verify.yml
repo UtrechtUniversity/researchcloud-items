@@ -22,7 +22,7 @@
       ansible.builtin.uri:
         url: http://localhost/test_basicauth
         url_username: test2
-        url_password: letmein
+        url_password: letmeintoo
         method: GET
         return_content: true
       register: basicauth_location

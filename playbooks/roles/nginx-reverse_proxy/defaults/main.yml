@@ -1,4 +1,6 @@
 ---
 nginx_apps_location: /etc/nginx/app-location-conf.d
 htpasswd_location: /etc/nginx/passwd
+nginx_reverse_proxy_default_username: ''
+nginx_reverse_proxy_default_password: ''
 ...
