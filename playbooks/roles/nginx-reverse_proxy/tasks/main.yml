@@ -6,8 +6,12 @@
     mode: '0644'
   with_items: "{{ nginx_reverse_proxy_locations }}"
 
+- name: Gather htpasswd files
+  set_fact:
+    _htpasswd_files: "{{ nginx_reverse_proxy_locations | map(attribute='htpasswd') | select('defined') | list }}"
+
 - name: Prepare for creating htpasswd files
-  when: nginx_reverse_proxy_auth_info | default('') | length > 0
+  when: _htpasswd_files | length > 0
   block:
     - name: Install dependencies for htpasswd module
       pip:
@@ -21,16 +25,32 @@
         state: directory
         mode: '750'
 
-    - name: Create htpasword files for basic auth
-      with_items: "{{ nginx_reverse_proxy_auth_info }}"
-      no_log: true
-      htpasswd:
-        path: "{{ htpasswd_location }}/{{ item.name }}"
-        name: "{{ item.username | default(nginx_reverse_proxy_default_username) }}"
-        password: "{{ item.password | default(nginx_reverse_proxy_default_password) }}"
-        owner: root
-        group: www-data
-        mode: '644'
+- name: Create htpasswd files based on nginx_reverse_proxy_auth_info
+  when: nginx_reverse_proxy_auth_info | default('') | length > 0
+  with_items: "{{ nginx_reverse_proxy_auth_info }}"
+  no_log: true
+  htpasswd:
+    path: "{{ htpasswd_location }}/{{ item.name }}"
+    name: "{{ item.username }}"
+    password: "{{ item.password }}"
+    owner: root
+    group: www-data
+    mode: '644'
+
+- name: Get htpasswd files that were not defined in nginx_reverse_proxy_auth_info
+  set_fact:
+    _remaining_htpasswd_files: "{{ _htpasswd_files | difference(nginx_reverse_proxy_auth_info | default([]) | map(attribute='name') | list ) }}"
+
+- name: Create htpasswd files with default username and password for all locations not defined in nginx_reverse_proxy_auth_info
+  with_items: "{{ _remaining_htpasswd_files }}"
+  no_log: true
+  htpasswd:
+    path: "{{ htpasswd_location }}/{{ item }}"
+    name: "{{ nginx_reverse_proxy_default_username }}"
+    password: "{{ nginx_reverse_proxy_default_password }}"
+    owner: root
+    group: www-data
+    mode: '644'
 
 - name: Restart nginx
   service:
