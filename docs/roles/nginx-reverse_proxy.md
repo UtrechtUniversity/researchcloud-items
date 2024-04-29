@@ -69,9 +69,16 @@ Debian/Ubuntu operating system.
   username: tester2
   password: letmein
 - name: myfile2
-  username: tester2
+  username: tester3
+  # not setting the 'password' field will use the default EMPTY password
+- name: myfile3
+  # not setting the 'username' field will use the default EMPTY username
   password: letmein
 ```
+
+- `nginx_reverse_proxy_default_username`: String. Standard username to add to an httaccess file if none is explicitly provided (see `nginx_reverse_proxy_auth_info`). Default: `''`.
+- `nginx_reverse_proxy_default_passwrod`: String. Standard password to add to an httaccess file if none is explicitly provided (see `nginx_reverse_proxy_auth_info`). Default: `''`.
+
 
 ## See also
 
