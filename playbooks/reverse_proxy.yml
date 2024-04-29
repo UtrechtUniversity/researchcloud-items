@@ -46,3 +46,5 @@
       vars:
         nginx_reverse_proxy_locations: "{{ locations }}"
         nginx_reverse_proxy_auth_info: "{{ auth_info | default('') }}"
+        nginx_reverse_proxy_default_username: "{{ basic_auth_default_username | default(omit) }}"
+        nginx_reverse_proxy_default_password: "{{ basic_auth_default_password | default(omit) }}"

@@ -33,4 +33,5 @@ provisioner:
         path: reverse_proxy.yml
         parameters:
           reverse_proxy_locations: '- {name: test_noauth, location: /, proxy_pass: "http://localhost:8000" }\n- {name: test_basicauth, location: = /test_basicauth, auth: basic, htpasswd: myauth, proxy_pass: "http://localhost:8000/" }\n- {name: test_sramauth, location: /test_sramauth, auth: sram, proxy_pass: "http://localhost:8000/"}\n- {name: test_authoff, location: /test_basicauth/api, auth: noauth, alias: /etc/nginx, proxy_set_header: { X-Real-IP: ""} }'
-          reverse_proxy_auth_info: '- {name: myauth, username: test, password: letmein}\n- {name: myauth, username: test2, password: letmein}'
+          reverse_proxy_auth_info: '- {name: myauth, username: test, password: letmein}\n- {name: myauth, username: test2}'
+          basic_auth_default_password: 'letmeintoo'

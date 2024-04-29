@@ -26,8 +26,8 @@
       no_log: true
       htpasswd:
         path: "{{ htpasswd_location }}/{{ item.name }}"
-        name: "{{ item.username }}"
-        password: "{{ item.password }}"
+        name: "{{ item.username | default(nginx_reverse_proxy_default_username) }}"
+        password: "{{ item.password | default(nginx_reverse_proxy_default_password) }}"
         owner: root
         group: www-data
         mode: '644'
