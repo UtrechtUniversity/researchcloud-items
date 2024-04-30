@@ -7,3 +7,4 @@
     - role: pip_install_systemwide
       vars:
         pip_install_systemwide_packages: ibridges
+    - role: irods_skel
