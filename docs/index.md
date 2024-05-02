@@ -58,7 +58,8 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [default_group](roles/default_group.md) set desired groups as default for regular users
-- [fact_regular_users](roles/fact_regular_users.md)
+- [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
+- [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
 - [install_role](roles/install_role.md)
 - [miniconda](roles/miniconda.md)
 - [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
