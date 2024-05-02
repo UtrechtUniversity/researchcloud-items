@@ -28,17 +28,7 @@ else
   RC_FILE=~/.bashrc
 fi
 
-if [[ ! -e "$RC_FILE"]]; then
-  touch "$RC_FILE"
-fi
-
-if [[ -z "$PATH" ]]; then
-    # If $PATH is empty, create it
-    echo "export PATH=\"$MINICONDA_DEST/condabin\"" | tee -a "$RC_FILE"
-    export PATH="$MINICONDA_DEST/condabin"
-else
-    # Else append to $PATH
-    echo "export PATH=\"\$PATH:$MINICONDA_DEST/condabin\"" | tee -a "$RC_FILE"
-    export PATH="$PATH:$MINICONDA_DEST/condabin"
-fi
+EXPORT_MINICONDA_PATH="export PATH=\"$MINICONDA_DEST/condabin\${PATH:+:\${PATH}}\""
+eval "$EXPORT_MINICONDA_PATH" # export for the current shell
+echo "$EXPORT_MINICONDA_PATH" >> "$RC_FILE"
 {% endif -%}
