@@ -1,0 +1,10 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ../default/prepare.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+    ANSIBLE_PYTHON_INTERPRETER: /usr/bin/python3
+role_name_check: 1

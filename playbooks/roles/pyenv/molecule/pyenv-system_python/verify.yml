@@ -1,0 +1,38 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Get all runonce files
+      find:
+        paths: /etc/runonce.d
+        recurse: no
+      register: found_scripts
+
+    - name: Run runonce scripts
+      ansible.builtin.command: su -c "{{ item.path }}" - testuser
+      with_items: "{{ found_scripts.files }}"
+
+    - name: Test pyenv
+      ansible.builtin.shell: su -c "bash -ic 'pyenv global'" - testuser
+      register: pyenv_global
+
+    - name: Test python version
+      ansible.builtin.shell: su -c "bash -ic 'python --version'" - testuser
+      register: python_version
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: python_version
+
+    - name: Set expected python versions
+      set_fact:
+        expected_python_version:
+          '20.04': '3.9'
+          '22.04': '3.11'
+  
+    - name: Assert correct global python version
+      ansible.builtin.assert:
+        that:
+          - "pyenv_global.stdout_lines[-1] == expected_python_version[ansible_distribution_version]"
+          - "python_version in python_version.stdout_lines[-1]"

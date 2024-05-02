@@ -4,6 +4,7 @@ set -e
 # installs default python version if set
 
 DEFAULT_PYTHON_VERSION="{{ pyenv_default_python }}"
+SYSTEM_PYTHON="{{ system_python_path }}"
 
 cd
 curl https://pyenv.run | bash
@@ -23,9 +24,14 @@ INPUTEND
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
-if [[ -n "$DEFAULT_PYTHON_VERSION" && "$DEFAULT_PYTHON_VERSION" != "system" ]]; then
-    echo "Installing python $DEFAULT_PYTHON_VERSION from pyenv"
-    pyenv install "$DEFAULT_PYTHON_VERSION"
+if [[ -n "$DEFAULT_PYTHON_VERSION" ]]; then
+    if [[ "$DEFAULT_PYTHON_VERSION" != system* ]]; then
+        echo "Installing python $DEFAULT_PYTHON_VERSION from pyenv"
+        pyenv install "$DEFAULT_PYTHON_VERSION"
+    fi
+    if [[ "$DEFAULT_PYTHON_VERSION" == "system-latest" ]]; then
+         "$SYSTEM_PYTHON" -m venv "$PYENV_ROOT/versions/$DEFAULT_PYTHON_VERSION"
+    fi
     pyenv global "$DEFAULT_PYTHON_VERSION"
     echo "Python release $DEFAULT_PYTHON_VERSION activated as 'global' pyenv release"
     cat >> ~/.bashrc <<'INPUTEND'
