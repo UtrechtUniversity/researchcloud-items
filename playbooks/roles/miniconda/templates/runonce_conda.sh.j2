@@ -22,6 +22,9 @@ echo "Running miniconda init"
 # Add miniconda/condabin (but not miniconda/bin) to the user's path so they can manually run `conda init`
 
 PROFILE_FILE="~/.profile"
+if [[ ! -e "$PROFILE_FILE" ]]; then
+  touch "$PROFILE_FILE"
+fi
 
 if [[ -z "$PATH" ]]; then
     # If $PATH is empty, create it
