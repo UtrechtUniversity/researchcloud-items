@@ -37,8 +37,36 @@
     - python3-openssl
   when: ansible_pkg_mgr == 'apt'
 
+- name: Set latest system python fact
+  when: pyenv_default_python == 'system-latest'
+  set_fact:
+    _pyenv_latest_system_python: "{{ pyenv_system_python_latest_versions[ansible_distribution][ansible_distribution_version] | default('') }}"
+
+- name: Fail if no latest python version for this OS is defined
+  fail:
+    msg: "Python version system-latest requested, but latest python version for {{ ansible_distribution }} {{ ansible_distribution_version }} is defined."
+  when: pyenv_default_python == 'system-latest' and _pyenv_latest_system_python | length == 0
+
+- name: Install latest system python for Ubuntu
+  when: pyenv_default_python == 'system-latest' and ansible_distribution == "Ubuntu"
+  block:
+
+    - name: Install latest system python and corresponding venv
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - "python{{ _pyenv_latest_system_python }}"
+        - "python{{ _pyenv_latest_system_python }}-venv"
+
+    - name: Set path to latest system python
+      set_fact:
+        _pyenv_system_python_path: "/usr/bin/python{{ _pyenv_latest_system_python }}"
+
 - name: Add pyenv install to runonce config
   template:
     src: pyenv-install.sh.j2
     dest: /etc/runonce.d/01_pyenv-install.sh
     mode: "0755"
+  vars:
+    system_python_path: "{{ _pyenv_system_python_path | default('') }}"
