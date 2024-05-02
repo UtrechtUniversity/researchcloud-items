@@ -21,10 +21,6 @@
       ansible.builtin.shell: su -c "bash -ic 'python --version'" - testuser
       register: python_version
 
-    - name: Debug
-      ansible.builtin.debug:
-        var: python_version
-
     - name: Set expected python versions
       set_fact:
         expected_python_version:
@@ -34,5 +30,5 @@
     - name: Assert correct global python version
       ansible.builtin.assert:
         that:
-          - "pyenv_global.stdout_lines[-1] == expected_python_version[ansible_distribution_version]"
-          - "python_version in python_version.stdout_lines[-1]"
+          - "pyenv_global.stdout_lines[-1] == 'system-latest'"
+          - "expected_python_version[ansible_distribution_version] in python_version.stdout_lines[-1]"
