@@ -69,4 +69,4 @@
     dest: /etc/runonce.d/01_pyenv-install.sh
     mode: "0755"
   vars:
-    system_python_path: "{{ _pyenv_system_python_path }}"
+    system_python_path: "{{ _pyenv_system_python_path | default('') }}"
