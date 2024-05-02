@@ -21,14 +21,7 @@ echo "Running miniconda init"
 {% else -%}
 # Add miniconda/condabin (but not miniconda/bin) to the user's path so they can manually run `conda init`
 
-if [[ -n "$ZSH_VERSION" ]]; then
-  PROFILE_FILE=~/.zprofile
-  RC_FILE=~/.zshrc
-else
-  # Assume bash, since runonce supports only zsh and bash anyway.
-  PROFILE_FILE=~/.bash_profile
-  RC_FILE=~/.bashrc
-fi
+PROFILE_FILE="~/.profile"
 
 if [[ -z "$PATH" ]]; then
     # If $PATH is empty, create it
