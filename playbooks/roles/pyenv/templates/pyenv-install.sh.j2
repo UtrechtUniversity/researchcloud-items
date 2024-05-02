@@ -9,20 +9,26 @@ SYSTEM_PYTHON="{{ system_python_path }}"
 cd
 curl https://pyenv.run | bash
 
-cat >>~/.bashrc <<'INPUTEND'
-# added by runonce as pyenv config
-if [ -z "$PYENV_ROOT" ]; then
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+if [[ -n "$ZSH_VERSION" ]]; then
+  RC_FILE=~/.zshrc
+else
+  # Assume bash, since runonce supports only zsh and bash anyway.
+  RC_FILE=~/.bashrc
 fi
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-INPUTEND
 
-# also add pyenv to current login shell 
-# so that pyenv commands can be used in other runonce actions
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+PYENV_INIT=$(cat <<EOF
+# added by runonce as pyenv config
+if [ -z "\$PYENV_ROOT" ]; then
+export PYENV_ROOT="\$HOME/.pyenv"
+export PATH="\$PYENV_ROOT/shims:\$PYENV_ROOT/bin\${PATH:+:\${PATH}}"
+fi
+eval "\$(pyenv init -)"
+eval "\$(pyenv virtualenv-init -)"
+EOF
+)
+
+echo "$PYENV_INIT" >> "$RC_FILE"
+eval "$PYENV_INIT" # add to current shell
 
 if [[ -n "$DEFAULT_PYTHON_VERSION" ]]; then
     if [[ "$DEFAULT_PYTHON_VERSION" != system* ]]; then
