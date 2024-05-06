@@ -9,13 +9,6 @@ SYSTEM_PYTHON="{{ system_python_path }}"
 cd
 curl https://pyenv.run | bash
 
-if [[ -n "$ZSH_VERSION" ]]; then
-  RC_FILE=~/.zshrc
-else
-  # Assume bash, since runonce supports only zsh and bash anyway.
-  RC_FILE=~/.bashrc
-fi
-
 PYENV_INIT=$(cat <<EOF
 # added by runonce as pyenv config
 if [ -z "\$PYENV_ROOT" ]; then
@@ -26,6 +19,16 @@ eval "\$(pyenv init -)"
 eval "\$(pyenv virtualenv-init -)"
 EOF
 )
+
+if [[ -n "$ZSH_VERSION" ]]; then
+  RC_FILE="$HOME/.zshrc"
+elif [[ -n "$BASH_VERSION" ]]; then
+  RC_FILE="$HOME/.bashrc"
+else
+  echo "You are using a shell other than zsh or bash. Could not automatically setup pyenv for you. Please add the following to your shell's profile or rc file:"
+  echo "$PYENV_INIT"
+  exit 1
+fi
 
 echo "$PYENV_INIT" >> "$RC_FILE"
 eval "$PYENV_INIT" # add to current shell

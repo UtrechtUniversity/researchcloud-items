@@ -21,14 +21,18 @@ echo "Running miniconda init"
 {% else -%}
 # Add miniconda/condabin (but not miniconda/bin) to the user's path so they can manually run `conda init`
 
+EXPORT_MINICONDA_PATH="export PATH=\"$MINICONDA_DEST/condabin\${PATH:+:\${PATH}}\""
+
 if [[ -n "$ZSH_VERSION" ]]; then
-  RC_FILE=~/.zshrc
+  RC_FILE="$HOME/.zshrc"
+elif [[ -n "$BASH_VERSION" ]]; then
+  RC_FILE="$HOME/.bashrc"
 else
-  # Assume bash, since runonce supports only zsh and bash anyway.
-  RC_FILE=~/.bashrc
+  echo "You are using a shell other than zsh or bash. Could not automatically setup miniconda for you. Please add the following to your shell's profile or rc file:"
+  echo "$EXPORT_MINICONDA_PATH"
+  exit 1
 fi
 
-EXPORT_MINICONDA_PATH="export PATH=\"$MINICONDA_DEST/condabin\${PATH:+:\${PATH}}\""
 eval "$EXPORT_MINICONDA_PATH" # export for the current shell
 echo "$EXPORT_MINICONDA_PATH" >> "$RC_FILE"
 {% endif -%}
