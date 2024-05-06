@@ -11,8 +11,8 @@
 
     - name: Ensure condabin is added to path so user can run conda init on demand
       lineinfile:
-        name: /home/testuser2/.bash_profile
-        line: export PATH="$PATH:/data/ext/miniconda/condabin"
+        name: /home/testuser2/.bashrc
+        line: export PATH="/data/ext/miniconda/condabin${PATH:+:${PATH}}"
         state: present
       check_mode: true
       register: condabin
