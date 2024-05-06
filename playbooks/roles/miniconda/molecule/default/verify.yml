@@ -12,7 +12,7 @@
     - name: Ensure condabin is added to path so user can run conda init on demand
       lineinfile:
         name: /home/testuser2/.bashrc
-        line: export PATH="$MINICONDA_DEST/condabin${PATH:+:${PATH}}"
+        line: export PATH="/data/ext/miniconda/condabin${PATH:+:${PATH}}"
         state: present
       check_mode: true
       register: condabin
