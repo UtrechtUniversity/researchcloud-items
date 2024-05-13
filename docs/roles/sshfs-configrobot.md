@@ -9,7 +9,7 @@ over ssh protocol where the client authenticates as robotuser.
 Role [robotuser](robotuser.md) has been executed prior to invocation of this role.
 
 ## Description
-An [sshfs-mount](sshfs-mount) requires scripts to specify parameters for connecting the client to a server, 
+An [sshfs-mount](sshfs-mount.md) requires scripts to specify parameters for connecting the client to a server, 
 such as username, server address, and directory used as data source.
  
 When a robotuser account is used for authentication with the server, we may opt to use default connection
