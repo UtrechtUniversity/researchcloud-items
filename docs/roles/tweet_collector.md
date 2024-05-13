@@ -16,7 +16,7 @@ A function is added to catch the launch commands, and first activates the virtua
 Mention any variables that can be preset by the user, and their defaults
 
 ## See also
-Role [poetry](../roles/poetry) Dependency for installing the tweet-collector
+Role [poetry](./poetry.md) Dependency for installing the tweet-collector
 
 ## History
 2022 Written by Sytse Groenwold (Utrecht University)

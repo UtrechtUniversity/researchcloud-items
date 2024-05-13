@@ -71,7 +71,7 @@ instead of a client.
 ## See also
 - [sshfs-mount](sshfs-mount.md)
 - [sshfs-umount](sshfs-umount.md)
-- [sshfs-configrobot](sshfs-configrobot)
+- [sshfs-configrobot](sshfs-configrobot.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

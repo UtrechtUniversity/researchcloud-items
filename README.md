@@ -14,7 +14,7 @@ Some of the code maintained in this repo is derived from other sources. As a con
 2) In all other cases the license specified in the top-level directory of this repository applies. 
 
 ## Contributing
-We are very happy with any contributions in terms of new Ansible scripts for Research Plug-ins and/or documentation. Read the contributing [guidelines](/CONTRIBUTING.md).
+We are very happy with any contributions in terms of new Ansible scripts for Research Plug-ins and/or documentation. Read the contributing [guidelines](./CONTRIBUTING.md).
 
 ## CI
 
