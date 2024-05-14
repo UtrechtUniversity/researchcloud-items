@@ -11,7 +11,7 @@
 
     - name: Stop if nginx is not installed
       fail:
-        msg: The nginx service must be installed and active for the aptly component to work.
+        msg: The nginx service must be installed and active for this component to work.
       when: nginx_status.status.ActiveState != 'active'
 
     - name: Parse aptly packages as yaml
