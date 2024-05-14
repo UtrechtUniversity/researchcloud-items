@@ -4,7 +4,6 @@ platforms:
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
     command: /sbin/init
     pre_build_image: true
-    privileged: true
     published_ports:
       - 80/tcp
     registry:
