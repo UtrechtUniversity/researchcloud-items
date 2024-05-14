@@ -8,7 +8,7 @@ NB: Configuration suitable for test/training purposes only.
 
 ## Requires
 Ubuntu operating system with desktop environment, and
-a SURF ResearchCloud configured nginx web server.
+a workspace including the SURF Nginx component.
 
 ## Description
 Keycloak is an open source identity and access management service.
@@ -40,7 +40,6 @@ NB: Do **NOT** update the *master* realm settings!!
 
 ## See also
 Role [keycloak](../roles/keycloak.md).   
-Role [keycloak_behind_nginx](../roles/keycloak_behind_nginx.md).
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)
