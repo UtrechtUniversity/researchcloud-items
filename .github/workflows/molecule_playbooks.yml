@@ -29,10 +29,12 @@ jobs:
         with:
           files: |
               playbooks/*.yml
+      - name: List all changed files
+        run: echo '${{ steps.changed-playbooks.outputs.all_changed_files }}' '${{ steps.changed-scenarios.outputs.all_changed_files }}'
       - name: Set matrix based on changed files
         id: set-scenario-matrix
         run: |
-          PLAYBOOKS=(${playbooks})
+          PLAYBOOKS=(${{steps.changed-playbooks.outputs.all_changed_files}})
           PLAYBOOKS=("${PLAYBOOKS[@]/#playbooks\//playbook-}") # playbooks/foo.yml -> playbook-foo.yml
           PLAYBOOKS=("${PLAYBOOKS[@]/%.yml/}") # playbook-foo.yml -> playbook-foo
           echo "DEBUG PLAYBOOKS: ${PLAYBOOKS[*]}"
