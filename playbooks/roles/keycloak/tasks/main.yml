@@ -26,6 +26,7 @@
     src: "{{ keycloak_dir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
     remote_src: true
+    creates: "{{ keycloak_jboss_home }}"
     owner: keycloak
     group: keycloak
 
