@@ -61,6 +61,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
 - [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
 - [install_role](roles/install_role.md)
+- [keycloak](roles/keycloak.md)
 - [miniconda](roles/miniconda.md)
 - [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
 - [poetry](roles/poetry.md)
@@ -83,7 +84,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
-- [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
 - [myrods-sync](roles/myrods-sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
