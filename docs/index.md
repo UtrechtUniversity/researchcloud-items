@@ -45,7 +45,6 @@ status should be indicated in the description field of the catalog plugin item.
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
-- [miniconda-base](playbooks/miniconda-base.md)   Python application development
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
