@@ -67,7 +67,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [pip](roles/pip.md)
 - [pip_install_systemwide](roles/pip_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)
-- [python](roles/python.md)
 
 ### Experimental
 
