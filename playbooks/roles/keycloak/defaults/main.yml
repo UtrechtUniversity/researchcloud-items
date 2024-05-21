@@ -9,8 +9,5 @@ keycloak_bind_port: "8180"
 keycloak_bind_address: "127.0.0.1"
 keycloak_admin_username: "admin"
 keycloak_admin_password: "admin"
-keycloak_create_admin: True
-
-
-
-
+keycloak_create_admin: true
+keycloak_desktopfile_app_name: keycloak # app name for the desktop item

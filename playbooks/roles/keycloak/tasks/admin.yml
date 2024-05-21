@@ -1,11 +1,9 @@
 ---
 
-- name: create admin user
-  shell: "{{ keycloak_jboss_home }}/bin/add-user-keycloak.sh -u {{ keycloak_admin_username }} -p {{ keycloak_admin_password }}"
-  args:
-    executable: /bin/bash
-
-- name: restart keycloak
-  systemd:
-    name: keycloak
-    state: restarted
+- name: Create admin user
+  command: "{{ keycloak_jboss_home }}/bin/add-user-keycloak.sh -u {{ keycloak_admin_username }} -p {{ keycloak_admin_password }}"
+  register: keycloak_create_admin
+  changed_when: keycloak_create_admin.stdout | regex_search("^Added '.*' to")
+  failed_when: keycloak_create_admin.rc > 0 and 'already added' not in keycloak_create_admin.stderr
+  tags: molecule-idempotence-notest
+  notify: Restart keycloak

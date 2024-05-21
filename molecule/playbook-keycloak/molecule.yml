@@ -1,0 +1,34 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    command: /sbin/init
+    pre_build_image: true
+    platform: linux/arm64
+    #privileged: true
+    published_ports:
+      - 80/tcp
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+    components:
+      - name: nginx
+        git: https://gitlab.com/dometto/plugin-nginx.git
+        path: plugin-nginx.yml
+        version: molecule_compatibility
+        parameters:
+          rsc_nginx_authorization_endpoint: http://localhost
+          rsc_nginx_user_info_endpoint: http://localhost
+          rsc_nginx_service_url: http://localhost
+          nginx_enable_ssl: false
+          nginx_enable_auth: true
+          rsc_nginx_oauth2_application:
+            client_id: foo
+      - name: keycloak
+        path: keycloak.yml

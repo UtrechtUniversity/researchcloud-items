@@ -84,7 +84,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
 - [keycloak](roles/keycloak.md)
-- [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
 - [matlab](roles/matlab.md)
 - [myrods-sync](roles/myrods-sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   

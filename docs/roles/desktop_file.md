@@ -18,7 +18,8 @@ This role cannot be a role on itself, due to the requirement of icon files. It h
 researchcloud-items > roles
 └─── application_role
 │   └───files
-│       │   app_name-XX-x-XX.png
+│       │   app_name_128.png
+│       │   app_name_64.png
 │       templates
 │       │   app_name.desktop.j2
 |       tasks
@@ -27,6 +28,8 @@ researchcloud-items > roles
 └─── desktop_file
     │   ...
 ```
+
+In the above, `_128` and `_64` refer to the pixel sizes (e.g. 128x128) of the icon (see `desktopfile_sizes` below).
 
 The actual role can be called and passed variables as follows:
 
