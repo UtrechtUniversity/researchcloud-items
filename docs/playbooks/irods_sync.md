@@ -35,12 +35,12 @@ The playbook:
 
 ## Variables
 
-`ibridges_irods_path`: Required. String. Comma-separated list of iRODS paths to be downloaded. For example: `~/my-collection1,~/my-collection2`. See [here](https://github.com/UtrechtUniversity/iBridges/blob/develop/tutorials/01-iRODS-paths.ipynb) for how to understand iRODS paths.
-`ibridges_target_path`: Required. String. Path to which the downloaded collections should be saved. For instance: `/home/testuser/` will sync `my-collection1` to `/home/testuser/my-collection-1`.
-`ibridges_env`: Required. String. Paste the contents of a valid iRODS environment file (JSON format) here. See example below:
-`ibridges_password`: Required. String. The name of the CO secret containing the password to be used for the connection. Default: `{"key": "irods_password"}`.
-`ibridges_user`: String. The username of the user that should own the downloaded collections. Default: `root`.
-`ibridges_group`: String. The name of the group that should own the downloaded collections. Default: `root`.
+* `ibridges_irods_path`: *Required*. String. Comma-separated list of iRODS paths to be downloaded. For example: `~/my-collection1,~/my-collection2`. See [here](https://github.com/UtrechtUniversity/iBridges/blob/develop/tutorials/01-iRODS-paths.ipynb) for how to understand iRODS paths.
+* `ibridges_target_path`: *Required*. String. Path to which the downloaded collections should be saved. For instance: `/home/testuser/` will sync `my-collection1` to `/home/testuser/my-collection-1`.
+* `ibridges_env`: *Required*. String. Paste the contents of a valid iRODS environment file (JSON format) here. See example below:
+* `ibridges_password`: *Required*. String. The name of the CO secret containing the password to be used for the connection. Default: `{"key": "irods_password"}`.
+* `ibridges_user`: String. The username of the user that should own the downloaded collections. Default: `root`.
+* `ibridges_group`: String. The name of the group that should own the downloaded collections. Default: `root`.
 
 Below is an example of a valid JSON value for the `ibridges_env` parameter (see [here](https://www.uu.nl/en/research/yoda/guide-to-yoda/i-am-using-yoda/using-icommands-for-large-datasets) for a list of environments for Utrecht University Yoda servers):
 
