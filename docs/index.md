@@ -25,9 +25,11 @@ status should be indicated in the description field of the catalog plugin item.
 
 ### Supported
 
-- [aptly](playbooks/aptly.md) serve apt repositories on the workspace
-- [ibridges](playbooks/ibridges.yml) userfriendly commandline client for iRODS
+- [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
+- [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
+- [irods_tools](playbooks/irods_tools.md)  sync folders from iRODS or Yoda to the workspace at creation time
+- [irods_sync](playbooks/irods_sync.md)  install both iBridges and icommands command line tools
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
