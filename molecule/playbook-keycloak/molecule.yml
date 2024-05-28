@@ -4,8 +4,6 @@ platforms:
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
     command: /sbin/init
     pre_build_image: true
-    platform: linux/arm64
-    #privileged: true
     published_ports:
       - 80/tcp
     registry:
