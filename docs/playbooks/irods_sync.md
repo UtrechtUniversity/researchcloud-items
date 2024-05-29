@@ -3,13 +3,21 @@
 
 ## Summary
 
-This component will sync (download) one or more collections (directories) from an iRODS (or Yoda) server to the workspace when the workspace is created.
+This component will sync one or more collections (directories) from an iRODS (or Yoda) server to the workspace when the workspace is created.
 
 Under the hood this component uses the [Ansible module](https://github.com/UtrechtUniversity/ibridges-ansible/) for [iBridges](https://github.com/UtrechtUniversity/ibridges), an iRODS client library written in Python. The main advantages of this is security: the password you pass to the component is never stored on disk, as it directly calls the iBridges Python API.
 
 The protocol used is the iRODS data transfer protocol, which is fast and suitable for transfer of large files. Keep in mind that  copying (very) large datasets will impact workspace creation time.
 
-You can configure a target directory on the workspace under which each requested collection will created. If the target directory is under a user's homedirectory (for instance, `/home/testuser` or `/home/testuser/synced_from_yoda`), file ownership of the downloaded collections will automatically be set to that user (e.g. `testuser`). If the target directory is not in a home directory, the files will by default be owned by `root`.
+You can configure a target directory on the workspace under which each requested collection will created (see [below](#variables)).
+
+The component will sync and not simply download files, meaning that iBridges will perform a comparison of the target folder and the iRODS path: only changed files on iRODS will be downloaded.
+
+### File ownership
+
+If the target directory is under a user's homedirectory (for instance, `/home/testuser` or `/home/testuser/synced_from_yoda`), file ownership of the downloaded collections will automatically be set to that user (e.g. `testuser`). If the target directory is not in a home directory, the files will by default be owned by `root`. You can always override this using the `ibridges_user` and `ibridges_group` [variables](#variables).
+
+### Credentials
 
 This component requires a CO secret (default name: `irods_password`) to be defined containing the password used for the connection. The username should be part of the `ibridges_env` parameter, which should contain a JSON object defining connection details (see [below](#variables)).
 
@@ -21,7 +29,7 @@ This component requires a CO secret (default name: `irods_password`) to be defin
 
 ## Source
 
-The source for this component is currently in a different repository: https://github.com/UtrechtUniversity/ibridges-ansible/
+The source for this component is currently in a different repository: [https://github.com/UtrechtUniversity/ibridges-ansible/](https://github.com/UtrechtUniversity/ibridges-ansible/)
 
 This is because the component uses a custom Ansible module that we want to distribute independently of the component. In the near future, we'll make the module available on Ansible Galaxy, so that the component playbook can be moved to our [default repository](https://github.com/UtrechtUniversity/researchcloud-items).
 
@@ -36,7 +44,7 @@ The playbook:
 ## Variables
 
 * `ibridges_irods_path`: *Required*. String. Comma-separated list of iRODS paths to be downloaded. For example: `~/my-collection1,~/my-collection2`. See [here](https://github.com/UtrechtUniversity/iBridges/blob/develop/tutorials/01-iRODS-paths.ipynb) for how to understand iRODS paths.
-* `ibridges_target_path`: *Required*. String. Path to which the downloaded collections should be saved. For instance: `/home/testuser/` will sync `my-collection1` to `/home/testuser/my-collection-1`.
+* `ibridges_target_path`: *Required*. String. Path to which the downloaded collections should be saved. For instance: `/home/testuser/` will sync `my-collection1` to `/home/testuser/my-collection-1`. If the target directory does not exist yet, it will be created.
 * `ibridges_env`: *Required*. String. Paste the contents of a valid iRODS environment file (JSON format) here. See example below:
 * `ibridges_password`: *Required*. String. The name of the CO secret containing the password to be used for the connection. Default: `{"key": "irods_password"}`.
 * `ibridges_user`: String. The username of the user that should own the downloaded collections. Default: `root`.
