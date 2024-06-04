@@ -18,11 +18,6 @@ jobs:
       MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
       REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
       CRUN_VER: 1.11.2
-    strategy:
-      fail-fast: false
-      matrix:
-        catalog_items:
-          - python-workbench
     steps:
       - name: Workaround crun issue on ubuntu
         run: |
