@@ -20,9 +20,9 @@ eval "\$(pyenv virtualenv-init -)"
 EOF
 )
 
-if [[ -n "$ZSH_VERSION" ]]; then
+if [ -n "$ZSH_VERSION" ]; then
   RC_FILE="$HOME/.zshrc"
-elif [[ -n "$BASH_VERSION" ]]; then
+elif [ -n "$BASH_VERSION" ]; then
   RC_FILE="$HOME/.bashrc"
 else
   echo "You are using a shell other than zsh or bash. Could not automatically setup pyenv for you. Please add the following to your shell's profile or rc file:"
@@ -33,12 +33,12 @@ fi
 echo "$PYENV_INIT" >> "$RC_FILE"
 eval "$PYENV_INIT" # add to current shell
 
-if [[ -n "$DEFAULT_PYTHON_VERSION" ]]; then
-    if [[ "$DEFAULT_PYTHON_VERSION" != system* ]]; then
+if [ -n "$DEFAULT_PYTHON_VERSION" ]; then
+    if [ "$DEFAULT_PYTHON_VERSION" != system* ]; then
         echo "Installing python $DEFAULT_PYTHON_VERSION from pyenv"
         pyenv install "$DEFAULT_PYTHON_VERSION"
     fi
-    if [[ "$DEFAULT_PYTHON_VERSION" == "system-latest" ]]; then
+    if [ "$DEFAULT_PYTHON_VERSION" == "system-latest" ]; then
          "$SYSTEM_PYTHON" -m venv "$PYENV_ROOT/versions/$DEFAULT_PYTHON_VERSION"
     fi
     pyenv global "$DEFAULT_PYTHON_VERSION"
