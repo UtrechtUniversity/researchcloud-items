@@ -9,7 +9,7 @@
 # NB: the target scripts are executed in the current shell.
 #
 # requires interactive bash/zsh shell
-if [ -h ~/runonce.d -a -d /etc/runonce.d -a -n "$PS1" ] && [ -n "$BASH_VERSION" -o -n "$ZSH_VERSION"] ]; then
+if [ -h ~/runonce.d -a -d /etc/runonce.d -a -n "$PS1" ] && [ -n "$BASH_VERSION" -o -n "$ZSH_VERSION"]; then
         date >~/.runonce.log
 	for i in `find -L ~/runonce.d -type f -a -executable -print|sort`
 	do
