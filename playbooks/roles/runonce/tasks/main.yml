@@ -3,6 +3,23 @@
 #  the scripts should be placed in /etc/runonce.d with read-access for all users
 # 
 
+# See https://github.com/neutrinolabs/xrdp/issues/1009
+# This is fixed in xrdp v0.10, but Ubuntu 20 still has 0.9
+- name: Patch /etc/xrdp/startwm.sh
+  block:
+    - name: Check if shebang is wrong
+      command: grep "#\!/bin/sh" /etc/xrdp/startwm.sh
+      changed_when: false
+      failed_when: false
+      register: _runonce_check_startwm
+
+    - name: Replace shebang
+      lineinfile:
+        path: /etc/xrdp/startwm.sh
+        regexp: '#!/bin/sh'
+        line: '#!/usr/bin/env bash'
+      when: _runonce_check_startwm.rc == 0
+
 - name: install runonce.sh in /etc/profile.d
   copy:
     src: "runonce.sh"
