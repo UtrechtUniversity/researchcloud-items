@@ -6,10 +6,11 @@
     - name: Testing role
       ansible.builtin.include_role:
         name: fact_workspace_info
-  
+
     - name: Assert workspace info contents
       ansible.builtin.assert:
         that:
           - "fact_workspace_info['workspace_id'] == 'mocked'"
           - "'src_co_wallet' in fact_co_users[0]['roles']"
           - "'src_ws_admin' in fact_co_groups"
+          - "fact_desktop_workspace == ('desktop' in inventory_hostname)"
