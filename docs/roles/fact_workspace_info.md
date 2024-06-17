@@ -7,6 +7,7 @@ Makes information about the workspace and CO available as Ansible facts. Provide
 - `fact_workspace_info` -- dict object containing info about the workspace (CO, user endpoint URL, etc.)/
 - `fact_co_users` -- list of dict objects representing the SRAM users on the workspace.
 - `fact_co_groups` -- dict with group names from the CO as keys, and lists of usernames in those groups as values. 
+- `fact_desktop_workspace` -- Boolean, true if the workspace has a desktop environment.
 
 ## Requires
 Linux flavor operating system.

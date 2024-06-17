@@ -38,3 +38,21 @@
       {%- set _ = _group_info.update({group: (fact_co_users | json_query(query) | list) }) -%}
       {%- endfor -%}
       {{ _group_info }}
+
+- name: Gather minimal system facts
+  setup:
+    gather_subset:
+      - "min"
+  when: ansible_os_family is not defined
+
+- name: Get all packages as facts
+  package_facts:
+    manager: auto
+
+- name: Get the desktop package to check for 
+  set_fact:
+    _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
+
+- name: Set fact_desktop_workspace
+  set_fact:
+    fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"
