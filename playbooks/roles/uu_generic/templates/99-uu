@@ -1,0 +1,14 @@
+#!/bin/sh
+echo "╭──────────────────────────────────────────╮"
+echo "| Welcome to this ResearchCloud workspace! |"
+echo "╰──────────────────────────────────────────╯"
+echo
+echo "This workspace type is developed by the Research Engineering"
+echo "team at Utrecht University."
+echo
+echo "See the following page for documentation on UU workspace types:"
+echo
+echo "  * {{ uu_generic_documentation_link }}"
+echo
+echo "Contact us at {{ uu_generic_contact_email }} for support."
+echo

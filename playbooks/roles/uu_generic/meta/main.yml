@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: Provision the workspace with standard UU info, such as documentation links in motd.
+  license: GPLv3
+  min_ansible_version: '2.9'
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+dependencies:
+  - fact_workspace_info
+  - fact_regular_users
