@@ -12,7 +12,6 @@ provisioner:
   name: ansible
   playbooks:
     converge: 
-    prepare: ./prepare.yml
   env:
     ANSIBLE_ROLES_PATH: ../../../
 role_name_check: 1

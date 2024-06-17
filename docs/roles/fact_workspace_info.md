@@ -5,8 +5,6 @@
 Makes information about the workspace and CO available as Ansible facts. Provides three facts:
 
 - `fact_workspace_info` -- dict object containing info about the workspace (CO, user endpoint URL, etc.)/
-- `fact_co_users` -- list of dict objects representing the SRAM users on the workspace.
-- `fact_co_groups` -- dict with group names from the CO as keys, and lists of usernames in those groups as values. 
 - `fact_desktop_workspace` -- Boolean, true if the workspace has a desktop environment.
 
 ## Requires
@@ -31,64 +29,6 @@ See here for example output of the facts.
     "workspace_name": "python workbench3"
 }
 ```
-
-`fact_co_users`:
-
-```json
-"fact_co_users": [
-    {
-        "integer_id": 1781,
-        "research_drive_secret": null,
-        "roles": [
-            "rsc_developers",
-            "src_developers",
-            "@all",
-            "src_co_developer"
-        ],
-        "services": [],
-        "ssh_keys": [
-            "ssh-rsa bla"
-        ],
-        "username": "foo"
-    }
-]
-```
-
-`fact_co_groups`:
-
-```json
-"fact_co_groups": {
-    "@all": [
-        "user1",
-        "user2"
-    ],
-    "rsc_developers": [
-        "user1",
-        "user2"
-    ],
-    "src_co_admin": [
-        "user1",
-        "user2"
-    ],
-    "src_co_developer": [
-        "user1",
-        "user2"
-    ],
-    "src_co_wallet": [
-        "user1",
-        "user2"
-    ],
-    "src_developers": [
-        "user1",
-        "user2"
-    ],
-    "src_ws_admin": [
-        "user1",
-        "user2"
-    ]
-}
-```
-
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)
