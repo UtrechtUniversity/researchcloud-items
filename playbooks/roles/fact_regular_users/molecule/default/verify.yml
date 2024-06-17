@@ -26,3 +26,9 @@
           - "item.shell == '/usr/bin/bash'"
           - "item.description == ''"
       with_items: "{{ fact_regular_users }}"
+
+    - name: Assert workspace info contents
+      ansible.builtin.assert:
+        that:
+          - "'src_ws_admin' in fact_co_groups"
+          - "'testuser' in fact_co_groups['src_ws_admin']"

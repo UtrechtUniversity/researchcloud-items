@@ -1,0 +1,21 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Mock CO groups
+      ansible.builtin.copy:
+        dest: /etc/rsc/managedgroups
+        content: >
+          src_ws_admin
+
+    - name: Ensure group "src_ws_admin" exists
+      ansible.builtin.group:
+        name: src_ws_admin
+        state: present
+
+    - name: Add testuser to src_ws_admin
+      ansible.builtin.user:
+        name: testuser
+        append: true
+        groups: src_ws_admin

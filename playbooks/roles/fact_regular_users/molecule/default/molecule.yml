@@ -1,9 +1,38 @@
 ---
+driver:
+  name: ${DRIVER-podman}
+  image_settings: &image_settings
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
 provisioner:
   name: ansible
   playbooks:
-    converge: ./converge.yml
+    converge: 
     prepare: ./prepare.yml
   env:
     ANSIBLE_ROLES_PATH: ../../../
 role_name_check: 1
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    # - converge not necessary since we include the role in the verify step
+    # - idempotence not necessary since we're only setting facts in this role
+    - verify
+    - cleanup
+    - destroy
+platforms:
+  - name: workspace-src-ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    <<: *image_settings
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    <<: *image_settings
