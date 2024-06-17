@@ -1,0 +1,6 @@
+---
+- name: Install iBridges GUI
+  gather_facts: true
+  hosts: all
+  roles:
+    - role: ibridges_gui

@@ -1,0 +1,73 @@
+# System dependencies for pyqt6
+
+- name: Check if gnome is installed
+  command: dpkg-query -l gnome
+  register: gnome_check
+
+- name: Install xcb cursor
+  package:
+    name: libxcb-cursor0
+    state: present
+
+# Python dependency
+- name: Check python 3.9 is installed
+  shell: "python3.9 --version"
+  register: python_output
+  ignore_errors: true
+
+- name: Print Python version
+  debug:
+    msg: "{{python_output.stdout_lines}}"
+
+- name: Install software-properties-common
+  package:
+    name: software-properties-common
+  when: python_output.stdout_lines | length == 0
+
+- name: Add ppa key for python 3.9
+  apt_repository:
+    validate_certs: no
+    repo: 'ppa:deadsnakes/ppa'
+    state: present
+  when: python_output.stdout_lines | length == 0
+
+- name: Install Python 3.9
+  package:
+    name: python3.9
+  when: python_output.stdout_lines | length == 0
+
+- name: Check which python version is installed
+  shell: "python3.9 --version"
+  register: python_output
+  ignore_errors: true
+
+- name: Print Python version
+  debug:
+    msg: "{{python_output}}"
+
+- name: Install distutils for python3.9
+  package:
+    name: python3.9-distutils
+  when: python_output.stdout_lines | length > 0
+
+# Pip for python 3.9
+- name: Install pip3.9
+  shell: curl -sS https://bootstrap.pypa.io/get-pip.py | python3.9
+  when: python_output.stdout_lines | length > 0
+
+- name: Upgrade pip, setuptools and wheel
+  ansible.builtin.command: python3.9 -m pip install --upgrade pip setuptools wheel
+  when: python_output.stdout_lines | length > 0
+
+- name: Install ibridgesgui with pip3.9
+  ansible.builtin.command: python3.9 -m pip install ibridgesgui
+  when: python_output.stdout_lines | length > 0
+
+- name: Install desktop file menu item through role
+  include_role:
+    name: desktop_file
+  vars:
+    desktopfile_app_name: ibridges-gui
+    desktopfile_sizes:
+      - 48
+    desktopfile_login: true
