@@ -15,8 +15,8 @@
   hosts: localhost
   gather_facts: false
   roles:
-    - sshfs-configrobot
-    - sshfs-mount
-    - stata18
-    - sshfs-umount
-  
+    - role: sshfs-configrobot
+    - role: sshfs-mount
+    - role: stata18
+    - role: sshfs-umount
+    - role: uu_generic
