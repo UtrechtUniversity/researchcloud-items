@@ -20,6 +20,7 @@ This role:
 ## Variables
 
 - `pip_install_systemwide_packages`: List or String. Required. List or String of packages to install. For example: `['ibridges', 'foo']` or `ibridges`.
+- `pip_install_systemwide_executable`: String. Path to the Python executable to use for installing. Default: omitted.
 - `custom_pip_path`: String. Default: `/usr/local/pip`.
 - `custom_pip_path_profile`: String. Name of the script to be placed in `/etc/profile.d` updating the user's path. Default: `uu-custom-pip.sh`.
 

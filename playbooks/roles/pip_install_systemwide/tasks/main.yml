@@ -1,6 +1,4 @@
 ---
-- name: Check for existence of systemwide pip path
-
 - name: Add custom systemwide pip path to each user's path for installing global packages.
   copy:
     dest: "/etc/profile.d/{{ custom_pip_path_profile }}"
@@ -12,5 +10,6 @@
   pip:
     name: "{{ item }}"
     extra_args: "--target {{ custom_pip_path }}"
+    executable: "{{ pip_install_systemwide_executable | default(omit) }}"
   with_items: "{{ pip_install_systemwide_packages | default([], true) }}"
   tags: molecule-idempotence-notest
