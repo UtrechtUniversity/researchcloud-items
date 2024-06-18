@@ -9,16 +9,12 @@
   include_tasks: 'ubuntu.yml'
 
 - name: Install iBridges GUI to systemwide location
-  include_role:
-    name: pip_install_systemwide
-  vars:
-    pip_install_systemwide_executable: "{{ ibridges_gui_pip_path | default(omit) }}" 
-    pip_install_systemwide_packages:
+  pip:
+    name:
       - setuptools
       - wheel
       - ibridgesgui
-    pip_install_systemwide_location: "{{ ibridges_gui_install_location | default(omit )}}"
-    pip_install_systemwide_profile: '' # do not re-add install dir to the path
+    executable: "{{ ibridges_gui_pip_path }}"
 
 - name: Install desktop file menu item through role
   include_role:
