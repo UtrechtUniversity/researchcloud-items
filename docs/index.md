@@ -28,8 +28,8 @@ status should be indicated in the description field of the catalog plugin item.
 - [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
 - [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
-- [irods_tools](playbooks/irods_tools.md)  sync folders from iRODS or Yoda to the workspace at creation time
-- [irods_sync](playbooks/irods_sync.md)  install both iBridges and icommands command line tools
+- [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
+- [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
@@ -61,6 +61,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [default_group](roles/default_group.md) set desired groups as default for regular users
 - [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
 - [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
+- [ibridges](roles/ibridges.md)  installs [iBridges](https://github.com/UtrechtUniversity/iBridges), a userfriendly commandline client for iRODS (GUI and/or CLI)
 - [install_role](roles/install_role.md)
 - [keycloak](roles/keycloak.md)
 - [miniconda](roles/miniconda.md)
