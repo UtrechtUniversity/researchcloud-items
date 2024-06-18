@@ -13,6 +13,7 @@ This role will check the `python_system_python_latest_versions` default variable
 
 - the relevant version of python
 - the relevant version of the python-venv package
+- a corresponding version of pip
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)
