@@ -1,3 +1,4 @@
 ---
-custom_pip_path: /usr/local/pip # should be the same path as set by the 'pip' role
+custom_pip_path: /usr/local/pip
+custom_pip_path_profile: uu-custom-pip.sh 
 ...
