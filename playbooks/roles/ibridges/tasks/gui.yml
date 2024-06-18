@@ -2,7 +2,7 @@
 - name: Fail if not on supported distribution
   when: ansible_distribution != 'Ubuntu'
   fail:
-    msg: "Do not know how install ibridges-gui on {{ ansible_distribution }}."
+    msg: "Do not know how to install ibridges-gui on {{ ansible_distribution }}."
 
 - name: Install dependencies (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
@@ -13,13 +13,12 @@
     name: pip_install_systemwide
   vars:
     pip_install_systemwide_executable: "{{ ibridges_gui_pip_path | default(omit) }}" 
-    pip_install_systemwide_packages: "{{ item }}"
+    pip_install_systemwide_packages:
+      - setuptools
+      - wheel
+      - ibridgesgui
     pip_install_systemwide_location: "{{ ibridges_gui_install_location | default(omit )}}"
     pip_install_systemwide_profile: '' # do not re-add install dir to the path
-  with_items:
-    - setuptools
-    - wheel
-    - ibridges
 
 - name: Install desktop file menu item through role
   include_role:

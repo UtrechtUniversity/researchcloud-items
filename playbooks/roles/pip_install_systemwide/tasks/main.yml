@@ -9,8 +9,7 @@
 
 - name: Install packages
   pip:
-    name: "{{ item }}"
+    name: "{{ pip_install_systemwide_packages | default([], true) }}"
     extra_args: "--target {{ pip_install_systemwide_location }}"
     executable: "{{ pip_install_systemwide_executable | default(omit) }}"
-  with_items: "{{ pip_install_systemwide_packages | default([], true) }}"
   tags: molecule-idempotence-notest
