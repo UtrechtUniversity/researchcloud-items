@@ -23,4 +23,5 @@
     desktopfile_app_name: ibridges-gui
     desktopfile_sizes:
       - 48
-    desktopfile_login: true
+    desktopfile_login: false
+    desktopfile_desktop: true
