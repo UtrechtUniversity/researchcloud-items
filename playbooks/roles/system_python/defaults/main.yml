@@ -1,7 +1,8 @@
-python_system_python_latest_versions:
+system_python_latest_versions:
   Ubuntu:
     '20.04': '3.9'
     '22.04': '3.11'
     '23.04': '3.11'
     '23.10': '3.12'
     '24.04': '3.12'
+system_python_get_pip_url: https://bootstrap.pypa.io/get-pip.py
