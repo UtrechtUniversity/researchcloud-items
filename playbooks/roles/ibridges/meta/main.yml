@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: Install ibridges and optionally ibridges-gui (on Desktop workspaces).
+  license: GPLv3
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+dependencies:
+  - fact_workspace_info

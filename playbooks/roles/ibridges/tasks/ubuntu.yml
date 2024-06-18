@@ -1,0 +1,31 @@
+---
+- name: Install python 3.9
+  when: ansible_distribution_major_version | int < 22 # ibridges-gui requires python >= 3.9, which is not available on Ubuntu < 22.
+  block:
+    - name: Install latest system python and pip
+      include_role:
+        name: system_python
+
+    - name: Set ibridges_gui_python_version
+      set_fact:
+        ibridges_gui_python_version: '3.9'
+  
+- name: Install GUI dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libxcb-cursor0
+    - software-properties-common
+
+- name: Set ibridges_gui_python_path
+  set_fact:
+    ibridges_gui_python_path: "/usr/bin/python{{ ibridges_gui_python_version | default('3') }}"
+
+- name: Set ibridges_gui_pip_path
+  set_fact:
+    ibridges_gui_pip_path: "/usr/local/bin/pip{{ ibridges_gui_python_version | default('') }}"
+
+- name: Set ibridges_gui_install_location
+  set_fact:
+    ibridges_gui_install_location: "/usr/local/uu-pip"

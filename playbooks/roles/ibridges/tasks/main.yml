@@ -1,0 +1,10 @@
+---
+- name: Install iBridges to systemwide location
+  include_role:
+    name: pip_install_systemwide
+  vars:
+    pip_install_systemwide_packages: ibridges
+
+- name: Install iBridges GUI
+  when: fact_desktop_workspace
+  include_tasks: gui.yml
