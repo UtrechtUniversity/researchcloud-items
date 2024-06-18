@@ -4,9 +4,7 @@
   gather_facts: true
 
   roles:
-    - role: pip_install_systemwide
-      vars:
-        pip_install_systemwide_packages: ibridges
+    - role: ibridges
     - role: irods_repo
     - role: irods_icommands
     - role: irods_skel
