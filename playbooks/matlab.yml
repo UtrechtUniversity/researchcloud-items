@@ -15,8 +15,8 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - sshfs-configrobot
-    - sshfs-mount
-    - matlab
-    - sshfs-umount
-  
+    - role: sshfs-configrobot
+    - role: sshfs-mount
+    - role: matlab
+    - role: sshfs-umount
+    - role: uu_generic

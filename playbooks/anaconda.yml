@@ -3,5 +3,6 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - anaconda
+    - role: anaconda
+    - role: uu_generic
 ...
