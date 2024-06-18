@@ -1,15 +1,16 @@
 ---
 - name: Add custom systemwide pip path to each user's path for installing global packages.
+  when: pip_install_systemwide_profile | length > 0
   copy:
-    dest: "/etc/profile.d/{{ custom_pip_path_profile }}"
+    dest: "/etc/profile.d/{{ pip_install_systemwide_profile }}"
     content: |
-      export PYTHONPATH="{{ custom_pip_path }}${PYTHONPATH:+:${PYTHONPATH}}"
-      export PATH="{{ custom_pip_path }}/bin${PATH:+:${PATH}}"
+      export PYTHONPATH="{{ pip_install_systemwide_location }}${PYTHONPATH:+:${PYTHONPATH}}"
+      export PATH="{{ pip_install_systemwide_location }}/bin${PATH:+:${PATH}}"
 
 - name: Install packages
   pip:
     name: "{{ item }}"
-    extra_args: "--target {{ custom_pip_path }}"
+    extra_args: "--target {{ pip_install_systemwide_location }}"
     executable: "{{ pip_install_systemwide_executable | default(omit) }}"
   with_items: "{{ pip_install_systemwide_packages | default([], true) }}"
   tags: molecule-idempotence-notest
