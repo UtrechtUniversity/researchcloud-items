@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Testing system_python role
+      include_role:
+        name: system_python
+      vars:
+        pyenv_default_python: '3.8'
