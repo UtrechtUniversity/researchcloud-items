@@ -24,6 +24,7 @@ The role supports installing the latest version of python available in the OS's 
 ## See also
 
 - [runeonce role](../roles/runonce.md)
+- [system_python role](../roles/system_python.md)
 
 ## History
 2022-2024 Written by Sytse Groenwold and Dawa Ometto (Utrecht University)
