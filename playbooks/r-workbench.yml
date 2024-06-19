@@ -1,0 +1,30 @@
+---
+- name: Install R environment
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - role: install_role
+      vars:
+        install_role_roles:
+          - git+https://github.com/UtrechtUniversity/ansible-r.git,f9694f503a96cda62898b1ad893c4d0d94798ea1
+
+  tasks:
+
+    - name: Parse optional packages as yaml
+      when: r_workbench_packages is defined and r_workbench_packages | length > 0
+      set_fact:
+        _r_packages: "{{ r_workbench_packages.split('\\n') | join('\n') | from_yaml }}"
+
+    - name: Include ansible-r role
+      include_role:
+        role: ansible-r
+      vars:
+        r_version: "{{ r_workbench_version | default('40', true) }}"
+        r_cran_mirror: "{{ r_workbench_cran_mirror | default('https://cran.rstudio.com/', true) }}"
+        r_install_dev: true
+        r_install:
+          - littler
+          - r-base-core
+          - r-recommended
+        r_packages: "{{ _r_packages | default([], true) }}"
