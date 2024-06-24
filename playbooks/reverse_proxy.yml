@@ -5,7 +5,7 @@
 
   pre_tasks:
     - name: Populate service facts
-      ansible.builtin.service_facts:
+      service_facts:
 
     - name: Stop if nginx is not installed
       fail:
