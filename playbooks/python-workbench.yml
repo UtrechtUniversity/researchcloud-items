@@ -9,4 +9,3 @@
       vars:
         pyenv_default_python: "{{ default_python_version | default('system-latest') }}"
     - role: poetry
-    - role: uu_generic

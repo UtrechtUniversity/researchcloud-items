@@ -85,7 +85,6 @@
         aptly__packages: "{{ packages }}"
         aptly__user: "{{ aptly_user }}"
         aptly__homedir: "{{ aptly_home }}"
-    - role: uu_generic
 
   tasks:
 

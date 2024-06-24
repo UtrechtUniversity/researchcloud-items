@@ -8,4 +8,3 @@
     - role: robotuser
       vars: 
        - robotuser_generate_ssh_key: "yes"
-    - role: uu_generic
