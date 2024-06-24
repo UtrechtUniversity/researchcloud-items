@@ -4,16 +4,13 @@
   gather_facts: true
 
   pre_tasks:
-    - name: Get Service Status
-      no_log: true
-      systemd:
-        name: nginx
-      register: nginx_status
+    - name: Populate service facts
+      ansible.builtin.service_facts:
 
     - name: Stop if nginx is not installed
       fail:
         msg: The SRC-Nginx component must be installed and active for this component to work.
-      when: nginx_status.status.ActiveState != 'active'
+      when: services['nginx.service'].state != 'running'
 
     - name: Check for presence of SRC Nginx SRAM authentication config
       lineinfile:
