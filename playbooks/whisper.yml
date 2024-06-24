@@ -5,5 +5,4 @@
 
   roles:
     - role: whisper
-    - role: uu_generic
 ...

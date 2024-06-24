@@ -5,5 +5,4 @@
 
   roles:
     - role: miniconda
-    - role: uu_generic
 ...
