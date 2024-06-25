@@ -8,7 +8,14 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - all
+        - focal
+        - jammy
+        - nova
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+        - bookworm
     - name: EL
       versions:
         - all
