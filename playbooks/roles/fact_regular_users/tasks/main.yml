@@ -22,6 +22,7 @@
   - name: Ensure jmespath is installed
     pip:
       name: jmespath
+      break_system_packages: true
 
   - name: Read database /etc/passwd
     getent:
