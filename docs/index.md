@@ -32,6 +32,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
+- [r-workbench](playbooks/r-workbench.md)  R development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
@@ -67,9 +68,9 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [miniconda](roles/miniconda.md)
 - [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
 - [poetry](roles/poetry.md)
-- [pip](roles/pip.md)
+- [pip](roles/pip.md)  install pip
 - [pip_install_systemwide](roles/pip_install_systemwide.md) install pip packages in a shared directory for all users
-- [pyenv](roles/pyenv.md)
+- [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
 
