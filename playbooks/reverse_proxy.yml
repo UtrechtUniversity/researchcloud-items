@@ -5,7 +5,7 @@
 
   pre_tasks:
     - name: Check if nginx is installed
-      when: 'molecule-notest' not in ansible_skip_tags
+      when: "'molecule-notest' not in ansible_skip_tags"
       block:
         - name: Populate service facts
           ansible.builtin.service_facts:
