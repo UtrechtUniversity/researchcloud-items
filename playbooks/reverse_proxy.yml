@@ -4,13 +4,16 @@
   gather_facts: true
 
   pre_tasks:
-    - name: Populate service facts
-      ansible.builtin.service_facts:
+    - name: Check if nginx is installed
+      when: "'molecule-notest' not in ansible_skip_tags"
+      block:
+        - name: Populate service facts
+          ansible.builtin.service_facts:
 
-    - name: Stop if nginx is not installed
-      fail:
-        msg: The SRC-Nginx component must be installed and active for this component to work.
-      when: services['nginx.service'].state != 'running'
+        - name: Stop if nginx is not installed
+          fail:
+            msg: Nginx must be installed and active for this component to work.
+          when: services['nginx.service'].state != 'running'
 
     - name: Check for presence of SRC Nginx SRAM authentication config
       lineinfile:
@@ -25,7 +28,7 @@
 
     - name: Stop if SRC nginx config is not present
       fail:
-        msg: The SRC-Nginx component must be installed and active for the aptly component to work.
+        msg: The SRC-Nginx component must be run before this component
       when: src_nginx_config.changed
 
     - name: Parse reverse proxy locations variable as yaml
