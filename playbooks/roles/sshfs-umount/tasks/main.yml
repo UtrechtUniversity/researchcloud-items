@@ -4,12 +4,10 @@
 
 - name: wait until mounted filesystem is at rest
   command: "sync"
+  changed_when: false
 
 - name: umount remote filesystem 
+  tags: molecule-idempotence-notest
   mount:
     path: "{{ sshfs_mountpoint }}"
     state: unmounted
-
-
-
-
