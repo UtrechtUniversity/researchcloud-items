@@ -1,0 +1,40 @@
+---
+- name: Create SSH keypair (use testuser for generation)
+  user:
+    name: testuser
+    generate_ssh_key: true
+    state: present
+
+- name: Get SSH public key (from testuser)
+  ansible.builtin.slurp:
+    src: "/home/testuser/.ssh/id_rsa.pub"
+  register: ssh_pubkey
+
+- name: Get SSH private key (from testuser)
+  ansible.builtin.slurp:
+    src: "/home/testuser/.ssh/id_rsa"
+  register: ssh_privkey
+
+- name: Start mock robotserver
+  delegate_to: localhost
+  community.docker.docker_compose_v2:
+    project_name: molecule-robot_server
+    project_src: ../../playbook-matlab # relative to <repo_root>/molecule/ext/src-molecule
+  environment:
+    PUBLIC_KEY: "{{ ssh_pubkey.content | b64decode }}"
+
+- name: Wait until robotserver is up
+  ansible.builtin.command: "ssh-keyscan -p 2222 robot-server"
+  register: wait_for_robotserver
+  retries: 5
+  delay: 3
+  until: wait_for_robotserver.rc == 0
+
+- name: Run robot-client component
+  ansible.builtin.include_role:
+    role: robotuser
+  vars:
+    robotuser_key: "{{ ssh_privkey.content | b64decode }}"
+    robotuser_server: robot-server
+    robotuser_server_port: 2222
+    robotuser_sourcepath: "/data/volume_2"

@@ -28,7 +28,7 @@ platforms:
 provisioner:
   name: ansible
   env:
-    extra_prepare_tasks: ../../playbook-aptly/extra_prepare.yml
+    extra_prepare_tasks: ../../playbook-aptly/extra_prepare.yml  # relative to <repo_root>/molecule/ext/src-molecule
     components:
       - name: nginx
         git: https://gitlab.com/dometto/plugin-nginx.git

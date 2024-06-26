@@ -1,0 +1,11 @@
+---
+- name: Cleanup
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Stop matlab testing environment
+      delegate_to: localhost
+      community.docker.docker_compose_v2:
+        project_name: molecule-robot_server
+        project_src: ./
+        state: absent
