@@ -1,0 +1,21 @@
+---
+networks:
+  common_network:
+    name: matlab_test_network
+    external: true
+services:
+  robot-server:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: robot-server
+    hostname: robot-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - USER_NAME=uurobot
+      - PUBLIC_KEY=${PUBLIC_KEY}
+    volumes:
+      - ./testfiles:/data/volume_2
+    restart: unless-stopped
+    networks:
+      - common_network
