@@ -86,7 +86,7 @@
     - docs
 
 - name: Run Stata setrwxp to set access rights for Stata files
-  command: "{{ stata18_dir }}/setrwxp now"
+  shell: ./setrwxp now
   args:
     chdir: "{{ stata18_dir }}"
 
