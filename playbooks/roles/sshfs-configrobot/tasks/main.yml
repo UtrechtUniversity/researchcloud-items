@@ -1,7 +1,7 @@
 ---
 - name: Check if the robotuser connection info file exist
   stat:
-    path: "/home/{{ robotuser_name }}/connection-info.yml"
+    path: /home/{{ robotuser_name }}/connection-info.yml
   register: robotuser_c
 
 - name: Parse connection info
@@ -9,9 +9,9 @@
   block:
     - name: Read yaml file
       ansible.builtin.slurp:
-        src: "/home/{{ robotuser_name }}/connection-info.yml"
+        src: /home/{{ robotuser_name }}/connection-info.yml
       register: read_connection_info
 
-    - name: "Parse yaml into variable"
+    - name: Parse yaml into variable
       set_fact:
         sshfs_connection_info: "{{ read_connection_info.content | b64decode | from_yaml }}"

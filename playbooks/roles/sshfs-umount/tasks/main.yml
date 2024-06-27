@@ -3,7 +3,7 @@
 #  so that variable sshfs_mountpoint is still available here
 
 - name: Wait until mounted filesystem is at rest
-  command: "sync"
+  command: sync
   changed_when: false
 
 - name: Umount remote filesystem
