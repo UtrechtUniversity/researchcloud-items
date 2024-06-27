@@ -14,23 +14,30 @@
     generate_ssh_key: "{{ robotuser_generate_ssh_key }}"
     state: present
 
-- name: Client mode
+- name: Ensure .ssh directory exists for robotuser
+  file:
+    path: "/home/{{ robotuser_name }}/.ssh/"
+    state: directory
+    mode: "0700"
+    owner: "{{ robotuser_name }}"
+    group: "{{ robotuser_name }}"
+
+- name: Server mode
   when: robotuser_generate_ssh_key | bool
   block:
 
-    - name: authorize ssh incoming access for server robot user
-      command: cp "/home/{{ robotuser_name }}/.ssh/id_rsa.pub" "/home/{{ robotuser_name }}/.ssh/authorized_keys"
+    - name: Authorize ssh incoming access for server robot user
+      copy:
+        src: "/home/{{ robotuser_name }}/.ssh/id_rsa.pub"
+        remote_src: true
+        dest: "/home/{{ robotuser_name }}/.ssh/authorized_keys"
+        mode: "0600"
+        owner: "{{ robotuser_name }}"
+        group: "{{ robotuser_name }}"
 
 - name: Client mode
   when: not robotuser_generate_ssh_key | bool
   block:
-
-    - name: Ensure that .ssh dir exists for robotuser
-      file:
-        path: "/home/{{ robotuser_name }}/.ssh"
-        state: directory
-        mode: 0751
-        owner: "{{ robotuser_name }}"
 
     # NB: to avoid loss of a key, script will not overwrite an existing key
     - name: Install private key for client robotuser 
@@ -38,14 +45,15 @@
         src: id_rsa.j2
         dest: "/home/{{ robotuser_name }}/.ssh/id_rsa"
         force: no
-        mode: 0700
+        mode: "0700"
         owner: "{{ robotuser_name }}"
+        group: "{{ robotuser_name }}"
 
     - name: Install connection info file in home dir of robotuser
       template:
         src: connection-info.yml.j2
         dest: "/home/{{ robotuser_name }}/connection-info.yml"
-        mode: 0744
+        mode: "0744"
         owner: "{{ robotuser_name }}"
 
       # NB: if server ip is in other domain then below task is vulnerable to man-in-the-middle
@@ -54,13 +62,6 @@
       command: "ssh-keyscan -p {{ robotuser_server_port}} {{ robotuser_server }}"
       changed_when: false
       register: robotuser_hostkeys
-  
-    - name: Ensure .ssh directory exists for robotuser
-      file:
-        path: "/home/{{ robotuser_name }}/.ssh/"
-        state: directory
-        mode: 0700
-        owner: "{{ robotuser_name }}"
 
     - name: Ensure robotserver is present in known_hosts file
       become: true
