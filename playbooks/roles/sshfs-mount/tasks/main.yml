@@ -14,26 +14,21 @@
   tags: molecule-idempotence-notest
   lineinfile:
     path: /etc/fuse.conf
-    regexp: '^(#)?user_allow_other$'
-    line: 'user_allow_other'
+    regexp: ^(#)?user_allow_other$
+    line: user_allow_other
     state: present
 
 # below is a hack to split the task of mounting the remote filesystem
 # in two parts so that privileged part of update /etc/fstab is done by root
 # Note that to make this work, only the 'state' differs
-- name: Add remote filesystem to /etc/fstab
-  mount: "{{ sshfs_mount_options | combine({'state': 'present'}) }}"
-
 - name: Mount remote filesystem using credentials of robot user
-  tags: molecule-idempotence-notest
-  become: true
   become_user: "{{ sshfs_connection_info.username }}"
   become: "{{ item.become }}"
-  when: "'molecule-notest' not in ansible_skip_tags or item.state == 'present'"  # don't actually mount when running in container
+  when: "'molecule-notest' not in ansible_skip_tags or item.state == 'present'" # don't actually mount when running in container
   mount:
     src: "sshfs#{{ sshfs_connection_info.username }}@{{ sshfs_connection_info.server }}:{{ sshfs_connection_info.sourcepath }}"
     path: "{{ sshfs_connection_info.mountpoint }}"
-    fstype: "fuse"
+    fstype: fuse
     opts: "_netdev,port={{ sshfs_connection_info.port }},user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
     state: "{{ item.state }}"
   loop:
