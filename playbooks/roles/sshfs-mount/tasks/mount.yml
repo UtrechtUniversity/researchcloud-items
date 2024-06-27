@@ -1,0 +1,11 @@
+---
+- name: Mount remote filesystem using credentials of robot user
+  become_user: "{{ sshfs_connection_info.username }}"
+  become: "{{ item.become }}"
+  when: "'molecule-notest' not in ansible_skip_tags or item.state == 'present'" # don't actually mount when running in container
+  mount:
+    src: "sshfs#{{ sshfs_connection_info.username }}@{{ sshfs_connection_info.server }}:{{ sshfs_connection_info.sourcepath }}"
+    path: "{{ sshfs_connection_info.mountpoint }}"
+    fstype: fuse
+    opts: "_netdev,port={{ sshfs_connection_info.port }},user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
+    state: "{{ item.state }}"
