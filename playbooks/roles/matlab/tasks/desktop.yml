@@ -1,9 +1,9 @@
 ---
-- name: set app_name for use in templates
+- name: Set app_name for use in templates
   set_fact:
     matlab_app_name: "matlab"
 
-- name: include desktop_file role 
+- name: Include desktop_file role
   include_role:
     role: desktop_file
   vars:

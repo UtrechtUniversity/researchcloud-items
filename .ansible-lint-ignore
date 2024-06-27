@@ -7,3 +7,4 @@
 molecule/playbook-aptly/molecule.yml yaml[line-length] # molecule test parameters are long
 molecule/playbook-reverse_proxy/molecule.yml yaml[line-length] # molecule test parameters are long
 molecule/playbook-reverse_proxy/verify.yml yaml[line-length] # URL expectations are too long
+playbooks/roles/sshfs-mount/main/tasks.yml yaml[line-length] # fstab options are too long
