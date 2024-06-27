@@ -9,5 +9,5 @@
 - name: umount remote filesystem 
   tags: molecule-idempotence-notest
   mount:
-    path: "{{ sshfs_mountpoint }}"
+    path: "{{ sshfs_connection_info.mountpoint }}"
     state: unmounted

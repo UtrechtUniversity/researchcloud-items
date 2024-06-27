@@ -18,8 +18,16 @@ parameters already known by the robotuser.
 This role can be used to load the default connection parameters held by the robotuser,
 prior to requesting a remote filesystem mount. 
 This circumvents the need to supply mount parameters explicitly in a plugin or playbook. 
-The variables that will be set are: `sshfs_username`, `sshfs_server`, 
-`sshfs_sourcepath`, `sshfs_mountpoint`.
+The variable that will be set is a dictionary with the following keys:
+
+```yaml
+sshfs_connection_info:
+  username: <robotusername>
+  server: <robotserver>
+  port: "22"
+  sourcepath: <what path to mount on the robotserver>
+  mountpoint: <where to mount the robotserver>
+```
 
 ## Variables
 ```
