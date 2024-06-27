@@ -1,0 +1,19 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Install ssh and sshd
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: true
+      with_items:
+        - ssh
+        - openssh-server
+
+    - name: Run sshd
+      ansible.builtin.systemd_service:
+        name: sshd
+        enabled: true
+        state: started
