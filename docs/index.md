@@ -30,8 +30,10 @@ status should be indicated in the description field of the catalog plugin item.
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
 - [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
+- [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
+- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [r-workbench](playbooks/r-workbench.md)  R development
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
@@ -47,8 +49,6 @@ status should be indicated in the description field of the catalog plugin item.
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
-- [matlab](playbooks/matlab.md) Data analysis and simulation suite
-- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 
@@ -60,20 +60,27 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [default_group](roles/default_group.md) set desired groups as default for regular users
+- [desktop-file](roles/desktop_file.md)
 - [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
 - [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
 - [ibridges](roles/ibridges.md)  installs [iBridges](https://github.com/UtrechtUniversity/iBridges), a userfriendly commandline client for iRODS (GUI and/or CLI)
 - [install_role](roles/install_role.md)
 - [keycloak](roles/keycloak.md)
+- [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
 - [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
 - [pip_install_systemwide](roles/pip_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version
+- [robotuser](roles/robotuser.md)
+- [runonce](roles/runonce.md)
+- [security_updates](roles/security_updates.md)
+- [sshfs-configrobot](roles/sshfs-configrobot.md)
+- [sshfs-mount](roles/sshfs-mount.md)
+- [sshfs-umount](roles/sshfs-umount.md)   
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
-
 
 ### Experimental
 
@@ -81,25 +88,16 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [asreview](roles/asreview.md)
 - [camunda-modeler](roles/camunda-modeler.md)
 - [camunda-server](roles/camunda-server.md)
-- [desktop-file](roles/desktop_file.md)
 - [docker](roles/docker.md)
 - [git_clone](roles/git_clone.md)
-- [irods_guisync](roles/irods_guisync.md)  NB: deprecated
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
-- [matlab](roles/matlab.md)
 - [myrods-sync](roles/myrods-sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
 - [nginx-pam](roles/nginx-pam.md)
-- [robotuser](roles/robotuser.md)
 - [rstudio](roles/rstudio.md)
-- [runonce](roles/runonce.md)
-- [security_updates](roles/security_updates.md)
-- [sshfs-configrobot](roles/sshfs-configrobot.md)
-- [sshfs-mount](roles/sshfs-mount.md)
-- [sshfs-umount](roles/sshfs-umount.md)   
 - [transferuser](roles/transferuser.md)   
 - [userspace_applications](roles/userspace_applications.md)
 - [uwsgi](roles/uwsgi.md)
