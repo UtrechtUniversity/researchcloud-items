@@ -1,4 +1,3 @@
 ---
-
 dependencies:
-- sshfs-configrobot 
+  - sshfs-configrobot
