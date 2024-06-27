@@ -13,11 +13,13 @@ This role performs the equivalent of an `sshfs <username>@<server>:/<sourcepath>
 command, using key-based authentication.
 
 ## Variables
-```
-sshfs_username: "SSHFS_USERNAME_MISSING"
-sshfs_server: "SSHFS_SERVER_MISSING"
-sshfs_sourcepath: "SSHFS_SOURCEPATH_MISSING"
-sshfs_mountpoint: "SSHFS_MOUNTPOINT_MISSING
+```yaml
+sshfs_connection_info:
+  username: "SSHFS_USERNAME_MISSING"
+  server: "SSHFS_SERVER_MISSING"
+  port: "22"
+  sourcepath: "SSHFS_SOURCEPATH_MISSING"
+  mountpoint: "SSHFS_MOUNTPOINT_MISSING"
 ```
 
 ## See also

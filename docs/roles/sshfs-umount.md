@@ -16,8 +16,9 @@ of [sshfs-mount](sshfs-mount.md) in the same playbook is sufficient to
 set a value for this parameter, in that case no further action is required. 
 
 ## Variables
-```
-sshfs_mountpoint: # no default value!
+```yaml
+sshfs_connection_info:
+  mountpoint: "no default value!"
 ```
 
 ## See also
