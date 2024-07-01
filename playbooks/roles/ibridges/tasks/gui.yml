@@ -8,14 +8,6 @@
   when: ansible_distribution == 'Ubuntu'
   include_tasks: 'ubuntu.yml'
 
-- name: Install iBridges GUI to systemwide location
-  pip:
-    name:
-      - setuptools
-      - wheel
-      - ibridgesgui
-    executable: "{{ ibridges_gui_pip_path }}"
-
 - name: Install desktop file menu item through role
   include_role:
     name: desktop_file

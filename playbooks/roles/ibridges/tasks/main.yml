@@ -1,10 +1,11 @@
 ---
-- name: Install iBridges to systemwide location
-  include_role:
-    name: pip_install_systemwide
-  vars:
-    pip_install_systemwide_packages: ibridges
-
 - name: Install iBridges GUI
   when: fact_desktop_workspace
   include_tasks: gui.yml
+
+- name: Install iBridges to systemwide location
+  include_role:
+    name: pipx_install_systemwide
+  vars:
+    pipx_install_systemwide_packages: "{{ fact_desktop_workspace | ternary(['ibridges', 'ibridgesgui'], ['ibridges']) }}"
+    pipx_install_systemwide_python: "{{ ibridges_python_path | default('/usr/bin/python3') }}"
