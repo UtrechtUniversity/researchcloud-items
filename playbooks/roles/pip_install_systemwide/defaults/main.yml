@@ -1,4 +1,0 @@
----
-pip_install_systemwide_location: /usr/local/uu-pip
-pip_install_systemwide_profile: uu-custom-pip.sh 
-...

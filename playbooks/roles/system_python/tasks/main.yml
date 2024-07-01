@@ -23,12 +23,3 @@
     - name: Set path to latest system python
       set_fact:
         system_python_path: "/usr/bin/python{{ system_python_latest }}"
-
-    - name: Check if pip for new version is already installed
-      stat:
-        path: "/usr/local/bin/pip{{ system_python_latest }}"
-      register: "_pip_check"
-
-    - name: Install pip for new version
-      when: not _pip_check.stat.exists
-      shell: "curl -sS  {{ system_python_get_pip_url }} | {{ system_python_path }}"

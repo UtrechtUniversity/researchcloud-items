@@ -71,7 +71,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
-- [pip_install_systemwide](roles/pip_install_systemwide.md) install pip packages in a shared directory for all users
+- [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version
 - [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
