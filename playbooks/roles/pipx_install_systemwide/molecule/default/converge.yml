@@ -7,4 +7,6 @@
       include_role:
         name: pipx_install_systemwide
       vars:
-        pipx_install_systemwide_packages: 'docker'
+        pipx_install_systemwide_packages:
+          - ibridges
+          - pycowsay

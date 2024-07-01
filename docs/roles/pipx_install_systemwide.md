@@ -3,7 +3,9 @@
 
 ## Summary
 
-Installs `pip` packages to a common location so that the can be used by all users on a machine. **An ordinary `pip install` as user `root` is not recommended, as it may interfere with `pip` packages installed by the system package manager (e.g. `apt`). So instead, use this role** to install packages to `/usr/local/pip` (by default).
+Installs python-based applications to a common location that can be used by all users on a machine, using [pipx](https://pipx.pypa.io/stable/). **An ordinary `pip install` as user `root` is not recommended, as it may interfere with `pip` packages installed by the system package manager (e.g. `apt`). So instead, use this role** to install applications to `/usr/local/uu-pip` (by default).
+
+Note: `pipx` should only be used to install (GUI or command line) applications, not libraries!
 
 ## Requires
 
@@ -23,6 +25,7 @@ This role:
 - `pipx_install_systemwide_executable`: String. Path to the Python executable to use for installing. Default: omitted.
 - `pipx_install_systemwide_location`: String. Default: `/usr/local/pip`.
 - `pipx_install_systemwide_profile`: String. Name of the script to be placed in `/etc/profile.d` updating the user's path. Default: `uu-custom-pip.sh`. Will not be created when empty.
+- `pipx_install_systemwide_python`: String. Optinal. Path to the location of a python interpreter to be used for installing the app.
 
 Note that if you first use this role to install something to `/usr/local/uu-pip`, and then again to install something else to `/var/pip`, this would cause the default `pipx_install_systemwide_location` (`/etc/profile.d/uu-custom-pip.sh`) to be overwritten, so that only `/var/pip` will be on the path. To remedy this, be sure to specify a custom `pipx_install_systemwide_profile` when you use a `pipx_install_systemwide_location` other than the default.
 

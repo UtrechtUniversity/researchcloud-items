@@ -6,9 +6,9 @@
       include_role:
         name: system_python
 
-    - name: Set ibridges_gui_python_version
+    - name: Set ibridges_python_path
       set_fact:
-        ibridges_gui_python_version: '3.9'
+        ibridges_python_path: "/usr/bin/python3.9"
   
 - name: Install GUI dependencies
   package:
@@ -17,15 +17,3 @@
   with_items:
     - libxcb-cursor0
     - software-properties-common
-
-- name: Set ibridges_gui_python_path
-  set_fact:
-    ibridges_gui_python_path: "/usr/bin/python{{ ibridges_gui_python_version | default('3') }}"
-
-- name: Set ibridges_gui_pip_path
-  set_fact:
-    ibridges_gui_pip_path: "/usr/local/bin/pip{{ ibridges_gui_python_version | default('') }}"
-
-- name: Set ibridges_gui_install_location
-  set_fact:
-    ibridges_gui_install_location: "/usr/local/uu-pip"
