@@ -1,0 +1,40 @@
+---
+- name: Install pipx
+  package:
+    name: pipx
+
+- name: Install python3-venv
+  package:
+    name: python3-venv
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Add systemwide pipx path to each user's path for installing global packages.
+  when: pipx_install_systemwide_profile | length > 0
+  copy:
+    dest: "/etc/profile.d/{{ pipx_install_systemwide_profile }}"
+    content: |
+      export PATH="{{ pipx_install_systemwide_location }}/bin${PATH:+:${PATH}}"
+
+# community.general.pipx is currently not available on ResearchCloud, so use 'command' below.
+# - name: Install packages
+#   community.general.pipx:
+#     name: "{{ item }}"
+#     python: "{{ pipx_install_systemwide_python | default(omit) }}"
+#   with_items: "{{ pipx_install_systemwide_packages | default([], true) }}"
+#   environment:
+#     PIPX_HOME: "{{ pipx_install_systemwide_location }}"
+#     PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
+
+- name: Install packages with pipx
+  command: >
+    pipx install
+    {% if pipx_install_systemwide_python | default('') | length > 0 %}
+    --python "{{ pipx_install_systemwide_python }}"
+    {% endif %}
+    --force
+    "{{ item }}"
+  with_items: "{{ pipx_install_systemwide_packages | default([], true) }}"
+  tags: molecule-idempotence-notest
+  environment:
+    PIPX_HOME: "{{ pipx_install_systemwide_location }}"
+    PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"

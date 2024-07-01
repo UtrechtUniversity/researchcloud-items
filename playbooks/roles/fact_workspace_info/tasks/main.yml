@@ -14,18 +14,6 @@
       - "min"
   when: ansible_os_family is not defined
 
-- name: Install dependency for package_facts (ubuntu)
-  when: ansible_distribution =='Ubuntu'
-  package:
-    name: "{{ ansible_distribution_major_version is version('22', '<') | ternary('python-apt', 'python3-apt') }}"
-    state: present
-
-- name: Install dependency for package_facts (debian)
-  when: ansible_distribution =='Debian'
-  package:
-    name: "{{ ansible_distribution_major_version is version('2.6', '<') | ternary('python-apt', 'python3-apt') }}"
-    state: present
-
 - name: Get all packages as facts
   package_facts:
     manager: auto
