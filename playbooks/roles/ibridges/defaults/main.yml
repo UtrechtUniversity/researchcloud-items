@@ -1,0 +1,3 @@
+---
+ibridges_systemwide_location: /usr/local/uu-pip
+ibridges_template_plugin_url: git+https://github.com/UtrechtUniversity/ibridges-servers-uu.git

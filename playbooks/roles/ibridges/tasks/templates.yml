@@ -1,0 +1,17 @@
+---
+# Loop with 'item' and install the uu-its templates plugin for iBridges/iBridges GUI
+
+- name: Find site-packages in venv
+  ansible.builtin.find:
+    paths: "{{ ibridges_systemwide_location }}/venvs/{{ item }}/lib/"
+    file_type: directory
+    patterns: "^python.*"
+    use_regex: true
+  register: _find_venv
+
+- name: Install iBridges template plugin
+  pip:
+    name: "{{ ibridges_template_plugin_url }}"
+    extra_args: "--target {{ _find_venv.files[0].path }}/site-packages"
+  vars:
+    ansible_python_interpreter: "{{ ibridges_python_path | default('/usr/bin/python3') }}"
