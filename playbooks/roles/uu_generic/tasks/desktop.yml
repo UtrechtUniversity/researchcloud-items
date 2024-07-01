@@ -1,0 +1,10 @@
+---
+# Tasks that should be executed on all desktop workspaces
+
+- name: Install IDEs from snap
+  community.general.snap:
+    name:
+      - codium
+      - pycharm-community
+    classic: true
+    state: present
