@@ -1,3 +1,4 @@
 ---
 dependencies:
   - fact_regular_users
+  - fact_workspace_info
