@@ -1,4 +1,3 @@
 ---
-
 dependencies:
-- fact_regular_users
+  - fact_regular_users
