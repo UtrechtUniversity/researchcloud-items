@@ -8,7 +8,7 @@
   when: robotuser_c.stat.exists
   block:
     - name: Read yaml file
-      ansible.builtin.slurp:
+      slurp:
         src: /home/{{ robotuser_name }}/connection-info.yml
       register: read_connection_info
 
