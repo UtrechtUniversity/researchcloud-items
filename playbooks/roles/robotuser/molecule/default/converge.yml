@@ -14,4 +14,4 @@
         robotuser_sourcepath: /tmp/
     - role: sshfs-configrobot
     - role: sshfs-mount
-    - role: sshfs-umount
+    - role: sshfs-cleanup

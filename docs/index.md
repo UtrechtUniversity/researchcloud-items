@@ -35,6 +35,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [r-workbench](playbooks/r-workbench.md)  R development
+- [stata](playbooks/stata.md) Stata18 statistical analysis suite
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
@@ -78,7 +79,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [security_updates](roles/security_updates.md)
 - [sshfs-configrobot](roles/sshfs-configrobot.md)
 - [sshfs-mount](roles/sshfs-mount.md)
-- [sshfs-umount](roles/sshfs-umount.md)   
+- [sshfs-cleanup](roles/sshfs-cleanup.md)   
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
 

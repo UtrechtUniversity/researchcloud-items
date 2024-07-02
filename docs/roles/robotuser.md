@@ -45,7 +45,7 @@ This plugin should execute a playbook to execute the following roles:
     - sshfs-configrobot
     - sshfs-mount
     - ....  (add application-specific roles here, can access the shared data)
-    - sshfs-umount
+    - sshfs-cleanup
 ```
 The first role fetches information on the server/connection as has been prepared by the
 `robot-client` plugin in an earlier stage of the deployment process.
@@ -70,7 +70,7 @@ instead of a client.
 
 ## See also
 - [sshfs-mount](sshfs-mount.md)
-- [sshfs-umount](sshfs-umount.md)
+- [sshfs-cleanup](sshfs-cleanup.md)
 - [sshfs-configrobot](sshfs-configrobot.md)
 
 ## History
