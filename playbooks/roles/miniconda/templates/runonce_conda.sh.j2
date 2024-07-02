@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 
 {% if install_userspace -%}
 MINICONDA_DEST=~/miniconda
@@ -33,6 +33,5 @@ else
   exit 1
 fi
 
-eval "$EXPORT_MINICONDA_PATH" # export for the current shell
 echo "$EXPORT_MINICONDA_PATH" >> "$RC_FILE"
 {% endif -%}

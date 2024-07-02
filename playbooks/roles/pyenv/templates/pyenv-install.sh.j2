@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 # installs pyenv in userspace
 # installs default python version if set
 
@@ -7,7 +7,8 @@ DEFAULT_PYTHON_VERSION="{{ pyenv_default_python }}"
 SYSTEM_PYTHON="{{ system_python_path }}"
 
 cd
-curl https://pyenv.run | bash
+
+curl -s https://pyenv.run | bash -s 
 
 PYENV_INIT=$(cat <<EOF
 # added by runonce as pyenv config

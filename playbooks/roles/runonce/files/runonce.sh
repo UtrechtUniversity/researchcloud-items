@@ -15,7 +15,7 @@ if [ -h ~/runonce.d -a -d /etc/runonce.d -a -n "$PS1" ] && [ -n "$BASH_VERSION" 
 	do
 		echo "--- Runonce: executing $i" >>~/.runonce.log 2>&1
 		echo "--- Running install scripts at first login: executing $i"
-		. "$i" >>~/.runonce.log 2>&1
+		bash "$i" >>~/.runonce.log 2>&1 || echo "Warning: an unxpected error occurred when running $i. See .runonce.log. Proceeding..."
 	done;
 	rm ~/runonce.d
 fi

@@ -6,7 +6,9 @@ Schedules so called "userspace application" scripts to run once (by each user),
 upon first login of the user.
 
 ## Requires
-Linux flavor operating system. Facilitates bash and zsh scripts.
+
+- Linux flavor operating system.
+- `bash` or `zsh` shell.
 
 ## Description
 Bash/zsh scripts that need to run can be placed in directory `/etc/runonce.d`,
@@ -15,13 +17,15 @@ the scripts will be run (only once) in sequence, sorted alphabetically by pathna
 
 Script(s) output (`stdout` and `stderr`) is saved in a file `~/.runonce.log`.
 
-Note that the scripts are *sourced* by the login shell. This allows shell variables
-to be set and used by subsequent scripts/interactions.
+### How it works
 
-NB: In general, we recommend that you do *not* add this role to your playbook. 
-Instead, please consider to store your scripts in role 
-[userspace_applications](./userspace_applications.md) 
-and add that role to your playbook. 
+The script `/etc/profile.d/runonce.sh` is triggered whenever a user starts a [login
+shell](https://help.gnome.org/users/gnome-terminal/stable/pref-login-shell.html.en). The script checks whether the shell is also an [interactive shell](https://unix.stackexchange.com/questions/43385/what-do-you-mean-by-interactive-shell), and executes
+the scripts in `/etc/runonce.d/` if so.
+
+On Desktop workspaces, `/etc/profile.d/runonce.sh` is triggered by a special `.desktop`
+item placed in `/etc/xdg/autostart`, which is started every time a user logs in
+to the desktop.
  
 ## Variables
 
