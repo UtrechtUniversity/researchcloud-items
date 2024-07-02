@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=UU Runonce
+Comment=Run configured scripts for ResearchCloud at first login.
+Exec=/bin/bash -l -i /etc/profile.d/runonce.sh
+Type=Application
+NoDisplay=true
+Icon=
+Path=
+Terminal=false
+StartupNotify=false

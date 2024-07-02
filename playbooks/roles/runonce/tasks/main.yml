@@ -34,6 +34,13 @@
     owner: root
     group: root
 
+- name: Add runonce to autostart for desktop environment
+  when: fact_desktop_workspace
+  copy:
+    src: uu-runonce.desktop
+    dest: /etc/xdg/autostart/uu-runonce.desktop
+    mode: "0644"
+
 # NB: link needs "follow:no" otherwise owner/group would be applied to its src
 - name: Add link to /etc/runonce.d in /etc/skel
   file:
