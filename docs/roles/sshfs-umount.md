@@ -1,19 +1,15 @@
-# Role sshfs-umount
+# Role sshfs-cleanup
 [back to index](../index.md#Roles)
 
 ## Summary
-Unmounts an earlier mounted filesystem.
+
+Cleans up the filesysted mounted via [sshfs-mount](./sshfs-mount.md) and deletes the [robotuser](./robotuser.md). 
+
+This role can be conditionally included by a component's playbook: if another component needs to use the connection to the robotserver, this role can be skipped, whereas when the component is the last to use the robotserver, the connection and robotuser can be removed. See e.g. the [matlab component](../playbooks/matlab.md#variables) for an example of a playbook that implements this logic.
 
 ## Requires
-n/a
 
-## Description
-Unmounts an earlier mounted filesystem. For instance, this could be a filesystem mounted using
-fuse mount over ssh.
-
-The mountpoint must be provided as a Ansible parameter. Note that a prior invocation
-of [sshfs-mount](sshfs-mount.md) in the same playbook is sufficient to 
-set a value for this parameter, in that case no further action is required. 
+Requires the `sshfs_connection_info` variable to be set in another role ([sshfs-configrobot](./sshfs-configrobot.md)).
 
 ## Variables
 ```yaml
@@ -27,8 +23,6 @@ sshfs_connection_info:
 - [robotuser](robotuser.md)
 
 ## History
-2021 Written by Ton Smeele (Utrecht University)
-
-
+2021-2024 Written by Ton Smeele and Dawa Ometto (Utrecht University)
 
 [back to index](../index.md#Roles)

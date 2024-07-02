@@ -18,4 +18,5 @@
     - role: sshfs-configrobot
     - role: sshfs-mount
     - role: stata18
-    - role: sshfs-umount
+    - role: sshfs-cleanup
+      when: stata18_cleanup_robot | default(true, true) | bool

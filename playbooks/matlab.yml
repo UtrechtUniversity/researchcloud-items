@@ -18,4 +18,5 @@
     - role: sshfs-configrobot
     - role: sshfs-mount
     - role: matlab
-    - role: sshfs-umount
+    - role: sshfs-cleanup
+      when: matlab_cleanup_robot | default(true, true) | bool

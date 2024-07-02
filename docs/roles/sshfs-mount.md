@@ -23,7 +23,7 @@ sshfs_connection_info:
 ```
 
 ## See also
-- [sshfs-umount](sshfs-umount.md)
+- [sshfs-cleanup](sshfs-cleanup.md)
 - [sshfs-configrobot](sshfs-configrobot.md)
 - [robotuser](robotuser.md)
 

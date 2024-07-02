@@ -36,7 +36,7 @@ robotuser_name: "uurobot"
 
 ## See also
 - [sshfs-mount](sshfs-mount.md)
-- [sshfs-umount](sshfs-umount.md)
+- [sshfs-cleanup](sshfs-cleanup.md)
 - [robotuser](robotuser.md)
 
 ## History

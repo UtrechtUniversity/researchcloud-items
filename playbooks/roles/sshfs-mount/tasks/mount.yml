@@ -7,5 +7,5 @@
     src: "sshfs#{{ sshfs_connection_info.username }}@{{ sshfs_connection_info.server }}:{{ sshfs_connection_info.sourcepath }}"
     path: "{{ sshfs_connection_info.mountpoint }}"
     fstype: fuse
-    opts: "_netdev,port={{ sshfs_connection_info.port }},user,idmap=user,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
+    opts: "_netdev,port={{ sshfs_connection_info.port }},user,idmap=user,ro,allow_other,default_permissions,reconnect,ServerAliveInterval=20,ServerAliveCountMax=5"
     state: "{{ item.state }}"
