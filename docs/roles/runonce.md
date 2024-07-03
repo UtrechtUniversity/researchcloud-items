@@ -26,12 +26,6 @@ the scripts in `/etc/runonce.d/` if so.
 On Desktop workspaces, `/etc/profile.d/runonce.sh` is triggered by a special `.desktop`
 item placed in `/etc/xdg/autostart`, which is started every time a user logs in
 to the desktop.
- 
-## Variables
-
-## See also
-Role [userspace_applications](./userspace_applications.md) can be used to store
-(sets of) your runonce scripts.
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

@@ -100,5 +100,4 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx-pam](roles/nginx-pam.md)
 - [rstudio](roles/rstudio.md)
 - [transferuser](roles/transferuser.md)   
-- [userspace_applications](roles/userspace_applications.md)
 - [uwsgi](roles/uwsgi.md)
