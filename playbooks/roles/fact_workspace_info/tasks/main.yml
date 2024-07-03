@@ -17,6 +17,7 @@
 - name: Get all packages as facts
   package_facts:
     manager: auto
+  no_log: true
 
 - name: Get the desktop package to check for 
   set_fact:

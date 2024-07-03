@@ -26,6 +26,7 @@
     state: present
 
 - name: Read database /etc/passwd
+  no_log: true
   getent:
     database: passwd
 
