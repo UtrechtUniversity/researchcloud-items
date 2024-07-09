@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Find proof unattended-upgrades was run
+      block:
+
+        - name: Stat unattended-upgrades logdir
+          ansible.builtin.stat:
+            path: /var/log/unattended-upgrades
+          register: unattended_upgrades_log
+
+        - name: Assert unattended-upgrades logdir exists
+          ansible.builtin.assert:
+            that:
+              - unattended_upgrades_log.stat.exists

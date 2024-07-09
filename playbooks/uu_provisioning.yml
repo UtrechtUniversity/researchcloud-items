@@ -3,8 +3,12 @@
 # DISABLED: - installs the latest security updates
 # - places documentation and contact links on the workspace
 
-- name: Standard UU Provisioning 
+- name: Standard UU Provisioning
   hosts: localhost
   gather_facts: true
   roles:
     - role: uu_generic
+    - role: security_updates
+      vars:
+        security_updates_firstrun: true
+        security_updates_periodic: false
