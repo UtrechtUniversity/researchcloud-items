@@ -33,12 +33,13 @@ status should be indicated in the description field of the catalog plugin item.
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
+- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
 - [r-workbench](playbooks/r-workbench.md)  R development
 - [stata](playbooks/stata.md) Stata18 statistical analysis suite
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
-- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
+- [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 ### Experimental
 
@@ -50,7 +51,6 @@ status should be indicated in the description field of the catalog plugin item.
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
-- [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 
 ## Roles
@@ -81,6 +81,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [sshfs-mount](roles/sshfs-mount.md)
 - [sshfs-cleanup](roles/sshfs-cleanup.md)   
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
+- [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
 
 ### Experimental
@@ -99,5 +100,4 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
 - [nginx-pam](roles/nginx-pam.md)
 - [rstudio](roles/rstudio.md)
-- [transferuser](roles/transferuser.md)   
 - [uwsgi](roles/uwsgi.md)
