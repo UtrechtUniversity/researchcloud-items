@@ -10,33 +10,33 @@
     state: present
 
 - name: Install security updates
-  when: "{{ security_updates_firstrun | bool }}"
+  when: security_updates_firstrun | bool
   block:
-  - name: Run updates
-    command: unattended-upgrades -v
-    tags: molecule-notest
+    - name: Run updates
+      command: unattended-upgrades -v
+      tags: molecule-notest
 
-  - name: Run update in test mode # dry run when in a molecule run
-    command: unattended-upgrades --dry-run
-    changed_when: false
-    when: "'molecule-notest' in ansible_skip_tags"
+    - name: Run update in test mode # dry run when in a molecule run
+      command: unattended-upgrades --dry-run
+      changed_when: false
+      when: "'molecule-notest' in ansible_skip_tags"
 
 - name: Enable periodic updates
-  when: "{{ security_updates_periodic | bool }}"
+  when: security_updates_periodic | bool
   block:
     - name: Install bootstrap script
       copy:
         src: start_upgrade_timers.sh
         dest: /usr/local/bin/start_upgrade_timers.sh
         owner: root
-        mode: 0740
+        mode: "0740"
 
     - name: Install bootstrapping service definition
       copy:
         src: upgrade-bootstrap.service
         dest: /etc/systemd/system/upgrade-bootstrap.service
         owner: root
-        mode: 0740
+        mode: "0740"
 
     - name: Install bootstrapping timer definition
       template:
@@ -49,4 +49,3 @@
         - systemctl enable upgrade-bootstrap.timer
         - systemctl start upgrade-bootstrap.timer
       tags: molecule-idempotence-notest
-
