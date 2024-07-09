@@ -2,17 +2,19 @@
 - name: Create directories in which all files are automatically writeable by members of the 'shared' group.
   hosts: localhost
   gather_facts: true
+  vars:
+    _group_name: "{{ group_name | default('shared') }}"
   roles:
     - role: default_group
       vars:
         default_group_group:
-          groupname: "{{ group_name }}"
+          groupname: "{{ _group_name }}"
   tasks:
     - name: Create all shared directories with setgid
       ansible.builtin.file:
         path: "{{ item | trim }}"
         owner: "root"
-        group: "{{ group_name }}"
+        group: "{{ _group_name }}"
         mode: "02770"
         state: directory
         recurse: true
