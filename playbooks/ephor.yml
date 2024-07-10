@@ -7,6 +7,5 @@
     - irods_iselect
     - irods_skel
     - myrods-sync
-    - tidyverse-dependencies
     - rstudio
 ...
