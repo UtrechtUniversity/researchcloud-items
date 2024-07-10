@@ -1,0 +1,51 @@
+---
+- name: Set motd (Ubuntu/Debian)
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Add UU motd message
+      ansible.builtin.template:
+        src: 99-uu
+        dest: /etc/update-motd.d/99-uu
+        owner: root
+        mode: "755"
+
+    - name: Remove superfluous motd parts
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      failed_when: false
+      with_items:
+        - /etc/update-motd.d/91-contract-ua-esm-statu
+        - /etc/update-motd.d/50-motd-news
+
+- name: Add documentation link (Ubuntu/Debian)
+  when: fact_desktop_workspace and ansible_os_family == "Debian"
+  block:
+    - name: Combine /etc/skel with fact_regular_users
+      ansible.builtin.set_fact:
+        uu_generic_desktop_dirs: >
+          {{
+            fact_regular_users + [{
+              'home': '/etc/skel',
+              'user': 'root',
+              'groupid': 'root'
+              }]
+          }}
+
+    - name: Create Desktop folders
+      ansible.builtin.file:
+        path: "{{ item.home }}/Desktop"
+        state: directory
+        owner: "{{ item.user }}"
+        group: "{{ item.groupid }}"
+        mode: "0775"
+      with_items: "{{ uu_generic_desktop_dirs }}"
+
+    - name: Create desktop items
+      ansible.builtin.template:
+        src: shortcut.desktop
+        dest: "{{ item.home }}/Desktop/ResearchCloud Help.desktop"
+        owner: "{{ item.user }}"
+        group: "{{ item.groupid }}"
+        mode: "0775"
+      with_items: "{{ uu_generic_desktop_dirs }}"
