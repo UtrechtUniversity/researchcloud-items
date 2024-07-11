@@ -69,7 +69,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
-- [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
+- [nginx_reverse_proxy](roles/nginx_reverse_proxy.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
