@@ -1,21 +1,35 @@
 # Developer documentation
-This is the developer documenation for this repository.
-See [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).
+This is the developer documentation for this repository.
+See [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation).
 
+This documentation concern ResearchCloud components for Unix/Linux workspaces, which are based on Ansible. There is a [separate repository](https://github.com/UtrechtUniversity/researchcloud-items-win/) for Windows components (using PowerShell).
 
-Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles).
-The playbook can be used stand-alone (run them locally on the target host) 
-or as a SURF ResearchCloud plugin.
-
-The roles serve as reusable building blocks for these playbooks.
+Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles) (reusable items that can be included in a playbook).
+The playbook and roles can be used stand-alone (run them locally on the target host), but are
+designed with the goal of deploying them in the deployment of a ResearchCloud workspace.
 
 Contributed playbooks and roles should meet criteria specified in our [item quality checklist](./item_quality_checklist.md).
 
+## Installing as a collection
 
-When adding documentation, please consider to format your text
-using the file [template-playbooks.md](playbooks/template-playbooks.md) to
-document a playbook
-or the file [template-roles.md](roles/template-roles.md) to document a role.
+The roles and playbooks in this repository can also be installed as an Ansible collection. The collection is named `uusrc.general`. After installation, this means you can use the roles from this repository, for example as follows:
+
+```yaml
+roles:
+    - role: uusrc.general.fact_regular_users
+```
+
+To install the collection you have two options:
+
+* install manually with `ansible-galaxy collection install git+https://github.com/utrechtuniversity/researchcloud-items.git`
+* add this repository to your `requirements.yml`:
+
+```yaml
+---
+collections:
+  - name: https://github.com/UtrechtUniversity/researchcloud-items.git
+    type: git
+```
 
 ## Playbooks
 The status of a playbook is either Experimental or Supported. Supported playbooks are subjected to automated [testing](./index.md#Test-driven-development) and must be fully documented.
