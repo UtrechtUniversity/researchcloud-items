@@ -8,5 +8,8 @@
     - libtiff5-dev 
     - libjpeg-dev
     - libcurl4-openssl-dev
+    - libfontconfig1-dev
+    - libharfbuzz-dev
+    - libfribidi-dev
     state: present
 ...
