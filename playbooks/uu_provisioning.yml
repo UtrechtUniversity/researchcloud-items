@@ -9,6 +9,7 @@
   roles:
     - role: uu_generic
     - role: security_updates
+      when: uu_provisioning_security | default(true, true) | bool
       vars:
         security_updates_firstrun: true
         security_updates_periodic: false
