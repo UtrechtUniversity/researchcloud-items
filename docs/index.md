@@ -75,6 +75,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version
 - [robotuser](roles/robotuser.md)
+- [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
 - [security_updates](roles/security_updates.md)
 - [sshfs-configrobot](roles/sshfs-configrobot.md)
@@ -99,5 +100,4 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [myrods-sync](roles/myrods-sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
 - [nginx-pam](roles/nginx-pam.md)
-- [rstudio](roles/rstudio.md)
 - [uwsgi](roles/uwsgi.md)
