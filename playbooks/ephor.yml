@@ -6,7 +6,7 @@
     - irods_icommands
     - irods_iselect
     - irods_skel
-    - myrods-sync
+    - myrods_sync
     - tidyverse-dependencies
     - rstudio
 ...

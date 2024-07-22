@@ -110,7 +110,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
-- [myrods-sync](roles/myrods-sync.md)  
+- [myrods_sync](roles/myrods_sync.md)  
 - [nginx-fastcgi](roles/nginx-fastcgi.md)   
 - [nginx-pam](roles/nginx-pam.md)
 - [rstudio](roles/rstudio.md)
