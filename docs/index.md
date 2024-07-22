@@ -91,9 +91,9 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [robotuser](roles/robotuser.md)
 - [runonce](roles/runonce.md)
 - [security_updates](roles/security_updates.md)
-- [sshfs-configrobot](roles/sshfs-configrobot.md)
-- [sshfs-mount](roles/sshfs-mount.md)
-- [sshfs-cleanup](roles/sshfs-cleanup.md)   
+- [sshfs_configrobot](roles/sshfs_configrobot.md)
+- [sshfs_mount](roles/sshfs_mount.md)
+- [sshfs_cleanup](roles/sshfs_cleanup.md)   
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces

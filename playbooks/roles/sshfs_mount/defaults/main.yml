@@ -1,5 +1,5 @@
 ---
-# Below values are placeholders. This role depends on role sshfs-configrobot to prepare
+# Below values are placeholders. This role depends on role sshfs_configrobot to prepare
 # these Ansible variables with actual values.
 sshfs_connection_info:
   username: SSHFS_USERNAME_MISSING

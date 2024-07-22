@@ -15,8 +15,8 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - role: sshfs-configrobot
-    - role: sshfs-mount
+    - role: sshfs_configrobot
+    - role: sshfs_mount
     - role: matlab
-    - role: sshfs-cleanup
+    - role: sshfs_cleanup
       when: matlab_cleanup_robot | default(true, true) | bool

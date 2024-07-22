@@ -12,6 +12,6 @@
         robotuser_key: foo
         robotuser_server: localhost
         robotuser_sourcepath: /tmp/
-    - role: sshfs-configrobot
-    - role: sshfs-mount
-    - role: sshfs-cleanup
+    - role: sshfs_configrobot
+    - role: sshfs_mount
+    - role: sshfs_cleanup
