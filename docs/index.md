@@ -89,6 +89,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version
 - [robotuser](roles/robotuser.md)
+- [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
 - [security_updates](roles/security_updates.md)
 - [sshfs_configrobot](roles/sshfs_configrobot.md)
