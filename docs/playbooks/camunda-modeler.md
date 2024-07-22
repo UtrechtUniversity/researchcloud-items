@@ -1,4 +1,4 @@
-# Playbook camunda-modeler
+# Playbook camunda_modeler
 [back to index](../index.md#Playbooks)
 
 ## Summary
@@ -14,7 +14,7 @@ Installs the Camunda Modeller.
 The modeler is accessed via the desktop menu.
 
 ## Variables
-See variable definitions in roles [camunda-modeler](../roles/camunda-modeler.md).
+See variable definitions in roles [camunda_modeler](../roles/camunda_modeler.md).
 
 ## See also
 [camunda](camunda.md)

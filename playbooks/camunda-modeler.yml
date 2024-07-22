@@ -3,4 +3,4 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - camunda-modeler
+    - camunda_modeler

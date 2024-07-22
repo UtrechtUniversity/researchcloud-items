@@ -1,4 +1,4 @@
-# Role camunda-server
+# Role camunda_server
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -26,7 +26,7 @@ catalina_home: "/var/lib/tomcat9"
 ``` 
 
 ## See also
-[camunda-modeler](camunda-modeler.md)
+[camunda_modeler](camunda_modeler.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

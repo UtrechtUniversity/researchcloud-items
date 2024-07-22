@@ -102,8 +102,8 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 - [anaconda](roles/anaconda.md)
 - [asreview](roles/asreview.md)
-- [camunda-modeler](roles/camunda-modeler.md)
-- [camunda-server](roles/camunda-server.md)
+- [camunda_modeler](roles/camunda_modeler.md)
+- [camunda_server](roles/camunda_server.md)
 - [docker](roles/docker.md)
 - [git_clone](roles/git_clone.md)
 - [irods_repo](roles/irods_repo.md)
