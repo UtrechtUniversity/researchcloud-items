@@ -1,0 +1,10 @@
+namespace: "uusrc"
+name: "general"
+version: "0.1.0"
+readme: "README.md"
+authors:
+  - "Ton Smeele"
+  - "Dawa Ometto"
+  - "Jelle Treep"
+  - "Christine Staiger"
+license_file: "LICENSE"

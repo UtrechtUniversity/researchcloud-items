@@ -1,4 +1,4 @@
-# Role sshfs-configrobot
+# Role sshfs_configrobot
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -9,7 +9,7 @@ over ssh protocol where the client authenticates as robotuser.
 Role [robotuser](robotuser.md) has been executed prior to invocation of this role.
 
 ## Description
-An [sshfs-mount](sshfs-mount.md) requires scripts to specify parameters for connecting the client to a server, 
+An [sshfs_mount](sshfs_mount.md) requires scripts to specify parameters for connecting the client to a server, 
 such as username, server address, and directory used as data source.
  
 When a robotuser account is used for authentication with the server, we may opt to use default connection
@@ -35,8 +35,8 @@ robotuser_name: "uurobot"
 ```
 
 ## See also
-- [sshfs-mount](sshfs-mount.md)
-- [sshfs-cleanup](sshfs-cleanup.md)
+- [sshfs_mount](sshfs_mount.md)
+- [sshfs_cleanup](sshfs_cleanup.md)
 - [robotuser](robotuser.md)
 
 ## History

@@ -3,6 +3,7 @@
   hosts: localhost
   roles:
     - irods_iselect
-    - myrods-sync
+    - myrods_sync
+    - tidyverse_dependencies
     - rstudio
 ...

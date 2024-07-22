@@ -50,12 +50,12 @@
     dest: "/tmp/{{ item }}.desktop"
     mode: 0644
   with_items:
-    - "myrods-sync"
+    - "myrods_sync"
 
 - name: install launcher in system-wide desktop menu
   command: "xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop"
   with_items:
-    - "myrods-sync"
+    - "myrods_sync"
 
 
 

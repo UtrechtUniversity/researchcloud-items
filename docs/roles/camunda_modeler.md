@@ -1,4 +1,4 @@
-# Role camunda-modeler
+# Role camunda_modeler
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -21,13 +21,13 @@ The following variables and defaults are available:
 ```
 camunda_modeler_version: "4.10.0"
 camunda_modeler_release: "4.10.0"
-camunda_modeler_urldir: "https://downloads.camunda.cloud/release/camunda-modeler/{{ camunda_modeler_version }}"
-camunda_modeler_urlfile_prefix: "camunda-modeler-{{ camunda_modeler_release }}-linux-x64"
-camunda_modeler_dir: "/var/lib/camunda-modeler"
+camunda_modeler_urldir: "https://downloads.camunda.cloud/release/camunda_modeler/{{ camunda_modeler_version }}"
+camunda_modeler_urlfile_prefix: "camunda_modeler-{{ camunda_modeler_release }}-linux-x64"
+camunda_modeler_dir: "/var/lib/camunda_modeler"
 ``` 
 
 ## See also
-[camunda-server](camunda-server.md)
+[camunda_server](camunda_server.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

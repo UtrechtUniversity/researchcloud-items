@@ -1,9 +1,9 @@
 This directory contains molecule tests for the following roles:
 
 - robotuser
-- sshfs-configrobot
-- sshfs-mount
-- sshfs-cleanup
+- sshfs_configrobot
+- sshfs_mount
+- sshfs_cleanup
 
 Since these roles are meant to be executed together, it only
 makes sense to test them in one scenario.

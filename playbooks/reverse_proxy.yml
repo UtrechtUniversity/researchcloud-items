@@ -42,7 +42,7 @@
       no_log: true
 
   roles:
-    - role: nginx-reverse_proxy
+    - role: nginx_reverse_proxy
       vars:
         nginx_reverse_proxy_locations: "{{ locations }}"
         nginx_reverse_proxy_auth_info: "{{ auth_info | default('') }}"

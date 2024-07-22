@@ -15,8 +15,8 @@ The Workflow service is accessible via the internet on endpoint `/camunda/...`.
 The modeler is accessed via the desktop menu.
 
 ## Variables
-See variable definitions in roles [camunda-modeler](../roles/camunda-modeler.md)
-and [camunda-server](../roles/camunda-server.md).
+See variable definitions in roles [camunda_modeler](../roles/camunda_modeler.md)
+and [camunda_server](../roles/camunda_server.md).
 
 ## See also
 [camunda-modeler](camunda-modeler.md)

@@ -16,7 +16,7 @@
 
   roles:
     - role: keycloak
-    - role: nginx-reverse_proxy
+    - role: nginx_reverse_proxy
       vars:
         nginx_reverse_proxy_locations:
           - name: auth

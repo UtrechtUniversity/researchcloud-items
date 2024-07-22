@@ -2,7 +2,7 @@
 [back to index](../index.md#Roles)
 
 ## Summary
-NB: irods-guisync is deprecated, please use myrods-sync instead.
+NB: irods-guisync is deprecated, please use myrods_sync instead.
 
 Installs desktop application to support data synchronization between a collection 
 located on an iRODS server and a workspace folder. 
@@ -28,7 +28,7 @@ irods_guisync_dir: "/usr/local/lib/irods_guisync"
 
 ## See also
 [irods_icommands](irods_icommands.md)
-[myrods-sync](myrods-sync.md)
+[myrods_sync](myrods_sync.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

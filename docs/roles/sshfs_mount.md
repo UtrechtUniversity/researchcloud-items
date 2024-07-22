@@ -1,4 +1,4 @@
-# Role sshfs-mount
+# Role sshfs_mount
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -23,8 +23,8 @@ sshfs_connection_info:
 ```
 
 ## See also
-- [sshfs-cleanup](sshfs-cleanup.md)
-- [sshfs-configrobot](sshfs-configrobot.md)
+- [sshfs_cleanup](sshfs_cleanup.md)
+- [sshfs_configrobot](sshfs_configrobot.md)
 - [robotuser](robotuser.md)
 
 ## History

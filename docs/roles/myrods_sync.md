@@ -1,4 +1,4 @@
-# Role myrods-sync
+# Role myrods_sync
 [back to index](../index.md#Roles)
 
 ## Summary
@@ -9,19 +9,19 @@ located on an iRODS server and a workspace folder.
 Ubuntu desktop environment, iRODS icommands
 
 ## Description
-The myrods-sync function is a user-friendly version of the irsync command
+The myrods_sync function is a user-friendly version of the irsync command
 found in the iRODS icommands set. The user can select a folder in
 the workspace and a collection in the connected iRODS zone plus either
 a retrieve or save action. The actual synchronization will be performed
 through an irsync function of which the output is presented in a window.
 
-Myrods-sync will reuse an already initialized iRODS environment (configured connection)
+myrods_sync will reuse an already initialized iRODS environment (configured connection)
 and alternatively create one.
 
 ## Variables
 ```
-myrodssync_git: "https://github.com/utrechtuniversity/myrods-sync.git"
-myrodssync_dir: "/usr/local/lib/myrods-sync"
+myrodssync_git: "https://github.com/utrechtuniversity/myrods_sync.git"
+myrodssync_dir: "/usr/local/lib/myrods_sync"
 ```
 
 ## See also
@@ -29,7 +29,7 @@ myrodssync_dir: "/usr/local/lib/myrods-sync"
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)   
-2022 Renamed from guisync to myrods-sync, added iRODS environment initialization
+2022 Renamed from guisync to myrods_sync, added iRODS environment initialization
 
 
 [back to index](../index.md#Roles)

@@ -15,8 +15,8 @@
   hosts: localhost
   gather_facts: false
   roles:
-    - role: sshfs-configrobot
-    - role: sshfs-mount
+    - role: sshfs_configrobot
+    - role: sshfs_mount
     - role: stata18
-    - role: sshfs-cleanup
+    - role: sshfs_cleanup
       when: stata18_cleanup_robot | default(true, true) | bool
