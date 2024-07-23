@@ -4,7 +4,7 @@
   gather_facts: true
 
   roles:
-    - role: tidyverse-dependencies  # install tidyverse dependencies
+    - role: tidyverse_dependencies  # install tidyverse dependencies
     - role: install_role
       vars:
         install_role_roles:
