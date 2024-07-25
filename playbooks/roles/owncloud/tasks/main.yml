@@ -1,15 +1,18 @@
 ---
-- name: Get ownCloud APT GPG key
-  apt_key:
-    url: https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ubuntu_version}}/Release.key
-    state: present
+- name: Install Owncloud (Ubuntu)
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Get ownCloud APT GPG key
+      apt_key:
+        url: https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ ansible_distribution_version }}/Release.key
+        state: present
 
-- name: Configure ownCloud apt repository
-  apt_repository:
-    repo: deb https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ubuntu_version}}/ /
-    state: present
-    update_cache: True
+    - name: Configure ownCloud apt repository
+      apt_repository:
+        repo: deb https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ ansible_distribution_version }}/ /
+        state: present
 
-- name: clear APT cache then install ownCloud package
-  apt: name=owncloud-client update_cache=yes
-
+    - name: Install ownCloud package
+      apt:
+        name: owncloud-client
+        update_cache: true
