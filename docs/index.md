@@ -2,13 +2,15 @@
 This is the developer documentation for this repository.
 See [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation).
 
-This documentation concern ResearchCloud components for Unix/Linux workspaces, which are based on Ansible. There is a [separate repository](https://github.com/UtrechtUniversity/researchcloud-items-win/) for Windows components (using PowerShell).
-
 Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles) (reusable items that can be included in a playbook).
 The playbook and roles can be used stand-alone (run them locally on the target host), but are
 designed with the goal of deploying them in the deployment of a ResearchCloud workspace.
 
 Contributed playbooks and roles should meet criteria specified in our [item quality checklist](./item_quality_checklist.md).
+
+### A note on Windows
+
+This documentation concern ResearchCloud components for Unix/Linux workspaces, which are based on Ansible. There is a [separate repository](https://github.com/UtrechtUniversity/researchcloud-items-win/) for Windows components (using PowerShell).
 
 ## Installing as a collection
 

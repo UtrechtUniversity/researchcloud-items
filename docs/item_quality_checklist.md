@@ -1,48 +1,34 @@
 # Item Quality Checklist
 Below list can be used to check the quality of your ResearchCloud-items software and documentation.
 
+## Documentation
 
-## Documentation 
-### Location
-As a general guideline, documentation must be maintained in the same environment and as-close-as-possible to 
-related program source code. This guideline aims to protect consistency between source code and documentation.  
+### Components
 
-The guideline translates to the following concrete requirements:   
-- catalog items listed in the SURF ResearchCloud catalog are effectively composition specifications (= programs) that reference 
-catalog components. Hence these composition items should be documented in the catalog itself.   
-- catalog components merely reference externally held installation scripts. Their "Ansible Playbook" 
-scripts are located elsewhere, in a Git repository (such as this one). The component/playbook documentation should be maintained in 
-that Git repository.  It suffices to have the catalog component document a refererence to the URL of the documentation in the 
-Git repository.  Any other descriptive catalog component information should be derived from the documentation kept in Git.         
-- Ansible Roles should be documented in the Git repository that lists their source code.
+Components in the ResearchCloud catalog should contain a brief description:
 
-### Content
-As a general guideline, documentation concerning catalog items should
-target end users. Documentation for catalog components should target developers/integrators.
+- name and contact information for the author/maintainer of the item or component.
+- link to developer documentation (e.g. to this repository).
 
-Next to descriptive information, the ResearchCloud catalog should document at least for each catalog item/component:
+For Ansible-based Components (see [here](./index.md#a-note-on-windows) for more info), both the *playbooks* and the *roles* utilized by the playbook should be documented.
+
+### Catalog Items
+
+ResearchCloud _catalog items_ are effectively compositions that reference various components. Catalog items should be described in the ResearchCloud catalog itself, including:
+
 - name and contact information for the author/maintainer of the item or component   
-- indication of provided level of support to users ("Status: Experimental, use with care" or "Status: Supported")    
-- url of documentation (as mentioned in above paragraph)
+- link to enduser documentation. For UU Catalog Items, this documentation can be found at https://utrechtuniversity.github.io/vre-docs/docs/workspace-catalogue.html
+- a brief description
 
-Catalog items should, in addition to the above, also provide:      
-- indication of suitability ("Suitability: non-sensitive data only", "Suitability: sensitive data")    
+The description field should provide:
+
+- indication of suitability ("Suitability: non-sensitive data only", "Suitability: sensitive data")
 - indication of maintenance level ("Maintenance: automated (security) patches configured", 
-"Maintenance: User must manually apply (security) patches")   
+"Maintenance: User must manually apply (security) patches")
 - information on required or recommended workspace dimensions (e.g. cores, memory, operating system version)    
 - list of any other user responsibilities, if any     
-- information on any monitoring services that are included (e.g. vulnerability scanning of software)    
-
-## Git documentation format
-When adding documentation to the Git repository, please consider to format your text
-using the file [template-playbooks.md](playbooks/template-playbooks.md) to
-document a playbook
-or the file [template-roles.md](roles/template-roles.md) to document a role.
-
-NB: The files section of roles may include [base64 encoded](icons.md) icon files. 
-These files can be used to decorate a related catalog item in 
-SURF ResearchCloud.
-
+- information on any monitoring services that are included (e.g. vulnerability scanning of software)
+- if the item is experimental or not yet fully supported, this should be clear from the description or subtitle.
 
 ## Functionality Scope
 Ansible Playbooks (ResearchCloud components) should be able to run independent of any other Playbooks. This guideline 
@@ -62,7 +48,7 @@ For more information, see [Design Principles](./design_principles.md).
 Avoid the use of hardcoded constants or literals in installation scripts. 
 Instead, always reference an Ansible variable and include a default value for such variable in the Role specification.
 
-Parameters provided to Ansible Playbooks must follow the naming conventions for SURF ResearchCloud items. 
+Parameters provided to Ansible Playbooks must follow the naming conventions for SURF ResearchCloud items.
 
 ## Reusability
 Source code must always be accompanied by an explicit License. It suffices to mention a common license applicable to the
@@ -74,11 +60,15 @@ part of a European Research program. It assists you to select an appropriate and
 
 
 ## Support and Maintenance
-A Catalog item/component should be marked either "experimental" or "supported".
-Supported items/components are expected to be actively maintained and proactively checked for any defects on an annual basis 
-or more frequent. They have been tested in use case workspace compositions.
-They must be fully documented according to the specifications in this guideline.
-Supported catalog items may not comprise of any catalog components that are experimental.
+
+Supported catalog items and components:
+
+- are expected to be actively maintained and proactively checked for any defects, for instance through automated testing.
+- they have been tested in use case workspace compositions.
+- they must be fully documented according to the specifications in this guideline.
+- supported catalog items may not comprise of any catalog components that are experimental.
+
+Components should be set to *Public* (usable by all Collaborative Organisations) only if they meet the above criteria.
 
 Unsupported items/components should include a disclaimer to indicate their experimental status. This alerts end users to double-check
 compliance with policies.
@@ -92,17 +82,27 @@ A workspace composition should be compliant with applicable policies. When in do
 workspace type to a specified community/collaboration.
 
 ## Best practices
+
 ### Test-driven development
-While unit tests are not present in these components made for SURF Research Cloud, there are other tools that can help you: [Ansible testing modules](https://docs.ansible.com/ansible/latest/reference_appendices/test_strategies.html), [Ansible Lint](https://ansible-lint.readthedocs.io/en/latest/) and [Ansible Provisioning in Vagrant VMs](https://www.vagrantup.com/docs/provisioning/ansible).
+
+While unit tests are not present in these components made for SURF Research Cloud, there are other tools that can help you:
+
+- [Molecule deployment tests](https://github.com/ansible/molecule). See [here](https://github.com/UtrechtUniversity/SRC-molecule) for more information on how to utilize Molecule for ResearchCloud items.
+- [Ansible testing modules](https://docs.ansible.com/ansible/latest/reference_appendices/test_strategies.html)
+- [Ansible Lint](https://ansible-lint.readthedocs.io/en/latest/)
+- [Ansible Provisioning in Vagrant VMs](https://www.vagrantup.com/docs/provisioning/ansible).
+
 Try to incorporate as much of TDD into developing playbooks and roles: first determine when your code is succesfull or when it should fail, and then code around those requirements.
 
+CI pipelines for Ansible Lint and Molecule are essential to guarding against the introduction of bugs and maintaining code quality.
+
 ### Specific roles
-Reuse the roles defined inside this repository for certain tasks, instead of doing it yourself. Especially for SURF Research Cloud, these roles come in handy:
+
+The roles in the [uusrc.general collection](./index.md#installing-as-a-collection) contain many roles that faciliate best practices on ResearchCloud, for instance:
 
 - Use [runonce](roles/runonce.md) to have a piece of code ran once the first time a user logs in.
 - Use [desktop_file](roles/desktop_file.md) to create menu and desktop entries.
 - Use [fact_regular_users](roles/fact_regular_users.md) to gather a list of all users on the system.
-- Use [git_clone](roles/git_clone.md) to let users clone a git repository into a environment through arguments.
-
-### Keep userspace and system-wide seperate
-Especially for python-related software: most times, keeping everything separate and private for all users is the best default approach. Let users select their own versions to avoid clashes.
+- Use [fact_workspace_info](roles/fact_workspace_info.md) to gather general facts about the workspace, including whether it is a desktop workspace and which [SRAM CO roles](https://utrechtuniversity.github.io/vre-docs/docs/glossary.html#collaboration) are defined.
+- Use [nginx_reverse_proxy](roles/nginx_reverse_proxy.md) to easily define reverse proxies and other Nginx locations on top of the SURF Nginx component.
+- Use [pipx_install_systemwide](roles/pipx_install_systemwide.md) to avoid installing Python applications using the system Python interpeter (e.g. `/usr/bin/python3`), which might break `pip` dependencies on which the system depends.
