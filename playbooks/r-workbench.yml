@@ -9,6 +9,8 @@
       vars:
         install_role_roles:
           - git+https://github.com/UtrechtUniversity/ansible-r.git,f9694f503a96cda62898b1ad893c4d0d94798ea1
+    - role: rstudio
+      when: fact_desktop_workspace
 
   tasks:
 
