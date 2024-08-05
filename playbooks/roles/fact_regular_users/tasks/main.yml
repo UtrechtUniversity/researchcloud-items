@@ -18,11 +18,11 @@
 #     with unicode strings to a dictionary with ascii strings
 #     as json_query expects ascii strings
 
-
 # jmespath is required for filter 
-- name: Install jmespath (all platforms)
-  package:
-    name: python3-jmespath  # same package name on debian, ubuntu, rocky/el
+- name: Install jmespath
+  pip:
+    name: jmespath
+    break_system_packages: false # Ansible on SRC is being run from within a venv, so we can set this to false.
     state: present
 
 - name: Read database /etc/passwd
