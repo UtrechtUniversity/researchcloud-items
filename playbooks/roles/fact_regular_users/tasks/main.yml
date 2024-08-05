@@ -18,11 +18,13 @@
 #     with unicode strings to a dictionary with ascii strings
 #     as json_query expects ascii strings
 
-# jmespath is required for filter 
+# jmespath is required for filter
+# The `break_system_packages: false` option is not yet supported on the default Ansible version on SRC.
+# However, the default python interpeter used by Ansible should be in a venv, so that we don't need to worry about breaking systemd packages.
 - name: Install jmespath
   pip:
     name: jmespath
-    break_system_packages: false # Ansible on SRC is being run from within a venv, so we can set this to false.
+    # break_system_packages: false 
     state: present
 
 - name: Read database /etc/passwd
