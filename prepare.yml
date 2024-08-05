@@ -18,18 +18,19 @@
         src: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}/"
         dest: /rsc/plugins/{{ item.name }}/
         archive: false
+        links: true
         recursive: true
         rsync_opts:
           - --exclude=".*"
         ssh_connection_multiplexing: true
       with_items: "{{ lookup('env', 'components') }}"
 
-    # Apt cache is normally updated at deploy time by the SRC-OS component.
-    # Make sure it is fresh so our tests use recent apt repo information.
-    - name: Update apt cache
+    - name: Install dependencies
       ansible.builtin.apt:
+        pkg:
+          - dirmngr
         update_cache: true
-      when: ansible_os_family == 'Debian'
+      when: ansible_pkg_mgr == 'apt'
 
     - name: Set extra_preparations var
       ansible.builtin.set_fact:
