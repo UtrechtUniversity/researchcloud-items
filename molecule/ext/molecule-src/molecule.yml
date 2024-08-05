@@ -17,6 +17,9 @@ platforms: # Test on ubuntu focal and jammy by default
     <<: *image_settings
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp
   playbooks:
     converge: ../ext/molecule-src/converge.yml
     prepare: ../ext/molecule-src/prepare.yml
