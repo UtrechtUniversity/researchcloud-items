@@ -12,7 +12,7 @@ The role follows the installation as explained on their official website. It ins
 
 ## Variables
 * `anaconda_python_version`: The Python version to use for the Anaconda installation. Default: `3`.
-* `anaconda_version`: The Anaconda version that will be installed. See https://docs.anaconda.com/anaconda/reference/release-notes/. Default: `2022.05`.
+* `anaconda_version`: The Anaconda version that will be installed. See https://docs.anaconda.com/anaconda/release-notes/. Default: `2022.05`.
 * `anaconda_ip`: The address to reach Anaconda. Default: `0.0.0.0`.
 * `anaconda_port`: Which port to assign to Anaconda. Default: `8888`.
 * `anaconda_download_dest`: Where to download the installation file to. Default: `/tmp/anaconda3`.

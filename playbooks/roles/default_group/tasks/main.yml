@@ -23,28 +23,28 @@
 - name: Ubuntu
   when: ansible_distribution == 'Ubuntu'
   block:
-  - name: Enable adding extra groups
-    ansible.builtin.lineinfile:
-      path: /etc/adduser.conf
-      line: 'ADD_EXTRA_GROUPS=1'
-      regexp: '^#?ADD_EXTRA_GROUPS='
+    - name: Enable adding extra groups
+      ansible.builtin.lineinfile:
+        path: /etc/adduser.conf
+        line: 'ADD_EXTRA_GROUPS=1'
+        regexp: '^#?ADD_EXTRA_GROUPS='
 
-  - name: Find EXTRA_GROUPS
-    register: extra_groups
-    command: 'grep "^EXTRA_GROUPS=" /etc/adduser.conf'
-    failed_when: "extra_groups.rc == 2"
-    changed_when: false
+    - name: Find EXTRA_GROUPS
+      register: extra_groups
+      command: 'grep "^EXTRA_GROUPS=" /etc/adduser.conf'
+      failed_when: "extra_groups.rc == 2"
+      changed_when: false
 
-  - name: Add extra groups instruction
-    ansible.builtin.lineinfile:
-      state: present
-      line: "EXTRA_GROUPS=\"\""
-      insertbefore: EOF
-      path: /etc/adduser.conf
-    when: not extra_groups.stdout
+    - name: Add extra groups instruction
+      ansible.builtin.lineinfile:
+        state: present
+        line: "EXTRA_GROUPS=\"\""
+        insertbefore: EOF
+        path: /etc/adduser.conf
+      when: not extra_groups.stdout
 
-  - name: Add new group to extra groups instruction
-    ansible.builtin.replace:
-      path: /etc/adduser.conf
-      replace: 'EXTRA_GROUPS="{{ default_group_group.groupname }} \1"'
-      regexp: '^(?!.*[\s\"]+{{ default_group_group.groupname }}[\s\"]+)EXTRA_GROUPS=\"(.*)\"'
+    - name: Add new group to extra groups instruction
+      ansible.builtin.replace:
+        path: /etc/adduser.conf
+        replace: 'EXTRA_GROUPS="{{ default_group_group.groupname }} \1"'
+        regexp: '^(?!.*[\s\"]+{{ default_group_group.groupname }}[\s\"]+)EXTRA_GROUPS=\"(.*)\"'
