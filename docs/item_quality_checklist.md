@@ -83,6 +83,17 @@ workspace type to a specified community/collaboration.
 
 ## Best practices
 
+### Use recommended roles
+
+The roles in the [uusrc.general collection](./index.md#installing-as-a-collection) contain many roles that faciliate best practices on ResearchCloud, for instance:
+
+- Use [runonce](roles/runonce.md) to have a piece of code ran once the first time a user logs in.
+- Use [desktop_file](roles/desktop_file.md) to create menu and desktop entries.
+- Use [fact_regular_users](roles/fact_regular_users.md) to gather a list of all users on the system.
+- Use [fact_workspace_info](roles/fact_workspace_info.md) to gather general facts about the workspace, including whether it is a desktop workspace and which [SRAM CO roles](https://utrechtuniversity.github.io/vre-docs/docs/glossary.html#collaboration) are defined.
+- Use [nginx_reverse_proxy](roles/nginx_reverse_proxy.md) to easily define reverse proxies and other Nginx locations on top of the SURF Nginx component.
+- Use [pipx_install_systemwide](roles/pipx_install_systemwide.md) to avoid installing Python applications using the system Python interpeter (e.g. `/usr/bin/python3`), which might break `pip` dependencies on which the system depends.
+
 ### Test-driven development
 
 While unit tests are not present in these components made for SURF Research Cloud, there are other tools that can help you:
@@ -96,13 +107,27 @@ Try to incorporate as much of TDD into developing playbooks and roles: first det
 
 CI pipelines for Ansible Lint and Molecule are essential to guarding against the introduction of bugs and maintaining code quality.
 
-### Specific roles
+You can also use Molecule to [test and experiment locally](#testing-changes-locally).
 
-The roles in the [uusrc.general collection](./index.md#installing-as-a-collection) contain many roles that faciliate best practices on ResearchCloud, for instance:
+### Testing changes locally
 
-- Use [runonce](roles/runonce.md) to have a piece of code ran once the first time a user logs in.
-- Use [desktop_file](roles/desktop_file.md) to create menu and desktop entries.
-- Use [fact_regular_users](roles/fact_regular_users.md) to gather a list of all users on the system.
-- Use [fact_workspace_info](roles/fact_workspace_info.md) to gather general facts about the workspace, including whether it is a desktop workspace and which [SRAM CO roles](https://utrechtuniversity.github.io/vre-docs/docs/glossary.html#collaboration) are defined.
-- Use [nginx_reverse_proxy](roles/nginx_reverse_proxy.md) to easily define reverse proxies and other Nginx locations on top of the SURF Nginx component.
-- Use [pipx_install_systemwide](roles/pipx_install_systemwide.md) to avoid installing Python applications using the system Python interpeter (e.g. `/usr/bin/python3`), which might break `pip` dependencies on which the system depends.
+Using [Molecule tests], you can locally test whether changes to a role or playbook deploy correctly, and whether they function as you expected, using Docker or Podman containers. This can save a lot of time, as running a container is faster than deploying a VM on ResearchCloud.
+
+There is a separate repository that contains Molecule boilerplate configuration tailored for use with ResearchCloud components. This is so that this configuration can easily be included in other repos. See [here](https://github.com/UtrechtUniversity/SRC-molecule) for more information.
+
+Although local testing (and testig in CI) with Molecule is great for small changes, for bigger changesets it may be wise to also [test on ResearchCloud](#testing-changes-on-researchcloud). This is because the container deployment used with Molecule is [not fully identical to the ResearchCloud environment](https://github.com/UtrechtUniversity/SRC-test-workspace#limitations).
+
+### Testing changes on ResearchCloud
+
+For testing changes to a Catalog Item on ResearchCloud, best practice is to:
+
+1. Create and push a new branch containing changes to your playbooks/roles to this repository.
+  * Of course you can also open a PR for this branch so that the CI tests run.
+  * Once CI passes on your feel you need to test on a VM on ResearchCloud, continue with the next steps.
+1. Create Development versions for the components that you want to test, that reference the new branch you just pushed.
+1. Clone the catalog item you want to test the components with. Give the cloned item the name `[DEV] My Catalog Item`.
+  * Maybe a `[DEV] ...` version of the catalog item already exists! In that case, you may not need to clone a new version.
+1. Deploy a workspace with `[DEV] My Catalog Item`. See if the deployment succeeds and everything works as expected.
+1. If not, make changes to your playbooks and roles, push them to your branch, and deploy again.
+
+However, note that instead of testing every change on ResearchCloud, you can also start by [running Molecule tests locally](#testing-changes-locally). This can save a lot of time!
