@@ -115,7 +115,7 @@ Using [Molecule tests], you can locally test whether changes to a role or playbo
 
 There is a separate repository that contains Molecule boilerplate configuration tailored for use with ResearchCloud components. This is so that this configuration can easily be included in other repos. See [here](https://github.com/UtrechtUniversity/SRC-molecule) for more information.
 
-Although local testing (and testig in CI) with Molecule is great for small changes, for bigger changesets it may be wise to also [test on ResearchCloud](#testing-changes-on-researchcloud). This is because the container deployment used with Molecule is [not fully identical to the ResearchCloud environment](https://github.com/UtrechtUniversity/SRC-test-workspace#limitations).
+Although local testing (and testing in CI) with Molecule is great for small changes, for bigger changesets it may be wise to also [test on ResearchCloud](#testing-changes-on-researchcloud). This is because the container deployment used with Molecule is [not fully identical to the ResearchCloud environment](https://github.com/UtrechtUniversity/SRC-test-workspace#limitations).
 
 ### Testing changes on ResearchCloud
 
@@ -124,7 +124,7 @@ For testing changes to a Catalog Item on ResearchCloud, best practice is to:
 1. Create and push a new branch containing changes to your playbooks/roles to this repository.
   * Of course you can also open a PR for this branch so that the CI tests run.
   * Once CI passes on your feel you need to test on a VM on ResearchCloud, continue with the next steps.
-1. Create Development versions for the components that you want to test, that reference the new branch you just pushed.
+1. Create [Development versions](https://servicedesk.surf.nl/wiki/pages/viewpage.action?pageId=102826582) for the components that you want to test, that reference the new branch you just pushed.
 1. Clone the catalog item you want to test the components with. Give the cloned item the name `[DEV] My Catalog Item`.
   * Maybe a `[DEV] ...` version of the catalog item already exists! In that case, you may not need to clone a new version.
 1. Deploy a workspace with `[DEV] My Catalog Item`. See if the deployment succeeds and everything works as expected.
