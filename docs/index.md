@@ -1,6 +1,6 @@
 # Developer documentation
 This is the developer documentation for this repository.
-See [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation).
+See this [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation.
 
 Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles) (reusable items that can be included in a playbook).
 The playbook and roles can be used stand-alone (run them locally on the target host), but are
@@ -8,9 +8,16 @@ designed with the goal of deploying them in the deployment of a ResearchCloud wo
 
 Contributed playbooks and roles should meet criteria specified in our [item quality checklist](./item_quality_checklist.md).
 
-### A note on Windows
+## External component repositories
 
-This documentation concern ResearchCloud components for Unix/Linux workspaces, which are based on Ansible. There is a [separate repository](https://github.com/UtrechtUniversity/researchcloud-items-win/) for Windows components (using PowerShell).
+This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). However, some components are not part of this repository and can be found elsewhere. This can be for several reasons: the component may need different access rights from this repository due to collaborations, it may be a non-Ansible based component, or it may be an Ansible-based component that should be available as a separate collection. Below is a list of important UU-maintained ResearchCloud components outside of this repository.
+
+| Name                                                                                     | Description                                                                                                                                                                                                                                 | Component type   | Why not in this repo?              |
+|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------------------------|
+| [Grobid](https://github.com/UtrechtUniversity/src-component-grobid)                      | Grobid can help you perform bibliographic analyses on  scientific papers. | Docker Compose | Non-Ansible                        |
+| [Galaxy](https://github.com/UtrechtUniversity/src-component-galaxy)                      | Galaxy is a workflow engine for bioinformatics.                                                                                                                                                                                             | Ansible          | Non-standard access rights         |
+| [ibridges-ansible](https://github.com/UtrechtUniversity/ibridges-ansible)                | A component to easily download iRODS collections to a workspace.                                                                                                                                                                            | Ansible          | Available as a separate collection |
+| [researchcloud-items-win](https://github.com/UtrechtUniversity/researchcloud-items-win/) | Various components targeting Windows workspaces                                                                                                                                                                                             | PowerShell       | Non-Ansible                        |
 
 ## Installing as a collection
 
