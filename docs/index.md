@@ -10,7 +10,9 @@ Contributed playbooks and roles should meet criteria specified in our [item qual
 
 ## External component repositories
 
-This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). However, some components are not part of this repository and can be found elsewhere. This can be for several reasons: the component may need different access rights from this repository due to collaborations, it may be a non-Ansible based component, or it may be an Ansible-based component that should be available as a separate collection. Below is a list of important UU-maintained ResearchCloud components outside of this repository.
+This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). This documentation is exclusively for the playbooks and roles contained in this repo.
+
+However, some components are not part of this repository and can be found elsewhere. This can be for several reasons (see below). Below is a list of important UU-maintained ResearchCloud components outside of this repository. Documentation should be contained in these external repositories.
 
 | Name                                                                                     | Description                                                                                                                                                                                                                                 | Component type   | Why not in this repo?              |
 |------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------------------------|
@@ -18,6 +20,8 @@ This repository contains the bulk of UU's ResearchCloud components for Unix/Linu
 | [Galaxy](https://github.com/UtrechtUniversity/src-component-galaxy)                      | Galaxy is a workflow engine for bioinformatics.                                                                                                                                                                                             | Ansible          | Non-standard access rights         |
 | [ibridges-ansible](https://github.com/UtrechtUniversity/ibridges-ansible)                | A component to easily download iRODS collections to a workspace.                                                                                                                                                                            | Ansible          | Available as a separate collection |
 | [researchcloud-items-win](https://github.com/UtrechtUniversity/researchcloud-items-win/) | Various components targeting Windows workspaces                                                                                                                                                                                             | PowerShell       | Non-Ansible                        |
+
+Components for specific research projects (not intended for general use) should preferably also be stored in a separate repository. They can use the roles in this repo by [installing it as a collection](#installing-as-a-collection).
 
 ## Installing as a collection
 
