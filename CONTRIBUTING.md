@@ -17,6 +17,8 @@ In short:
 5. Submit a pull request from that branch to the main branch of the master repository. 
 6. If you receive feedback, make changes on your desktop and push to your branch on GitHub: the pull request will update automatically.
 
+**Note**: in order not to needlessly trigger test workflows, please convert your PR to a draft while you are still working on it. When ready, mark your PR as "ready for review". This will ensure tests are run.
+
 ## Style guides
 
 ### Branch naming conventions
