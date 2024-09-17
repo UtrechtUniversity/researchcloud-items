@@ -25,12 +25,12 @@
         ssh_connection_multiplexing: true
       with_items: "{{ lookup('env', 'components') }}"
 
-    - name: Install dependencies
+    # Apt cache is normally updated at deploy time by the SRC-OS component.
+    # Make sure it is fresh so our tests use recent apt repo information.
+    - name: Update apt cache
       ansible.builtin.apt:
-        pkg:
-          - dirmngr
         update_cache: true
-      when: ansible_pkg_mgr == 'apt'
+      when: ansible_os_family == 'Debian'
 
     - name: Set extra_preparations var
       ansible.builtin.set_fact:
