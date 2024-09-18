@@ -18,6 +18,7 @@
     src: "{{ desktopfile_app_name }}_{{ item }}.png"
     dest: "/tmp/{{ desktopfile_app_name }}_{{ item }}.png"
     mode: 0644
+    force: false
   with_items: "{{ desktopfile_sizes }}"
 
 - name: Install icons as xdg resource
