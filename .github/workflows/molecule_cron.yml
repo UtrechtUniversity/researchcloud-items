@@ -17,6 +17,7 @@ jobs:
       ANSIBLE_STDOUT_CALLBACK: yaml
       MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
       REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
+      ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
       CRUN_VER: 1.11.2
     steps:
       - name: Workaround crun issue on ubuntu
@@ -39,6 +40,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r ${{ env.REQUIREMENTS_FILE }}
+      - run: ansible-galaxy install -r ${{ env.ANSIBLE_REQUIREMENTS_FILE }}
+      - run: ansible-galaxy install -r requirements.yml
       - name: Molecule tests
         run: |
           molecule -c ${{ env.MOLECULE_CONFIG }} test --all
