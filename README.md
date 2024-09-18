@@ -46,4 +46,4 @@ There are two kinds of tests:
 1. Role tests. Molecule scenarios should be stored in the `playbooks/roles/<role>/molecule/` directory.
 1. Playbook tests. Molecule scenarios should be stored in the `molecule/` directory and given a `playbook-` prefix.
 
-By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/roles/pyenv/tasks/main.yml`, the scenario `molecule/role-pyenv` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/playbook-python-workbench/molecule.yml`).
+By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/foo.yml`, the scenario `molecule/playbook-foo` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/foo/molecule.yml`).
