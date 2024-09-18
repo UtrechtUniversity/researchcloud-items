@@ -12,7 +12,10 @@
       ansible.builtin.command: >
         ansible-playbook -c local -v -b {{ remote_plugin.arguments }} --extra-vars='{{ remote_plugin.parameters }}' /rsc/plugins/{{ item.name}}/{{ item.path }}
       register: ansible_on_workspace
-      changed_when: "ansible_on_workspace.stdout_lines is not defined or 'changed=0' not in ansible_on_workspace.stdout_lines[-1]"
+      changed_when: >
+        ansible_on_workspace.stdout_lines is not defined or
+        'changed=0' not in
+        ansible_on_workspace.stdout_lines[ lookup('ansible.utils.index_of', ansible_on_workspace.stdout_lines, 'regex', '\s*PLAY RECAP\s*')+1 ]
       vars:
         remote_plugin:
           script_type: Ansible PlayBook
