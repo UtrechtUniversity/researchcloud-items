@@ -74,7 +74,6 @@ status should be indicated in the description field of the catalog plugin item.
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
-- [docker](playbooks/docker.md) application container management
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
@@ -118,7 +117,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [asreview](roles/asreview.md)
 - [camunda_modeler](roles/camunda_modeler.md)
 - [camunda_server](roles/camunda_server.md)
-- [docker](roles/docker.md)
 - [git_clone](roles/git_clone.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
