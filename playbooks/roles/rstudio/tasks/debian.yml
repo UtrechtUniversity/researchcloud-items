@@ -1,0 +1,16 @@
+---
+- name: Install R for Debian
+  apt:
+    name: r-base
+    update_cache: yes
+    state: present
+
+- name: Install R dev
+  apt:
+    name: r-base-dev
+    state: present
+
+- name: Install RStudio for Debian
+  apt:
+    deb: https://download1.rstudio.org/electron/focal/amd64/rstudio-2023.06.1-524-amd64.deb
+    state: present
