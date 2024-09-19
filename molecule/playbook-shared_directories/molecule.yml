@@ -8,3 +8,4 @@ provisioner:
         parameters:
           paths: /shared, /home/testuser/shared,/scratch
           group_name: testgroup
+          group_writable: 'false'
