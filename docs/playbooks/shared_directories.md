@@ -17,8 +17,9 @@ Workspaces come with a `/scratch` directory meant for collaboration between user
 
 ## Variables
 
-* `group_name`: name of the group to be created (default: `sharing`).
-* `paths`: comma-separated paths to the directories which should receive `set_gid` (default: `/shared`).
+* `group_name`: String. Name of the group to be created (default: `sharing`).
+* `group_writable`: Boolean. Whether the created shared directories should be writeable by the shared group (`true`) or only readable (`false`) (default: `true`).
+* `paths`: String. Comma-separated paths to the directories which should receive `set_gid` (default: `/shared`).
 
 ## See also
 

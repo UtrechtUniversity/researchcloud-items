@@ -4,6 +4,7 @@
   gather_facts: true
   vars:
     _group_name: "{{ group_name | default('shared') }}"
+    _group_writable: "{{ group_writable | default('true', true) | bool | ternary('7','5') }}"
   roles:
     - role: default_group
       vars:
@@ -15,7 +16,7 @@
         path: "{{ item | trim }}"
         owner: "root"
         group: "{{ _group_name }}"
-        mode: "02770"
+        mode: "027{{ _group_writable }}0"
         state: directory
         recurse: true
       with_items: "{{ paths.split(',') }}"

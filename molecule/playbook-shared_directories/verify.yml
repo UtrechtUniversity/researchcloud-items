@@ -30,7 +30,7 @@
     - name: Assert shared folder has correct mode and ownership
       ansible.builtin.assert:
         that:
-          - "'drwxrws' in item.stdout"
+          - "'drwxr-s' in item.stdout"
           - "'root testgroup' in item.stdout"
       with_items:
         - "{{ list_dir1 }}"
