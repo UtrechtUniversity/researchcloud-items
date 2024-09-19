@@ -1,0 +1,19 @@
+[uwsgi]
+plugins = {{ uwsgi_plugins }}
+chdir = {{ uwsgi_app_dir }}/
+workers = {{ uwsgi_num_workers }}
+socket = /tmp/uwsgi-{{ uwsgi_app_name }}.sock
+uid = www-data
+gid = www-data
+wsgi-file = {{ uwsgi_app_dir }}/{{ uwsgi_app_path }}
+chmod-socket = 660
+vacuum = true
+die-on-term = true
+master = true
+pidfile = {{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.pid
+{% for key, value in uwsgi_config.items() %}
+{% if value | length > 0 %}
+{{ key }}={{ value }}
+{% endif %}
+{% endfor %}
+{{ uwsgi_config_block }}

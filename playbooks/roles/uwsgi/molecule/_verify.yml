@@ -1,0 +1,14 @@
+---
+- name: Test uswgi app
+  ansible.builtin.uri:
+    url: http://127.0.0.1/example/
+    method: GET
+    return_content: true
+    url_username: tester
+    url_password: letmein
+  register: uwsgi_curl_result
+
+- name: Assert testusers have correct groups and gids
+  ansible.builtin.assert:
+    that:
+      - 'uwsgi_curl_result.content == "Hello World"'

@@ -1,0 +1,18 @@
+---
+uwsgi_app_dir: /var/www/uwsgi
+uwsgi_app_path: app.py
+uwsgi_app_name: example
+uwsgi_plugins: python3
+uwsgi_nginx_mountpoint: /{{ uwsgi_app_name }}/
+uwsgi_nginx_backend: "unix:/tmp/uwsgi-{{ uwsgi_app_name }}.sock"
+uwsgi_num_workers: 2
+uwsgi_log_dir: /var/log/uwsgi
+uwsgi_venv: false
+uwsgi_default_proxy_conf: # Don't override this
+  name: "{{ uwsgi_app_name }}"
+  location: "{{ uwsgi_nginx_mountpoint }}"
+  include: uwsgi_params
+  uwsgi_pass: "{{ uwsgi_nginx_backend }}"
+uwsgi_proxy_conf: {}
+uwsgi_config: {}
+uwsgi_config_block: ''

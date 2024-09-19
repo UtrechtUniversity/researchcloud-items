@@ -1,0 +1,19 @@
+---
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Create uwsgi dir
+  file:
+    path: /var/www/uwsgi
+    state: directory
+
+- name: Add uwsgi test app
+  ansible.builtin.copy:
+    dest: /var/www/uwsgi/app.py
+    owner: www-data
+    mode: "0640"
+    content: >
+      def application(env, start_response):
+          start_response('200 OK', [('Content-Type','text/html')])
+          return [b"Hello World"]
