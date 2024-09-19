@@ -1,9 +1,22 @@
 ---
-# Note that below config of uwsgi depends on 
-# nginx (plugin) already installed and configured using SURF config parameters
-# 
+# This playbook prepares the ground for serving a Python webapp via uwsgi, with nginx as reverse proxy.
+# It assumes:
+# - that nginx is already installed, via the SRC-Nginx component.
+# - that the Python application is already present in {{ uwsgi_app_dir }}/{{ uwsgi_app_path }}
 #
-- name: ensure uwsgi service is installed
+# Note that if you're adding/modifying the Python app after running this playbook
+# you need to restart the service "uwsgi-<yourappname>".
+
+- name: Create uwsgi app dir
+  file:
+    path: "{{ uwsgi_app_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0750"
+
+- name: Install uwsgi
+  when: not uwsgi_venv
   package:
     name: "{{ item }}"
     state: present
@@ -11,22 +24,53 @@
     - "uwsgi"
     - "uwsgi-plugin-python3"
 
-- name: configure uwsgi within nginx for locations starting with '/w'
-  copy:
-    src: "nginx-uwsgi.conf"
-    dest: "/etc/nginx/app-location-conf.d/uwsgi.conf"
-    mode: 0644
-  notify: Restart nginx
+- name: Configure uwsgi reverse proxy in nginx
+  include_role:
+    name: nginx_reverse_proxy
+  vars:
+    nginx_reverse_proxy_locations: "{{ [dict(uwsgi_default_proxy_conf, **uwsgi_proxy_conf)] }}"
 
-# - name: copy example uwsgi.ini file to /etc/uwsgi/apps-available
-#  copy:
-#    src: "uwsgi-example.ini"
-#    dest: "/etc/uwsgi/apps-available/example.ini"
-#    mode: 0644    
+- name: Create uwsgi ini file for app
+  template:
+    src: uwsgi-example.ini.j2
+    dest: "{{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.ini"
+    owner: root
+    group: www-data
+    mode: "0644"
 
+- name: Create service file for app
+  template:
+    src: uwsgi.service.j2
+    dest: "/etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service"
+    owner: root
+    group: root
+    mode: "0640"
 
-- name: start uwsgi service at boot
-  service:
-    name: uwsgi
+- name: Create log directory
+  file:
+    path: "{{ uwsgi_log_dir }}"
+    owner: www-data
+    group: www-data
+    mode: "0750"
+    state: directory
+
+- name: Enable logrotation for app
+  blockinfile:
+    path: "/etc/logrotate.d/uwsgi"
+    block: >
+      {{ uwsgi_log_dir }}/*.log {
+        daily
+        rotate 5
+        size 50M
+        compress
+        delaycompress
+        missingok
+        copytruncate
+      }
+    create: true
+
+- name: Start app service
+  systemd_service:
+    name: "uwsgi-{{ uwsgi_app_name }}"
     state: started
-    enabled: yes
+    enabled: true
