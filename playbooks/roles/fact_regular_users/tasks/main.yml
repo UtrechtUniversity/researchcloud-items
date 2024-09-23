@@ -8,33 +8,49 @@
 #       description: "sample user foo"
 #     }  
 # ]
-# 
+#
 # assumes a Unix-like environment where all users are listed in /etc/passwd
 # selects users that meet the following criteria
 #   - userid > 999  which excludes system roles
 #   - home directory underneath /home
 #
-# NB ugly hack: the filter set "to_json|from_json" is needed to transform a dictionary
-#     with unicode strings to a dictionary with ascii strings
-#     as json_query expects ascii strings
+
+- name: Detect whether ansible is being run in a venv
+  command: python3 -c "import sys; exit(sys.prefix == sys.base_prefix)" # exit with code 1 if not in venv
+  register: _fact_ansible_in_venv
+  changed_when: false
+  failed_when: false
+
+- name: Set fact ansible_in_venv
+  set_fact:
+    ansible_in_venv: _fact_ansible_in_venv.rc == 0
 
 # jmespath is required for filter
 # The `break_system_packages: false` option is not yet supported on the default Ansible version on SRC.
 # However, the default python interpeter used by Ansible should be in a venv, so that we don't need to worry about breaking systemd packages.
-- name: Install jmespath
+- name: Install jmespath in venv
   pip:
     name: jmespath
     # break_system_packages: false 
     state: present
+  when: ansible_in_venv
+
+- name: Install jmespath globally
+  package:
+    name: python3-jmespath  # same package name on debian, ubuntu, rocky/el
+  when: not ansible_in_venv
 
 - name: Read database /etc/passwd
   no_log: true
   getent:
     database: passwd
 
+# NB ugly hack: the filter set "to_json|from_json" is needed to transform a dictionary
+#     with unicode strings to a dictionary with ascii strings
+#     as json_query expects ascii strings
 - name: Set fact regular_users
   set_fact:
-    fact_regular_users: "{{ getent_passwd|dict2items|to_json|from_json|
+    fact_regular_users: "{{ getent_passwd | dict2items | to_json | from_json |
     json_query('[?to_number(value[1]) >`999` && starts_with(value[4], `/home/`) && key!=`ubuntu`
     ].{user: key, userid: to_number(value[1]), groupid: to_number(value[2]),
     description: value[3], home: value[4], shell: value[5]}') }}"
@@ -46,7 +62,7 @@
 - name: Get CO groupnames
   slurp:
     src: /etc/rsc/managedgroups
-    
+
   register: _co_groupnames
 
 - name: Parse CO groupnames
@@ -55,5 +71,5 @@
 
 - name: Set fact CO groups
   set_fact:
-    fact_co_groups: "{{ fact_co_groups | default({}) | combine({item.key: item.value[-1].split(',') }) }}"
+    fact_co_groups: "{{ fact_co_groups | default({}) | combine({item.key: item.value[-1].split(',')}) }}"
   loop: "{{ getent_group | dict2items | selectattr('key', 'in', _co_groupnames_parsed) | list }}"
