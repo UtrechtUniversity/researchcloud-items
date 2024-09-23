@@ -3,5 +3,7 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - agisoft
+    - role: agisoft
+      vars:  
+        lic_file_lines: "{{ content | split('\n') }}"
 ...
