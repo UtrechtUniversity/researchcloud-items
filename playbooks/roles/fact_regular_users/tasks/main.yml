@@ -15,15 +15,11 @@
 #   - home directory underneath /home
 #
 
-- name: Detect whether ansible is being run in a venv
-  command: python3 -c "import sys; exit(sys.prefix == sys.base_prefix)" # exit with code 1 if not in venv
-  register: _fact_ansible_in_venv
-  changed_when: false
-  failed_when: false
-
-- name: Set fact ansible_in_venv
-  set_fact:
-    ansible_in_venv: _fact_ansible_in_venv.rc == 0
+- name: Gather minimal system facts
+  setup:
+    gather_subset:
+      - "min"
+  when: ansible_os_family is not defined
 
 # jmespath is required for filter
 # The `break_system_packages: false` option is not yet supported on the default Ansible version on SRC.
@@ -33,12 +29,12 @@
     name: jmespath
     # break_system_packages: false 
     state: present
-  when: ansible_in_venv
+  when: not ansible_python.executable.startswith('/usr/bin')
 
 - name: Install jmespath globally
   package:
     name: python3-jmespath  # same package name on debian, ubuntu, rocky/el
-  when: not ansible_in_venv
+  when: ansible_python.executable.startswith('/usr/bin')
 
 - name: Read database /etc/passwd
   no_log: true
