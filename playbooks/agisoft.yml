@@ -5,5 +5,5 @@
   roles:
     - role: agisoft
       vars:  
-        lic_file_lines: "{{ content | split('\n') }}"
+        license: "{{ content | replace('\\n', '\n') }}"
 ...
