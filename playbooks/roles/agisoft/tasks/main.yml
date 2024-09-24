@@ -26,10 +26,7 @@
 - name: Create license file
   copy:
     dest:  "{{ agisoft_install_dir }}/license.lic"
-    content: |
-      "{{ lic_file_lines[0] }}"
-      "{{ lic_file_lines[1] }}"
-      "{{ lic_file_lines[2] }}"      
+    content: "{{ license }}"
 
 - name: Install desktop file menu item through role
   include_role:
