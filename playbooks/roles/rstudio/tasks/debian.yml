@@ -10,7 +10,14 @@
     name: r-base-dev
     state: present
 
-- name: Install RStudio for Debian
+- name: Install RStudio for Ubuntu 20
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "20.04"
   apt:
-    deb: https://download1.rstudio.org/electron/focal/amd64/rstudio-2023.06.1-524-amd64.deb
+    deb: https://download1.rstudio.org/electron/focal/amd64/rstudio-2024.04.2-764-amd64.deb
+    state: present
+    
+- name: Install RStudio for Ubuntu 22
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "22.04"
+  apt:
+    deb: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.04.2-764-amd64.deb
     state: present
