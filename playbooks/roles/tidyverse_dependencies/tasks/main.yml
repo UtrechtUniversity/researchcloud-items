@@ -1,5 +1,5 @@
 ---
-- name: Install dependencies
+- name: Install tidyverse dependencies
   apt:
     pkg:
     - libicu-dev
@@ -16,5 +16,12 @@
     - libtiff-dev
     - pandoc
     - libxml2-dev    
+    state: present
+
+# since it is just one quick additional install I add it here, if more follow, we might consider refactoring
+- name: Install lme4 dependencies
+  apt:
+    pkg:
+    - cmake 
     state: present
 ...
