@@ -22,19 +22,9 @@
   when: ansible_os_family is not defined
 
 # jmespath is required for filter
-# The `break_system_packages: false` option is not yet supported on the default Ansible version on SRC.
-# However, the default python interpeter used by Ansible should be in a venv, so that we don't need to worry about breaking systemd packages.
-- name: Install jmespath in venv
-  pip:
-    name: jmespath
-    # break_system_packages: false 
-    state: present
-  when: not ansible_python.executable.startswith('/usr/bin')
-
 - name: Install jmespath globally
   package:
     name: python3-jmespath  # same package name on debian, ubuntu, rocky/el
-  when: ansible_python.executable.startswith('/usr/bin')
 
 - name: Read database /etc/passwd
   no_log: true
