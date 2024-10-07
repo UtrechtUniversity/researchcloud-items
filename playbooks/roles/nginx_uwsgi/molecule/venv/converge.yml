@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: true
   roles:
-    - name: uwsgi
+    - name: nginx_uwsgi
       vars:
         uwsgi_venv: /var/www/uwsgi/example/venv
         uwsgi_config:

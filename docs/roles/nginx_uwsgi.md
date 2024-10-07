@@ -1,4 +1,4 @@
-# Role uwsgi
+# Role nginx_uwsgi
 [back to index](../index.md#Roles)
 
 ## Summary
