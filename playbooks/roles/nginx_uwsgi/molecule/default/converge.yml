@@ -8,7 +8,7 @@
         uwsgi_app_name: example
         uwsgi_config:
           callable: application
-        uwsgi_proxy_conf:
+        uwsgi_proxy_config:
           auth: basic
           htpasswd: example
         nginx_reverse_proxy_auth_info:
