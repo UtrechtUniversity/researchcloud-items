@@ -1,0 +1,43 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 80/tcp
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+    components:
+      - name: nginx
+        git: https://gitlab.com/dometto/plugin-nginx.git
+        path: plugin-nginx.yml
+        version: molecule_compatibility
+        parameters:
+          rsc_nginx_authorization_endpoint: http://localhost
+          rsc_nginx_user_info_endpoint: http://localhost
+          rsc_nginx_service_url: http://localhost
+          nginx_enable_ssl: false
+          nginx_enable_auth: true
+          rsc_nginx_oauth2_application:
+            client_id: foo
+      - name: flask_app
+        path: flask_app.yml
+        parameters:
+          flask_app_name: hello
+          flask_app_path: hello/app.py
+          flask_app_auth_basic: true
+          flask_app_username: tester
+          flask_app_password: letmein
+          flask_app_repo: https://github.com/dometto/flask-examples.git
+          flask_app_requirements: 'requirements.txt'
+          flask_app_location: '/'
+          flask_app_uwsgi_config: >
+            vacuum = false # just to test the flask_app_uswgi_config option

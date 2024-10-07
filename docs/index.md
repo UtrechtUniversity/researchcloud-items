@@ -57,6 +57,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
 - [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
+- [flask_app](roles/flask_app.md) serve a Flask app with Nginx, optionally with SRAM authorization.
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development

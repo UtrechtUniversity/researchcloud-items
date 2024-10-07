@@ -4,7 +4,7 @@ uwsgi_app_path: app.py
 uwsgi_app_name: example
 uwsgi_plugins: python3
 uwsgi_nginx_mountpoint: /{{ uwsgi_app_name }}/
-uwsgi_nginx_backend: "unix:/tmp/uwsgi-{{ uwsgi_app_name }}.sock"
+uwsgi_nginx_backend: unix:/tmp/uwsgi-{{ uwsgi_app_name }}.sock
 uwsgi_num_workers: 2
 uwsgi_log_dir: /var/log/uwsgi
 uwsgi_venv: false
@@ -15,4 +15,4 @@ uwsgi_default_proxy_config: # Don't override this
   uwsgi_pass: "{{ uwsgi_nginx_backend }}"
 uwsgi_proxy_config: {}
 uwsgi_config: {}
-uwsgi_config_block: ''
+uwsgi_config_block: ""
