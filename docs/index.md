@@ -110,6 +110,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
+- [uwsgi](roles/uwsgi.md)
 
 ### Experimental
 
@@ -126,4 +127,3 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx_fastcgi](roles/nginx_fastcgi.md)   
 - [nginx-pam](roles/nginx_pam.md)
 - [rstudio](roles/rstudio.md)
-- [uwsgi](roles/uwsgi.md)
