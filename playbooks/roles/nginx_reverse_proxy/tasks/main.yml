@@ -14,8 +14,8 @@
   when: _htpasswd_files | length > 0
   block:
     - name: Install dependencies for htpasswd module
-      pip:
-        name: passlib
+      package:
+        name: python3-passlib
 
     - name: Create htpasswd location
       file:
