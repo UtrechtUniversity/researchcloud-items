@@ -96,6 +96,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
 - [nginx_reverse_proxy](roles/nginx_reverse_proxy.md)
+- [nginx_uwsgi](roles/nginx_uwsgi.md)
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
@@ -110,7 +111,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
-- [uwsgi](roles/uwsgi.md)
 
 ### Experimental
 

@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: true
   roles:
-    - name: uwsgi
+    - name: nginx_uwsgi
       vars:
         uwsgi_app_name: example
         uwsgi_config:
