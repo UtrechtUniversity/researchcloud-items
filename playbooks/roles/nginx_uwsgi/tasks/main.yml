@@ -18,17 +18,24 @@
 - name: Install uwsgi
   when: not uwsgi_venv
   package:
-    name: "{{ item }}"
+    name:
+      - uwsgi
+      - uwsgi-plugin-python3
     state: present
-  with_items:
-    - "uwsgi"
-    - "uwsgi-plugin-python3"
+
+- name: Install uwsgi
+  when: uwsgi_venv
+  pip:
+    name:
+      - uwsgi
+    state: present # only install if not yet present, otherwise keep existing
+    virtualenv: "{{ uwsgi_venv }}"
 
 - name: Configure uwsgi reverse proxy in nginx
   include_role:
     name: nginx_reverse_proxy
   vars:
-    nginx_reverse_proxy_locations: "{{ [dict(uwsgi_default_proxy_conf, **uwsgi_proxy_conf)] }}"
+    nginx_reverse_proxy_locations: "{{ [dict(uwsgi_default_proxy_config, **uwsgi_proxy_config)] }}"
 
 - name: Create uwsgi ini file for app
   template:

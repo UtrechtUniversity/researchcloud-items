@@ -37,7 +37,7 @@ The nginx web server is used as a reverse proxy, using the [reverse_proxy](./ngi
 - `uwsgi_nginx_mountpoint`: String. The Nginx location specifier determining at which URL the app will be served (for example: `/example/`). Default: `/{{ uwsgi_app_name }}/`.
 - `uwsgi_num_workers`: Integer. The number of workers `uwsgi` should spawn to handle requests for this app. Default: 2.
 - `uwsgi_venv`: Boolean/String. To use a preexisting installation of `uwsgi` in a venv (rather than using the system-provided `uwsgi`), set this to the path to the root of the `venv`. Default: `false`.
-- `uwsgi_proxy_conf`: Dict. Options to be passed to the [reverse proxy role](./nginx_reverse_proxy.md), in addition to the default location and `uwsgi_pass` settings. Example: `{ auth: 'sram' }`. Default: empty.
+- `uwsgi_proxy_config`: Dict. Options to be passed to the [reverse proxy role](./nginx_reverse_proxy.md), in addition to the default location and `uwsgi_pass` settings. Example: `{ auth: 'sram' }`. Default: empty.
 - `uwsgi_config`: Dict. Key/value pairs that will be translated to `uwsgi` settings added to the application's `.ini` file. Example: `{ callable: 'foobar' }` (see `uwsgi`'s docs for options). Default: empty.
 - `uwsgi_config_block`: String. Multiline .ini style key/value pairs to be added to the application's `.ini` file.
 
