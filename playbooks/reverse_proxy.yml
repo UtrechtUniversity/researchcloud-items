@@ -1,5 +1,5 @@
 ---
-- name: Install nginx reverse proxies
+- name: Setup nginx reverse proxies
   hosts: localhost
   gather_facts: true
 
