@@ -48,7 +48,7 @@
 - name: Create service file for app
   template:
     src: uwsgi.service.j2
-    dest: "/etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service"
+    dest: /etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service
     owner: root
     group: root
     mode: "0640"
@@ -63,7 +63,7 @@
 
 - name: Enable logrotation for app
   blockinfile:
-    path: "/etc/logrotate.d/uwsgi"
+    path: /etc/logrotate.d/uwsgi
     block: >
       {{ uwsgi_log_dir }}/*.log {
         daily
@@ -78,6 +78,6 @@
 
 - name: Start app service
   systemd_service:
-    name: "uwsgi-{{ uwsgi_app_name }}"
+    name: uwsgi-{{ uwsgi_app_name }}
     state: started
     enabled: true
