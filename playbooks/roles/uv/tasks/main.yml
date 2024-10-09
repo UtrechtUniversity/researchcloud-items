@@ -1,0 +1,40 @@
+---
+- name: Install uv with pipx
+  include_role:
+    name: pipx_install_systemwide
+  vars:
+    pipx_install_systemwide_packages:
+      - uv
+    pipx_install_location: "{{ uu_pipx_bin }}"
+    pipx_install_systemwide_profile: '' # deactivate adding uv path to /etc/profile
+
+- name: Install uv alias
+  file:
+    path: /usr/local/bin/uv
+    src: "{{ uu_pipx_bin }}/uv"
+    state: link
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: Install uv pip alias
+  copy:
+    dest: /usr/local/bin/uv_pip
+    mode: "0755"
+    owner: root
+    group: root
+    content: |
+      #!/bin/bash
+      /usr/local/bin/uv pip "$@"
+
+- name: Install desired python version
+  command: "uv python install {{ item }}"
+  register: _install_desired_python
+  changed_when: '"Found existing installation" not in _install_desired_python.stderr'
+  with_items: "{{ (uv_python_versions + (uv_venvs | map(attribute='python') | list)) | unique }}"
+
+- name: Create venvs
+  command:
+    cmd: "uv venv --seed --python {{ item.python }} {{ item.path }}"
+    creates: "{{ item.path }}"
+  with_items: "{{ uv_venvs }}"
