@@ -12,14 +12,6 @@
           - build-essential
           - python3-dev
 
-    - name: Create venv
-      ansible.builtin.pip:
-        name:
-          - wheel
-          - uwsgi
-        state: present
-        virtualenv: /var/www/uwsgi/example/venv
-
     - name: Run external components
       ansible.builtin.include_tasks: ../_run_external_components.yml
       loop:

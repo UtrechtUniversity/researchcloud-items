@@ -16,6 +16,14 @@ Aditionally, a script `/usr/local/bin/uv_pip` is installed, which is essentially
 
 The role also supports creating venvs and installing desired Python versions (see below).
 
+The role will set a fact `uv_python_paths`, which contains a dict containing the location of the python interpreter for each requested versions. For example:
+
+```
+uv_python_paths: {
+    '3.11': '/root/.local/share/uv/cpython-xxxxx/bin/python3'
+}
+```
+
 ## Variables
 
 - `uv_vens`: List of dicts describing virtual environments to be initialized with `uv`. Each item in the dict is expected to contain a `python` and `path` attribute: the former determines which Python verison to use for the venv, while the latter is the location of the venv. Example: `{ path: '/tmp/foo', python: '3.11' }`. __Note__: Python versions are installed if necessary.

@@ -17,7 +17,7 @@ The Python application is assumed to be installed already in the location `uwsgi
 
 ## Description
 
-The playbook can be run in two modes:
+The role can be executed in two modes:
 
 1. (Default) Install `uwsgi` and its Python3 plugin via the system package manager (`apt`).
 2. Use a pre-existing `uwsgi` installation in a `venv`. To use this mode, set the `uwsgi_venv` variable to the location of venv already containing `uwsgi`.

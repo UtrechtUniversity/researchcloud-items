@@ -60,7 +60,7 @@
           set_fact:
             uwsgi_proxy_config: "{{ _uwsgi_proxy_config }}"
 
-    - name: Set auth info variable if present
+    - name: Set auth info variable if auth basic is set
       when: flask_app_auth == 'basic'
       set_fact:
         _flask_app_auth_info:
@@ -68,11 +68,6 @@
             username: "{{ flask_app_username | default('') }}"
             password: "{{ flask_app_password | default('') }}"
       no_log: true
-
-    - name: Set auth info variable if not present
-      when: not flask_app_auth == 'basic'
-      set_fact:
-        _flask_app_auth_info: "{{ omit }}"
 
     - name: Clone repo
       tags: molecule-idempotence-notest
