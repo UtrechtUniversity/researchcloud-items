@@ -111,6 +111,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
+- [uv](roles/uv.md) lightning fast python version and dependency manager
 
 ### Experimental
 

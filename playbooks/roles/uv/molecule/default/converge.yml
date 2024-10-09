@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - name: uv
+      vars:
+        uv_venvs:
+          - path: /tmp/test_venv
+            python: 3.13
+        uv_python_versions:
+          - 3.11
+    - name: uv # Also test uv_python_version without combination with uv_venvs
+      vars:
+        uv_python_versions:
+          - 3.12
