@@ -13,6 +13,9 @@ platforms:
         password: $DOCKER_PW
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp
   env:
     ANSIBLE_ROLES_PATH: ../../../
     components:
