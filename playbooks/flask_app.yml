@@ -100,7 +100,7 @@
           - uwsgi
       environment:
         VIRTUAL_ENV: "{{ uwsgi_venv }}"
-        CC: 'gcc'
+        CC: 'gcc' # https://github.com/astral-sh/uv/issues/6488
         LIBRARY_PATH: "{{ uv_python_paths[flask_app_python_version] | regex_replace('/bin/python3?', '/lib/') }}"
 
     - name: Install requirements
