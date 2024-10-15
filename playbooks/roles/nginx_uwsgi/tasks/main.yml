@@ -16,7 +16,7 @@
     mode: "0750"
 
 - name: Install uwsgi
-  when: not uwsgi_venv
+  when: not (uwsgi_venv | length > 0)
   package:
     name:
       - uwsgi
@@ -24,15 +24,15 @@
     state: present
 
 - name: Install uwsgi
-  when: uwsgi_venv
+  when: uwsgi_venv | length > 0
   block:
 
     - name: Ensure build requirements for uwsgi present
       when: ansible_os_family == 'Debian'
       package:
         name:
-            - build-essential
-            - python3-dev
+          - build-essential
+          - python3-dev
 
     - name: Install uwsgi via pip
       pip:
