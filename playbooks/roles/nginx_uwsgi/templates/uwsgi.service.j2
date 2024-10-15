@@ -8,7 +8,10 @@ Group=www-data
 WorkingDirectory={{ uwsgi_app_dir }}
 StandardOutput=append:/var/log/uwsgi/{{ uwsgi_app_name }}.log
 StandardError=append:/var/log/uwsgi/{{ uwsgi_app_name }}_err.log
-{% if uwsgi_venv %}
+{% for var_name, value in uwsgi_env.items() %}
+Environment="{{ var_name }}={{ value }}"
+{% endfor %}
+{% if uwsgi_venv | length > 0 %}
 Environment="PATH={{ uwsgi_venv }}/bin"
 ExecStart={{ uwsgi_venv }}/bin/uwsgi --ini {{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.ini
 {% else %}
