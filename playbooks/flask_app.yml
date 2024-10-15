@@ -10,6 +10,7 @@
     uwsgi_app_name: "{{ flask_app_name }}"
     uwsgi_app_path: "{{ flask_app_path }}"
     uwsgi_app_dir: /var/www/{{ flask_app_name }}
+    uwsgi_app_env: "{{ dict( ( flask_app_env | default('') ).split() | map('regex_search', '.+=.+') | select | map('split', '=') ) }}"
     uwsgi_num_workers: "{{ flask_app_num_workers | default('2', true) }}"
     _uwsgi_config:
       callable: app
@@ -84,13 +85,13 @@
         uv_venvs:
           - path: "{{ uwsgi_venv }}"
             python: "{{ flask_app_python_version }}"
-    
+
     - name: Ensure build requirements for uwsgi present
       when: ansible_os_family == 'Debian'
       package:
         name:
-            - build-essential
-            - python3-dev
+          - build-essential
+          - python3-dev
 
     - name: Install uwsgi
       pip:
@@ -106,11 +107,11 @@
     - name: Install requirements
       when: flask_app_requirements | length > 0
       pip:
-        executable: "uv_pip" 
+        executable: "uv_pip"
         requirements: "{{ uwsgi_app_dir }}/{{ item | trim }}"
       environment:
         VIRTUAL_ENV: "{{ uwsgi_venv }}"
       with_items: "{{ flask_app_requirements.split(',') }}"
- 
+
   roles:
     - role: nginx_uwsgi

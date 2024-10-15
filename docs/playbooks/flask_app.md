@@ -40,6 +40,7 @@ The user can always modify the `uWSGI` config by setting the `flask_app_uwsgi_co
 - `flask_app_version`: String. Git tag or version to use.
 - `flask_app_path`: String. Path to the main `.py` file for your Flask app (often `app.py` or `wsgi.py`), relative to the repository root.
 - `flask_app_requirements`: String. Comma-separated list of paths to requirements file (.txt or .toml) in the repo.
+- `flask_app_env`: String. Environment variables to be added to the environment in which the app is run, e.g. `FOO=bar BAZ=qux`. Default: `''`.
 - `flask_app_auth_sram`: Boolean. Whether to enable SRAM authorization / Single-Sign On authentication. Default: true.
 - `flask_app_auth_basic`: Boolean. Whether to enable http basic authentication. Default: false. If both this option and `flask_app_auth_sram` are enabled, the latter takes precedence.
 - `flask_app_python_version`: String. The version of Python to serve the app with. Default: `3.10`.
