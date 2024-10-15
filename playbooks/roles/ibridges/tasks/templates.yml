@@ -10,7 +10,7 @@
 
 - name: Install iBridges template plugin
   pip:
-    name: "{{ ibridges_template_plugin_url }}"
+    name: "{{ ibridges_template_plugin }}"
     extra_args: "--target {{ _ibridges_find_venv.files[0].path }}/site-packages"
     state: present
   register: ibridges_install_template_plugin
