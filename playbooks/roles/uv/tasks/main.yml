@@ -38,14 +38,14 @@
   with_items: "{{ uv_python_versions_install }}"
 
 - name: Set uv python install path facts step 1
-  shell: "uv python find {{ item }}"
+  command: "uv python find {{ item }}"
   changed_when: false
   register: "_uv_python_finds"
   with_items: "{{ uv_python_versions_install }}"
 
 - name: Set uv python install path facts step 2
   set_fact:
-    uv_python_paths: "{{ (uv_python_paths | default({})) | combine({ item.item: item.stdout }) }}"
+    uv_python_paths: "{{ (uv_python_paths | default({})) | combine({item.item: item.stdout}) }}"
   with_items: "{{ _uv_python_finds.results }}"
 
 - name: Create venvs
