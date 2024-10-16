@@ -52,6 +52,7 @@ status should be indicated in the description field of the catalog plugin item.
 
 ### Supported
 
+- [agisoft](playbooks/agisoft.md) install Agisoft Metashape
 - [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
 - [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
@@ -86,6 +87,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 ### Supported
 
+- [agisoft](roles/agisoft.md) install Agisoft Metashape
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [default_group](roles/default_group.md) set desired groups as default for regular users
 - [desktop-file](roles/desktop_file.md)
