@@ -90,7 +90,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [agisoft](roles/agisoft.md) install Agisoft Metashape
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [default_group](roles/default_group.md) set desired groups as default for regular users
-- [desktop-file](roles/desktop_file.md)
+- [desktop-file](roles/desktop_file.md) add desktop icons and login items for custom apps
 - [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
 - [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
 - [ibridges](roles/ibridges.md)  installs [iBridges](https://github.com/UtrechtUniversity/iBridges), a userfriendly commandline client for iRODS (GUI and/or CLI)
@@ -112,6 +112,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [sshfs_mount](roles/sshfs_mount.md)
 - [sshfs_cleanup](roles/sshfs_cleanup.md)   
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
+- [tidyverse_dependencies](roles/tidyverse_dependencies.md)
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
 - [uv](roles/uv.md) lightning fast python version and dependency manager
@@ -122,10 +123,8 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [asreview](roles/asreview.md)
 - [camunda_modeler](roles/camunda_modeler.md)
 - [camunda_server](roles/camunda_server.md)
-- [git_clone](roles/git_clone.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
-- [myrods_sync](roles/myrods_sync.md)  
 - [rstudio](roles/rstudio.md)
