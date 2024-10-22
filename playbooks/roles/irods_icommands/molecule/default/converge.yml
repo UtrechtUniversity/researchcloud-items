@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: irods_repo
+    - role: irods_icommands
+    - role: irods_iselect
+    - role: irods_skel
