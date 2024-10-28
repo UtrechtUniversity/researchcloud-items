@@ -2,7 +2,5 @@
 - name: Workspace playbook for Ephor use-case
   hosts: localhost
   roles:
-    - irods_iselect
-    - myrods_sync
     - tidyverse_dependencies
 ...
