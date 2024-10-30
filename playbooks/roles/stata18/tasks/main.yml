@@ -7,10 +7,14 @@
 #
 #
 
-- name: Install curses libraries to support commandline invocation of Stata
-  package:
-    name: libncurses5
-    state: present
+- name: Get system facts
+  setup:
+    gather_subset:
+      - 'min'
+
+- name: Include dependencies (Debian family)
+  include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
 
 - name: Create a tmp dir to unpack Stata software to
   file:
@@ -23,7 +27,7 @@
 - name: Download and unpack Stata18 distribution tar.gz
   unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
-    remote_src: "{{ 'molecule-notest' in ansible_skip_tags }}"
+    remote_src: true
     dest: "{{ stata18_tmp_dir }}"
 
 - name: Create stata software target dir
@@ -40,86 +44,67 @@
 # Stata version, the below actions may need changes
 #
 
-# Note that we rename from X.tza to X.tar.gz to facilitate later extraction
-- name: Copy compressed stata files to target dir while renaming to .tar.gz
-  copy:
-    src: "{{ stata18_tmp_dir }}/unix/linux64/{{ item }}.taz"
-    remote_src: true
-    dest: "{{ stata18_dir }}/{{ item }}.tar.gz"
-    owner: root
-    mode: "0640"
-  with_items:
-    - ado
-    - base
-    - bins
-    - docs
-#  - "statalib"   yet this item is not included
-
-- name: Copy file setrwxp to target dir
-  copy:
-    src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
-    remote_src: true
-    dest: "{{ stata18_dir }}/setrwxp"
-    owner: root
-    mode: "0750"
+- name: Get all archive files in tmp dir
+  find:
+    paths: "{{ stata18_tmp_archive_dir }}"
+    patterns: '*.tgz,*.taz,*.tar.gz'
+    recurse: false
+  register: stata18_archives
 
 - name: Extract compressed stata files in place in target dir
   unarchive:
-    src: "{{ stata18_dir }}/{{ item }}.tar.gz"
+    src: "{{ item }}"
     remote_src: true
     dest: "{{ stata18_dir }}"
     owner: root
-  with_items:
-    - ado
-    - base
-    - bins
-    - docs
-
-- name: Clean up tar.gz files
-  file:
-    path: "{{ stata18_dir }}/{{ item }}.tar.gz"
-    state: absent
-  with_items:
-    - ado
-    - base
-    - bins
-    - docs
-
-- name: Run Stata setrwxp to set access rights for Stata files
-  shell: ./setrwxp now
-  args:
-    chdir: "{{ stata18_dir }}"
-
-- name: Create Stata markfile to indicate presence of installed Stata
-  shell: echo `date`>installed.180
-  args:
-    chdir: "{{ stata18_dir }}"
-
-# NB: the license response file will fail if the corresponding Ansible vars have not been defined!
-#  We suggest to specify them as CO secrets
-#  see jinja script for variable names
-- name: Create response file for license initiator
-  template:
-    owner: root
     group: root
     mode: "0755"
-    src: stata_input_for_stinit.j2
-    dest: "{{ stata18_dir }}/stinit_responses.txt"
+  with_items: "{{ stata18_archives.files | map(attribute='path') | list }}"
 
-- name: Activate license
-  shell: ./stinit <stinit_responses.txt
+- name: Copy Stata setup script
+  copy:
+    src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
+    dest: "{{ stata18_dir }}/"
+    mode: "0755"
+    remote_src: true
+
+- name: Run Stata setup script to set access rights for Stata files
+  shell: "{{ stata18_dir }}/setrwxp now"
+  tags: molecule-notest
   args:
     chdir: "{{ stata18_dir }}"
+    executable: sh
 
-- name: Set app name desktop templates
-  set_fact:
-    stata_app_name: stata
+- name: Create Stata markfile to indicate presence of installed Stata
+  copy:
+    dest: "{{ stata18_dir }}/installed.180"
+    owner: root
+    mode: "0644"
+    content: "{{ ansible_date_time.iso8601 }}"
+    force: false
+
+- name: Activate license
+  command: ./stinit
+  tags: molecule-notest
+  args:
+    chdir: "{{ stata18_dir }}"
+    stdin: |
+      Y
+      Y
+      {{ stata18_lic_serial }}
+      {{ stata18_lic_code }}
+      {{ stata18_lic_auth }}
+      Y
+      Y
+      {{ stata18_lic_name }}
+      {{ stata18_lic_org }}
+      Y
 
 - name: Install desktop launcher
   include_role:
     role: desktop_file
   vars:
-    desktopfile_app_name: "{{ stata_app_name }}"
+    desktopfile_app_name: stata
     desktopfile_sizes:
       - "16"
     desktop_file_modules:
