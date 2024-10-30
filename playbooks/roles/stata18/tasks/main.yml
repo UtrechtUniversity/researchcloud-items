@@ -55,10 +55,6 @@
     - docs
 #  - "statalib"   yet this item is not included
 
-- name: Fail
-  fail:
-    msg: "Fail after copy"
-
 - name: Copy file setrwxp to target dir
   copy:
     src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
@@ -79,6 +75,10 @@
     - bins
     - docs
 
+- name: Fail
+  fail:
+    msg: "Fail after extract"
+    
 - name: Clean up tar.gz files
   file:
     path: "{{ stata18_dir }}/{{ item }}.tar.gz"
