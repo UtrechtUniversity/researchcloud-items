@@ -26,10 +26,6 @@
     remote_src: "{{ 'molecule-notest' in ansible_skip_tags }}"
     dest: "{{ stata18_tmp_dir }}"
 
-- name: Fail
-  fail:
-    msg: "Fail after unpack"
-
 - name: Create stata software target dir
   file:
     dest: "{{ stata18_dir }}"
@@ -58,6 +54,10 @@
     - bins
     - docs
 #  - "statalib"   yet this item is not included
+
+- name: Fail
+  fail:
+    msg: "Fail after copy"
 
 - name: Copy file setrwxp to target dir
   copy:
