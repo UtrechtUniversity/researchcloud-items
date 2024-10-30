@@ -74,10 +74,6 @@
     - base
     - bins
     - docs
-
-- name: Fail
-  fail:
-    msg: "Fail after extract"
     
 - name: Clean up tar.gz files
   file:
@@ -114,6 +110,10 @@
   shell: ./stinit <stinit_responses.txt
   args:
     chdir: "{{ stata18_dir }}"
+
+- name: Fail
+  fail:
+    msg: "Fail after activate"
 
 - name: Set app name desktop templates
   set_fact:
