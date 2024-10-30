@@ -106,14 +106,14 @@
     src: stata_input_for_stinit.j2
     dest: "{{ stata18_dir }}/stinit_responses.txt"
 
+- name: Fail
+  fail:
+    msg: "Fail before activate"
+
 - name: Activate license
   shell: ./stinit <stinit_responses.txt
   args:
     chdir: "{{ stata18_dir }}"
-
-- name: Fail
-  fail:
-    msg: "Fail after activate"
 
 - name: Set app name desktop templates
   set_fact:
