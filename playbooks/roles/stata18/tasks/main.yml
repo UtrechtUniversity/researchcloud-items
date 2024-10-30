@@ -20,15 +20,15 @@
     owner: root
     group: root
 
-- name: Fail
-  fail:
-    msg: "Fail after create tmp dir"
-
 - name: Download and unpack Stata18 distribution tar.gz
   unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
     remote_src: "{{ 'molecule-notest' in ansible_skip_tags }}"
     dest: "{{ stata18_tmp_dir }}"
+
+- name: Fail
+  fail:
+    msg: "Fail after unpack"
 
 - name: Create stata software target dir
   file:
