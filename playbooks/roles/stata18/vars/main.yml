@@ -1,7 +1,9 @@
 ---
+stata_app_name: stata
 stata18_tar_dir: /home/{{ robotuser_name }}/remote-data/stata/stata18-linux
 stata18_tar_file: Stata18Linux64.tar.gz
 stata18_tmp_dir: /tmp/statafiles
+stata18_tmp_archive_dir: "{{ stata18_tmp_dir }}/unix/linux64"
 stata18_dir: /usr/local/stata18
 
 # the following variables have no default, they need to be specified
