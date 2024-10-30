@@ -20,6 +20,10 @@
     owner: root
     group: root
 
+- name: Fail
+  fail:
+    msg: "Fail after create tmp dir"
+
 - name: Download and unpack Stata18 distribution tar.gz
   unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
