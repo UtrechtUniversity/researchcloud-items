@@ -1,0 +1,35 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  vars:
+    robotuser_name: uurobot
+  tasks:
+    - name: Create mock stata dir
+      ansible.builtin.file:
+        path: "/home/{{ robotuser_name }}/remote-data/stata/stata18-linux"
+        mode: "0755"
+        state: directory
+
+    - name: Create mock stata archive1
+      ansible.builtin.file:
+        path: /tmp/unix/linux64/
+        mode: "0755"
+        state: directory
+
+    - name: Create mock stata archive2
+      ansible.builtin.copy:
+        dest: /tmp/unix/linux64/setrwxp
+        content: "mock"
+
+    - name: Create mock stata archive1
+      ansible.builtin.command:
+        cmd: tar -cvzf unix/linux64/test.taz /etc/hosts # any random file
+        creates: /tmp/unix/linux64/test.taz
+        chdir: /tmp
+
+    - name: Create mock stata archive2
+      ansible.builtin.command:
+        cmd: tar -cvzf /home/uurobot/remote-data/stata/stata18-linux/Stata18Linux64.tar.gz unix
+        creates: /home/uurobot/remote-data/stata/stata18-linux/Stata18Linux64.tar.gz
+        chdir: /tmp
