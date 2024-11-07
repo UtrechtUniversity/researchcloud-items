@@ -7,4 +7,4 @@
       include_role:
         name: pyenv
       vars:
-        pyenv_default_python: 'system'
+        pyenv_default_python: system
