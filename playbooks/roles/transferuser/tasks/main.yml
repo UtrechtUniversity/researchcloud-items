@@ -6,7 +6,7 @@
 
 - name: Ensure that .ssh dir exists for the transfer user
   file:
-    path: "/home/{{ transferuser_name }}/.ssh"
+    path: /home/{{ transferuser_name }}/.ssh
     state: directory
     mode: "0750"
     owner: "{{ transferuser_name }}"
@@ -16,7 +16,7 @@
 - name: Install transfer command
   template:
     src: transfer.j2
-    dest: "/usr/local/bin/{{ transferuser_command }}"
+    dest: /usr/local/bin/{{ transferuser_command }}
     mode: "0755"
     owner: root
     group: root
