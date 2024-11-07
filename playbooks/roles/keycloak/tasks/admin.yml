@@ -1,5 +1,4 @@
 ---
-
 - name: Create admin user
   command: "{{ keycloak_jboss_home }}/bin/add-user-keycloak.sh -u {{ keycloak_admin_username }} -p {{ keycloak_admin_password }}"
   register: keycloak_create_admin
