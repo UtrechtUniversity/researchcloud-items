@@ -3,7 +3,7 @@ galaxy_info:
   author: Jelle Treep (Utrecht University)
   description: Install ownCloud client
   license: GPLv3
-  min_ansible_version: '2.9'
+  min_ansible_version: "2.9"
   platforms:
     - name: Ubuntu
       versions:
