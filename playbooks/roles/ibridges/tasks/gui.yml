@@ -2,7 +2,7 @@
 - name: Fail if not on supported distribution
   when: ansible_distribution != 'Ubuntu'
   fail:
-    msg: "Do not know how to install ibridges-gui on {{ ansible_distribution }}."
+    msg: Do not know how to install ibridges-gui on {{ ansible_distribution }}.
 
 - name: Install dependencies (Ubuntu)
   when: ansible_distribution == 'Ubuntu'
@@ -16,7 +16,7 @@
 
         - name: Set ibridges_python_path
           set_fact:
-            ibridges_python_path: "/usr/bin/python3.9"
+            ibridges_python_path: /usr/bin/python3.9
 
     - name: Install GUI dependencies
       package:
