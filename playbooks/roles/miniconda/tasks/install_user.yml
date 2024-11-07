@@ -10,4 +10,3 @@
     path: "{{ item.home }}/miniconda"
     owner: "{{ item.user }}"
     group: "{{ item.user }}"
-...
