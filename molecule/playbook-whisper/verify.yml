@@ -10,4 +10,4 @@
 
     - name: Assert files exist
       ansible.builtin.assert:
-        that: 'required_files.exists'
+        that: 'required_files.stat.exists'
