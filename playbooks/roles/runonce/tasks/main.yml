@@ -16,19 +16,19 @@
     - name: Replace shebang
       lineinfile:
         path: /etc/xrdp/startwm.sh
-        regexp: '#!/bin/sh'
-        line: '#!/usr/bin/env bash'
+        regexp: "#!/bin/sh"
+        line: "#!/usr/bin/env bash"
       when: _runonce_check_startwm.rc == 0
 
 - name: Install runonce.sh in /etc/profile.d
   copy:
-    src: "runonce.sh"
-    dest: "/etc/profile.d/runonce.sh"
+    src: runonce.sh
+    dest: /etc/profile.d/runonce.sh
     mode: "0644"
 
 - name: Ensure directory /etc/runonce.d exists
   file:
-    path: "/etc/runonce.d"
+    path: /etc/runonce.d
     state: directory
     mode: "0755"
     owner: root
@@ -44,8 +44,8 @@
 # NB: link needs "follow:no" otherwise owner/group would be applied to its src
 - name: Add link to /etc/runonce.d in /etc/skel
   file:
-    src: "/etc/runonce.d"
-    dest: "/etc/skel/runonce.d"
+    src: /etc/runonce.d
+    dest: /etc/skel/runonce.d
     owner: root
     group: root
     state: link
@@ -53,8 +53,8 @@
 
 - name: Add link to runonce dir in home of existing users
   file:
-    src: "/etc/runonce.d"
-    dest: "/{{ item.home }}/runonce.d"
+    src: /etc/runonce.d
+    dest: /{{ item.home }}/runonce.d
     owner: "{{ item.user }}"
     group: "{{ item.user }}"
     state: link
