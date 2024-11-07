@@ -2,7 +2,7 @@
 
 ---
 - name: Install dependencies
-  include_tasks: "dependencies_{{ ansible_pkg_mgr }}.yml"
+  include_tasks: dependencies_{{ ansible_pkg_mgr }}.yml
 
 # The get_url ansible module in the task below does not create a directory
 - name: Ensure download dir exists
@@ -20,7 +20,6 @@
 - name: Download and install anaconda
   tags: molecule-notest
   block:
-
     - name: Download anaconda installation files
       get_url:
         url: "{{ anaconda_url }}"
@@ -53,7 +52,7 @@
 - name: Run conda-init for every user
   template:
     src: run_conda_init.sh.j2
-    dest: "/etc/runonce.d"
+    dest: /etc/runonce.d
     mode: "0755"
 
 - name: Install desktop file menu item through role
@@ -65,4 +64,3 @@
       - 48
       - 64
       - 96
-...

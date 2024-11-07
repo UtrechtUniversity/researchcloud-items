@@ -13,4 +13,3 @@
       - mesa-libGL
       - libXScrnSaver
     state: present
-...
