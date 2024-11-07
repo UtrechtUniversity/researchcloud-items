@@ -7,8 +7,10 @@
   tags: skip_ansible_lint # linter complains about idempotence of git module
 
 - name: Run the component by executing it using ansible on the workspace
-  ansible.builtin.command: >
-    ansible-playbook -c local -v -b {{ remote_plugin.arguments }} --extra-vars='{{ remote_plugin.parameters }}' /rsc/plugins/{{ component.name}}/{{ component.path }}
+  ansible.builtin.command: >-
+    ansible-playbook -c local
+    -v -b {{ remote_plugin.arguments }} --extra-vars='{{ remote_plugin.parameters }}' /rsc/plugins/{{ component.name }}/{{ component.path
+    }}
   changed_when: false
   vars:
     remote_plugin:
