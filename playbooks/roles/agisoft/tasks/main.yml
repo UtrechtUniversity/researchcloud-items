@@ -22,7 +22,7 @@
   unarchive:
     remote_src: true
     src: "{{ agisoft_download_dest }}/{{ agisoft_file }}"
-    dest: "/opt"
+    dest: /opt
     mode: "0755"
 
 - name: Create license file
@@ -37,4 +37,3 @@
     desktopfile_app_name: agisoft
     desktopfile_sizes:
       - 48
-...
