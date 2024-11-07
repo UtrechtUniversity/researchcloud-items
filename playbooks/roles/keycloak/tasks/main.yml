@@ -1,7 +1,7 @@
 ---
 - name: Ensure java runtime is installed
   package:
-    name: "default-jre"
+    name: default-jre
     state: present
 
 - name: Create keycloak user
@@ -69,8 +69,8 @@
     owner: root
     group: root
     mode: "0644"
-    src: "keycloak.service.j2"
-    dest: "/etc/systemd/system/keycloak.service"
+    src: keycloak.service.j2
+    dest: /etc/systemd/system/keycloak.service
 
 - name: Enable keycloak
   notify: Restart keycloak
