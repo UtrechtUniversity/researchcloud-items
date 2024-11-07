@@ -1,4 +1,4 @@
 ---
-uu_pipx_bin: "/usr/local/uu-pip/bin"
+uu_pipx_bin: /usr/local/uu-pip/bin
 uv_python_versions: []
 uv_venvs: []

@@ -6,7 +6,7 @@
     pipx_install_systemwide_packages:
       - uv
     pipx_install_location: "{{ uu_pipx_bin }}"
-    pipx_install_systemwide_profile: '' # deactivate adding uv path to /etc/profile. We're creating aliases instead.
+    pipx_install_systemwide_profile: "" # deactivate adding uv path to /etc/profile. We're creating aliases instead.
 
 - name: Install uv alias
   file:
@@ -32,15 +32,15 @@
     uv_python_versions_install: "{{ (uv_python_versions + (uv_venvs | map(attribute='python') | list)) | unique }}"
 
 - name: Install desired python version
-  command: "uv python install -v {{ item }}"
+  command: uv python install -v {{ item }}
   register: _install_desired_python
   changed_when: '"Skipping" not in _install_desired_python.stderr'
   with_items: "{{ uv_python_versions_install }}"
 
 - name: Set uv python install path facts step 1
-  command: "uv python find {{ item }}"
+  command: uv python find {{ item }}
   changed_when: false
-  register: "_uv_python_finds"
+  register: _uv_python_finds
   with_items: "{{ uv_python_versions_install }}"
 
 - name: Set uv python install path facts step 2
@@ -50,6 +50,6 @@
 
 - name: Create venvs
   command:
-    cmd: "uv venv --seed --python {{ item.python }} {{ item.path }}"
+    cmd: uv venv --seed --python {{ item.python }} {{ item.path }}
     creates: "{{ item.path }}"
   with_items: "{{ uv_venvs }}"

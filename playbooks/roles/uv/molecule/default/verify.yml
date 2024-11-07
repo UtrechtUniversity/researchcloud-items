@@ -15,11 +15,11 @@
         - 3.11
         - 3.12
         - 3.13
-    
+
     - name: Test python in venv
       command: /tmp/test_venv/bin/python --version
       register: python_version
-    
+
     - name: Assert correct python path in venv
       ansible.builtin.assert:
         that:
