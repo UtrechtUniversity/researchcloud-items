@@ -6,7 +6,7 @@
     - name: Test connection
       become: true
       become_user: uurobot
-      ansible.builtin.command: "ssh localhost ls"
+      ansible.builtin.command: ssh localhost ls
       register: ssh_test_connection
 
     - name: Assert ssh successful
