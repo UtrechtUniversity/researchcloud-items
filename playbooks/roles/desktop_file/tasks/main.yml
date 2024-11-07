@@ -9,29 +9,29 @@
     state: directory
 
 - name: Install xdg utilities
-  package: 
-    name: "xdg-utils"
+  package:
+    name: xdg-utils
     state: present
 
 - name: Copy icon files to /tmp
   copy:
     src: "{{ desktopfile_app_name }}_{{ item }}.png"
-    dest: "/tmp/{{ desktopfile_app_name }}_{{ item }}.png"
-    mode: 0644
+    dest: /tmp/{{ desktopfile_app_name }}_{{ item }}.png
+    mode: "0644"
     force: false
   with_items: "{{ desktopfile_sizes }}"
 
 - name: Install icons as xdg resource
   tags: molecule-idempotence-notest
-  command: "xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ desktopfile_app_name }}_{{ item }}.png {{ desktopfile_app_name }}"
+  command: xdg-icon-resource install --novendor --context apps --size {{ item }} /tmp/{{ desktopfile_app_name }}_{{ item }}.png {{ desktopfile_app_name }}
   with_items: "{{ desktopfile_sizes }}"
 
 - name: Launch application at user login
   when: desktopfile_login
   template:
     src: "{{ desktopfile_app_name }}.desktop.j2"
-    dest: "/etc/xdg/autostart/{{ desktopfile_app_name }}.desktop"
-    mode: 0644
+    dest: /etc/xdg/autostart/{{ desktopfile_app_name }}.desktop
+    mode: "0644"
 
 - name: Define all .desktop file to be installed
   set_fact:
@@ -40,12 +40,11 @@
 - name: Copy desktop launcher file to /tmp
   template:
     src: "{{ item }}.desktop.j2"
-    dest: "/tmp/{{ item }}.desktop"
-    mode: 0644
+    dest: /tmp/{{ item }}.desktop
+    mode: "0644"
   with_items: "{{ _desktop_files }}"
 
 - name: Install launcher in system-wide desktop menu
   tags: molecule-idempotence-notest
-  command: "xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop"
+  command: xdg-desktop-menu install --novendor /tmp/{{ item }}.desktop
   with_items: "{{ _desktop_files }}"
-...
