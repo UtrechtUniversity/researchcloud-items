@@ -6,7 +6,7 @@
     - name: Get all runonce scripts
       find:
         paths: /etc/runonce.d
-        recurse: no
+        recurse: false
       register: found_scripts
 
     - name: Run runonce scripts
@@ -15,6 +15,8 @@
 
     - name: Test pyenv
       ansible.builtin.shell: su -c "bash -ic 'pyenv global'" - testuser
+      args:
+        executable: bash
       register: pyenv_global
 
     - name: Assert correct global python version
