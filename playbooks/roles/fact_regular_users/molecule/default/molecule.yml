@@ -11,7 +11,7 @@ driver:
 provisioner:
   name: ansible
   playbooks:
-    converge: 
+    converge:
     prepare: ./prepare.yml
   env:
     ANSIBLE_ROLES_PATH: ../../../
