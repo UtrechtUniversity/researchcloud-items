@@ -1,14 +1,9 @@
 ---
 camunda_version: "7.17"
-camunda_release: "7.17.0-alpha2"
-camunda_tar_urldir: "https://downloads.camunda.cloud/release/camunda-bpm/tomcat/{{ camunda_version }}"
-camunda_tar_urlfile: "camunda-bpm-tomcat-{{ camunda_release }}.tar.gz"
-camunda_dir: "/var/lib/camunda"
+camunda_release: 7.17.0-alpha2
+camunda_tar_urldir: https://downloads.camunda.cloud/release/camunda-bpm/tomcat/{{ camunda_version }}
+camunda_tar_urlfile: camunda-bpm-tomcat-{{ camunda_release }}.tar.gz
+camunda_dir: /var/lib/camunda
 camunda_tomcatdir: "{{ camunda_dir }}/server/apache-tomcat-9.0.52"
-camunda_context_name: "camunda"
-catalina_home: "/var/lib/tomcat9"
-
-
-
-
-
+camunda_context_name: camunda
+catalina_home: /var/lib/tomcat9
