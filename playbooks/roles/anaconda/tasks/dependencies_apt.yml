@@ -13,4 +13,3 @@
       - libxi6
       - libxtst6
     state: present
-...
