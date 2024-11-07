@@ -11,7 +11,7 @@
 - name: Gather minimal system facts
   setup:
     gather_subset:
-      - "min"
+      - min
   when: ansible_os_family is not defined
 
 - name: Get all packages as facts
@@ -19,7 +19,7 @@
     manager: auto
   no_log: true
 
-- name: Get the desktop package to check for 
+- name: Get the desktop package to check for
   set_fact:
     _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
 
