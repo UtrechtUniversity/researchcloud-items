@@ -7,7 +7,7 @@
   tasks:
     - name: Create mock stata dir
       ansible.builtin.file:
-        path: "/home/{{ robotuser_name }}/remote-data/stata/stata18-linux"
+        path: /home/{{ robotuser_name }}/remote-data/stata/stata18-linux
         mode: "0755"
         state: directory
 
@@ -20,7 +20,7 @@
     - name: Create mock stata archive2
       ansible.builtin.copy:
         dest: /tmp/unix/linux64/setrwxp
-        content: "mock"
+        content: mock
 
     - name: Create mock stata archive1
       ansible.builtin.command:
