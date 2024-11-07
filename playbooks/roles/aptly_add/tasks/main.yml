@@ -14,7 +14,7 @@
       file:
         path: "{{ aptly__homedir }}/.aptly/public"
         owner: "{{ aptly__user }}"
-        mode: '02750'
+        mode: "02750"
         group: "{{ webserver_group }}"
 
 - name: Create aptly_add_packages script
@@ -23,7 +23,7 @@
     dest: /usr/local/bin/aptly_add_packages.sh
     owner: "{{ aptly__user }}"
     group: root
-    mode: '0755'
+    mode: "0755"
 
 - name: Trigger aply_add script for the first time
   command:
