@@ -1,7 +1,7 @@
 ---
 - name: Set app_name for use in templates
   set_fact:
-    matlab_app_name: "matlab"
+    matlab_app_name: matlab
 
 - name: Include desktop_file role
   include_role:
@@ -11,6 +11,6 @@
     desktopfile_sizes:
       - "48"
     desktopfile_modules:
-      - "matlab"
-      - "matlab-activate"
-      - "matlab-deactivate"
+      - matlab
+      - matlab-activate
+      - matlab-deactivate
