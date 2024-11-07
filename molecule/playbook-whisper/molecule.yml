@@ -1,0 +1,10 @@
+---
+# This playbook test only tests the basic functionality of the component: copying the Notebook file to the user homedir.
+# It does not actually test the functionality of the Notebook. At the time of writing, the Notebook seems not to work on Ubuntu 22...
+# ...due to issues with pip dependencies.
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: whisper
+        path: whisper.yml
