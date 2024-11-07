@@ -10,5 +10,5 @@
     - name: Assert workspace info contents
       ansible.builtin.assert:
         that:
-          - "fact_workspace_info['workspace_id'] == 'mocked'"
-          - "fact_desktop_workspace == ('desktop' in inventory_hostname)"
+          - fact_workspace_info['workspace_id'] == 'mocked'
+          - fact_desktop_workspace == ('desktop' in inventory_hostname)
