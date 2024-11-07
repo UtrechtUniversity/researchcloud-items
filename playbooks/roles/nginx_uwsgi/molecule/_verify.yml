@@ -11,4 +11,4 @@
 - name: Assert testusers have correct groups and gids
   ansible.builtin.assert:
     that:
-      - 'uwsgi_curl_result.content == "Hello World"'
+      - uwsgi_curl_result.content == "Hello World"

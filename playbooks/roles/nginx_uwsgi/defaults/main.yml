@@ -8,7 +8,7 @@ uwsgi_nginx_backend: unix:/tmp/uwsgi-{{ uwsgi_app_name }}.sock
 uwsgi_num_workers: 2
 uwsgi_log_dir: /var/log/uwsgi
 uwsgi_env: {}
-uwsgi_venv: ''
+uwsgi_venv: ""
 uwsgi_proxy_config: {}
 uwsgi_config: {}
 uwsgi_config_block: ""
