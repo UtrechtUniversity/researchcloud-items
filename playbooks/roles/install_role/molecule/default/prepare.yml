@@ -29,7 +29,7 @@
                 vars:
                   install_role_roles:
                   # Just some test roles:
-                    - ANXS.postgresql
+                    - ANXS.postgresql,v1.16.0
                     - git+https://github.com/ANXS/generic-users.git,1c6c6ee
 
               - name: Testing installed role

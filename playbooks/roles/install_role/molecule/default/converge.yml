@@ -7,4 +7,6 @@
       ansible.builtin.command: >
         ansible-playbook -vv -c local -i localhost, /rsc/test.yml
       register: ansible_on_workspace
-      changed_when: "'changed=0' not in ansible_on_workspace.stdout_lines[-1]"
+      changed_when: >
+        'changed=0' not in
+        ansible_on_workspace.stdout_lines[ lookup('ansible.utils.index_of', ansible_on_workspace.stdout_lines, 'regex', '\s*PLAY RECAP\s*')+1 ]
