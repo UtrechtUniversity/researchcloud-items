@@ -1,11 +1,15 @@
 ---
+- name: Install newer python to ensure compatibility with poetry
+  include_role:
+    name: system_python
+
 - name: Install poetry system-wide
   when: poetry_system_wide
   include_tasks: system_wide.yml
 
 - name: Install poetry per user through runonce.d
   when: poetry_per_user
-  copy:
-    src: 10-poetry.sh
-    dest: /etc/runonce.d
+  template:
+    src: 10-poetry.sh.j2
+    dest: /etc/runonce.d/10-poetry.sh
     mode: "0755"
