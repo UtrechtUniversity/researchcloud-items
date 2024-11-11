@@ -53,7 +53,7 @@
             gpg_passphrase: "{{ aptly_gpg_passphrase | default(None) }}"
             gpg_pubkeyfileexport: aptly.asc
             gpg_privkeyfile: aptly.priv
-            gpg_home: "/root"
+            gpg_home: /root
         - name: Cat GPG private key
           command: cat /root/aptly.priv
           changed_when: false
@@ -87,14 +87,13 @@
         aptly__homedir: "{{ aptly_home }}"
 
   tasks:
-
     - name: Copy pubkey to repo
       copy:
         content: "{{ gpg_public_key }}"
         dest: "{{ aptly_home }}/.aptly/public/aptly_pubkey.asc"
         owner: aptly
         group: www-data
-        mode: '0644'
+        mode: "0644"
 
     # NB: aptly homedir is hardcoded because copy does not support templating
     - name: Create nginx location block
@@ -105,7 +104,7 @@
             autoindex on;
           }
         dest: /etc/nginx/app-location-conf.d/aptly.conf
-        mode: '0644'
+        mode: "0644"
         force: false
       notify: Restart nginx
 
