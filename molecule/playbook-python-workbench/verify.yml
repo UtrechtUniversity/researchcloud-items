@@ -11,7 +11,6 @@
       register: expected_files
       with_items:
         - 01_pyenv-install.sh
-        - 10-poetry.sh
 
     - name: Assert expected files exist
       ansible.builtin.assert:
@@ -27,3 +26,6 @@
       ansible.builtin.assert:
         that:
           - '"3.8" in python_version.stdout_lines[0]'
+
+    - name: Test poetry
+      ansible.builtin.shell: su -c "bash -ic 'poetry about'" - testuser

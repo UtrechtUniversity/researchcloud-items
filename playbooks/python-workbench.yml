@@ -8,4 +8,7 @@
     - role: pyenv
       vars:
         pyenv_default_python: "{{ default_python_version | default('system-latest') }}"
-    - role: poetry
+    - role: pipx_install_systemwide
+      vars:
+        pipx_install_systemwide_packages:
+          - poetry
