@@ -16,7 +16,7 @@ Ubuntu .
 ## Description
 The Linux distribution influences which Python3 and pip3 versions are installed system-wide. Users should not install python packages using the system python interpreter, since this may break system packages. This component therefore installs `pyenv` and via the `runonce` role, so that each user on the system can manage their own Python environment. `pyenv` and `poetry` are installed (in userspace) the first time the user logs in.
 
-For additional development convenience, `poetry` and `miniconda` are also intalled on a per-user basis. If users want to use `miniconda`, they have to manually run `conda init` in their shell (this is not done by default, because it may interfere with users' workflows if they do not want to use `conda`).
+For additional development convenience, `poetry` (via [pipx](../roles/pipx_install_systemwide.md)) and `miniconda` (via [runonce](../roles/runonce.md)) are also installed. If users want to use `miniconda`, they have to manually run `conda init` in their shell (this is not done by default, because it may interfere with users' workflows if they do not want to use `conda`).
 
 ## Variables
 
@@ -26,7 +26,7 @@ For additional development convenience, `poetry` and `miniconda` are also intall
 
 - role [runonce](../roles/runonce.md)
 - role [pyenv](../roles/pyenv.md)
-- role [runonce](../roles/poetry.md)
+- role [runonce](../roles/pipx_install_systemwide.md)
 - role [miniconda](../roles/miniconda.md)
 
 ## History
