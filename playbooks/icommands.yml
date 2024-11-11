@@ -1,13 +1,12 @@
 ---
-- name: install iRODS iCommands toolset in researchcloud workspace
+- name: Install iRODS iCommands toolset in researchcloud workspace
   hosts: localhost
   gather_facts: true
 
-#  NB: irods supports Ubuntu 18, use below to fix repo to such level:     
-#  vars: 
-#    - irods_repo_apt_release: "bionic"
+  #  NB: irods supports Ubuntu 18, use below to fix repo to such level:
+  #  vars:
+  #    - irods_repo_apt_release: "bionic"
   roles:
     - irods_repo
     - irods_icommands
     - irods_skel
-  

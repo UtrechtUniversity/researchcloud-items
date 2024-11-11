@@ -1,5 +1,5 @@
 ---
-- name: install camunda-modeler in researchcloud workspace (assumes desktop/nginx/tomcat)
+- name: Install camunda-modeler in researchcloud workspace (assumes desktop/nginx/tomcat)
   hosts: localhost
   gather_facts: true
   roles:

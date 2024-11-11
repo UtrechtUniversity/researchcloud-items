@@ -6,7 +6,7 @@
     _flask_app_auth_sram: "{{ flask_app_auth_sram | default(false, true) | bool | ternary('sram', '') }}"
     _flask_app_auth_basic: "{{ flask_app_auth_basic | default(false, true) | bool | ternary('basic', '') }}"
     flask_app_auth: "{{ _flask_app_auth_sram | ternary(_flask_app_auth_sram, _flask_app_auth_basic) }}"
-    flask_app_python_version: '3.10'
+    flask_app_python_version: "3.10"
     uwsgi_app_name: "{{ flask_app_name }}"
     uwsgi_app_path: "{{ flask_app_path }}"
     uwsgi_app_dir: /var/www/{{ flask_app_name }}
@@ -95,19 +95,19 @@
 
     - name: Install uwsgi
       pip:
-        executable: "uv_pip"
+        executable: uv_pip
         name:
           - wheel
           - uwsgi
       environment:
         VIRTUAL_ENV: "{{ uwsgi_venv }}"
-        CC: 'gcc' # https://github.com/astral-sh/uv/issues/6488
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
         LIBRARY_PATH: "{{ uv_python_paths[flask_app_python_version] | regex_replace('/bin/python3?', '/lib/') }}"
 
     - name: Install requirements
       when: flask_app_requirements | length > 0
       pip:
-        executable: "uv_pip"
+        executable: uv_pip
         requirements: "{{ uwsgi_app_dir }}/{{ item | trim }}"
       environment:
         VIRTUAL_ENV: "{{ uwsgi_venv }}"
