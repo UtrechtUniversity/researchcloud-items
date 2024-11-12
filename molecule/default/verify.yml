@@ -1,0 +1,24 @@
+---
+
+- name: Verify
+  hosts: gpgkey
+  tasks:
+
+    - name: Fetch content of /proc/sys/kernel/random/entropy_avail
+      ansible.builtin.slurp:
+        src: /proc/sys/kernel/random/entropy_avail
+      register: entropy
+    - name: Validate entropy
+      ansible.builtin.assert:
+        that: >
+          entropy['content'] | b64decode | int >= 300
+      failed_when: false
+
+    - name: Fetch content of /home/myuser/root.asc
+      ansible.builtin.slurp:
+        src: /home/myuser/root.asc
+      register: asc
+    - name: Validate asc export file
+      ansible.builtin.assert:
+        that: >
+          "'-----BEGIN PGP PUBLIC KEY BLOCK-----' in asc['content'] | b64decode"

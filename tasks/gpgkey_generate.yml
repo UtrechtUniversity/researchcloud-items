@@ -1,20 +1,20 @@
 ---
 - name: Check entropy state
-  command: "cat /proc/sys/kernel/random/entropy_avail"
+  ansible.builtin.command: "cat /proc/sys/kernel/random/entropy_avail"
   changed_when: false
   register: entropy
 - name: Entropy state
-  debug:
+  ansible.builtin.debug:
     var: entropy
 
 - name: Debian | Update cache
-  apt:
+  ansible.builtin.apt:
     update_cache: yes
     cache_valid_time: "{{ gpgkey_generate_apt_cache_valid_time | default('3600') }}"
   when: ansible_os_family == 'Debian'
   become: yes
 - name: Debian | Ensure have enough randomness
-  apt:
+  ansible.builtin.apt:
     name:
       - rng-tools
       - gnupg
@@ -30,7 +30,7 @@
   register: pkg_result
   until: pkg_result is success
 - name: Debian | Ensure have enough randomness
-  apt:
+  ansible.builtin.apt:
     name:
       - rng-tools
       - gnupg
@@ -44,30 +44,55 @@
   register: pkg_result
   until: pkg_result is success
 
+- name: Redhat | Ensure have enough randomness
+  ansible.builtin.dnf:
+    name:
+      - haveged
+      - rng-tools
+      - gnupg
+      - acl
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "RedHat"
+  become: yes
+  register: pkg_result
+  until: pkg_result is success
+- name: Enable haveged - redhat
+  ansible.builtin.service:
+    name: haveged
+    state: started
+    enabled: yes
+  become: yes
+  when: >
+    ansible_os_family == "RedHat" and
+    not (ansible_virtualization_type is defined and (
+        ansible_virtualization_type == "docker" or ansible_virtualization_type == "containerd"
+      )
+    )
 - name: Check entropy state
-  command: "cat /proc/sys/kernel/random/entropy_avail"
+  ansible.builtin.command: "cat /proc/sys/kernel/random/entropy_avail"
   changed_when: false
   register: entropy2
 - name: Entropy state
-  debug:
+  ansible.builtin.debug:
     var: entropy2
 
 - name: Ensure .gnupg config directory exists with right permissions
-  file:
+  ansible.builtin.file:
     dest: "{{ gpg_home }}/.gnupg"
     state: directory
     mode: "0700"
     owner: "{{ gpg_generator_user }}"
 
 - name: Set default gpg options
-  template:
+  ansible.builtin.template:
     src: "{{ gpg_conf_file_template }}"
     dest: "{{ gpg_home }}/.gnupg/gpg.conf"
     mode: "0600"
     owner: "{{ gpg_generator_user }}"
 
 - name: Write GPG passphrase to file
-  copy:
+  ansible.builtin.copy:
     content: "{{ gpg_passphrase }}"
     dest: "{{ gpg_home + '/' + gpg_passphrase_file }}"
     mode: "0600"
@@ -75,12 +100,12 @@
   register: passphrase_file_created
 
 - name: Import gpg21
-  import_tasks: gpg21.yml
+  ansible.builtin.import_tasks: gpg21.yml
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int > 16
 
 ## Note: matching on realname or email doesn't allow to create multiple keys. alternative?
 - name: Check existing secret key
-  shell:
+  ansible.builtin.shell:
     cmd: |
       set -o pipefail
       gpg --batch --homedir {{ gpg_home }}/.gnupg --list-secret-keys | grep '{{ gpg_realname }}'
@@ -93,17 +118,17 @@
   no_log: "{{ gpg_no_log }}"
   failed_when: gpgkeys.rc > 1
 - name: Debug | gpg keys
-  debug:
+  ansible.builtin.debug:
     var: gpgkeys
     verbosity: 2
   no_log: "{{ gpg_no_log }}"
 
 - name: Generate gpg key  # noqa no-changed-when
-  command: >
+  ansible.builtin.command: >
     gpg --batch --homedir "{{ gpg_home }}/.gnupg"
         --passphrase-file "{{ gpg_home + '/' + gpg_passphrase_file }}"
-        --quick-generate-key "{{ gpg_realname }} {{ gpg_useremail }}"
-        future-default default "{{ gpg_expire | default('10y') }}"
+        --quick-generate-key "{{ gpg_uid }}"
+        {{ gpg_algo }} default "{{ gpg_expire | default('10y') }}"
   args:
     chdir: "{{ gpg_home }}"
   become: yes
@@ -113,12 +138,12 @@
   no_log: "{{ gpg_no_log }}"
 
 - name: Debug | genkey
-  debug:
+  ansible.builtin.debug:
     var: genkey
     verbosity: 1
 
 - name: Get user gpg fingerprint
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     gpg --homedir {{ gpg_home }}/.gnupg --list-keys --keyid-format LONG {{ gpg_useremail }} | awk -F'[ /]' '/sub/ { print $5 }' | tee {{ gpg_home }}/{{ gpg_fingerprint }}
   args:
@@ -129,7 +154,7 @@
   become_user: "{{ gpg_generator_user }}"
 
 - name: Get user armored public key
-  command: >
+  ansible.builtin.command: >
     gpg --batch --homedir "{{ gpg_home }}/.gnupg"
         --output "{{ gpg_home }}/{{ gpg_pubkeyfileexport }}"
         --armor --export "{{ gpg_useremail }}"
@@ -139,7 +164,7 @@
   become_user: "{{ gpg_generator_user }}"
 
 - name: Get user armored secret key
-  command: >
+  ansible.builtin.command: >
     gpg --batch --homedir "{{ gpg_home }}/.gnupg"
         --passphrase-file "{{ gpg_home + '/' + gpg_passphrase_file }}"
         --output "{{ gpg_home }}/{{ gpg_privkeyfile }}"
@@ -150,10 +175,10 @@
   become_user: "{{ gpg_generator_user }}"
 
 - name: Debug | gpg_pull
-  debug:
+  ansible.builtin.debug:
     var: gpg_pull
 - name: Fetch files to orchestrator
-  fetch:
+  ansible.builtin.fetch:
     src: "{{ item }}"
     dest: "{{ gpg_pulldir }}/"
     flat: "yes"
@@ -165,7 +190,7 @@
   when: gpg_pull is defined and gpg_pull
 
 - name: Fetch privatekey file to orchestrator
-  fetch:
+  ansible.builtin.fetch:
     src: "{{ item }}"
     dest: "{{ gpg_pulldir }}/"
     flat: "yes"
