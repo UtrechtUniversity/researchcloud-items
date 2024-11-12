@@ -21,5 +21,3 @@ galaxy_info:
         - bookworm
   galaxy_tags:
     - security
-dependencies:
-  - role: juju4.redhat_epel

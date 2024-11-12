@@ -6,11 +6,11 @@ This directory contains open source external roles that have been included as gi
 * it allows us to remove files from the external roles that we don't need (e.g. `.gitlab`)
 * it gives us control over code that is executed
 
-For these reasons, the subtrees are created from forks of the roles (see below).
+For these reasons, some subtrees are created from forks of the roles (see below).
 
 Licences are included in the directories, or else are specified in the `README`s.
 
-### Forks utilized
+### Repos utilized
 
 * https://github.com/dometto/ansible-role-aptly
-* https://github.com/dometto/ansible-gpgkey_generate
+* https://github.com/juju4/ansible-gpgkey_generate
