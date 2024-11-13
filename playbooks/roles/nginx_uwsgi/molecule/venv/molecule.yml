@@ -12,7 +12,7 @@ provisioner:
 role_name_check: 1
 platforms:
   - name: workspace-src-ubuntu_jammy
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
     command: /sbin/init
     pre_build_image: true
     registry:
