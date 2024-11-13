@@ -61,7 +61,7 @@
       ansible.builtin.assert:
         that:
           - sramauth_location.redirected is true
-          - sramauth_location.url == "http://localhost/?client_id=foo&redirect_uri=http://localhost/oauth2_callback?rdpath=/test_sramauth/&response_type=token&scope=openid&response_format=query_param"
+          - sramauth_location.url == "http://localhost/auth_endpoint?client_id=foo&redirect_uri=http://localhost/oauth2_callback?rdpath=/test_sramauth/&response_type=token&scope=openid&response_format=query_param"
           - basicauth_location.status == 200
           - "'bin' in basicauth_location.content"
           - root_location.status == 200
