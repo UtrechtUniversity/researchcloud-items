@@ -1,7 +1,7 @@
 ---
 platforms:
   - name: workspace-src-ubuntu_jammy
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
     command: /sbin/init
     pre_build_image: true
     published_ports:
@@ -19,18 +19,6 @@ provisioner:
   env:
     ANSIBLE_ROLES_PATH: ../../../
     components:
-      - name: nginx
-        git: https://gitlab.com/dometto/plugin-nginx.git
-        path: plugin-nginx.yml
-        version: molecule_compatibility
-        parameters:
-          rsc_nginx_authorization_endpoint: http://localhost
-          rsc_nginx_user_info_endpoint: http://localhost
-          rsc_nginx_service_url: http://localhost
-          nginx_enable_ssl: false
-          nginx_enable_auth: true
-          rsc_nginx_oauth2_application:
-            client_id: foo
       - name: reverse_proxy
         path: reverse_proxy.yml
         parameters:

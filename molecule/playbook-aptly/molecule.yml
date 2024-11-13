@@ -15,7 +15,7 @@ scenario:
     - destroy
 platforms:
   - name: workspace-src-ubuntu_jammy
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
     command: /sbin/init
     pre_build_image: true
     published_ports:
@@ -30,18 +30,6 @@ provisioner:
   env:
     extra_prepare_tasks: ../../playbook-aptly/extra_prepare.yml  # relative to <repo_root>/molecule/ext/src-molecule
     components:
-      - name: nginx
-        git: https://gitlab.com/dometto/plugin-nginx.git
-        version: molecule_compatibility
-        path: plugin-nginx.yml
-        parameters:
-          rsc_nginx_authorization_endpoint: http://localhost
-          rsc_nginx_user_info_endpoint: http://localhost
-          rsc_nginx_service_url: http://localhost
-          nginx_enable_ssl: false
-          nginx_enable_auth: true
-          rsc_nginx_oauth2_application:
-            client_id: foo
       - name: aptly
         path: aptly.yml
         parameters:
