@@ -18,16 +18,17 @@ provisioner:
       remote_tmp: /tmp
   env:
     ANSIBLE_ROLES_PATH: ../../../
-      - name: flask_app
-        path: flask_app.yml
-        parameters:
-          flask_app_name: hello
-          flask_app_path: hello/app.py
-          flask_app_auth_basic: true
-          flask_app_username: tester
-          flask_app_password: letmein
-          flask_app_repo: https://github.com/dometto/flask-examples.git
-          flask_app_requirements: 'requirements.txt'
-          flask_app_location: '/'
-          flask_app_uwsgi_config: >
-            vacuum = false # just to test the flask_app_uswgi_config option
+    components:
+        - name: flask_app
+          path: flask_app.yml
+          parameters:
+            flask_app_name: hello
+            flask_app_path: hello/app.py
+            flask_app_auth_basic: true
+            flask_app_username: tester
+            flask_app_password: letmein
+            flask_app_repo: https://github.com/dometto/flask-examples.git
+            flask_app_requirements: 'requirements.txt'
+            flask_app_location: '/'
+            flask_app_uwsgi_config: >
+              vacuum = false # just to test the flask_app_uswgi_config option
