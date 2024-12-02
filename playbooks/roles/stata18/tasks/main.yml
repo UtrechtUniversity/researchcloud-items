@@ -107,7 +107,7 @@
     desktopfile_app_name: stata
     desktopfile_sizes:
       - "16"
-    desktop_file_modules:
+    desktopfile_modules:
       - stata
       - stata-mp
       - stata-se
