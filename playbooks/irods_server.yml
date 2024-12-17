@@ -1,0 +1,10 @@
+---
+- name: install iRODS server (provider role) in researchcloud workspace
+  hosts: localhost
+  gather_facts: true
+
+    # irods server will use a local postgresql database   
+    
+  roles:
+    - irods_server
+  

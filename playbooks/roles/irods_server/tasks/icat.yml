@@ -1,0 +1,4 @@
+---
+- name: dummy icat.yml
+  set_fact:
+    icat_exists: "true"

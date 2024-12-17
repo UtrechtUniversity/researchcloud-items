@@ -1,0 +1,27 @@
+---
+- name: Install iRODS server.
+  apt:
+    state: present
+    pkg:
+      - irods-server
+      - irods-database-plugin-postgres
+      - irods-rule-engine-plugin-python
+
+- name: Ensure ICAT database exist
+  include_tasks: icat.yml
+
+- name: Register if iRODS server is initialized.
+  stat:
+    path: /etc/irods/server_config.json
+  register: irods_config_data
+
+- name: Prepare iRODS server configuration file
+  when: not irods_config_data.exists
+  template:
+    src: "server_unattended_config.json.j2"
+    dest: "/etc/irods/server_unattended_config.json"
+    owner: root
+    group: root
+    mode: 0640
+
+# run irods configuration script
