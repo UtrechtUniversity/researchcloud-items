@@ -8,7 +8,7 @@
     mode: 0700
 
 - name: Create irods db user and ICAT database, if they do not yet exist, using psql
-  command: psql /tmp/create_icat.sql
+  command: psql -f /tmp/create_icat.sql
 
 - name: cleanup psql script
   file:
