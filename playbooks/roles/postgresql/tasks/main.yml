@@ -4,20 +4,7 @@
     state: present
     name: postgresql
 
-- name: Register if PostgreSQL is initialized.
-  stat:
-    path: /var/lib/pgsql/data/pg_hba.conf
-  register: postgresql_data
 
-- name: Initilize PostgreSQL if not yet.
-  when: not postgresql_data.exists
-  ansible.builtin.command: postgresql-setup initdb
-- name: Start PostgreSQL service
-  service:
-    name: postgresql
-    state: restarted
-    enabled: true
-
-- name: Provision db and user by default
+- name: optionally provision db and user
   when: postgresql_provision
   include_tasks: provision.yml

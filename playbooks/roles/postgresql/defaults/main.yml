@@ -1,2 +1,2 @@
 ---
-postgresql_provision: true
+postgresql_provision: false
