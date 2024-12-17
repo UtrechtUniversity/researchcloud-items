@@ -2,14 +2,12 @@
 - name: Install PostgreSQL.
   apt:
     state: present
-    pkg:
-      - postgresql
-      - postgresql-server
+    name: postgresql
 
 - name: Register if PostgreSQL is initialized.
   stat:
     path: /var/lib/pgsql/data/pg_hba.conf
-  register: prostgresql_data
+  register: postgresql_data
 
 - name: Initilize PostgreSQL if not yet.
   when: not postgresql_data.exists
