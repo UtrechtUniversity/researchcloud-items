@@ -21,8 +21,8 @@
 
 - name: Register FQDN (hack needed because hostname FQDN incomplete during workspace deployment)
   set_fact:
-    irods_server_host: "{{ rsc_os_fqdn }}"
-  when: rsc_os_fqdn is defined
+    irods_server_host: "{{ workspace_fqdn }}"
+  when: workspace_fqdn is defined
 
 - name: Generate zone key
   ansible.builtin.command: 'openssl rand -hex 16'
@@ -35,7 +35,6 @@
 - name: Generate control plane key
   ansible.builtin.command: 'openssl rand -hex 16'
   register: irods_server_control_plane_key
-
 
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists

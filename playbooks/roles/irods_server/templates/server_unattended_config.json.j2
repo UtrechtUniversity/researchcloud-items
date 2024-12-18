@@ -25,7 +25,7 @@
         "irods_port": 1247,
         "irods_server_control_plane_encryption_algorithm": "AES-256-CBC",
         "irods_server_control_plane_encryption_num_hash_rounds": 16,
-        "irods_server_control_plane_key": "irods_server_control_plane_key.stdout",
+        "irods_server_control_plane_key": "{{ irods_server_control_plane_key.stdout }}",
         "irods_server_control_plane_port": 1248,
         "irods_transfer_buffer_size_for_parallel_transfer_in_megabytes": 4,
         "irods_user_name": "rods",
