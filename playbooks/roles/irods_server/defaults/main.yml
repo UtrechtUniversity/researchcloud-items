@@ -1,5 +1,6 @@
 ---
-irods_server_db_name: "ICAT"
+# Note: db_name must be lowercase
+irods_server_db_name: "icat"
 irods_server_db_username: "irods"
 irods_server_db_password: "test"
 irods_server_db_host: "localhost"
