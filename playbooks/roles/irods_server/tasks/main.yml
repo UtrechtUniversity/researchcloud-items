@@ -19,6 +19,11 @@
     path: /etc/irods/server_config.json
   register: irods_config_data
 
+- name: Register FQDN (hack needed because hostname FQDN incomplete during workspace deployment)
+  set_fact:
+    irods_server_host: "{{ workspace_fqdn }}"
+  when: workspace_fqdn is defined
+
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists
   ansible.builtin.template:
@@ -27,6 +32,13 @@
     owner: root
     group: root
     mode: 0600
+
+- name: Bypass hostname check in iRODS setup (hack needed because workspace FQDN != localhost)
+  ansible.builtin.lineinfile:
+    path: /var/lib/irods/scripts/setup_irods.py
+    regexp: "^def check_hostname"
+    state: present
+    insertafter: "    return"
 
 - name: Run irods configuration script
   command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
