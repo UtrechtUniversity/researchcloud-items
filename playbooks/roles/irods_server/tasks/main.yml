@@ -36,9 +36,9 @@
 - name: Bypass hostname check in iRODS setup (hack needed because workspace FQDN != localhost)
   ansible.builtin.lineinfile:
     path: /var/lib/irods/scripts/setup_irods.py
-    regexp: "^def check_hostname"
+    insertafter: '^def check_hostname'
     state: present
-    insertafter: "    return"
+    line: '    return'
 
 - name: Run irods configuration script
   command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
