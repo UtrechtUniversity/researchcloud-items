@@ -21,8 +21,8 @@
 
 - name: Register FQDN (hack needed because hostname FQDN incomplete during workspace deployment)
   set_fact:
-    irods_server_host: "{{ workspace_fqdn }}"
-  when: workspace_fqdn is defined
+    irods_server_host: "{{ rsc_os_fqdn }}"
+  when: rsc_os_fqdn is defined
 
 - name: Generate zone key
   ansible.builtin.command: 'openssl rand -hex 16'
@@ -53,12 +53,12 @@
     state: present
     line: '    return'
 
-- name: Run irods configuration script
-  command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
+      # - name: Run irods configuration script
+      # command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
 
-- name: Start and enable iRODS as service
-  ansible.builtin.service:
-    enabled: true
-    name: irods
-    state: started
+      #- name: Start and enable iRODS as service
+      #ansible.builtin.service:
+      #enabled: true
+      #name: irods
+      #state: started
 
