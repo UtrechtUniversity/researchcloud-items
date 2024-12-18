@@ -1,13 +1,13 @@
 ---
 - name: Install iRODS server.
-  apt:
+  ansible.builtin.package:
     state: present
-    pkg:
+    name:
       - irods-server
       - irods-database-plugin-postgres
       - irods-rule-engine-plugin-python
 
-- name: Create ICAT database if it not yet exist
+- name: Create ICAT database and db user, only if they do not yet exist
   include_tasks: icat.yml
   args:
     apply:
@@ -15,17 +15,25 @@
       become_user: postgres
 
 - name: Register if iRODS server is initialized.
-  stat:
+  ansible.builtin.stat:
     path: /etc/irods/server_config.json
   register: irods_config_data
 
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists
-  template:
+  ansible.builtin.template:
     src: "server_unattended_config.json.j2"
     dest: "/etc/irods/server_unattended_config.json"
     owner: root
     group: root
-    mode: 0640
+    mode: 0600
 
-# run irods configuration script
+- name: Run irods configuration script
+  command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
+
+- name: Start and enable iRODS as service
+  ansible.builtin.service:
+    enabled: true
+    name: irods
+    state: started
+
