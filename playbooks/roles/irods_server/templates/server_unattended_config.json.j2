@@ -39,7 +39,7 @@
             "default_number_of_transfer_threads": 4,
             "default_temporary_password_lifetime_in_seconds": 120,
             "delay_rule_executors": [
-                "{{ irods_server_host }}"
+                "localhost"
             ],
             "delay_server_sleep_time_in_seconds": 30,
             "dns_cache": {
@@ -59,6 +59,7 @@
             "transfer_chunk_size_for_parallel_transfer_in_megabytes": 40
         },
         "catalog_provider_hosts": [
+            localhost,
             "{{ irods_server_host }}"
         ],
         "catalog_service_role": "provider",
@@ -132,6 +133,12 @@
                 },
                 "shared_memory_instance": "irods_rule_language_rule_engine"
             },
+            {
+                "instance_name": "irods_rule_engine_plugin-python-instance", 
+                "plugin_name": "irods_rule_engine_plugin-python", 
+                "plugin_specific_configuration": {}
+            }, 
+
             {
                 "instance_name": "irods_rule_engine_plugin-cpp_default_policy-instance",
                 "plugin_name": "irods_rule_engine_plugin-cpp_default_policy",

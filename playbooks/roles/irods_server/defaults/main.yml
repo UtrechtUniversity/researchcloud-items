@@ -1,10 +1,10 @@
 ---
 # Note: db_name must be lowercase
-irods_server_db_name: "icat"
-irods_server_db_username: "irods"
-irods_server_db_password: "test"
-irods_server_db_host: "localhost"
-irods_server_db_port: 5432
 irods_server_admin_password: "rods"
 irods_server_zone: "tempZone"
 irods_server_host: "{{ ansible_fqdn }}"
+irods_server_db_name: "icat"
+irods_server_db_username: "irods"
+irods_server_db_password: "db{{ irods_server_admin_password }}"
+irods_server_db_host: "localhost"
+irods_server_db_port: 5432

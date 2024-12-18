@@ -45,19 +45,18 @@
     group: root
     mode: 0600
 
-- name: Bypass hostname check in iRODS setup (hack needed because workspace FQDN != localhost)
+- name: Bypass hostname check in iRODS setup (hack needed for irods 4.3.3 because workspace FQDN != localhost)
   ansible.builtin.lineinfile:
     path: /var/lib/irods/scripts/setup_irods.py
     insertafter: '^def check_hostname'
     state: present
     line: '    return'
 
-      # - name: Run irods configuration script
-      # command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
+- name: Run irods configuration script
+  command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
 
-      #- name: Start and enable iRODS as service
-      #ansible.builtin.service:
-      #enabled: true
-      #name: irods
-      #state: started
-
+- name: Start and enable iRODS as service
+  ansible.builtin.service:
+    enabled: true
+    name: irods
+    state: started
