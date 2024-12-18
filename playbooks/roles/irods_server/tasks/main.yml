@@ -24,6 +24,19 @@
     irods_server_host: "{{ workspace_fqdn }}"
   when: workspace_fqdn is defined
 
+- name: Generate zone key
+  ansible.builtin.command: 'openssl rand -hex 16'
+  register: irods_server_zone_key
+
+- name: Generate negotiation key
+  ansible.builtin.command: 'openssl rand -hex 16'
+  register: irods_server_negotiation_key
+
+- name: Generate control plane key
+  ansible.builtin.command: 'openssl rand -hex 16'
+  register: irods_server_control_plane_key
+
+
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists
   ansible.builtin.template:

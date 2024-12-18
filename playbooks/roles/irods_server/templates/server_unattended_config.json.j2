@@ -25,7 +25,7 @@
         "irods_port": 1247,
         "irods_server_control_plane_encryption_algorithm": "AES-256-CBC",
         "irods_server_control_plane_encryption_num_hash_rounds": 16,
-        "irods_server_control_plane_key": "32_byte_server_control_plane_key",
+        "irods_server_control_plane_key": "irods_server_control_plane_key.stdout",
         "irods_server_control_plane_port": 1248,
         "irods_transfer_buffer_size_for_parallel_transfer_in_megabytes": 4,
         "irods_user_name": "rods",
@@ -95,7 +95,7 @@
             "sql": "info"
         },
         "match_hash_policy": "compatible",
-        "negotiation_key": "32_byte_server_negotiation_key__",
+        "negotiation_key": "{{ irods_server_negotiation_key.stdout }}",
         "plugin_configuration": {
             "authentication": {},
             "database": {
@@ -147,14 +147,14 @@
         "schema_version": "v4",
         "server_control_plane_encryption_algorithm": "AES-256-CBC",
         "server_control_plane_encryption_num_hash_rounds": 16,
-        "server_control_plane_key": "32_byte_server_control_plane_key",
+        "server_control_plane_key": "{{ irods_server_control_plane_key.stdout }}",
         "server_control_plane_port": 1248,
         "server_control_plane_timeout_milliseconds": 10000,
         "server_port_range_end": 20199,
         "server_port_range_start": 20000,
         "xmsg_port": 1279,
         "zone_auth_scheme": "native",
-        "zone_key": "TEMPORARY_ZONE_KEY",
+        "zone_key": "{{ irods_server_zone_key.stdout }}",
         "zone_name": "{{ irods_server_zone }}",
         "zone_port": 1247,
         "zone_user": "rods"
