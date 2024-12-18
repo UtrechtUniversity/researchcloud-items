@@ -52,6 +52,13 @@
     state: present
     line: '    return'
 
+- name: Configure empty python ruleset core.py
+  ansible.builtin.copy:
+    content: ""
+    dest: "/etc/irods/core.py"
+    mode: '0644'
+    force: false
+
 - name: Run irods configuration script
   when: irods_server_start == "start"
   command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
