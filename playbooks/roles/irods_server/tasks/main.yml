@@ -1,4 +1,10 @@
 ---
+- name: Install prerequisite packages
+  when: ansible_pkg_mgr == 'yum'
+  ansible.builtin.package:
+    state: present
+    name: epel-release
+
 - name: Install iRODS server.
   ansible.builtin.package:
     state: present
