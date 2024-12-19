@@ -1,6 +1,6 @@
 ---
 - name: Install PostgreSQL.
-  apt:
+  ansible.builtin.package:
     state: present
     name: postgresql
 
