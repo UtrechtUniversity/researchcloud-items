@@ -18,6 +18,10 @@
         return_content: true
       register: root_location
 
+    - name: Check for custom header header in / location
+      ansible.builtin.command: curl -v http://localhost/bin/
+      register: check_headers
+
     - name: Test /test_basicauth2 location
       ansible.builtin.uri:
         url: http://localhost/test_basicauth2
@@ -65,5 +69,6 @@
           - basicauth_location.status == 200
           - "'bin' in basicauth_location.content"
           - root_location.status == 200
+          - "'myheader: foo' in check_headers.stderr"
           - "'whoami' in root_location.content"
           - "' application/x-xpinstall' in api_location.content"
