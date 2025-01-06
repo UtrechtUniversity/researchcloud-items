@@ -55,6 +55,8 @@
             gpg_pubkeyfileexport: aptly.asc
             gpg_privkeyfile: aptly.priv
             gpg_home: /root
+            gpg_user: "{{ aptly_user }}"
+
         - name: Cat GPG private key
           command: cat /root/aptly.priv
           changed_when: false
