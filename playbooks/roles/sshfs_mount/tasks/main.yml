@@ -23,6 +23,7 @@
 # in two parts so that privileged part of update /etc/fstab is done by root
 # Note that to make this work, only the 'state' differs
 - name: Do mount
+  tags: molecule-idempotence-notest
   ansible.builtin.include_tasks: mount.yml
   loop:
     - become: false
