@@ -8,9 +8,8 @@
       vars:
         robotuser_generate_ssh_key: true
     - role: fact_workspace_info
-  
-  tasks:
 
+  tasks:
     - name: Restrict permissions on data volumes
       ansible.builtin.file:
         path: "{{ item }}"

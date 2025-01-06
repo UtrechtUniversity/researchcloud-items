@@ -4,7 +4,7 @@
   gather_facts: true
   tasks:
     - name: Get all runonce files
-      find:
+      ansible.builtin.find:
         paths: /etc/runonce.d
         recurse: false
       register: found_scripts
@@ -26,7 +26,7 @@
       register: python_version
 
     - name: Set expected python versions
-      set_fact:
+      ansible.builtin.set_fact:
         expected_python_version:
           "20.04": "3.9"
           "22.04": "3.11"

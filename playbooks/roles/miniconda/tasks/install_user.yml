@@ -1,12 +1,12 @@
 ---
 - name: Install conda for each user individually
-  command: "{{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p {{ item.home }}/miniconda"
+  ansible.builtin.command: "{{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p {{ item.home }}/miniconda"
   become: false
   become_user: "{{ item.user }}"
   tags: molecule-idempotence-notest
 
 - name: Change ownership of miniconda directory
-  file:
+  ansible.builtin.file:
     path: "{{ item.home }}/miniconda"
     owner: "{{ item.user }}"
     group: "{{ item.user }}"

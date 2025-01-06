@@ -4,9 +4,10 @@
     update_cache: true
 
 - name: Create uwsgi dir
-  file:
+  ansible.builtin.file:
     path: /var/www/uwsgi
     state: directory
+    mode: "0750"
 
 - name: Add uwsgi test app
   ansible.builtin.copy:

@@ -1,6 +1,6 @@
 ---
 - name: Install uv with pipx
-  include_role:
+  ansible.builtin.include_role:
     name: pipx_install_systemwide
   vars:
     pipx_install_systemwide_packages:
@@ -9,7 +9,7 @@
     pipx_install_systemwide_profile: "" # deactivate adding uv path to /etc/profile. We're creating aliases instead.
 
 - name: Install uv alias
-  file:
+  ansible.builtin.file:
     path: /usr/local/bin/uv
     src: "{{ uu_pipx_bin }}/uv"
     state: link
@@ -18,7 +18,7 @@
     group: root
 
 - name: Install uv pip alias
-  copy:
+  ansible.builtin.copy:
     dest: /usr/local/bin/uv_pip
     mode: "0755"
     owner: root
@@ -28,28 +28,28 @@
       /usr/local/bin/uv pip "$@"
 
 - name: Define python versions to be installed
-  set_fact:
+  ansible.builtin.set_fact:
     uv_python_versions_install: "{{ (uv_python_versions + (uv_venvs | map(attribute='python') | list)) | unique }}"
 
 - name: Install desired python version
-  command: uv python install -v {{ item }}
+  ansible.builtin.command: uv python install -v {{ item }}
   register: _install_desired_python
   changed_when: '"Skipping" not in _install_desired_python.stderr'
   with_items: "{{ uv_python_versions_install }}"
 
 - name: Set uv python install path facts step 1
-  command: uv python find {{ item }}
+  ansible.builtin.command: uv python find {{ item }}
   changed_when: false
   register: _uv_python_finds
   with_items: "{{ uv_python_versions_install }}"
 
 - name: Set uv python install path facts step 2
-  set_fact:
+  ansible.builtin.set_fact:
     uv_python_paths: "{{ (uv_python_paths | default({})) | combine({item.item: item.stdout}) }}"
   with_items: "{{ _uv_python_finds.results }}"
 
 - name: Create venvs
-  command:
+  ansible.builtin.command:
     cmd: uv venv --seed --python {{ item.python }} {{ item.path }}
     creates: "{{ item.path }}"
   with_items: "{{ uv_venvs }}"

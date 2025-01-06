@@ -8,30 +8,32 @@
 # The get_url ansible module in the task below does not create a directory
 
 - name: Ensure download dir exists
-  file:
+  ansible.builtin.file:
     path: "{{ agisoft_download_dest }}"
     state: directory
+    mode: "0755"
 
 - name: Download agisoft installation files
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ agisoft_url }}"
     dest: "{{ agisoft_download_dest }}"
     mode: "0774"
 
 - name: Extract agisoft to opt for multiple user
-  unarchive:
+  ansible.builtin.unarchive:
     remote_src: true
     src: "{{ agisoft_download_dest }}/{{ agisoft_file }}"
     dest: /opt
     mode: "0755"
 
 - name: Create license file
-  copy:
+  ansible.builtin.copy:
     dest: "{{ agisoft_install_dir }}/license.lic"
     content: "{{ license }}"
+    mode: "0644"
 
 - name: Install desktop file menu item through role
-  include_role:
+  ansible.builtin.include_role:
     name: desktop_file
   vars:
     desktopfile_app_name: agisoft

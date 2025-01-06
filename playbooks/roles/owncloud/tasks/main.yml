@@ -3,16 +3,16 @@
   when: ansible_distribution == 'Ubuntu'
   block:
     - name: Get ownCloud APT GPG key
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ ansible_distribution_version }}/Release.key
         state: present
 
     - name: Configure ownCloud apt repository
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_{{ ansible_distribution_version }}/ /
         state: present
 
     - name: Install ownCloud package
-      apt:
+      ansible.builtin.apt:
         name: owncloud-client
         update_cache: true

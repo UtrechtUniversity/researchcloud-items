@@ -1,6 +1,6 @@
 ---
 - name: Install VSCodium
   when: fact_desktop_workspace
-  command: snap install codium --classic
+  ansible.builtin.command: snap install codium --classic
   register: uu_generic_install_codium
   changed_when: '"already installed" not in uu_generic_install_codium.stderr'

@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - name: Get all runonce scripts
-      find:
+      ansible.builtin.find:
         paths: /etc/runonce.d
         recurse: false
       register: found_scripts

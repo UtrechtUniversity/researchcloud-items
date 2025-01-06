@@ -4,7 +4,6 @@
     state: present
     name: postgresql
 
-
-- name: optionally provision db and user
+- name: Optionally provision db and user
   when: postgresql_provision
-  include_tasks: provision.yml
+  ansible.builtin.include_tasks: provision.yml

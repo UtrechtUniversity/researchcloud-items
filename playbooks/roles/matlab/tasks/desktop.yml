@@ -1,10 +1,10 @@
 ---
 - name: Set app_name for use in templates
-  set_fact:
+  ansible.builtin.set_fact:
     matlab_app_name: matlab
 
 - name: Include desktop_file role
-  include_role:
+  ansible.builtin.include_role:
     role: desktop_file
   vars:
     desktopfile_app_name: "{{ matlab_app_name }}"

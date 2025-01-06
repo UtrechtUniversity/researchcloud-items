@@ -2,7 +2,7 @@
 # adds iRODS repository, method depends on distro
 
 - name: Enable iRODS repository, yum package manager
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: iRODS
     description: RENCI iRODS Repository
     baseurl: "{{ irods_repo_url }}/yum/pool/centos{{ irods_repo_yum_major_version }}/{{ ansible_architecture }}"
@@ -14,10 +14,11 @@
   ansible.builtin.get_url:
     url: "{{ irods_repo_url }}/irods-signing-key.asc"
     dest: "{{ irods_key_location }}"
+    mode: "0644"
   when: ansible_pkg_mgr == 'apt'
 
 - name: Add iRODS repository for apt package manager
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb [signed-by={{ irods_key_location }}] {{ irods_repo_url }}/apt/ {{ ansible_distribution_release }} main
     state: present
     filename: renci-irods

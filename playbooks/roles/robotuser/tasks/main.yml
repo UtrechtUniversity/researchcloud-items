@@ -9,13 +9,13 @@
 #     using their defaults (and leave tasks 'unchanged')
 #
 - name: Create robot user
-  user:
+  ansible.builtin.user:
     name: "{{ robotuser_name }}"
     generate_ssh_key: "{{ robotuser_generate_ssh_key }}"
     state: present
 
 - name: Ensure .ssh directory exists for robotuser
-  file:
+  ansible.builtin.file:
     path: /home/{{ robotuser_name }}/.ssh/
     state: directory
     mode: "0700"
@@ -26,7 +26,7 @@
   when: robotuser_generate_ssh_key | bool
   block:
     - name: Authorize ssh incoming access for server robot user
-      copy:
+      ansible.builtin.copy:
         src: /home/{{ robotuser_name }}/.ssh/id_rsa.pub
         remote_src: true
         dest: /home/{{ robotuser_name }}/.ssh/authorized_keys
@@ -39,7 +39,7 @@
   block:
     # NB: to avoid loss of a key, script will not overwrite an existing key
     - name: Install private key for client robotuser
-      template:
+      ansible.builtin.template:
         src: id_rsa.j2
         dest: /home/{{ robotuser_name }}/.ssh/id_rsa
         force: false
@@ -48,7 +48,7 @@
         group: "{{ robotuser_name }}"
 
     - name: Install connection info file in home dir of robotuser
-      template:
+      ansible.builtin.template:
         src: connection-info.yml.j2
         dest: /home/{{ robotuser_name }}/connection-info.yml
         mode: "0744"
@@ -57,14 +57,14 @@
     # NB: if server ip is in other domain then below task is vulnerable to man-in-the-middle
     #     use with care
     - name: Get robotserver host key
-      command: ssh-keyscan -p {{ robotuser_server_port }} {{ robotuser_server }}
+      ansible.builtin.command: ssh-keyscan -p {{ robotuser_server_port }} {{ robotuser_server }}
       changed_when: false
       register: robotuser_hostkeys
 
     - name: Ensure robotserver is present in known_hosts file
       become: true
       become_user: "{{ robotuser_name }}"
-      known_hosts:
+      ansible.builtin.known_hosts:
         name: "{{ robotuser_server }}"
         path: /home/{{ robotuser_name }}/.ssh/known_hosts
         state: present

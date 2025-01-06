@@ -4,17 +4,17 @@
 
 - name: Wait until mounted filesystem is at rest
   tags: molecule-idempotence-notest
-  command: sync
+  ansible.builtin.command: sync
 
 - name: Umount remote filesystem
-  tags: molecule-idempotence-notest
-  mount:
+  tags: molecule-notest
+  ansible.posix.mount:
     path: "{{ sshfs_connection_info.mountpoint }}"
     state: unmounted
 
 - name: Cleanup robotuser
   tags: molecule-notest
-  user:
+  ansible.builtin.user:
     name: "{{ robotuser_name }}"
     state: absent
     remove: true

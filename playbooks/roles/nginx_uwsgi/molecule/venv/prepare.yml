@@ -7,7 +7,7 @@
       ansible.builtin.include_tasks: ../_prepare.yml
 
     - name: Install build tools necessary for uwsgi
-      package:
+      ansible.builtin.package:
         name:
           - build-essential
           - python3-dev

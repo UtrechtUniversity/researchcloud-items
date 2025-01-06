@@ -1,6 +1,6 @@
 ---
 - name: End play if not on Ubuntu
-  meta: end_play
+  ansible.builtin.meta: end_play
   when: ansible_distribution != "Ubuntu"
 
 - name: Install package
@@ -13,11 +13,11 @@
   when: security_updates_firstrun | bool
   block:
     - name: Run updates
-      command: unattended-upgrades -v
+      ansible.builtin.command: unattended-upgrades -v
       tags: molecule-notest
 
     - name: Run update in test mode # dry run when in a molecule run
-      command: unattended-upgrades --dry-run
+      ansible.builtin.command: unattended-upgrades --dry-run
       changed_when: false
       when: "'molecule-notest' in ansible_skip_tags"
 
@@ -25,26 +25,27 @@
   when: security_updates_periodic | bool
   block:
     - name: Install bootstrap script
-      copy:
+      ansible.builtin.copy:
         src: start_upgrade_timers.sh
         dest: /usr/local/bin/start_upgrade_timers.sh
         owner: root
         mode: "0740"
 
     - name: Install bootstrapping service definition
-      copy:
+      ansible.builtin.copy:
         src: upgrade-bootstrap.service
         dest: /etc/systemd/system/upgrade-bootstrap.service
         owner: root
         mode: "0740"
 
     - name: Install bootstrapping timer definition
-      template:
+      ansible.builtin.template:
         src: upgrade-bootstrap.timer
         dest: /etc/systemd/system/upgrade-bootstrap.timer
+        mode: "0644"
 
     - name: Enable bootstrap timer
-      command: "{{ item }}"
+      ansible.builtin.command: "{{ item }}"
       with_items:
         - systemctl enable upgrade-bootstrap.timer
         - systemctl start upgrade-bootstrap.timer

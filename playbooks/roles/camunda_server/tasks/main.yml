@@ -1,7 +1,7 @@
 ---
 # this install script depends on tomcat9
 - name: Ensure java runtime is installed
-  package:
+  ansible.builtin.package:
     name: default-jre
     state: present
 
@@ -11,7 +11,7 @@
 #     state: present
 
 - name: Create camunda target dir
-  file:
+  ansible.builtin.file:
     dest: "{{ camunda_dir }}"
     state: directory
     mode: "0755"
@@ -20,39 +20,39 @@
 
 # we install the shared BPM engine
 - name: Download and unpack camunda full distribution tar.gz
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ camunda_tar_urldir }}/{{ camunda_tar_urlfile }}"
     remote_src: true
     dest: "{{ camunda_dir }}"
 
 - name: Copy camunda bpm engine config to tomcat config
-  copy:
+  ansible.builtin.copy:
     src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
     remote_src: true
     dest: "{{ catalina_home }}/conf/bpm-platform.xml"
+    mode: "0644"
 
 - name: Copy camunda jars to tomcat lib
-  copy:
+  ansible.builtin.copy:
     src: "{{ camunda_dir }}/lib/"
     remote_src: true
     dest: "{{ catalina_home }}/lib/"
+    mode: "0644"
 
 # a copy with remore_src preserves file attribs regardless of mode
 # hence we need to set these props using a separate command
 - name: Set file access rights for files in tomcat lib dir
-  command: chmod -R 0755 {{ catalina_home }}/lib
-
+  ansible.builtin.command: chmod -R 0755 {{ catalina_home }}/lib
 - name: Set file access tights for tomcat ./conf/bpm-platform.xml
-  command: chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml
-
+  ansible.builtin.command: chmod 0755 {{ catalina_home }}/conf/bpm-platform.xml
 - name: Add camunda listener to Tomcat server.xml
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
     insertafter: <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
     line: <Listener className="org.camunda.bpm.container.impl.tomcat.TomcatBpmPlatformBootstrap" />
 
 - name: Add camunda resources to Tomcat server.xml
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ catalina_home }}/conf/server.xml"
     insertafter: <GlobalNamingResources>
     line: <Resource name="jdbc/ProcessEngine" auth="Container" type="javax.sql.DataSource" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" uniqueResourceName="process-engine"
@@ -63,7 +63,7 @@
       description="Camunda Platform Process Application Service" factory="org.camunda.bpm.container.impl.jndi.ProcessApplicationServiceObjectFactory" />
 
 - name: Copy camunda webapps to tomcat webapps dir
-  copy:
+  ansible.builtin.copy:
     src: "{{ camunda_tomcatdir }}/webapps/{{ item }}/"
     remote_src: true
     dest: "{{ catalina_home }}/webapps/{{ item }}"

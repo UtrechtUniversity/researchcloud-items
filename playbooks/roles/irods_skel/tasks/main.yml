@@ -1,12 +1,12 @@
 ---
 - name: Add .irods to new user skeleton
-  file:
+  ansible.builtin.file:
     path: /etc/skel/.irods
     state: directory
     mode: "0755"
 
 - name: Create default irods_environment.json in skel
-  template:
+  ansible.builtin.template:
     src: irods_environment.json.j2
     dest: /etc/skel/.irods/irods_environment.json
     owner: root

@@ -1,6 +1,6 @@
 ---
 - name: Install dependencies
-  yum:
+  ansible.builtin.dnf:
     name:
       - libXcomposite
       - libXcursor

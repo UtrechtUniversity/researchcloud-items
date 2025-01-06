@@ -1,6 +1,6 @@
 ---
 - name: Create desktop menu items through role
-  include_role:
+  ansible.builtin.include_role:
     name: desktop_file
   vars:
     desktopfile_app_name: "{{ keycloak_desktopfile_app_name }}"

@@ -1,17 +1,15 @@
 ---
-- name: prepare psql script to create ICAT database and db user
-  template:
-    src: "create_icat.sql.j2"
-    dest: "/tmp/create_icat.sql"
+- name: Prepare psql script to create ICAT database and db user
+  ansible.builtin.template:
+    src: create_icat.sql.j2
+    dest: /tmp/create_icat.sql
     owner: postgres
     group: postgres
-    mode: 0700
+    mode: "0700"
 
 - name: Using psql, only if the objects do not yet exist, create ICAT dataset and irods db user
-  command: psql -f /tmp/create_icat.sql
-
-- name: cleanup psql script
-  file:
+  ansible.builtin.command: psql -f /tmp/create_icat.sql
+- name: Cleanup psql script
+  ansible.builtin.file:
     path: /tmp/create_icat.sql
     state: absent
-

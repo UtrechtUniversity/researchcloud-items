@@ -8,7 +8,7 @@
 # you need to restart the service "uwsgi-<yourappname>".
 
 - name: Create uwsgi app dir
-  file:
+  ansible.builtin.file:
     path: "{{ uwsgi_app_dir }}"
     state: directory
     owner: www-data
@@ -17,7 +17,7 @@
 
 - name: Install uwsgi
   when: not (uwsgi_venv | length > 0)
-  package:
+  ansible.builtin.package:
     name:
       - uwsgi
       - uwsgi-plugin-python3
@@ -28,13 +28,13 @@
   block:
     - name: Ensure build requirements for uwsgi present
       when: ansible_os_family == 'Debian'
-      package:
+      ansible.builtin.package:
         name:
           - build-essential
           - python3-dev
 
     - name: Install uwsgi via pip
-      pip:
+      ansible.builtin.pip:
         name:
           - wheel
           - uwsgi
@@ -42,13 +42,13 @@
         virtualenv: "{{ uwsgi_venv }}"
 
 - name: Configure uwsgi reverse proxy in nginx
-  include_role:
+  ansible.builtin.include_role:
     name: nginx_reverse_proxy
   vars:
     nginx_reverse_proxy_locations: "{{ [dict(uwsgi_default_proxy_config, **uwsgi_proxy_config)] }}"
 
 - name: Create uwsgi ini file for app
-  template:
+  ansible.builtin.template:
     src: uwsgi-example.ini.j2
     dest: "{{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.ini"
     owner: root
@@ -56,7 +56,7 @@
     mode: "0644"
 
 - name: Create service file for app
-  template:
+  ansible.builtin.template:
     src: uwsgi.service.j2
     dest: /etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service
     owner: root
@@ -64,7 +64,7 @@
     mode: "0640"
 
 - name: Create log directory
-  file:
+  ansible.builtin.file:
     path: "{{ uwsgi_log_dir }}"
     owner: www-data
     group: www-data
@@ -72,7 +72,7 @@
     state: directory
 
 - name: Enable logrotation for app
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/logrotate.d/uwsgi
     block: >
       {{ uwsgi_log_dir }}/*.log {
@@ -85,9 +85,10 @@
         copytruncate
       }
     create: true
+    mode: "0644"
 
 - name: Start app service
-  systemd_service:
+  ansible.builtin.systemd_service:
     name: uwsgi-{{ uwsgi_app_name }}
     state: started
     enabled: true

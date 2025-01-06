@@ -1,11 +1,11 @@
 ---
 - name: Create transfer user
-  user:
+  ansible.builtin.user:
     name: "{{ transferuser_name }}"
     state: present
 
 - name: Ensure that .ssh dir exists for the transfer user
-  file:
+  ansible.builtin.file:
     path: /home/{{ transferuser_name }}/.ssh
     state: directory
     mode: "0750"
@@ -14,7 +14,7 @@
 
 # NB: the transfer script needs setuid priv
 - name: Install transfer command
-  template:
+  ansible.builtin.template:
     src: transfer.j2
     dest: /usr/local/bin/{{ transferuser_command }}
     mode: "0755"

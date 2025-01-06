@@ -9,7 +9,7 @@
   register: _ibridges_find_venv
 
 - name: Install iBridges template plugin
-  pip:
+  ansible.builtin.pip:
     name: "{{ ibridges_template_plugin }}"
     extra_args: --target {{ _ibridges_find_venv.files[0].path }}/site-packages
     state: present

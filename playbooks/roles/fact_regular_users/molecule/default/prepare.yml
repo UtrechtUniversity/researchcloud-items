@@ -8,6 +8,7 @@
         dest: /etc/rsc/managedgroups
         content: >
           src_ws_admin
+        mode: "0644"
 
     - name: Ensure group "src_ws_admin" exists
       ansible.builtin.group:

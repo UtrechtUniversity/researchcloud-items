@@ -11,7 +11,7 @@
         path: /home/transfer/.ssh/authorized_keys
       register: transferuser_ssh_keys
     - name: Debug
-      debug:
+      ansible.builtin.debug:
         msg: "{{ transferuser_ssh_keys.content | b64decode }}"
     - name: Assert key was added to transferuser
       ansible.builtin.assert:

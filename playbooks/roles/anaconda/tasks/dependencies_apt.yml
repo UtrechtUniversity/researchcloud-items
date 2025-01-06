@@ -1,6 +1,6 @@
 ---
 - name: Install dependencies
-  apt:
+  ansible.builtin.apt:
     pkg:
       - libgl1-mesa-glx
       - libegl1-mesa

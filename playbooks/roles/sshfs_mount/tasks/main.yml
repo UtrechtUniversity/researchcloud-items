@@ -1,18 +1,19 @@
 ---
 - name: Install package sshfs
-  package:
+  ansible.builtin.package:
     name: sshfs
     state: present
 
 - name: Ensure that local mountpoint exists
-  file:
+  ansible.builtin.file:
     path: "{{ sshfs_connection_info.mountpoint }}"
     state: directory
     owner: "{{ sshfs_connection_info.username }}"
+    mode: "0755"
 
 - name: Enable user_allow_other in fuse config
   tags: molecule-idempotence-notest
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/fuse.conf
     regexp: ^(#)?user_allow_other$
     line: user_allow_other
@@ -22,7 +23,8 @@
 # in two parts so that privileged part of update /etc/fstab is done by root
 # Note that to make this work, only the 'state' differs
 - name: Do mount
-  include_tasks: mount.yml
+  tags: molecule-idempotence-notest
+  ansible.builtin.include_tasks: mount.yml
   loop:
     - become: false
       state: present
