@@ -1,9 +1,26 @@
 ---
 - name: Prepare a robot server
   hosts: localhost
-  gather_facts: true
+  gather_facts: false
 
   roles:
     - role: robotuser
       vars:
         robotuser_generate_ssh_key: true
+    - role: fact_workspace_info
+  
+  tasks:
+
+    - name: Restrict permissions on data volumes
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+      with_items: "{{ fact_workspace_storage }}"
+
+    - name: Ensure fail2ban is active
+      ansible.builtin.service:
+        name: fail2ban
+        state: started
