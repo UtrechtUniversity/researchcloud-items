@@ -32,6 +32,9 @@ Debian/Ubuntu operating system.
 - name: root # required
   location: / # required
   proxy_pass: http://localhost:8000/ #  the webapp running on localhost -- not required! you can instead use e.g. 'alias' as well.
+  add_headers: # headers that nginx will add to the response
+    foo: bar
+    bar: foo
   # auth: # setting the auth attribute is not required
   # The options below are example of common nginx options
   # Any "key: value" pair you add will be translated to "key value;" in the nginx config

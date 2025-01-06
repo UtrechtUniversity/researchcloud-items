@@ -45,6 +45,12 @@ location {{ vhost_properties.location }} {
     {% endif %}
     {% endif %}
 
+    {% if vhost_properties.add_headers is defined %}
+    {% for header, value in vhost_properties.add_headers.items() -%}
+    add_header {{ header }} {{ value }};
+    {%- endfor %}
+    {% endif %}
+
     {% if vhost_properties.proxy_pass is defined %}
     proxy_pass {{ vhost_properties.proxy_pass }};
     {% for header, value in proxy_headers.items() -%}
