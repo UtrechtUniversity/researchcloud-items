@@ -4,8 +4,9 @@
 ## Summary
 Makes information about the workspace and CO available as Ansible facts. Provides three facts:
 
-- `fact_workspace_info` -- dict object containing info about the workspace (CO, user endpoint URL, etc.)/
-- `fact_desktop_workspace` -- Boolean, true if the workspace has a desktop environment.
+- `fact_workspace_info` -- Dict. Object containing info about the workspace (CO, user endpoint URL, etc.)/
+- `fact_desktop_workspace` -- Boolean. True if the workspace has a desktop environment.
+- `fact_workspace_storage` -- List. List of Strings of paths to ResearchCloud storage volumes mounted on the workspace.
 
 ## Requires
 Linux flavor operating system.
@@ -28,6 +29,12 @@ See here for example output of the facts.
     "workspace_id": "id2",
     "workspace_name": "python workbench3"
 }
+```
+
+`fact_workspace_storage`: 
+
+```json
+ "fact_workspace_storage": ["/data/my_storage_volume"]
 ```
 
 ## History
