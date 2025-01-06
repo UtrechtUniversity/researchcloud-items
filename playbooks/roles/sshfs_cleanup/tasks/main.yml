@@ -5,8 +5,9 @@
 - name: Wait until mounted filesystem is at rest
   tags: molecule-idempotence-notest
   ansible.builtin.command: sync
+
 - name: Umount remote filesystem
-  tags: molecule-idempotence-notest
+  tags: molecule-notest
   ansible.posix.mount:
     path: "{{ sshfs_connection_info.mountpoint }}"
     state: unmounted

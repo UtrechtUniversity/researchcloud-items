@@ -20,6 +20,7 @@
   ansible.builtin.get_url:
     url: "{{ keycloak_tardir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
+    mode: "0644"
 
 - name: Extract keycloak tar
   ansible.builtin.unarchive:

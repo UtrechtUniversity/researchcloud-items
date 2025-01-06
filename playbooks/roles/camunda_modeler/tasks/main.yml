@@ -8,6 +8,7 @@
   ansible.builtin.get_url:
     url: "{{ camunda_modeler_urldir }}/{{ camunda_modeler_urlfile_prefix }}.tar.gz"
     dest: /tmp/{{ camunda_modeler_urlfile_prefix }}.tar.gz
+    mode: "0640"
 
 - name: Unpack modeler tar.gz file in tmp location
   ansible.builtin.unarchive:

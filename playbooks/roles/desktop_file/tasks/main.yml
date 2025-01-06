@@ -2,10 +2,12 @@
 - name: Check if required variables are present
   when: (desktopfile_app_name is not defined) or (desktopfile_sizes is not defined)
   ansible.builtin.meta: end_play
+
 - name: Preventing bug - Ensure directory exists
   ansible.builtin.file:
     path: /usr/share/desktop-directories/
     state: directory
+    mode: "0755"
 
 - name: Install xdg utilities
   ansible.builtin.package:

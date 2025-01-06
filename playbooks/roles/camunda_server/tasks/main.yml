@@ -30,12 +30,14 @@
     src: "{{ camunda_tomcatdir }}/conf/bpm-platform.xml"
     remote_src: true
     dest: "{{ catalina_home }}/conf/bpm-platform.xml"
+    mode: "0644"
 
 - name: Copy camunda jars to tomcat lib
   ansible.builtin.copy:
     src: "{{ camunda_dir }}/lib/"
     remote_src: true
     dest: "{{ catalina_home }}/lib/"
+    mode: "0644"
 
 # a copy with remore_src preserves file attribs regardless of mode
 # hence we need to set these props using a separate command

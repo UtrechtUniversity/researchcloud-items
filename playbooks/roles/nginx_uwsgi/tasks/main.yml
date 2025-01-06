@@ -85,6 +85,7 @@
         copytruncate
       }
     create: true
+    mode: "0644"
 
 - name: Start app service
   ansible.builtin.systemd_service:

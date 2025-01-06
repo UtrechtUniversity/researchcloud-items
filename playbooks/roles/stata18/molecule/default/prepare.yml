@@ -21,6 +21,7 @@
       ansible.builtin.copy:
         dest: /tmp/unix/linux64/setrwxp
         content: mock
+        mode: "0755"
 
     - name: Create mock stata archive1
       ansible.builtin.command:

@@ -12,6 +12,7 @@
   when: pipx_install_systemwide_profile | length > 0
   ansible.builtin.copy:
     dest: /etc/profile.d/{{ pipx_install_systemwide_profile }}
+    mode: "0644"
     content: |
       export PATH="{{ pipx_install_systemwide_location }}/bin${PATH:+:${PATH}}"
 

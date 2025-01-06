@@ -42,6 +42,7 @@
       ansible.builtin.template:
         src: upgrade-bootstrap.timer
         dest: /etc/systemd/system/upgrade-bootstrap.timer
+        mode: "0644"
 
     - name: Enable bootstrap timer
       ansible.builtin.command: "{{ item }}"

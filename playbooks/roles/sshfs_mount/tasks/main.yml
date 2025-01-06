@@ -9,6 +9,7 @@
     path: "{{ sshfs_connection_info.mountpoint }}"
     state: directory
     owner: "{{ sshfs_connection_info.username }}"
+    mode: "0755"
 
 - name: Enable user_allow_other in fuse config
   tags: molecule-idempotence-notest

@@ -3,10 +3,12 @@
 ---
 - name: Install dependencies
   ansible.builtin.include_tasks: dependencies_{{ ansible_pkg_mgr }}.yml
+
 - name: Ensure download dir exists
   ansible.builtin.file:
     path: "{{ anaconda_download_dest }}"
     state: directory
+    mode: "0750"
 
 - name: Add users to anaconda multiple user group by default
   ansible.builtin.include_role:

@@ -5,10 +5,10 @@
   roles:
     - role: robotuser
       vars:
-        robotuser_generate_ssh_key: "yes"
+        robotuser_generate_ssh_key: "true"
     - role: robotuser
       vars:
-        robotuser_generate_ssh_key: "no"
+        robotuser_generate_ssh_key: "false"
         robotuser_key: foo
         robotuser_server: localhost
         robotuser_sourcepath: /tmp/

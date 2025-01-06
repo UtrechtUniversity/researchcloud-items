@@ -2,7 +2,7 @@
 - name: Update extra packages
   ansible.builtin.package:
     name: epel-release
-    state: latest
+    state: present
 
 - name: Install R
   ansible.builtin.package:

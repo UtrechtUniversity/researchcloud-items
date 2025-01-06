@@ -14,6 +14,7 @@
   ansible.builtin.get_url:
     url: "{{ irods_repo_url }}/irods-signing-key.asc"
     dest: "{{ irods_key_location }}"
+    mode: "0644"
   when: ansible_pkg_mgr == 'apt'
 
 - name: Add iRODS repository for apt package manager

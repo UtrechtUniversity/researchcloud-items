@@ -11,6 +11,7 @@
   ansible.builtin.file:
     path: "{{ agisoft_download_dest }}"
     state: directory
+    mode: "0755"
 
 - name: Download agisoft installation files
   ansible.builtin.get_url:
@@ -29,6 +30,7 @@
   ansible.builtin.copy:
     dest: "{{ agisoft_install_dir }}/license.lic"
     content: "{{ license }}"
+    mode: "0644"
 
 - name: Install desktop file menu item through role
   ansible.builtin.include_role:
