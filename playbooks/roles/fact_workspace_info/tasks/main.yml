@@ -14,6 +14,16 @@
       - min
   when: ansible_os_family is not defined
 
+- name: Gather mounts facts
+  setup:
+    gather_subset:
+      - mounts
+  when: ansible_mounts is not defined
+
+- name: Set fact_workspace_storage
+  ansible.builtin.set_fact:
+    fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
+
 - name: Get all packages as facts
   package_facts:
     manager: auto
