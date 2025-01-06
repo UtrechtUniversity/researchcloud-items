@@ -29,4 +29,4 @@ jobs:
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
         with:
-          args: "playbooks/"
+          args: "playbooks ."

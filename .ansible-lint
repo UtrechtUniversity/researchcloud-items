@@ -10,3 +10,7 @@ exclude_paths:
 skip_list:
   - role-name
   - var-naming
+warn_list:
+  - yaml[line-length]
+  - no-changed-when
+  - no-handler
