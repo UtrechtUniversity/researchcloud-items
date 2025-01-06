@@ -3,7 +3,7 @@
   become_user: "{{ sshfs_connection_info.username }}"
   become: "{{ item.become }}"
   when: "'molecule-notest' not in ansible_skip_tags or item.state == 'present'" # don't actually mount when running in container
-  mount:
+  ansible.posix.mount:
     src: sshfs#{{ sshfs_connection_info.username }}@{{ sshfs_connection_info.server }}:{{ sshfs_connection_info.sourcepath }}
     path: "{{ sshfs_connection_info.mountpoint }}"
     fstype: fuse

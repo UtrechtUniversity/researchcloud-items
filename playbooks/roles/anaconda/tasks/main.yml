@@ -2,16 +2,14 @@
 
 ---
 - name: Install dependencies
-  include_tasks: dependencies_{{ ansible_pkg_mgr }}.yml
-
-# The get_url ansible module in the task below does not create a directory
+  ansible.builtin.include_tasks: dependencies_{{ ansible_pkg_mgr }}.yml
 - name: Ensure download dir exists
-  file:
+  ansible.builtin.file:
     path: "{{ anaconda_download_dest }}"
     state: directory
 
 - name: Add users to anaconda multiple user group by default
-  include_role:
+  ansible.builtin.include_role:
     name: default_group
   vars:
     default_group_group:
@@ -21,20 +19,20 @@
   tags: molecule-notest
   block:
     - name: Download anaconda installation files
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ anaconda_url }}"
         dest: "{{ anaconda_download_dest }}"
         mode: "0774"
 
     - name: Install anaconda for multiple users
-      command:
+      ansible.builtin.command:
         cmd: "{{ anaconda_download_dest }}/{{ anaconda_file }} -b -p {{ anaconda_install_dir }}"
         creates: "{{ anaconda_install_dir }}"
 
     # Dev note: in case of multi-user issues: the following two tasks are your best bet to start troubleshooting.
     # `s` permission added due to bug: https://github.com/conda/conda/issues/7227
     - name: Change anaconda installation dir ownership to multiple user group
-      file:
+      ansible.builtin.file:
         path: "{{ anaconda_install_dir }}"
         group: "{{ anaconda_group_name }}"
         mode: u+rwxs,g+rwxs,o-rwxs
@@ -43,20 +41,20 @@
     # The above task creates a new error, because the application binary cannot be run with setuid permissions.
     # TODO The above task and this task should be reworked to only grant the setuid permisison on the directories that require it.
     - name: Remove `s` permission from the anaconda bin directory to prevent startup problems
-      file:
+      ansible.builtin.file:
         path: "{{ anaconda_install_dir }}/bin"
         group: "{{ anaconda_group_name }}"
         mode: u-s,g-s
         recurse: true
 
 - name: Run conda-init for every user
-  template:
+  ansible.builtin.template:
     src: run_conda_init.sh.j2
     dest: /etc/runonce.d
     mode: "0755"
 
 - name: Install desktop file menu item through role
-  include_role:
+  ansible.builtin.include_role:
     name: desktop_file
   vars:
     desktopfile_app_name: anaconda

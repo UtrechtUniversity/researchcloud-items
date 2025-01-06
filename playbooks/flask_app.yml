@@ -31,12 +31,12 @@
           ansible.builtin.service_facts:
 
         - name: Stop if nginx is not installed
-          fail:
+          ansible.builtin.fail:
             msg: Nginx must be installed and active for this component to work.
           when: services['nginx.service'].state != 'running'
 
     - name: Check for presence of SRC Nginx SRAM authentication config
-      lineinfile:
+      ansible.builtin.lineinfile:
         line: "{{ item }}"
         dest: /etc/nginx/app-location-conf.d/authentication.conf
       check_mode: true
@@ -47,23 +47,23 @@
         - location = /validate {
 
     - name: Stop if SRC nginx config is not present
-      fail:
+      ansible.builtin.fail:
         msg: The SRC-Nginx component must be run before this component
       when: src_nginx_config.changed
 
     - name: Resolve 'omit' in variables
       block:
         - name: Set uwsgi_config
-          set_fact:
+          ansible.builtin.set_fact:
             uwsgi_config: "{{ _uwsgi_config }}"
 
         - name: Set uwsgi_proxy_config
-          set_fact:
+          ansible.builtin.set_fact:
             uwsgi_proxy_config: "{{ _uwsgi_proxy_config }}"
 
     - name: Set auth info variable if auth basic is set
       when: flask_app_auth == 'basic'
-      set_fact:
+      ansible.builtin.set_fact:
         _flask_app_auth_info:
           - name: "{{ flask_app_name }}"
             username: "{{ flask_app_username | default('') }}"
@@ -72,14 +72,14 @@
 
     - name: Clone repo
       tags: molecule-idempotence-notest
-      git:
+      ansible.builtin.git:
         repo: "{{ flask_app_repo }}"
         version: "{{ flask_app_version | default(omit, true) }}"
         dest: "{{ uwsgi_app_dir }}"
         depth: 1
 
     - name: Create venv with uv
-      include_role:
+      ansible.builtin.include_role:
         name: uv
       vars:
         uv_venvs:
@@ -88,13 +88,13 @@
 
     - name: Ensure build requirements for uwsgi present
       when: ansible_os_family == 'Debian'
-      package:
+      ansible.builtin.package:
         name:
           - build-essential
           - python3-dev
 
     - name: Install uwsgi
-      pip:
+      ansible.builtin.pip:
         executable: uv_pip
         name:
           - wheel
@@ -106,7 +106,7 @@
 
     - name: Install requirements
       when: flask_app_requirements | length > 0
-      pip:
+      ansible.builtin.pip:
         executable: uv_pip
         requirements: "{{ uwsgi_app_dir }}/{{ item | trim }}"
       environment:

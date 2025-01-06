@@ -6,7 +6,7 @@
     state: present
 
 - name: Add users to new group (used by pam_group)
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/security/group.conf
     insertbefore: BOF
     line: "*;*;*;Al0000-2400;{{ default_group_group.groupname }}"
@@ -30,7 +30,7 @@
 
     - name: Find EXTRA_GROUPS
       register: extra_groups
-      command: grep "^EXTRA_GROUPS=" /etc/adduser.conf
+      ansible.builtin.command: grep "^EXTRA_GROUPS=" /etc/adduser.conf
       failed_when: extra_groups.rc == 2
       changed_when: false
 

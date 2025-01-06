@@ -1,8 +1,8 @@
 ---
 - name: Include tasks for Debian-like OS
-  include_tasks: debian.yml
+  ansible.builtin.include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Include tasks for RH-like OS
-  include_tasks: redhat.yml
+  ansible.builtin.include_tasks: redhat.yml
   when: ansible_os_family == 'RedHat'

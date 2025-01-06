@@ -10,7 +10,7 @@
       ansible.builtin.command: su - -l -c /home/testuser2/runonce.d/runonce_conda.sh testuser2
 
     - name: Ensure condabin is added to path so user can run conda init on demand
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: /home/testuser2/.bashrc
         line: export PATH="/data/ext/miniconda/condabin${PATH:+:${PATH}}"
         state: present
@@ -19,7 +19,7 @@
       failed_when: (condabin is changed) or (condabin is failed)
 
     - name: Ensure conda is not auto-initialized
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: /home/testuser2/.bashrc
         line: conda initialize >>>
         state: present

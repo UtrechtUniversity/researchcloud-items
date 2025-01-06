@@ -4,14 +4,14 @@
   gather_facts: true
   tasks:
     - name: Testing default_group by adding testgroup1
-      include_role:
+      ansible.builtin.include_role:
         name: default_group
       vars:
         default_group_group:
           groupname: testgroup1
           gid: 5000
     - name: Testing default_group by adding testgroup2
-      include_role:
+      ansible.builtin.include_role:
         name: default_group
       vars:
         default_group_group:

@@ -1,15 +1,15 @@
 ---
 - name: Ensure java runtime is installed
-  package:
+  ansible.builtin.package:
     name: default-jre
     state: present
 
 - name: Create keycloak user
-  user:
+  ansible.builtin.user:
     name: keycloak
 
 - name: Create keycloak target dir
-  file:
+  ansible.builtin.file:
     dest: "{{ keycloak_dir }}"
     state: directory
     mode: "0755"
@@ -17,12 +17,12 @@
     group: root
 
 - name: Download keycloak tar
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ keycloak_tardir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
 
 - name: Extract keycloak tar
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ keycloak_dir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
     remote_src: true
@@ -31,7 +31,7 @@
     group: keycloak
 
 - name: Add keycloak log dir
-  file:
+  ansible.builtin.file:
     dest: "{{ keycloak_jboss_log }}"
     mode: "0755"
     owner: keycloak
@@ -39,7 +39,7 @@
     state: directory
 
 - name: Keycloak data directory
-  file:
+  ansible.builtin.file:
     dest: "{{ keycloak_jboss_home }}/standalone/data"
     mode: "0755"
     owner: keycloak
@@ -47,7 +47,7 @@
     state: directory
 
 - name: Keycloak tmp directory
-  file:
+  ansible.builtin.file:
     dest: "{{ keycloak_jboss_home }}/standalone/tmp"
     mode: "0755"
     owner: keycloak
@@ -65,7 +65,7 @@
 #    recurse: yes
 
 - name: Add keycloak as a service to systemd
-  template:
+  ansible.builtin.template:
     owner: root
     group: root
     mode: "0644"
@@ -74,13 +74,12 @@
 
 - name: Enable keycloak
   notify: Restart keycloak
-  systemd:
+  ansible.builtin.systemd:
     name: keycloak
     enabled: true
 
 - name: Install desktop launcher
-  include_tasks: desktop.yml
-
+  ansible.builtin.include_tasks: desktop.yml
 - name: Create admin user
-  include_tasks: admin.yml
+  ansible.builtin.include_tasks: admin.yml
   when: keycloak_create_admin

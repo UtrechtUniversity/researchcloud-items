@@ -16,11 +16,11 @@
   tasks:
     - name: Parse optional packages as yaml
       when: r_workbench_packages is defined and r_workbench_packages | length > 0
-      set_fact:
+      ansible.builtin.set_fact:
         _r_packages: "{{ r_workbench_packages.split('\\n') | join('\n') | from_yaml }}"
 
     - name: Include ansible-r role
-      include_role:
+      ansible.builtin.include_role:
         name: ansible-r
       vars:
         r_version: "{{ r_workbench_version | default('40', true) }}"

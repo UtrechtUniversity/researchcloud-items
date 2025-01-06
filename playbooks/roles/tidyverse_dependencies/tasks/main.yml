@@ -1,6 +1,6 @@
 ---
 - name: Install tidyverse dependencies
-  apt:
+  ansible.builtin.apt:
     pkg:
       - libicu-dev
       - make
@@ -20,7 +20,7 @@
 
 # since it is just one quick additional install I add it here, if more follow, we might consider refactoring
 - name: Install lme4 dependencies
-  apt:
+  ansible.builtin.apt:
     pkg:
       - cmake
     state: present

@@ -11,12 +11,12 @@
           ansible.builtin.service_facts:
 
         - name: Stop if nginx is not installed
-          fail:
+          ansible.builtin.fail:
             msg: Nginx must be installed and active for this component to work.
           when: services['nginx.service'].state != 'running'
 
     - name: Check for presence of SRC Nginx SRAM authentication config
-      lineinfile:
+      ansible.builtin.lineinfile:
         line: "{{ item }}"
         dest: /etc/nginx/app-location-conf.d/authentication.conf
       check_mode: true
@@ -27,17 +27,17 @@
         - location = /validate {
 
     - name: Stop if SRC nginx config is not present
-      fail:
+      ansible.builtin.fail:
         msg: The SRC-Nginx component must be run before this component
       when: src_nginx_config.changed
 
     - name: Parse reverse proxy locations variable as yaml
-      set_fact:
+      ansible.builtin.set_fact:
         locations: "{{ reverse_proxy_locations.split('\\n') | join('\n') | from_yaml }}"
 
     - name: Parse auth info variable as yaml
       when: reverse_proxy_auth_info is defined and reverse_proxy_auth_info | length > 0
-      set_fact:
+      ansible.builtin.set_fact:
         auth_info: "{{ reverse_proxy_auth_info.split('\\n') | join('\n') | from_yaml }}"
       no_log: true
 

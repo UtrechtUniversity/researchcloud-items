@@ -1,12 +1,12 @@
 ---
 - name: Install iselect
-  copy:
+  ansible.builtin.copy:
     src: iselect.py
     dest: /usr/bin/iselect
     mode: "0755"
 
 - name: Install file indicated by iselect-file as zone list
-  copy:
+  ansible.builtin.copy:
     src: "{{ irods_iselect_file }}"
     dest: /etc/irods_zones.json
     mode: "0644"

@@ -14,10 +14,10 @@
       - irods-rule-engine-plugin-python
 
 - name: Create ICAT database and db user, only if they do not yet exist
-  include_tasks: icat.yml
+  ansible.builtin.include_tasks: icat.yml
   args:
     apply:
-      become: yes
+      become: true
       become_user: postgres
 
 - name: Register if iRODS server is initialized.
@@ -26,55 +26,53 @@
   register: irods_config_data
 
 - name: Register FQDN (hack needed because hostname FQDN incomplete during workspace deployment)
-  set_fact:
+  ansible.builtin.set_fact:
     irods_server_host: "{{ workspace_fqdn }}"
   when: workspace_fqdn is defined
 
 # below update of hostname ensures that demoResc iRODS resource will have proper host attribute
 - name: Ensure hostname is FQDN (hack needed because hostname FQDN incomplete)
-  command: hostname "{{ workspace_fqdn }}"
+  ansible.builtin.command: hostname "{{ workspace_fqdn }}"
   when: workspace_fqdn is defined
 
 - name: Generate zone key
-  ansible.builtin.command: 'openssl rand -hex 16'
+  ansible.builtin.command: openssl rand -hex 16
   register: irods_server_zone_key
 
 - name: Generate negotiation key
-  ansible.builtin.command: 'openssl rand -hex 16'
+  ansible.builtin.command: openssl rand -hex 16
   register: irods_server_negotiation_key
 
 - name: Generate control plane key
-  ansible.builtin.command: 'openssl rand -hex 16'
+  ansible.builtin.command: openssl rand -hex 16
   register: irods_server_control_plane_key
 
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists
   ansible.builtin.template:
-    src: "server_unattended_config.json.j2"
-    dest: "/etc/irods/server_unattended_config.json"
+    src: server_unattended_config.json.j2
+    dest: /etc/irods/server_unattended_config.json
     owner: root
     group: root
-    mode: 0600
+    mode: "0600"
 
 - name: Bypass hostname check in iRODS setup (hack needed for irods 4.3.3 because workspace FQDN != localhost)
   ansible.builtin.lineinfile:
     path: /var/lib/irods/scripts/setup_irods.py
-    insertafter: '^def check_hostname'
+    insertafter: ^def check_hostname
     state: present
-    line: '    return'
+    line: "    return"
 
 - name: Configure empty python ruleset core.py
   ansible.builtin.copy:
     content: ""
-    dest: "/etc/irods/core.py"
-    mode: '0644'
+    dest: /etc/irods/core.py
+    mode: "0644"
     force: false
 
 - name: Run irods configuration script
   when: irods_server_start == "start"
-  command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
-
-
+  ansible.builtin.command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
 - name: Start and enable iRODS as service
   when: irods_server_start == "start"
   ansible.builtin.service:

@@ -1,6 +1,6 @@
 ---
 - name: Check if the robotuser connection info file exist
-  stat:
+  ansible.builtin.stat:
     path: /home/{{ robotuser_name }}/connection-info.yml
   register: robotuser_c
 
@@ -8,10 +8,10 @@
   when: robotuser_c.stat.exists
   block:
     - name: Read yaml file
-      slurp:
+      ansible.builtin.slurp:
         src: /home/{{ robotuser_name }}/connection-info.yml
       register: read_connection_info
 
     - name: Parse yaml into variable
-      set_fact:
+      ansible.builtin.set_fact:
         sshfs_connection_info: "{{ read_connection_info.content | b64decode | from_yaml }}"

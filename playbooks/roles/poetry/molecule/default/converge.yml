@@ -4,5 +4,5 @@
   gather_facts: true
   tasks:
     - name: Testing userspace poetry role
-      include_role:
+      ansible.builtin.include_role:
         name: poetry

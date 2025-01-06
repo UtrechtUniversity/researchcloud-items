@@ -1,5 +1,5 @@
 ---
 - name: Install curses libraries to support commandline invocation of Stata
-  package:
+  ansible.builtin.package:
     name: libncurses5
     state: present

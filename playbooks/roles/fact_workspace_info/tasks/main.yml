@@ -1,21 +1,21 @@
 ---
 - name: Get workspace.json file
-  command: cat /etc/rsc/workspace.json
+  ansible.builtin.command: cat /etc/rsc/workspace.json
   changed_when: false
   register: _workspace_info_file
 
 - name: Parse workspace.json info
-  set_fact:
+  ansible.builtin.set_fact:
     fact_workspace_info: "{{ _workspace_info_file['stdout'] | from_json }}"
 
 - name: Gather minimal system facts
-  setup:
+  ansible.builtin.setup:
     gather_subset:
       - min
   when: ansible_os_family is not defined
 
 - name: Gather mounts facts
-  setup:
+  ansible.builtin.setup:
     gather_subset:
       - mounts
   when: ansible_mounts is not defined
@@ -25,14 +25,14 @@
     fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
 
 - name: Get all packages as facts
-  package_facts:
+  ansible.builtin.package_facts:
     manager: auto
   no_log: true
 
 - name: Get the desktop package to check for
-  set_fact:
+  ansible.builtin.set_fact:
     _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
 
 - name: Set fact_desktop_workspace
-  set_fact:
+  ansible.builtin.set_fact:
     fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"

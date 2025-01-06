@@ -1,10 +1,10 @@
 ---
 - name: Set latest system python fact
-  set_fact:
+  ansible.builtin.set_fact:
     system_python_latest: "{{ system_python_latest_versions[ansible_distribution][ansible_distribution_version] | default('') }}"
 
 - name: Fail if no latest python version for this OS is defined
-  fail:
+  ansible.builtin.fail:
     msg: No latest python version for {{ ansible_distribution }} {{ ansible_distribution_version }} is defined.
   when: system_python_latest | length == 0
 
@@ -12,7 +12,7 @@
   when: ansible_distribution == "Ubuntu"
   block:
     - name: Install latest system python and corresponding venv
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       with_items:
@@ -20,5 +20,5 @@
         - python{{ system_python_latest }}-venv
 
     - name: Set path to latest system python
-      set_fact:
+      ansible.builtin.set_fact:
         system_python_path: /usr/bin/python{{ system_python_latest }}

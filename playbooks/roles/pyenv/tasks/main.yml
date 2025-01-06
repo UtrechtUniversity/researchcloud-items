@@ -1,6 +1,6 @@
 ---
 - name: Install pyenv dependencies, yum package manager
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -17,7 +17,7 @@
   when: ansible_pkg_mgr == 'yum'
 
 - name: Install pyenv dependencies, apt package manager
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -38,11 +38,11 @@
   when: ansible_pkg_mgr == 'apt'
 
 - name: Install latest system python
-  include_role: { name: system_python }
+  ansible.builtin.include_role: { name: system_python }
   when: pyenv_default_python == 'system-latest'
 
 - name: Add pyenv install to runonce config
-  template:
+  ansible.builtin.template:
     src: pyenv-install.sh.j2
     dest: /etc/runonce.d/01_pyenv-install.sh
     mode: "0755"

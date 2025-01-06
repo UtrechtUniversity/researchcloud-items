@@ -1,7 +1,7 @@
 ---
 - name: Fail if not on supported distribution
   when: ansible_distribution != 'Ubuntu'
-  fail:
+  ansible.builtin.fail:
     msg: Do not know how to install ibridges-gui on {{ ansible_distribution }}.
 
 - name: Install dependencies (Ubuntu)
@@ -11,15 +11,15 @@
       when: ansible_distribution_major_version | int < 22 # ibridges-gui requires python >= 3.9, which is not available on Ubuntu < 22.
       block:
         - name: Install latest system python and pip
-          include_role:
+          ansible.builtin.include_role:
             name: system_python
 
         - name: Set ibridges_python_path
-          set_fact:
+          ansible.builtin.set_fact:
             ibridges_python_path: /usr/bin/python3.9
 
     - name: Install GUI dependencies
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       with_items:
@@ -27,7 +27,7 @@
         - software-properties-common
 
 - name: Install desktop file menu item through role
-  include_role:
+  ansible.builtin.include_role:
     name: desktop_file
   vars:
     desktopfile_app_name: ibridges-gui

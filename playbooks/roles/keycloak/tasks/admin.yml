@@ -1,6 +1,6 @@
 ---
 - name: Create admin user
-  command: "{{ keycloak_jboss_home }}/bin/add-user-keycloak.sh -u {{ keycloak_admin_username }} -p {{ keycloak_admin_password }}"
+  ansible.builtin.command: "{{ keycloak_jboss_home }}/bin/add-user-keycloak.sh -u {{ keycloak_admin_username }} -p {{ keycloak_admin_password }}"
   register: keycloak_create_admin
   changed_when: keycloak_create_admin.stdout | regex_search("^Added '.*' to")
   failed_when: keycloak_create_admin.rc > 0 and 'already added' not in keycloak_create_admin.stderr

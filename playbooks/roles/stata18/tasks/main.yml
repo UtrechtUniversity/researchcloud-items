@@ -8,16 +8,16 @@
 #
 
 - name: Get system facts
-  setup:
+  ansible.builtin.setup:
     gather_subset:
       - min
 
 - name: Include dependencies (Debian family)
-  include_tasks: debian.yml
+  ansible.builtin.include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Create a tmp dir to unpack Stata software to
-  file:
+  ansible.builtin.file:
     dest: "{{ stata18_tmp_dir }}"
     state: directory
     mode: "0755"
@@ -25,13 +25,13 @@
     group: root
 
 - name: Download and unpack Stata18 distribution tar.gz
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
     remote_src: true
     dest: "{{ stata18_tmp_dir }}"
 
 - name: Create stata software target dir
-  file:
+  ansible.builtin.file:
     dest: "{{ stata18_dir }}"
     state: directory
     mode: "0755"
@@ -45,14 +45,14 @@
 #
 
 - name: Get all archive files in tmp dir
-  find:
+  ansible.builtin.find:
     paths: "{{ stata18_tmp_archive_dir }}"
     patterns: "*.tgz,*.taz,*.tar.gz"
     recurse: false
   register: stata18_archives
 
 - name: Extract compressed stata files in place in target dir
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ item }}"
     remote_src: true
     dest: "{{ stata18_dir }}"
@@ -62,21 +62,21 @@
   with_items: "{{ stata18_archives.files | map(attribute='path') | list }}"
 
 - name: Copy Stata setup script
-  copy:
+  ansible.builtin.copy:
     src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
     dest: "{{ stata18_dir }}/"
     mode: "0755"
     remote_src: true
 
 - name: Run Stata setup script to set access rights for Stata files
-  shell: "{{ stata18_dir }}/setrwxp now"
+  ansible.builtin.shell: "{{ stata18_dir }}/setrwxp now"
   tags: molecule-notest
   args:
     chdir: "{{ stata18_dir }}"
     executable: sh
 
 - name: Create Stata markfile to indicate presence of installed Stata
-  copy:
+  ansible.builtin.copy:
     dest: "{{ stata18_dir }}/installed.180"
     owner: root
     mode: "0644"
@@ -84,7 +84,7 @@
     force: false
 
 - name: Activate license
-  command: ./stinit
+  ansible.builtin.command: ./stinit
   tags: molecule-notest
   args:
     chdir: "{{ stata18_dir }}"
@@ -101,7 +101,7 @@
       Y
 
 - name: Install desktop launcher
-  include_role:
+  ansible.builtin.include_role:
     role: desktop_file
   vars:
     desktopfile_app_name: stata

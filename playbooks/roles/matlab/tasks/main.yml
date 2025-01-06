@@ -4,17 +4,17 @@
 #    NB: You should obtain this ISO image from MathWorks Inc.
 #
 - name: Check if the configuration file exists
-  stat:
+  ansible.builtin.stat:
     path: "{{ matlab_configfile_path }}"
   register: matlab_c
 
 - name: If config file exists, load its content into Ansible vars. If not, just rely on defaults.
-  include_vars:
+  ansible.builtin.include_vars:
     file: "{{ matlab_configfile_path }}"
   when: matlab_c.stat.exists
 
 - name: Create mountpoint /mnt/matlab-iso
-  file:
+  ansible.builtin.file:
     dest: /mnt/matlab-iso
     state: directory
     mode: "0755"
@@ -23,7 +23,7 @@
 
 - name: Mount Matlab software iso image as /mnt/matlab-iso
   tags: molecule-notest # mounting iso's within containers is too complicated
-  mount:
+  ansible.posix.mount:
     path: /mnt/matlab-iso
     src: "{{ matlab_iso_dir }}/{{ matlab_iso_file }}"
     fstype: iso9660
@@ -31,7 +31,7 @@
     state: mounted
 
 - name: Prepare a silent install inputfile
-  template:
+  ansible.builtin.template:
     owner: root
     group: root
     mode: "0644"
@@ -39,7 +39,7 @@
     dest: /root/matlab_installer_input.txt
 
 - name: Prepare the license.dat file
-  template:
+  ansible.builtin.template:
     owner: root
     group: root
     mode: "0644"
@@ -47,7 +47,7 @@
     dest: /root/license.dat
 
 - name: Create Matlab target dir
-  file:
+  ansible.builtin.file:
     dest: "{{ matlab_dir }}"
     state: directory
     mode: "0755"
@@ -57,28 +57,26 @@
 # NB: may take 30 min and 20 GB disk space for full product install
 - name: Install Matlab products using silent installation. check log in /tmp for progress
   tags: molecule-notest
-  command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
+  ansible.builtin.command: /mnt/matlab-iso/install -inputFile /root/matlab_installer_input.txt
   args:
     chdir: /mnt/matlab-iso
   register: matlab_i
 
 - name: Ensure filesystems are at rest before unmount
-  command: sync
+  ansible.builtin.command: sync
   changed_when: false
 
 - name: Unmount Matlab software iso image, no longer needed
   tags: molecule-notest
-  mount:
+  ansible.posix.mount:
     path: /mnt/matlab-iso
     state: unmounted
 
 - name: Install desktop launcher
   when: fact_desktop_workspace
-  import_tasks: desktop.yml
-
-# commandline wrapper will try per-user license before network license
+  ansible.builtin.import_tasks: desktop.yml
 - name: Create commandline wrapper to matlab executable
-  template:
+  ansible.builtin.template:
     owner: root
     group: root
     mode: "0755"

@@ -5,12 +5,12 @@
   pre_tasks:
     - name: Get Service Status
       no_log: true
-      systemd:
+      ansible.builtin.systemd:
         name: nginx
       register: nginx_status
 
     - name: Stop if nginx is not installed
-      fail:
+      ansible.builtin.fail:
         msg: The SRC-Nginx component must be installed and active for this component to work.
       when: nginx_status.status.ActiveState != 'active'
 
