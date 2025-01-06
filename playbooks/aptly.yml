@@ -46,7 +46,6 @@
           vars:
             gpg_pull: false # Don't pull the created keys to the orchestrator
             gpg_generator_user: root # aptly user does not exist yet
-            gpg_user: root
             gpg_realname: "{{ aptly_gpg_realname | default('Aptly on Research Cloud') }}"
             gpg_useremail: "{{ aptly_gpg_useremail | default('aptly@localhost') }}"
             gpg_algo: "{{ aptly_gpg_algo | default('future-default') }}"
