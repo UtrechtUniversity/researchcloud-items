@@ -5,7 +5,7 @@
 
   roles:
     - role: fact_workspace_info
-    - role: tidyverse_dependencies  # install tidyverse dependencies
+    - role: tidyverse_dependencies # install tidyverse dependencies
     - role: install_role
       vars:
         install_role_roles:
@@ -14,7 +14,6 @@
       when: fact_desktop_workspace
 
   tasks:
-
     - name: Parse optional packages as yaml
       when: r_workbench_packages is defined and r_workbench_packages | length > 0
       set_fact:
@@ -22,7 +21,7 @@
 
     - name: Include ansible-r role
       include_role:
-        role: ansible-r
+        name: ansible-r
       vars:
         r_version: "{{ r_workbench_version | default('40', true) }}"
         r_cran_mirror: "{{ r_workbench_cran_mirror | default('https://cran.rstudio.com/', true) }}"

@@ -3,7 +3,9 @@
   ansible.builtin.template:
     src: templates/reverseproxy.conf.j2
     dest: "{{ nginx_apps_location }}/{{ item.name }}.conf"
-    mode: '0644'
+    mode: "0640"
+    owner: root
+    group: www-data
   with_items: "{{ nginx_reverse_proxy_locations }}"
 
 - name: Gather htpasswd files
@@ -23,7 +25,7 @@
         owner: root
         group: www-data
         state: directory
-        mode: '750'
+        mode: "750"
 
 - name: Create htpasswd files based on nginx_reverse_proxy_auth_info
   when: nginx_reverse_proxy_auth_info | default('') | length > 0
@@ -35,11 +37,11 @@
     password: "{{ item.password }}"
     owner: root
     group: www-data
-    mode: '644'
+    mode: "644"
 
 - name: Get htpasswd files that were not defined in nginx_reverse_proxy_auth_info
   set_fact:
-    _remaining_htpasswd_files: "{{ _htpasswd_files | difference(nginx_reverse_proxy_auth_info | default([]) | map(attribute='name') | list ) }}"
+    _remaining_htpasswd_files: "{{ _htpasswd_files | difference(nginx_reverse_proxy_auth_info | default([]) | map(attribute='name') | list) }}"
 
 - name: Create htpasswd files with default username and password for all locations not defined in nginx_reverse_proxy_auth_info
   with_items: "{{ _remaining_htpasswd_files }}"
@@ -50,7 +52,7 @@
     password: "{{ nginx_reverse_proxy_default_password }}"
     owner: root
     group: www-data
-    mode: '644'
+    mode: "644"
 
 - name: Restart nginx
   service:

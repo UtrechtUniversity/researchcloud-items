@@ -6,7 +6,7 @@
     - name: Get all runonce scripts
       find:
         paths: /etc/runonce.d
-        recurse: no
+        recurse: false
       register: found_scripts
 
     - name: Run runonce scripts
@@ -14,5 +14,7 @@
       with_items: "{{ found_scripts.files }}"
 
     - name: Test poetry
-      ansible.builtin.shell: su -c "bash -ic 'poetry about'" - testuser
- 
+      ansible.builtin.shell:
+        cmd: su -c "bash -ic 'poetry about'" - testuser
+      args:
+        executable: bash

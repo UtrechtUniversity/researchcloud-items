@@ -2,10 +2,13 @@
 galaxy_info:
   role_name: gpgkey_generate
   author: juju4
-  description: Generate automatically gpg keys. Modified to drop support for RedHat and support 2.9 by Dawa Ometto (2.3).
+  description: Generate automatically gpg keys
   license: BSD
   min_ansible_version: '1.9'
   platforms:
+    - name: EL
+      versions:
+        - all
     - name: Ubuntu
       versions:
         - bionic

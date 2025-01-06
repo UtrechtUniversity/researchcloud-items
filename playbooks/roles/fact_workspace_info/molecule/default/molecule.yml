@@ -11,7 +11,7 @@ driver:
 provisioner:
   name: ansible
   playbooks:
-    converge: 
+    converge:
   env:
     ANSIBLE_ROLES_PATH: ../../../
 role_name_check: 1

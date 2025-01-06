@@ -5,21 +5,3 @@
   tasks:
     - name: Common preparation tasks
       ansible.builtin.include_tasks: ../_prepare.yml
-
-    - name: Run external components
-      ansible.builtin.include_tasks: ../_run_external_components.yml
-      loop:
-        - name: nginx
-          git: https://gitlab.com/dometto/plugin-nginx.git
-          version: molecule_compatibility
-          path: plugin-nginx.yml
-          parameters:
-            rsc_nginx_authorization_endpoint: http://localhost
-            rsc_nginx_user_info_endpoint: http://localhost
-            rsc_nginx_service_url: http://localhost
-            nginx_enable_ssl: false
-            nginx_enable_auth: true
-            rsc_nginx_oauth2_application:
-              client_id: foo
-      loop_control:
-        loop_var: component

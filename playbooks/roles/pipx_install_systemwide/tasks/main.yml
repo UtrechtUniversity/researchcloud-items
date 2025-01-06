@@ -11,7 +11,7 @@
 - name: Add systemwide pipx path to each user's path for installing global packages.
   when: pipx_install_systemwide_profile | length > 0
   copy:
-    dest: "/etc/profile.d/{{ pipx_install_systemwide_profile }}"
+    dest: /etc/profile.d/{{ pipx_install_systemwide_profile }}
     content: |
       export PATH="{{ pipx_install_systemwide_location }}/bin${PATH:+:${PATH}}"
 

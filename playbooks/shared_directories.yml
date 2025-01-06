@@ -14,9 +14,9 @@
     - name: Create all shared directories with setgid
       ansible.builtin.file:
         path: "{{ item | trim }}"
-        owner: "root"
+        owner: root
         group: "{{ _group_name }}"
-        mode: "027{{ _group_writable }}0"
+        mode: 027{{ _group_writable }}0
         state: directory
         recurse: true
       with_items: "{{ paths.split(',') }}"

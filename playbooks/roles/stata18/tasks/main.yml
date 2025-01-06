@@ -10,7 +10,7 @@
 - name: Get system facts
   setup:
     gather_subset:
-      - 'min'
+      - min
 
 - name: Include dependencies (Debian family)
   include_tasks: debian.yml
@@ -47,7 +47,7 @@
 - name: Get all archive files in tmp dir
   find:
     paths: "{{ stata18_tmp_archive_dir }}"
-    patterns: '*.tgz,*.taz,*.tar.gz'
+    patterns: "*.tgz,*.taz,*.tar.gz"
     recurse: false
   register: stata18_archives
 
@@ -107,7 +107,7 @@
     desktopfile_app_name: stata
     desktopfile_sizes:
       - "16"
-    desktop_file_modules:
+    desktopfile_modules:
       - stata
       - stata-mp
       - stata-se

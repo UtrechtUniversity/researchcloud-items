@@ -1,4 +1,3 @@
 ---
 pipx_install_systemwide_location: /usr/local/uu-pip
-pipx_install_systemwide_profile: uu-custom-pip.sh 
-...
+pipx_install_systemwide_profile: uu-custom-pip.sh

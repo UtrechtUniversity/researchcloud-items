@@ -1,5 +1,4 @@
 ---
-
 - name: Convert parameters to booleans
   set_fact:
     install_systemwide: "{{ miniconda_systemwide | bool }}"
@@ -54,4 +53,3 @@
     src: runonce_conda.sh.j2
     dest: /etc/runonce.d/runonce_conda.sh
     mode: "0755"
-...

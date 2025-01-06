@@ -11,15 +11,25 @@
 - name: Gather minimal system facts
   setup:
     gather_subset:
-      - "min"
+      - min
   when: ansible_os_family is not defined
+
+- name: Gather mounts facts
+  setup:
+    gather_subset:
+      - mounts
+  when: ansible_mounts is not defined
+
+- name: Set fact_workspace_storage
+  ansible.builtin.set_fact:
+    fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
 
 - name: Get all packages as facts
   package_facts:
     manager: auto
   no_log: true
 
-- name: Get the desktop package to check for 
+- name: Get the desktop package to check for
   set_fact:
     _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
 

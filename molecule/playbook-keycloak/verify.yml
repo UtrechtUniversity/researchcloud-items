@@ -22,4 +22,3 @@
           - auth_location.url == "http://localhost/auth/"
           - auth_location.status == 200
           - "'Welcome to Keycloak' in auth_location.content "
-

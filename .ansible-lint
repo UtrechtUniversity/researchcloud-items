@@ -1,11 +1,12 @@
 ---
-profile: basic
+profile: production
 exclude_paths:
   - docs
   - .github
   - molecule/ext # since this is a subtree, linting should be taken care of upstream
   - molecule/*/extra_prepare.yml # these are included with 'include_tasks' and hence do not validate as playbooks
   - playbooks/roles/ext
+  - docker-compose.yml
 skip_list:
   - role-name
   - var-naming

@@ -15,6 +15,6 @@
         desktopfile_sizes:
           - "48"
         desktopfile_modules:
-          - "roletest2"
-          - "roletest2-module1"
-          - "roletest2-module2"
+          - roletest2
+          - roletest2-module1
+          - roletest2-module2
