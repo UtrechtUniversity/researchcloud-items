@@ -47,7 +47,9 @@ location {{ vhost_properties.location }} {
 
     {% if vhost_properties.add_headers is defined %}
     {% for header, value in vhost_properties.add_headers.items() -%}
+    {% if value | length > 0 -%}
     add_header {{ header }} {{ value }};
+    {% endif %}
     {%- endfor %}
     {% endif %}
 
