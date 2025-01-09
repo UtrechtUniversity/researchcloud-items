@@ -1,0 +1,26 @@
+---
+- name: Install Java
+  when: ansible_pkg_mgr == 'apt'
+  ansible.builtin.apt:
+    name:
+      - openjdk-{{ nextflow_java_version }}-jdk
+      - openjdk-{{ nextflow_java_version }}-jre
+    state: present
+
+- name: Get Java version
+  ansible.builtin.command: java -version
+  changed_when: false
+  failed_when: false
+  register: nextflow_java_installed
+
+- name: Output Java version
+  ansible.builtin.debug:
+    var: nextflow_java_installed
+
+- name: Download nextflow
+  ansible.builtin.get_url:
+    url: "{{ nextflow_base_url }}/v{{ nextflow_version }}/nextflow-{{ nextflow_version }}-dist"
+    dest: /usr/local/bin/nextflow
+    owner: root
+    group: root
+    mode: "0755"
