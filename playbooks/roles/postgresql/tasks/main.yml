@@ -10,6 +10,13 @@
     name: postgresql-server
   when: ansible_pkg_mgr == 'dnf'
 
+- name: Install support for dblink postgresql on Redhat distro
+  ansible.builtin.package:
+    state: present
+    name: postgresql-contrib
+  when: ansible_pkg_mgr == 'dnf'
+
+
 - name: Register if Postgresql cluster is initialized
   ansible.builtin.stat:
      path: /var/lib/pgsql/data/pg_hba.conf
