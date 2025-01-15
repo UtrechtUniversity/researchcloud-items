@@ -5,10 +5,19 @@
   ansible.builtin.yum_repository:
     name: iRODS
     description: RENCI iRODS Repository
-    baseurl: "{{ irods_repo_url }}/yum/pool/centos{{ irods_repo_yum_major_version }}/{{ ansible_architecture }}"
+    baseurl: "{{ irods_repo_url }}/yum/pool/centos{{ irods_distribution_major_version }}/{{ ansible_architecture }}"
     gpgkey: "{{ irods_repo_url }}/irods-signing-key.asc"
     gpgcheck: true
   when: ansible_pkg_mgr  == 'yum'
+
+- name: Enable iRODS repository, dnf package manager
+  ansible.builtin.yum_repository:
+    name: iRODS
+    description: RENCI iRODS Repository
+    baseurl: "{{ irods_repo_url }}/yum/pool/el{{ ansible_distribution_major_version }}/{{ ansible_architecture }}"
+    gpgkey: "{{ irods_repo_url }}/irods-signing-key.asc"
+    gpgcheck: true
+  when: ansible_pkg_mgr == "dnf"
 
 - name: Download irods key
   ansible.builtin.get_url:
