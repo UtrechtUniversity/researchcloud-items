@@ -7,6 +7,9 @@ on:
       - 'molecule/**'
       - 'playbooks/**'
       - 'roles/**'
+      - '.github/workflows/**'
+      - '.ansible-lint*'
+
   pull_request:
     branches:
       - main
@@ -19,6 +22,8 @@ on:
       - 'molecule/**'
       - 'playbooks/**'
       - 'roles/**'
+      - '.github/workflows/**'
+      - '.ansible-lint*'
 
 jobs:
   build:
@@ -29,4 +34,4 @@ jobs:
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
         with:
-          args: "playbooks ."
+          args: "playbooks/"
