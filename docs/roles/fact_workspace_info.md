@@ -34,7 +34,24 @@ See here for example output of the facts.
 `fact_workspace_storage`: 
 
 ```json
- "fact_workspace_storage": ["/data/my_storage_volume"]
+ "fact_workspace_storage": [
+    {
+        "mount": "/data/foo",
+        "device": "/dev/vdb1",
+        "fstype": "xfs",
+        "options": "rw,relatime,attr2,inode64,logbufs=8,logbsize=32k,noquota",
+        "size_total": 53659811840,
+        "size_available": 24005615616,
+        "block_size": 4096,
+        "block_total": 13100540,
+        "block_available": 5860746,
+        "block_used": 7239794,
+        "inode_total": 26213824,
+        "inode_available": 26196400,
+        "inode_used": 17424,
+        "uuid": "8a9dd671-1c48-4201-bc3h-350fcd883421"
+    }
+ ]
 ```
 
 ## History
