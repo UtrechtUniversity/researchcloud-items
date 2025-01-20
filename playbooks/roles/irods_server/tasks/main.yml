@@ -14,6 +14,18 @@
       - irods-rule-engine-plugin-python
       - irods-icommands
 
+- name: Prepare systemd unit file for irods
+  ansible.builtin.template:
+    src: irods.service.j2
+    dest: /lib/systemd/system/irods.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
 - name: Configure ODBC driver for Rocky 9+
   ansible.builtin.set_fact:
      irods_server_db_driver: "PostgreSQL"
@@ -84,6 +96,7 @@
 - name: Run irods configuration script
   when: irods_server_start == "start"
   ansible.builtin.command: python3 /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
+
 - name: Start and enable iRODS as service
   when: irods_server_start == "start"
   ansible.builtin.service:
