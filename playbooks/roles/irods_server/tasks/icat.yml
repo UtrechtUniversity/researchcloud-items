@@ -20,7 +20,6 @@
     dest: "/var/lib/pgsql/data/pg_hba.conf"
     regexp: 'host\s+all\s+all\s+127.0.0.1/32'
     line: 'host all all 127.0.0.1/32 md5'
-  notify: Restart PostgreSQL
   when: ansible_pkg_mgr == 'dnf'
 
  
@@ -29,5 +28,9 @@
     dest: "/var/lib/pgsql/data/pg_hba.conf"
     regexp: 'host\s+all\s+all\s+::1/128'
     line: 'host all all ::1/128 md5'
-  notify: Restart PostgreSQL
   when: ansible_pkg_mgr == 'dnf'
+
+- name: Restart PostgreSQL to implement changed access methods
+  ansible.builtin.service:
+    name: postgresql
+    state: restarted
