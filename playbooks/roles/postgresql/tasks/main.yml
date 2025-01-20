@@ -19,16 +19,16 @@
 
 - name: Register if Postgresql cluster is initialized
   ansible.builtin.stat:
-     path: /var/lib/pgsql/data/pg_hba.conf
+    path: /var/lib/pgsql/data/pg_hba.conf
   register: postgresql_cluster
 
 - name: (if not present) Initialize Postgresql cluster on Redhat distro
   ansible.builtin.command: postgresql-setup --initdb
   when: ansible_pkg_mgr == 'dnf' and not postgresql_cluster.stat.exists
 
-- name: enable and start Postgresql
+- name: Enable and start Postgresql
   ansible.builtin.service:
-    enabled: yes
+    enabled: true
     state: started
     name: postgresql
 
