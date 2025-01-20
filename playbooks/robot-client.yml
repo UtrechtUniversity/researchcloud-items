@@ -9,4 +9,4 @@
   #   robotuser_sourcepath - path to served files e.g. /data/volume_2
 
   roles:
-    - robotuser
+    - role: robotuser
