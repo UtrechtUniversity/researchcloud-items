@@ -103,7 +103,7 @@
                 "postgres": {
                     "db_host": "{{ irods_server_db_host }}",
                     "db_name": "{{ irods_server_db_name }}",
-                    "db_odbc_driver": "PostgreSQL ANSI",
+                    "db_odbc_driver": "{{ irods_server_db_driver }}",
                     "db_password": "{{ irods_server_db_password }}",
                     "db_port": {{ irods_server_db_port }},
                     "db_username": "{{ irods_server_db_username }}"

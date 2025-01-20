@@ -8,4 +8,5 @@ irods_server_db_username: irods
 irods_server_db_password: db{{ irods_server_admin_password }}
 irods_server_db_host: localhost
 irods_server_db_port: 5432
+irods_server_db_driver: "PostgreSQL ANSI"
 irods_server_start: start
