@@ -9,7 +9,25 @@
 
 - name: Using psql, only if the objects do not yet exist, create ICAT dataset and irods db user
   ansible.builtin.command: psql -f /tmp/create_icat.sql
+
 - name: Cleanup psql script
   ansible.builtin.file:
     path: /tmp/create_icat.sql
     state: absent
+
+- name: Configure Postgres in Rocky to use encrypted password for loopback IPv4
+  ansible.builtin.lineinfile:
+    dest: "/var/lib/pgsql/data/pg_hba.conf"
+    regexp: 'host\s+all\s+all\s+127.0.0.1/32'
+    line: 'host all all 127.0.0.1/32 scram-sha-256'
+  notify: Restart PostgreSQL
+  when: ansible_pkg_mgr == 'dnf'
+
+ 
+- name: Configure Postgres in Rocky to use encrypted password for loopback IPv6
+  ansible.builtin.lineinfile:
+    dest: "/var/lib/pgsql/data/pg_hba.conf"
+    regexp: 'host\s+all\s+all\s+::1/128'
+    line: 'host all all ::1/128 scram-sha-256'
+  notify: Restart PostgreSQL
+  when: ansible_pkg_mgr == 'dnf'
