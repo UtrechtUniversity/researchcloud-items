@@ -29,8 +29,3 @@
     regexp: 'host\s+all\s+all\s+::1/128'
     line: 'host all all ::1/128 md5'
   when: ansible_pkg_mgr == 'dnf'
-
-- name: Restart PostgreSQL to implement changed access methods
-  ansible.builtin.service:
-    name: postgresql
-    state: restarted

@@ -19,12 +19,17 @@
      irods_server_db_driver: "PostgreSQL"
   when: ansible_pkg_mgr == 'dnf'
 
-- name: Create ICAT database and db user, only if they do not yet exist
+- name: Create ICAT database and db user and password protect PostgreSQL loopback access
   ansible.builtin.include_tasks: icat.yml
   args:
     apply:
       become: true
       become_user: postgres
+
+- name: Restart Postgresql to ensure password access method is implemented
+  ansible.builtin.service:
+    name: postgresql
+    state: restarted
 
 - name: Register if iRODS server is initialized.
   ansible.builtin.stat:
