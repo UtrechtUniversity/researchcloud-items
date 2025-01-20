@@ -7,19 +7,22 @@
     - role: robotuser
       vars:
         robotuser_generate_ssh_key: true
+
     - role: fact_workspace_info
 
   tasks:
+
     - name: Restrict permissions on data volumes
       ansible.builtin.file:
-        path: "{{ item }}"
+        path: "{{ item['mount'] }}"
         state: directory
         owner: root
-        group: root
+        group: "{{ robotuser_name }}"
         mode: "0750"
       with_items: "{{ fact_workspace_storage }}"
 
     - name: Ensure fail2ban is active
+      tags: molecule-notest
       ansible.builtin.service:
         name: fail2ban
         state: started

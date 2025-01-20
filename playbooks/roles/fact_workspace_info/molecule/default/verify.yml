@@ -7,6 +7,18 @@
       ansible.builtin.include_role:
         name: fact_workspace_info
 
+    - name: Debug fact_workspace_info
+      ansible.builtin.debug:
+        var: fact_workspace_info
+
+    - name: Debug fact_workspace_storage
+      ansible.builtin.debug:
+        var: fact_workspace_storage
+
+    - name: Debug fact_desktop_workspace
+      ansible.builtin.debug:
+        var: fact_desktop_workspace
+
     - name: Assert workspace info contents
       ansible.builtin.assert:
         that:
