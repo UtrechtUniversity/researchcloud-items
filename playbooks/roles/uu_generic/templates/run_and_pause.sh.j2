@@ -1,0 +1,55 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ "$#" -lt 1 ]; then
+  echo "Usage: $0 mycommand ..." >&2
+  exit 1
+fi
+
+read -s -p "Please enter your ResearchCloud API token: " token
+echo
+
+
+COMMAND="$*"
+WORKSPACE="{{ fact_workspace_info['workspace_id'] }}"
+ENDPOINT_URL="{{ uu_generic_src_api_endpoint }}/v1/workspace/workspaces/$WORKSPACE"
+PAUSE_COMMAND="curl -X 'POST' \
+  '$ENDPOINT_URL/actions/pause/' \
+  -H 'accept: application/json;Compute' \
+  -H 'authorization: $token' \
+  -H 'Content-Type: application/json;pause' \
+  -d '{}'
+"
+
+echo "Testing whether you are authorized to pause this workspace..."
+result=$(curl -X "GET" "$ENDPOINT_URL/" \
+            -H "accept: application/json;Compute" \
+            -H "authorization: $token" \
+            2> /dev/null
+            )
+trap "Could not login to the ReserachCloud API with your token." ERR
+
+if [[ $(echo "$result" | jq '.allowed_actions | any(. == "pause")' ) == "true" ]]; then
+    echo "You are allowed to pause this workspace. Continuing..."
+else
+    echo "You are NOT allowed to pause this workspace. Stopping..."
+    exit 100
+fi
+
+echo $PAUSE_COMMAND
+
+TMUX_SESSION="run_and_pause$(date '+%d%m%Y%H%M%S')"
+
+echo "Will run the following command, and pause the workspace when it exits:"
+echo "$COMMAND"
+echo
+echo "The command will be ran using tmux. You can exit the tmux window using"
+echo "To re-attach to the window later, use:"
+echo "tmux attach-session -t $TMUX_SESSION"
+echo
+read -p "Press any key to continue... " -n1 -s
+
+FULL_COMMAND="$COMMAND; $PAUSE_COMMAND; bash"
+echo $FULL_COMMAND
+
+tmux new-session -s "$TMUX_SESSION" "$FULL_COMMAND"

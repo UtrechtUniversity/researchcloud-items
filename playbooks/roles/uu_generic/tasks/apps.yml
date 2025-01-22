@@ -4,3 +4,11 @@
   ansible.builtin.command: snap install codium --classic
   register: uu_generic_install_codium
   changed_when: '"already installed" not in uu_generic_install_codium.stderr'
+
+- name: Install run_and_pause script
+  ansible.builtin.template:
+    src: templates/run_and_pause.sh.j2
+    dest: /usr/local/bin/run_and_pause
+    mode: "0755"
+    owner: "root"
+    group: "root"
