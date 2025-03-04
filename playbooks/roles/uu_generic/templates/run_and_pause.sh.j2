@@ -43,8 +43,8 @@ TMUX_SESSION="run_and_pause$(date '+%d%m%Y%H%M%S')"
 echo "Will run the following command, and pause the workspace when it exits:"
 echo "$COMMAND"
 echo
-echo "The command will be run using tmux. You can exit the tmux window using"
-echo "To reattach to the window later, use this keybinding: 'Control-b d'"
+echo "The command will be run using tmux. To exit the tmux window, use: 'Control-b d'"
+echo "To reattach to the window later, use:"
 echo "tmux attach-session -t $TMUX_SESSION"
 echo
 read -p "Press any key to continue... " -n1 -s
