@@ -6,6 +6,8 @@
   changed_when: '"already installed" not in uu_generic_install_codium.stderr'
 
 - name: Install run_and_pause script
+  # run_and_pause not compatible with older tmux on Ubuntu < 20
+  when: ansible_distribution != 'Ubuntu' or ansible_distribution_major_version | int > 20
   ansible.builtin.template:
     src: templates/run_and_pause.sh.j2
     dest: /usr/local/bin/run_and_pause
