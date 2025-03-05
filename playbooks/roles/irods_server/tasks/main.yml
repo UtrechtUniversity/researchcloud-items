@@ -28,7 +28,7 @@
 
 - name: Configure ODBC driver for Rocky 9+
   ansible.builtin.set_fact:
-     irods_server_db_driver: "PostgreSQL"
+    irods_server_db_driver: "PostgreSQL"
   when: ansible_pkg_mgr == 'dnf'
 
 - name: Create ICAT database and db user and password protect PostgreSQL loopback access
