@@ -1,35 +1,47 @@
 #!/bin/bash
+# Script to run a command a pause the ResearchCloud workspace when it exits.
+# Opens a tmux session so users can exit and re-attach to the running process later.
+# See tmux documentation for more info.
+# Requires tmux version 3.2 or higher.
+
 set -euo pipefail
 
 echo "Hello! This script is currently in beta. Please report any issues to UU Research Engineering."
+echo
 
 if [ "$#" -lt 1 ]; then
   echo "Usage: $0 mycommand ..." >&2
   exit 1
 fi
 
-read -s -p "Please enter your ResearchCloud API token: " token
+echo "Please enter your ResearchCloud API token below to continue."
+echo "**Security note**: users with admin (root) access to this machine will"
+echo "be able to retrieve your API token while this script is running."
+echo "Proceed on the basis of trust."
 echo
 
+read -s -p "ResearchCloud API token: " SRC_TOKEN
+echo
 
 COMMAND="$*"
 WORKSPACE="{{ fact_workspace_info['workspace_id'] }}"
 ENDPOINT_URL="{{ uu_generic_src_api_endpoint }}/v1/workspace/workspaces/$WORKSPACE"
 PAUSE_COMMAND="curl -X 'POST' \
-  '$ENDPOINT_URL/actions/pause/' \
+  \"$ENDPOINT_URL/actions/pause/\" \
   -H 'accept: application/json;Compute' \
-  -H 'authorization: $token' \
+  -H \"authorization: \$SRC_TOKEN\" \
   -H 'Content-Type: application/json;pause' \
-  -d '{}'
-"
+  -d '{}'"
 
 echo "Testing whether you are authorized to pause this workspace..."
+echo
+
 result=$(curl -X "GET" "$ENDPOINT_URL/" \
             -H "accept: application/json;Compute" \
-            -H "authorization: $token" \
+            -H "authorization: $SRC_TOKEN" \
             2> /dev/null
             )
-trap "Could not login to the ReserachCloud API with your token." ERR
+trap "Could not login to the ResearchCloud API with your token." ERR
 
 if [[ $(echo "$result" | jq '.allowed_actions | any(. == "pause")' ) == "true" ]]; then
     echo "You are allowed to pause this workspace. Continuing..."
@@ -40,15 +52,16 @@ fi
 
 TMUX_SESSION="run_and_pause$(date '+%d%m%Y%H%M%S')"
 
+echo
 echo "Will run the following command, and pause the workspace when it exits:"
 echo "$COMMAND"
 echo
-echo "The command will be run using tmux. You can exit the tmux window using"
-echo "To reattach to the window later, use this keybinding: 'Control-b d'"
+echo "The command will be run using tmux. To exit the tmux window, use: 'Control-b d'"
+echo "To reattach to the window later, use:"
 echo "tmux attach-session -t $TMUX_SESSION"
 echo
 read -p "Press any key to continue... " -n1 -s
 
 FULL_COMMAND="$COMMAND; $PAUSE_COMMAND; bash"
 
-tmux new-session -s "$TMUX_SESSION" "$FULL_COMMAND"
+tmux new-session -e "SRC_TOKEN=$SRC_TOKEN" -s "$TMUX_SESSION" "$FULL_COMMAND"
