@@ -22,7 +22,6 @@
     line: 'host all all 127.0.0.1/32 md5'
   when: ansible_pkg_mgr == 'dnf'
 
- 
 - name: Configure Postgres in Rocky to use encrypted password for loopback IPv6
   ansible.builtin.lineinfile:
     dest: "/var/lib/pgsql/data/pg_hba.conf"
