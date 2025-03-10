@@ -54,6 +54,7 @@ The user can always modify the `uWSGI` config by setting the `flask_app_uwsgi_co
 
 - Role [nginx-reverse_proxy](../roles/nginx_reverse_proxy.md)
 - Role [nginx-uwsgi](../roles/nginx_uwsgi.md)
+- Role [require_src_nginx](../roles/require_src_nginx.md)
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)
