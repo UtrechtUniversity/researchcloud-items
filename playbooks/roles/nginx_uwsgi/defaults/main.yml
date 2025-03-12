@@ -13,3 +13,4 @@ uwsgi_venv: ""
 uwsgi_proxy_config: {}
 uwsgi_config: {}
 uwsgi_config_block: ""
+uwsgi_chdir: "{{ uwsgi_app_dir }}"
