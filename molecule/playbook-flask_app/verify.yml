@@ -12,7 +12,27 @@
         url_password: letmein
       register: flask_app_curl_result
 
-    - name: Assert testusers have correct groups and gids
+    - name: Get systemd definition contents
+      ansible.builtin.slurp:
+        src: /etc/systemd/system/uwsgi-hello.service
+      register: slurp_service
+
+    - name: Get the systemd definition 
+      ansible.builtin.set_fact:
+        systemd_definition: "{{ slurp_service['content'] | b64decode }}"
+
+    - name: Get .ini file contents
+      ansible.builtin.slurp:
+        src: /var/www/hello/hello.ini
+      register: slurp_ini
+
+    - name: Get .ini contents 
+      ansible.builtin.set_fact:
+        ini_file: "{{ slurp_ini['content'] | b64decode }}"
+
+    - name: Assertions
       ansible.builtin.assert:
         that:
           - '"Hello, World" in flask_app_curl_result.content'
+          - '"MY_ENV2=bar" in systemd_definition'
+          - '"vacuum = false" in ini_file'

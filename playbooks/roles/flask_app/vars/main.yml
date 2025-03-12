@@ -1,0 +1,9 @@
+---
+flask_app_base_dir: /var/www/{{ flask_app_name }}
+flask_app_venv: "{{ flask_app_base_dir }}/venv"
+flask_app_pip_pkg_defined: "{{ flask_app_pip_pkg | length > 0 }}"
+flask_app_repo_defined: "{{ flask_app_repo | length > 0 }}"
+flask_app_pip_requirements_defined: "{{ flask_app_pip_requirements | length > 0 }}"
+flask_app_webserver_user: www-data
+flask_app_pip_pkg_location: "{{ flask_app_base_dir }}/venv/lib/python{{ flask_app_python_version }}/site-packages/{{ flask_app_pip_pkg }}"
+flask_app_version_str: "{{ flask_app_version | default('') | string | ternary('~='~flask_app_version, '') }}"

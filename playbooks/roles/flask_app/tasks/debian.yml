@@ -1,0 +1,6 @@
+---
+- name: Ensure build requirements for uwsgi present
+  ansible.builtin.package:
+    name:
+      - build-essential
+      - python3-dev

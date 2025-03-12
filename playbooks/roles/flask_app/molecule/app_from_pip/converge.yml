@@ -1,0 +1,20 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: flask_app
+      vars:
+        flask_app_pip_pkg: asreview
+        flask_app_version: 1.6
+        flask_app_module_path: webapp/app.py
+        flask_app_python_version: 3.11
+        flask_app_name: example
+        flask_app_proxy_auth: basic
+        flask_app_http_username: tester
+        flask_app_http_password: letmein
+        flask_app_uwsgi_config:
+          module: asreview.webapp.app:create_app()
+        flask_app_chdir: false
+        flask_app_uwsgi_env:
+          ASREVIEW_PATH: /var/www/example/asreview

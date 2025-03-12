@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: flask_app
+      vars:
+        flask_app_repo: https://github.com/UtrechtUniversity/flask-examples.git # Use app from git
+        flask_app_pip_requirements: requirements.txt
+        flask_app_name: example
+        flask_app_module_path: hello/app.py
+        flask_app_config:
+          callable: app
+        flask_app_proxy_auth: basic
+        flask_app_proxy_location: /
+        flask_app_http_username: tester
+        flask_app_http_password: letmein
