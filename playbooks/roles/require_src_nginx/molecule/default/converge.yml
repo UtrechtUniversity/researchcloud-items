@@ -5,7 +5,8 @@
   vars:
     active_platform_has_nginx: "{{ 'nginx' in inventory_hostname }}"
   tasks:
-    - block:
+    - name: Converge
+      block:
         - name: Include role
           ansible.builtin.include_role:
             name: require_src_nginx

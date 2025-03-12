@@ -22,13 +22,14 @@ provisioner:
         - name: flask_app
           path: flask_app.yml
           parameters:
-            flask_app_name: hello
-            flask_app_path: hello/app.py
-            flask_app_auth_basic: true
-            flask_app_username: tester
-            flask_app_password: letmein
-            flask_app_repo: https://github.com/dometto/flask-examples.git
-            flask_app_requirements: 'requirements.txt'
-            flask_app_location: '/'
-            flask_app_uwsgi_config: >
-              vacuum = false # just to test the flask_app_uswgi_config option
+            flask_name: hello
+            flask_module_path: hello/app.py
+            flask_proxy_auth: basic
+            flask_uwsgi_env: "MY_ENV1=foo MY_ENV2=bar"
+            flask_http_username: tester
+            flask_http_password: letmein
+            flask_repo: https://github.com/UtrechtUniversity/flask-examples.git
+            flask_pip_requirements: 'requirements.txt'
+            flask_proxy_location: '/'
+            flask_uwsgi_config_block: >
+              vacuum = false # just to test the flask_app_uswgi_config_block option
