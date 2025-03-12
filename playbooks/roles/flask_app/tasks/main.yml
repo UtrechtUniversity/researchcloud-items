@@ -1,0 +1,140 @@
+---
+- name: Ensure either the name of a pip package or a git repo is set
+  when: not (flask_app_pip_pkg_defined or flask_app_repo_defined)
+  ansible.builtin.fail:
+    msg: "You must set either flask_app_pip_pkg (to install the flask app as a pip package or from a requirements file), or flask_app_repo (to clone the app from a git repo)."
+
+- name: Set permissions on /var/www
+  ansible.builtin.file:
+    dest: /var/www
+    owner: root
+    group: "{{ flask_app_webserver_user }}"
+    mode: "0770"
+
+- name: Create base dir
+  ansible.builtin.file:
+    dest: "{{ flask_app_base_dir }}"
+    state: directory
+    owner: "{{ flask_app_webserver_user }}"
+    group: "{{ flask_app_webserver_user }}"
+    mode: "0750"
+
+- name: Create venv with uv
+  ansible.builtin.include_role:
+    name: uv
+  vars:
+    uv_become: true
+    uv_become_user: "{{ flask_app_webserver_user }}"
+    uv_venvs:
+      - path: "{{ flask_app_venv }}"
+        python: "{{ flask_app_python_version }}"
+
+- name: Set venv library path
+  ansible.builtin.set_fact:
+    flask_app_venv_lib_path: "{{ uv_python_paths[flask_app_python_version] | regex_replace('/bin/python.*', '/lib/') }}"
+
+- name: Set app directory path
+  ansible.builtin.set_fact:
+    flask_app_dir: "{{ flask_app_pip_pkg | ternary(flask_app_pip_pkg_location, flask_app_base_dir~'/app') }}"
+
+- name: Include Debian-family specific tasks
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Install uwsgi from pip
+  become: true
+  become_user: "{{ flask_app_webserver_user }}"
+  ansible.builtin.pip:
+    executable: uv_pip
+    name:
+      - wheel
+      - uwsgi
+  environment:
+    VIRTUAL_ENV: "{{ flask_app_venv }}"
+    CC: gcc # https://github.com/astral-sh/uv/issues/6488
+    LIBRARY_PATH: "{{ flask_app_venv_lib_path }}"
+
+- name: Install the desired app from PyPi
+  become: true
+  become_user: "{{ flask_app_webserver_user }}"
+  when: not flask_app_repo_defined
+  block:
+
+    - name: Install the desired app from PypI
+      when: not flask_app_pip_requirements_defined
+      ansible.builtin.pip:
+        executable: uv_pip
+        name: "{{ flask_app_pip_pkg }}{{ flask_app_version_str }}"
+      environment:
+        VIRTUAL_ENV: "{{ flask_app_venv }}"
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
+        LIBRARY_PATH: "{{ flask_app_venv_lib_path }}"
+
+    - name: Install the app or dependencies from a requirements file
+      when: flask_app_pip_requirements_defined
+      ansible.builtin.pip:
+        executable: uv_pip
+        requirements: "{{ flask_app_pip_requirements }}"
+      environment:
+        VIRTUAL_ENV: "{{ flask_app_venv }}"
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
+        LIBRARY_PATH: "{{ flask_app_venv_lib_path }}"
+
+- name: Install the desired app from git
+  become: true
+  become_user: "{{ flask_app_webserver_user }}"
+  tags: molecule-idempotence-notest
+  when: flask_app_repo_defined
+  block:
+    - name: Clone git repo
+      ansible.builtin.git:
+        repo: "{{ flask_app_repo }}"
+        version: "{{ flask_app_version | default(omit, true) }}"
+        dest: "{{ flask_app_dir }}"
+        depth: 1
+
+    - name: Install requirements
+      when: flask_app_pip_requirements
+      ansible.builtin.pip:
+        executable: uv_pip
+        requirements: "{{ flask_app_dir }}/{{ item | trim }}"
+      environment:
+        VIRTUAL_ENV: "{{ flask_app_venv }}"
+      with_items: "{{ flask_app_pip_requirements.split(',') }}"
+
+- name: Set variable facts
+  block:
+
+    - name: Set auth info variable for reverse proxy role if auth basic is set
+      when: flask_app_proxy_auth == 'basic'
+      ansible.builtin.set_fact:
+        nginx_reverse_proxy_auth_info:
+          - name: "{{ flask_app_name }}"
+            username: "{{ flask_app_http_username }}"
+            password: "{{ flask_app_http_password }}"
+      no_log: true
+
+    - name: Set uwsgi config (resolve omit-placeholders)
+      ansible.builtin.set_fact:
+        _flask_app_uwsgi_config: "{{ flask_app_uwsgi_config }}"
+
+    - name: Set uwsgi proxy config (resolve omit-placeholders)
+      ansible.builtin.set_fact:
+        _flask_app_proxy_config: "{{ flask_app_proxy_config }}"
+
+- name: Include nginx_uwsgi role
+  ansible.builtin.include_role:
+    name: nginx_uwsgi
+  vars:
+    uwsgi_app_name: "{{ flask_app_name }}"
+    uwsgi_app_dir: "{{ flask_app_dir }}"
+    uwsgi_venv: "{{ flask_app_venv }}"
+    uwsgi_app_path: "{{ flask_app_module_path }}"
+    uwsgi_env: "{{ flask_app_uwsgi_env }}"
+    uwsgi_num_workers: "{{ flask_app_num_workers }}"
+    uwsgi_config: "{{ _flask_app_uwsgi_config }}"
+    uwsgi_config_block: "{{ flask_app_uwsgi_config_block }}"
+    uwsgi_config_dir: "{{ flask_app_base_dir }}"
+    uwsgi_chdir: "{{ flask_app_chdir | ternary(flask_app_dir, '') }}"
+    uwsgi_proxy_config: "{{ _flask_app_proxy_config }}"
+    uwsgi_nginx_mountpoint: "{{ flask_app_proxy_location }}"

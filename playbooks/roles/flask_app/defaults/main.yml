@@ -1,0 +1,22 @@
+---
+flask_app_repo: ""
+flask_app_pip_pkg: ""
+flask_app_version: ""
+flask_app_name: FlaskApp
+flask_app_num_workers: 2
+flask_app_uwsgi_env: {}
+flask_app_python_version: "3.10"
+flask_app_module_path: app.py
+flask_app_http_username: "" # http basic username
+flask_app_http_password: "" # http basic password
+flask_app_proxy_auth: sram
+flask_app_uwsgi_config:
+  callable: app
+  module: "{{ (flask_app_module_path == 'wsgi.py') | ternary('wsgi:app', omit) }}"
+flask_app_uwsgi_config_block: ""
+flask_app_proxy_location: / # nginx location
+flask_app_proxy_config:
+  auth: "{{ flask_app_proxy_auth | default(omit, true) }}"
+  htpasswd: "{{ (flask_app_proxy_auth == 'basic') | ternary(flask_app_name, omit) }}"
+flask_app_chdir: true
+flask_app_pip_requirements: ""

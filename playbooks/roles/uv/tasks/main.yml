@@ -36,25 +36,25 @@
   become_user: "{{ uv_become_user }}"
   block:
 
-  - name: Install desired python version
-    ansible.builtin.command: uv python install -v {{ item }}
-    register: _install_desired_python
-    changed_when: '"Skipping" not in _install_desired_python.stderr'
-    with_items: "{{ uv_python_versions_install }}"
+    - name: Install desired python version
+      ansible.builtin.command: uv python install -v {{ item }}
+      register: _install_desired_python
+      changed_when: '"Skipping" not in _install_desired_python.stderr'
+      with_items: "{{ uv_python_versions_install }}"
 
-  - name: Set uv python install path facts step 1
-    ansible.builtin.command: uv python find {{ item }}
-    changed_when: false
-    register: _uv_python_finds
-    with_items: "{{ uv_python_versions_install }}"
+    - name: Set uv python install path facts step 1
+      ansible.builtin.command: uv python find {{ item }}
+      changed_when: false
+      register: _uv_python_finds
+      with_items: "{{ uv_python_versions_install }}"
 
-  - name: Set uv python install path facts step 2
-    ansible.builtin.set_fact:
-      uv_python_paths: "{{ (uv_python_paths | default({})) | combine({item.item: item.stdout}) }}"
-    with_items: "{{ _uv_python_finds.results }}"
+    - name: Set uv python install path facts step 2
+      ansible.builtin.set_fact:
+        uv_python_paths: "{{ (uv_python_paths | default({})) | combine({item.item: item.stdout}) }}"
+      with_items: "{{ _uv_python_finds.results }}"
 
-  - name: Create venvs
-    ansible.builtin.command:
-      cmd: uv venv --seed --python {{ item.python }} {{ item.path }}
-      creates: "{{ item.path }}"
-    with_items: "{{ uv_venvs }}"
+    - name: Create venvs
+      ansible.builtin.command:
+        cmd: uv venv --seed --python {{ item.python }} {{ item.path }}
+        creates: "{{ item.path }}"
+      with_items: "{{ uv_venvs }}"
