@@ -50,7 +50,7 @@
 - name: Create uwsgi ini file for app
   ansible.builtin.template:
     src: uwsgi-example.ini.j2
-    dest: "{{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.ini"
+    dest: "{{ uwsgi_config_dir }}/{{ uwsgi_app_name }}.ini"
     owner: root
     group: www-data
     mode: "0644"
