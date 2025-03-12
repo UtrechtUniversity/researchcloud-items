@@ -10,7 +10,7 @@ chmod-socket = 660
 vacuum = true
 die-on-term = true
 master = true
-pidfile = {{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.pid
+pidfile = {{ uwsgi_config_dir }}/{{ uwsgi_app_name }}.pid
 {% for key, value in uwsgi_config.items() %}
 {% if value | length > 0 %}
 {{ key }}={{ value }}
