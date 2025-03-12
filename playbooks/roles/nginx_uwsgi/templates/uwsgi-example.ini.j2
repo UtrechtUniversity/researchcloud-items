@@ -1,6 +1,8 @@
 [uwsgi]
 plugins = {{ uwsgi_plugins }}
+{% if uwsgi_chdir | length > 0 %}
 chdir = {{ uwsgi_app_dir }}/
+{% endif %}
 workers = {{ uwsgi_num_workers }}
 socket = /tmp/uwsgi-{{ uwsgi_app_name }}.sock
 uid = www-data
