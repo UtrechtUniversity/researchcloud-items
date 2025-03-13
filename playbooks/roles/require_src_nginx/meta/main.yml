@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Dawa Ometto (Utrecht University)
+  description: Check for presence of SRC-Nginx component and fail if not present.
+  license: GPLv3
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Fedora
+      version:
+        - all
+    - name: Debian
+      versions:
+        - all

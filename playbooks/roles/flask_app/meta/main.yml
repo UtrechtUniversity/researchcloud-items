@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Dawa Ometto (Utrecht University)
+  description: Setup flask application with Nginx reverse proxy.
+  license: GPLv3
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all

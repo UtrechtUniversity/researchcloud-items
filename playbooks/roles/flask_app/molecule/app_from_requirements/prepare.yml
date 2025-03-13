@@ -1,0 +1,16 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Create requirements file
+      ansible.builtin.copy:
+        dest: /tmp/requirements.txt
+        content: asreview
+        mode: "0755"
+        owner: root
+        group: root

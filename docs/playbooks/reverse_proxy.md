@@ -59,7 +59,8 @@ If one of the `htpasswd` files defined in `reverse_proxy_locations` is not found
 
 ## See also
 
-Role [nginx_reverse_proxy](../roles/nginx_reverse_proxy.md)
+- Role [nginx_reverse_proxy](../roles/nginx_reverse_proxy.md)
+- Role [require_src_nginx](../roles/require_src_nginx.md)
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)
