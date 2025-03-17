@@ -1,0 +1,37 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ./prepare.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+role_name_check: 1
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    published_ports:
+      - 8080:80
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge not necessary since we include the role in the verify step
+    # - idempotence # randomized secure key and salt in the flask config are not idempotent
+    - verify
+    - cleanup
+    - destroy

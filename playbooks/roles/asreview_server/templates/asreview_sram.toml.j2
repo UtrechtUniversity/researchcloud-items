@@ -1,0 +1,25 @@
+DISABLE_LOGIN = false
+LOGIN_DURATION = 7
+SECRET_KEY = "{{ lookup('community.general.random_string', base64=True, length=65) }}"
+SECURITY_PASSWORD_SALT = "{{ lookup('community.general.random_string', base64=True, length=65) }}>"
+SESSION_COOKIE_SECURE = true
+REMEMBER_COOKIE_SECURE = true
+SESSION_COOKIE_SAMESITE = "Lax"
+SQLALCHEMY_TRACK_MODIFICATIONS = true
+ALLOW_ACCOUNT_CREATION = false
+EMAIL_VERIFICATION = false
+
+[REMOTE_USER]
+USER_IDENTIFIER_HEADER = '{{ asreview_server_remote_user_header }}'
+{% if asreview_server_remote_user_email_header | length > 0 %}
+USER_EMAIL_HEADER = '{{ asreview_server_remote_user_email_header }}' # Header containing user's email. If not set, will default to 1. USER_IDENTIFIER_HEADER (if it is an email) 2. <username>@<DEFAULT_EMAIL_DOMAIN>.
+{% endif %}
+{% if asreview_server_remote_user_name_header | length > 0 %}
+USER_NAME_HEADER = '{{ asreview_server_remote_user_name_header }}' # Header containing user's full name. If not set, user's name will be set to the username inferred from the identifier.
+{% endif %}
+{% if asreview_server_remote_user_affiliation_header | length > 0 %}
+USER_AFFILIATION_HEADER = '{{ asreview_server_remote_user_affiliation_header }}' # Header containing user's affiliation.
+{% endif %}
+DEFAULT_AFFILIATION = '{{ asreview_server_remote_user_default_affiliation }}' # Default affiliation if no header is set.
+DEFAULT_EMAIL_DOMAIN = '{{ asreview_server_default_email_domain }}' # If no email header is set and USER_IDENTIFIER_HEADER is not an email, use this as a default domain. The user's email will be set to: <username>@<default_email_domain>
+REMOTE_AUTH_SECRET = '{{ asreview_server_remote_auth_secret }}' # If set, authentication will fail unless the request contains a 'REMOTE_AUTH_SECRET' header with the same value as this. This adds some additional security, so that users with direct access to the webapp (on localhost, say) cannot easily authenticate without this secret.

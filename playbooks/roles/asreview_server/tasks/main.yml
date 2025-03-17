@@ -1,0 +1,77 @@
+---
+- name: Set remote auth secret
+  # This sets a secret used to screen off the uWSGI app running on localhost
+  # The secret must be set with set_fact, because when set as a var, it will be evaluated every time it is used, and yield different random string.
+  ansible.builtin.set_fact:
+    asreview_server_remote_auth_secret: "{{ lookup('community.general.random_string', base64=True, length=65) }}"
+
+- name: Ensure ASReview config dir present
+  ansible.builtin.file:
+    path: "{{ asreview_server_config_dir }}"
+    state: directory
+    owner: "{{ asrevew_server_user }}"
+    group: "{{ asrevew_server_user }}"
+    mode: "0750"
+
+- name: Ensure ASReview config file is present
+  ansible.builtin.template:
+    dest: "{{ asreview_server_config_file }}"
+    src: templates/asreview_sram.toml.j2
+    owner: "{{ asrevew_server_user }}"
+    group: "{{ asrevew_server_user }}"
+    mode: "0600"
+
+- name: Ensure ASReview requirements file is present
+  ansible.builtin.copy:
+    dest: "{{ asreview_server_requirements_file }}"
+    src: files/requirements.txt
+    owner: "{{ asrevew_server_user }}"
+    group: "{{ asrevew_server_user }}"
+    mode: "0600"
+
+- name: Set privileges on ASReview data dir
+  ansible.builtin.file:
+    state: directory
+    path: "{{ asreview_server_data_dir }}"
+    mode: "0750"
+    owner: "{{ asrevew_server_user }}"
+    group: "{{ asrevew_server_user }}"
+
+- name: Set proxy params
+  ansible.builtin.set_fact:
+    asreview_server_proxy_config:
+      auth: "{{ asreview_server_auth }}"
+      htpasswd: "{{ (asreview_server_auth == 'basic') | ternary('asreview', omit) }}"
+      uwsgi_param: > # dynamically create a dict for each uwsgi_param directive
+        {{
+            dict(
+              ['REMOTE_AUTH_SECRET', asreview_server_remote_user_header] |
+              zip([asreview_server_remote_auth_secret, asreview_server_nginx_remote_user_var])
+            )
+        }}
+      # result is for example: {'REMOTE_AUTH_SECRET': 'foo', 'REMOTE_USER': '$username'}
+      # ...where the username key and value are generated dynamically.
+      # this will be rendered into:
+      # 'uwsgi_param REMOTE_AUTH_SECRET foo;'
+      # 'uwsgi_param REMOTE_USER $username;'
+      # ...by the underlying nginx reverse proxy role.
+
+- name: Include flask_app role
+  ansible.builtin.include_role:
+    name: flask_app
+  vars:
+    flask_app_pip_requirements: "{{ asreview_server_requirements_file }}" # set the requirements file to install the app from
+    flask_app_pip_pkg: asreview # specify which package from the requirements file is the actual app
+    flask_app_module_path: webapp/app.py
+    flask_app_python_version: 3.11
+    flask_app_name: asreview
+    flask_app_proxy_auth: "{{ asreview_server_auth }}"
+    flask_app_http_username: "{{ asreview_server_http_username }}"
+    flask_app_http_password: "{{ asreview_server_http_password }}"
+    flask_app_proxy_config: "{{ asreview_server_proxy_config }}" # eventually passed to nginx_reverse_proxy role
+    flask_app_uwsgi_config:
+      module: asreview.webapp.app:create_app()
+    flask_app_chdir: false
+    flask_app_uwsgi_env:
+      ASREVIEW_PATH: "{{ asreview_server_data_dir }}"
+      ASREVIEW_LAB_CONFIG_PATH: "{{ asreview_server_config_file }}"
