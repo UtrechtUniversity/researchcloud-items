@@ -69,6 +69,12 @@ location {{ vhost_properties.location }} {
     {% for property, value in vhost_properties.items() if property not in special_keys -%}
     {% if value is string -%}
     {{ property }} {{value}};
+    {% elif value is mapping %}
+    {% for nested_property, nested_value in value.items() -%}
+    {% if nested_value | length > 0 -%}
+    {{ property }} {{ nested_property }} {{ nested_value }};
+    {% endif %}
+    {%- endfor %}
     {% endif %}
     {%- endfor %}
 }
