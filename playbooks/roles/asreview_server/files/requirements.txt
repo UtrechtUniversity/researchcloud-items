@@ -1,0 +1,7 @@
+# Specify the version of ASReview to be installed in this file, so Dependabot can keep track of updates.
+# The role uses this file to determine the version of ASReview to be installed.
+# Dependabot will automatically open PRs when newer version of ASReview are released.
+# The PRs will trigger the tests, so we will automatically see if the new version is still compatible with this role.
+# The Dependabot config file is in .github/dependabot.yml
+
+asreview~=2.0b0
