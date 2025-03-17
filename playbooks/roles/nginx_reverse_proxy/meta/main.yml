@@ -7,3 +7,5 @@ galaxy_info:
   platforms:
     - name: Debian
     - name: Ubuntu
+dependencies:
+  - require_src_nginx

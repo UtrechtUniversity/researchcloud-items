@@ -19,5 +19,4 @@
     flask_app_uwsgi_config_block: "{{ flask_uwsgi_config_block | default('') | replace('\\n', '\n') }}"
     flask_app_chdir: "{{ flask_chdir | default(true, true) }}"
   roles:
-    - role: require_src_nginx
     - role: flask_app
