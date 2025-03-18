@@ -5,3 +5,7 @@
 # The Dependabot config file is in .github/dependabot.yml
 
 asreview~=2.0b0
+asreview-datatools
+asreview-insights
+asreview-makita
+asreview-wordcloud
