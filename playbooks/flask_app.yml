@@ -18,5 +18,6 @@
     flask_app_uwsgi_env: "{{ dict( ( flask_uwsgi_env | default('') ).split(' ') | map('regex_search', '.+=.+') | select | map('split', '=')) }}" # String -> dict
     flask_app_uwsgi_config_block: "{{ flask_uwsgi_config_block | default('') | replace('\\n', '\n') }}"
     flask_app_chdir: "{{ flask_chdir | default(true, true) }}"
+    flask_app_version: "{{ flask_version | default('') }}"
   roles:
     - role: flask_app
