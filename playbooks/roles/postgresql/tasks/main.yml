@@ -16,7 +16,6 @@
     name: postgresql-contrib
   when: ansible_pkg_mgr == 'dnf'
 
-
 - name: Register if Postgresql cluster is initialized
   ansible.builtin.stat:
     path: /var/lib/pgsql/data/pg_hba.conf

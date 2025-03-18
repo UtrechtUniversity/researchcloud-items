@@ -35,7 +35,6 @@
   become: "{{ uv_become }}"
   become_user: "{{ uv_become_user }}"
   block:
-
     - name: Install desired python version
       ansible.builtin.command: uv python install -v {{ item }}
       register: _install_desired_python
