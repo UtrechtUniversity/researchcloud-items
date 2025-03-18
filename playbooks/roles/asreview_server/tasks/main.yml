@@ -72,6 +72,37 @@
     flask_app_uwsgi_config:
       module: asreview.webapp.app:create_app()
     flask_app_chdir: false
-    flask_app_uwsgi_env:
-      ASREVIEW_PATH: "{{ asreview_server_data_dir }}"
-      ASREVIEW_LAB_CONFIG_PATH: "{{ asreview_server_config_file }}"
+    flask_app_uwsgi_env: "{{ asreview_server_env }}"
+
+- name: Start taskmanager
+  block:
+
+    - name: Enable logrotation for taskmanager
+      ansible.builtin.blockinfile:
+        path: /etc/logrotate.d/asreview
+        block: >
+          /var/log/asreview*.log {
+            daily
+            rotate 5
+            size 50M
+            compress
+            delaycompress
+            missingok
+            copytruncate
+          }
+        create: true
+        mode: "0644"
+
+    - name: Create service file for app
+      ansible.builtin.template:
+        src: asreview_taskmanager.service.j2
+        dest: /etc/systemd/system/asreview-taskmanager.service
+        owner: root
+        group: root
+        mode: "0640"
+
+    - name: Start app service
+      ansible.builtin.systemd_service:
+        name: asreview-taskmanager
+        state: started
+        enabled: true
