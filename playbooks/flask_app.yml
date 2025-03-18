@@ -6,7 +6,7 @@
     flask_app_repo: "{{ flask_repo | default('', true) }}"
     flask_app_pip_pkg: "{{ flask_pip_pkg | default('', true) }}"
     flask_app_pip_requirements: "{{ flask_pip_requirements | default('', true) }}"
-    flask_app_version: "{{ flask_pip_version | default('', true) }}"
+    flask_app_version: "{{ flask_version | default('', true) }}"
     flask_app_name: "{{ flask_name | default('FlaskApp', true) }}"
     flask_app_num_workers: "{{ flask_num_workers | default('2', true) }}"
     flask_app_python_version: "{{ flask_python_version | default('3.10', true) }}"
