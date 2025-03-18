@@ -4,3 +4,5 @@
     name:
       - build-essential
       - python3-dev
+      - libpcre3
+      - libpcre3-dev
