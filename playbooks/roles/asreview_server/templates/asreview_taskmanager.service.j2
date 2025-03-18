@@ -1,0 +1,18 @@
+[Unit]
+Description=Taskmanager for ASReview
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+StandardOutput=append:/var/log/asreview_taskmanager.log
+StandardError=append:/var/log/asreview_taskmanager_err.log
+{% for var_name, value in asreview_server_env.items() %}
+Environment="{{ var_name }}={{ value }}"
+{% endfor %}
+Environment="PATH={{ asreview_server_config_dir }}/venv/bin"
+ExecStart={{ asreview_server_config_dir }}/venv/bin/asreview task-manager
+
+# Check env
+[Install]
+WantedBy=multi-user.target

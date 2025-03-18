@@ -5,3 +5,6 @@ asreview_server_data_dir: "{{ asreview_server_config_dir }}/asreview_data"
 asreview_server_requirements_file: "{{ asreview_server_config_dir }}/requirements.txt"
 asrevew_server_user: www-data
 asreview_server_nginx_remote_user_var: "${{ (asreview_server_auth == 'basic') | ternary('remote_user', 'username') }}"
+asreview_server_env:
+    ASREVIEW_PATH: "{{ asreview_server_data_dir }}"
+    ASREVIEW_LAB_CONFIG_PATH: "{{ asreview_server_config_file }}"
