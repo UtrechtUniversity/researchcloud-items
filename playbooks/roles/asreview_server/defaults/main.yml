@@ -5,6 +5,6 @@ asreview_server_remote_user_name_header: ""
 asreview_server_remote_user_affiliation_header: ""
 asreview_server_remote_user_default_affiliation: ""
 asreview_server_default_email_domain: localhost
-asreview_server_auth: "{{ ( 'molecule-notest' in ansible_skip_tags ) | ternary('basic', 'sram') }}"
+asreview_server_auth: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('basic', 'sram') }}"
 asreview_server_http_password: ""
 asreview_server_http_username: ""

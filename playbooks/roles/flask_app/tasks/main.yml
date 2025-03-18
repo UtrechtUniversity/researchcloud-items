@@ -2,7 +2,8 @@
 - name: Ensure either the name of a pip package or a git repo is set
   when: not (flask_app_pip_pkg_defined or flask_app_repo_defined)
   ansible.builtin.fail:
-    msg: "You must set either flask_app_pip_pkg (to install the flask app as a pip package or from a requirements file), or flask_app_repo (to clone the app from a git repo)."
+    msg: "You must set either flask_app_pip_pkg (to install the flask app as a pip package or from a requirements file), or flask_app_repo (to clone the app from
+      a git repo)."
 
 - name: Set permissions on /var/www
   ansible.builtin.file:
@@ -59,7 +60,6 @@
   become_user: "{{ flask_app_webserver_user }}"
   when: not flask_app_repo_defined
   block:
-
     - name: Install the desired app from PypI
       when: not flask_app_pip_requirements_defined
       ansible.builtin.pip:
@@ -104,7 +104,6 @@
 
 - name: Set variable facts
   block:
-
     - name: Set auth info variable for reverse proxy role if auth basic is set
       when: flask_app_proxy_auth == 'basic'
       ansible.builtin.set_fact:

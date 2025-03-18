@@ -3,7 +3,6 @@
   hosts: all
   gather_facts: false
   tasks:
-
     - name: Test uswgi app
       ansible.builtin.uri:
         url: http://127.0.0.1/

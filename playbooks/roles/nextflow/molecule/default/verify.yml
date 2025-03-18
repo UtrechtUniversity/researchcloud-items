@@ -3,7 +3,6 @@
   hosts: all
   gather_facts: true
   tasks:
-
     - name: Run nextflow
       become: true
       become_user: testuser
