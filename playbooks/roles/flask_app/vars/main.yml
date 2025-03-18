@@ -7,3 +7,7 @@ flask_app_pip_requirements_defined: "{{ flask_app_pip_requirements | length > 0 
 flask_app_webserver_user: www-data
 flask_app_pip_pkg_location: "{{ flask_app_base_dir }}/venv/lib/python{{ flask_app_python_version }}/site-packages/{{ flask_app_pip_pkg }}"
 flask_app_version_str: "{{ flask_app_version | default('') | string | ternary('~='~flask_app_version, '') }}"
+flask_app_default_proxy_config:
+  auth: "{{ flask_app_proxy_auth | default(omit, true) }}"
+  htpasswd: "{{ (flask_app_proxy_auth == 'basic') | ternary(flask_app_name, omit) }}"
+flask_app_full_proxy_config: "{{ flask_app_default_proxy_config | ansible.builtin.combine(flask_app_proxy_config) }}"

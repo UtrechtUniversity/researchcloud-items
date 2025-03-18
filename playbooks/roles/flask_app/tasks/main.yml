@@ -120,7 +120,7 @@
 
     - name: Set uwsgi proxy config (resolve omit-placeholders)
       ansible.builtin.set_fact:
-        _flask_app_proxy_config: "{{ flask_app_proxy_config }}"
+        _flask_app_full_proxy_config: "{{ flask_app_full_proxy_config }}"
 
 - name: Include nginx_uwsgi role
   ansible.builtin.include_role:
@@ -136,5 +136,5 @@
     uwsgi_config_block: "{{ flask_app_uwsgi_config_block }}"
     uwsgi_config_dir: "{{ flask_app_base_dir }}"
     uwsgi_chdir: "{{ flask_app_chdir | ternary(flask_app_dir, '') }}"
-    uwsgi_proxy_config: "{{ _flask_app_proxy_config }}"
+    uwsgi_proxy_config: "{{ _flask_app_full_proxy_config }}"
     uwsgi_nginx_mountpoint: "{{ flask_app_proxy_location }}"

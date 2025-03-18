@@ -15,8 +15,6 @@ flask_app_uwsgi_config:
   module: "{{ (flask_app_module_path == 'wsgi.py') | ternary('wsgi:app', omit) }}"
 flask_app_uwsgi_config_block: ""
 flask_app_proxy_location: / # nginx location
-flask_app_proxy_config:
-  auth: "{{ flask_app_proxy_auth | default(omit, true) }}"
-  htpasswd: "{{ (flask_app_proxy_auth == 'basic') | ternary(flask_app_name, omit) }}"
+flask_app_proxy_config: {}
 flask_app_chdir: true
 flask_app_pip_requirements: ""
