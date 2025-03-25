@@ -1,8 +1,5 @@
 #!/bin/bash
 # Script to run a command a pause the ResearchCloud workspace when it exits.
-# Opens a tmux session so users can exit and re-attach to the running process later.
-# See tmux documentation for more info.
-# Requires tmux version 3.2 or higher.
 
 set -euo pipefail
 
@@ -50,18 +47,26 @@ else
     exit 100
 fi
 
-TMUX_SESSION="run_and_pause$(date '+%d%m%Y%H%M%S')"
+LOGFILE=$(mktemp -p "$HOME" run_and_pause.XXXXXX.log)
 
 echo
 echo "Will run the following command, and pause the workspace when it exits:"
 echo "$COMMAND"
 echo
-echo "The command will be run using tmux. To exit the tmux window, use: 'Control-b d'"
-echo "To reattach to the window later, use:"
-echo "tmux attach-session -t $TMUX_SESSION"
+echo "The command will be run using nohup. Output will be saved to $LOGFILE."
 echo
+echo "Use 'tail -f $LOGFILE' to follow your command's output live."
+echo "Use 'cat $LOGFILE' to see the entire logfile."
+echo
+
 read -p "Press any key to continue... " -n1 -s
 
-FULL_COMMAND="$COMMAND; $PAUSE_COMMAND; bash"
+nohup bash -c "$COMMAND; $PAUSE_COMMAND;" > "$LOGFILE" 2>&1 &
 
-tmux new-session -e "SRC_TOKEN=$SRC_TOKEN" -s "$TMUX_SESSION" "$FULL_COMMAND"
+echo
+echo
+echo "Now running your command, and will pause the workspace afterwards!"
+echo "To stop this process, run:"
+echo "kill $!"
+echo
+echo
