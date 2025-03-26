@@ -16,6 +16,7 @@ echo
 
 read -s -p "ResearchCloud API token: " SRC_TOKEN
 echo
+export SRC_TOKEN="$SRC_TOKEN"
 
 COMMAND="$*"
 WORKSPACE="{{ fact_workspace_info['workspace_id'] }}"
@@ -46,24 +47,55 @@ fi
 
 LOGFILE=$(mktemp -p "$HOME" run_and_pause.XXXXXX.log)
 
+CMDMSG=$(cat <<-END
+Will run the following command, and pause the workspace when it exits:
+$COMMAND
+END
+)
+
+LOGMSG=$(cat <<-END
+run_and_pause log $(date)
+$CMDMSG
+All output from the command will be captured below.
+END
+)
+
+echo "$LOGMSG" > "$LOGFILE"
+
+# Since we will use nohup to start a subshell (see below),
+# in order to kill both the subshell itself and the started command (which is a child of the subshell),
+# the user must use pkill -P <pid_of_the_subshell>.
+KILLMSG=$(cat <<-END
+To interrupt this process, run:
+pkill -P \$\$
+Command output starts below.
+------
+END
+)
+export KILLMSG="$KILLMSG"
+
 echo
-echo "Will run the following command, and pause the workspace when it exits:"
-echo "$COMMAND"
+echo "$CMDMSG"
 echo
 echo "The command will be run using nohup. Output will be saved to $LOGFILE."
 echo
 echo "Use 'tail -f $LOGFILE' to follow your command's output live."
-echo "Use 'cat $LOGFILE' to see the entire logfile."
+echo "Use 'cat $LOGFILE', 'less $LOGFILE',"
+echo "or your preferred text editor to see the entire logfile."
 echo
 
 read -p "Press any key to continue... " -n1 -s
 
-nohup bash -c "$COMMAND; $PAUSE_COMMAND;" > "$LOGFILE" 2>&1 &
+# Instead of running `nohup $COMMAND; $PAUSE_COMMAND;`, we use `nohup bash -c ...` to run $COMMAND and $PAUSE_COMMAND in a subshell.
+# This means that instead of nohup starting a command in which $SRC_TOKEN will be expanded,
+# a bash process is started that references the environment variable $SRC_TOKEN, exported in this script.
+# the name of the started process will hence not contain the token.
+nohup bash -c "echo \"$KILLMSG\" >> \"$LOGFILE\"; $COMMAND; $PAUSE_COMMAND;" >> "$LOGFILE" 2>&1 &
 
 echo
 echo
 echo "Now running your command, and will pause the workspace afterwards!"
 echo "To stop this process, run:"
-echo "kill $!"
+echo "pkill -P $!"
 echo
 echo
