@@ -6,9 +6,22 @@ set -euo pipefail
 echo "Hello! This script is currently in beta. Please report any issues to UU Research Engineering."
 echo
 
-if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 mycommand ..." >&2
-  exit 1
+check_params(){
+  if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 [-s] mycommand ..." >&2
+    echo "-s: silent mode. Don't print additional $0 info messages to the log, only your command's output."
+    exit 1
+  fi
+}
+
+check_params "$*";
+
+if [ "$1" == "-s" ]; then
+  SILENT="true"
+  shift
+  check_params "$*"; # check param count again after having evaluted whether -s is present
+else
+  SILENT="false"
 fi
 
 echo "Please enter your ResearchCloud API token below to continue."
@@ -26,7 +39,7 @@ PAUSE_COMMAND="curl -X 'POST' \
   -H 'accept: application/json;Compute' \
   -H \"authorization: \$SRC_TOKEN\" \
   -H 'Content-Type: application/json;pause' \
-  -d '{}'"
+  -d '{}' > /dev/null"
 
 echo "Testing whether you are authorized to pause this workspace..."
 echo
@@ -60,7 +73,7 @@ All output from the command will be captured below.
 END
 )
 
-echo "$LOGMSG" > "$LOGFILE"
+SEP="------"
 
 # Since we will use nohup to start a subshell (see below),
 # in order to kill both the subshell itself and the started command (which is a child of the subshell),
@@ -69,10 +82,18 @@ KILLMSG=$(cat <<-END
 To interrupt this process, run:
 pkill -P \$\$
 Command output starts below.
-------
+$SEP
 END
 )
 export KILLMSG="$KILLMSG"
+
+PAUSEMSG=$(cat <<-END
+$SEP
+Command exited with exit code: \$?
+Now pausing the workspace...
+END
+)
+export PAUSEMSG="$PAUSEMSG"
 
 echo
 echo "$CMDMSG"
@@ -86,11 +107,18 @@ echo
 
 read -p "Press any key to continue... " -n1 -s
 
+if [ "$SILENT" == "true" ]; then
+  FULL_COMMAND="$COMMAND; $PAUSE_COMMAND;"
+else
+  echo "$LOGMSG" > "$LOGFILE"
+  FULL_COMMAND="echo \"$KILLMSG\"; $COMMAND; echo \"$PAUSEMSG\"; $PAUSE_COMMAND;"
+fi
+
 # Instead of running `nohup $COMMAND; $PAUSE_COMMAND;`, we use `nohup bash -c ...` to run $COMMAND and $PAUSE_COMMAND in a subshell.
 # This means that instead of nohup starting a command in which $SRC_TOKEN will be expanded,
 # a bash process is started that references the environment variable $SRC_TOKEN, exported in this script.
 # the name of the started process will hence not contain the token.
-nohup bash -c "echo \"$KILLMSG\" >> \"$LOGFILE\"; $COMMAND; $PAUSE_COMMAND;" >> "$LOGFILE" 2>&1 &
+nohup bash -c "$FULL_COMMAND" >> "$LOGFILE" 2>&1 &
 
 echo
 echo
