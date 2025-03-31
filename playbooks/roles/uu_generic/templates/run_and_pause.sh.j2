@@ -82,10 +82,10 @@ SEP="------"
 
 # Since we will use nohup to start a subshell (see below),
 # in order to kill both the subshell itself and the started command (which is a child of the subshell),
-# the user must use pkill -P <pid_of_the_subshell>.
+# the user must use kill <pid_of_the_subshell> && pkill -P <pid_of_the_subshell>.
 KILLMSG=$(cat <<-END
 To interrupt this process, run:
-pkill -P \$\$
+kill \$\$ && pkill -P \$\$
 Command output starts below.
 $SEP
 END
@@ -128,7 +128,7 @@ nohup bash -c "$FULL_COMMAND" >> "$LOGFILE" 2>&1 &
 echo
 echo
 echo "Now running your command, and will pause the workspace afterwards!"
-echo "To stop this process, run:"
-echo "pkill -P $!"
+echo "To stop this process, and stop the workspace from pausing, run:"
+echo "kill $! && pkill -P $!"
 echo
 echo
