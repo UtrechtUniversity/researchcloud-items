@@ -25,10 +25,6 @@ else
 fi
 
 echo "Please enter your ResearchCloud API token below to continue."
-echo "**Security note**: other users with access to this machine will in principle"
-echo "be able to retrieve your API token while this script is running."
-echo "Proceed only on the basis of trust."
-echo
 
 read -s -p "ResearchCloud API token: " SRC_TOKEN
 echo
@@ -37,21 +33,27 @@ export SRC_TOKEN="$SRC_TOKEN"
 COMMAND="$*"
 WORKSPACE="{{ fact_workspace_info['workspace_id'] }}"
 ENDPOINT_URL="{{ uu_generic_src_api_endpoint }}/v1/workspace/workspaces/$WORKSPACE"
-PAUSE_COMMAND="curl -X 'POST' \
+
+# Set headers required by all API curl operations
+COMMON_HEADERS=$(cat <<-END
+accept: application/json;Compute
+authorization: $SRC_TOKEN
+END
+)
+export COMMON_HEADERS="$COMMON_HEADERS"
+
+# Define curl commands for checking authorization and for pausing the workspace
+# Use curl -H @- to read headers from stdin, supplied by 'echo $COMMON_HEADERS'.
+# This ensures that $SRC_TOKEN is not written to the bash history / process list, but is interpreted as an environment variable.
+CHECK_AUTH_COMMAND="echo \"\$COMMON_HEADERS\" | curl -v -H @- -X 'GET' '$ENDPOINT_URL/' 2> /dev/null"
+PAUSE_COMMAND="echo \"\$COMMON_HEADERS\" | curl -H @- -H 'Content-Type: application/json;pause' -X 'POST' \
   \"$ENDPOINT_URL/actions/pause/\" \
-  -H 'accept: application/json;Compute' \
-  -H \"authorization: \$SRC_TOKEN\" \
-  -H 'Content-Type: application/json;pause' \
   -d '{}' > /dev/null"
 
 echo "Testing whether you are authorized to pause this workspace..."
 echo
 
-result=$(curl -X "GET" "$ENDPOINT_URL/" \
-            -H "accept: application/json;Compute" \
-            -H "authorization: $SRC_TOKEN" \
-            2> /dev/null
-            )
+result=$(bash -c "$CHECK_AUTH_COMMAND")
 trap "Could not login to the ResearchCloud API with your token." ERR
 
 if [[ $(echo "$result" | jq '.allowed_actions | any(. == "pause")' ) == "true" ]]; then
