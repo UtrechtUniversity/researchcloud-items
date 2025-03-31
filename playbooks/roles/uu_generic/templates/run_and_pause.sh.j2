@@ -45,10 +45,10 @@ export COMMON_HEADERS="$COMMON_HEADERS"
 # Define curl commands for checking authorization and for pausing the workspace
 # Use curl -H @- to read headers from stdin, supplied by 'echo $COMMON_HEADERS'.
 # This ensures that $SRC_TOKEN is not written to the bash history / process list, but is interpreted as an environment variable.
-CHECK_AUTH_COMMAND="echo \"\$COMMON_HEADERS\" | curl -v -H @- -X 'GET' '$ENDPOINT_URL/' 2> /dev/null"
+CHECK_AUTH_COMMAND="echo \"\$COMMON_HEADERS\" | curl -H @- -X 'GET' '$ENDPOINT_URL/' 2> /dev/null"
 PAUSE_COMMAND="echo \"\$COMMON_HEADERS\" | curl -H @- -H 'Content-Type: application/json;pause' -X 'POST' \
   \"$ENDPOINT_URL/actions/pause/\" \
-  -d '{}' > /dev/null"
+  -d '{}' > /dev/null 2>&1"
 
 echo "Testing whether you are authorized to pause this workspace..."
 echo
