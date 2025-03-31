@@ -25,6 +25,9 @@ else
 fi
 
 echo "Please enter your ResearchCloud API token below to continue."
+echo "**Security note**: other users with access to this machine will in principle"
+echo "be able to retrieve your API token while this script is running."
+echo "Proceed only on the basis of trust."
 echo
 
 read -s -p "ResearchCloud API token: " SRC_TOKEN
@@ -50,7 +53,6 @@ CHECK_AUTH_COMMAND="echo \"\$COMMON_HEADERS\" | curl -v -H @- -X 'GET' '$ENDPOIN
 PAUSE_COMMAND="echo \"\$COMMON_HEADERS\" | curl -H @- -H 'Content-Type: application/json;pause' -X 'POST' \
   \"$ENDPOINT_URL/actions/pause/\" \
   -d '{}' > /dev/null"
-
 
 echo "Testing whether you are authorized to pause this workspace..."
 echo
