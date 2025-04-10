@@ -5,7 +5,7 @@
     - name: Fail if Docker not present (rootless)
       when: docker_rootless
       block:
-        - name: Populate service facts
+        - name: Check for cron script that enables rootless docker for each user
           ansible.builtin.stat:
             path: /etc/rsc/cron_rootless_docker.sh
           register: stat_rootless_docker_script
