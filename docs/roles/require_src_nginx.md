@@ -7,6 +7,23 @@ A simple role that applies some heuristics to determine if the [SRC-Nginx compon
 
 This is useful for roles that depend on the specific Nginx configuration provided by that component: for instance, the [nginx_reverse_proxy](./nginx_reverse_proxy.md) role relies on the presence of the configuration that allows for SRAM authentication.
 
+## Usage
+
+Include the role like usual:
+
+```yaml
+roles:
+  - role: require_src_nginx
+```
+
+...or add it to another role's `meta/main.yml`, in the `dependencies` section:
+
+```yaml
+---
+dependencies:
+  - require_src_nginx
+```
+
 ## History
 2025 Written by Dawa Ometto (Utrecht University)
 

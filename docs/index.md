@@ -107,6 +107,8 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [robotuser](roles/robotuser.md)
 - [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
+- [require_src_docker](roles/require_src_docker.md)
+- [require_src_nginx](roles/require_src_nginx.md)
 - [security_updates](roles/security_updates.md)
 - [sshfs_configrobot](roles/sshfs_configrobot.md)
 - [sshfs_mount](roles/sshfs_mount.md)
