@@ -9,7 +9,7 @@
           ansible.builtin.include_role:
             name: require_src_docker
           vars:
-            docker_rootless: true
+            require_src_docker_rootless: true
           register: role_execution
 
         - name: Check execution halted
