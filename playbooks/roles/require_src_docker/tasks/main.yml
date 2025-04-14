@@ -3,7 +3,7 @@
   tags: molecule-idempotence-notest
   block:
     - name: Fail if Docker not present (rootless)
-      when: docker_rootless
+      when: require_src_docker_rootless
       block:
         - name: Check for cron script that enables rootless docker for each user
           ansible.builtin.stat:
@@ -16,7 +16,7 @@
             msg: Docker must be installed rootlessly in previous component ('Docker Environment' by SURF).
 
     - name: Fail if Docker not present (rootful)
-      when: not docker_rootless
+      when: not require_src_docker_rootless
       block:
         - name: Populate service facts
           ansible.builtin.service_facts:
