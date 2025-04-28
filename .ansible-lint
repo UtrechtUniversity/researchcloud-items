@@ -7,6 +7,7 @@ exclude_paths:
   - molecule/*/extra_prepare.yml # these are included with 'include_tasks' and hence do not validate as playbooks
   - playbooks/roles/ext
   - docker-compose.yml
+  - _*.yml
 skip_list:
   - role-name
   - var-naming
