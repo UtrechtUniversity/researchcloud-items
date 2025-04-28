@@ -23,7 +23,7 @@ set default_proxy_headers = {
 }
 %}
 
-{% set special_keys = ['name', 'auth', 'location', 'proxy_pass', 'htpasswd'] %} # keys that should not be mapped directly to nginx directives
+{% set special_keys = ['name', 'auth', 'location', 'proxy_pass', 'htpasswd', 'add_headers'] %} # keys that should not be mapped directly to nginx directives
 {% set vhost_properties = dict(defaults, **item) %}
 {% set custom_proxy_headers = vhost_properties.get('proxy_set_header', {}) %}
 
