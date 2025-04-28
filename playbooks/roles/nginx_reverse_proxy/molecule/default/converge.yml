@@ -24,13 +24,6 @@
             location: /api/
             proxy_pass: http://localhost:8080/api/
             auth: noauth
-          - name: x_accel_redirect
-            location: /_x_accel_redirect/
-            internal: ""
-            alias: /
-            add_headers:
-              Access-Control-Allow-Origin: $upstream_http_access_control_allow_origin
-              Access-Control-Allow-Methods: $upstream_http_access_control_allow_methods
           - name: tus
             location: '/api/upload/resumable_upload'
             proxy_set_header:
@@ -48,10 +41,3 @@
                   Upgrade: '$http_upgrade'
                   Connection: '"upgrade"'
             client_max_body_size: '0'
-            proxy_redirect: 'default' # override the default version
-            proxy_set_header:
-              Host: ''
-              X-Forwarded-Host: '$host'
-              X-Forwarded-Proto: '$scheme'
-              Upgrade: '$http_upgrade'
-              Connection: '"upgrade"'
