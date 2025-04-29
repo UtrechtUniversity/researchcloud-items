@@ -63,7 +63,8 @@ status should be indicated in the description field of the catalog plugin item.
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
-- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
+- [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
+- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
 - [r-workbench](playbooks/r-workbench.md)  R development
 - [stata](playbooks/stata.md) Stata18 statistical analysis suite
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
