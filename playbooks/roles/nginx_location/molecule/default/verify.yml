@@ -4,8 +4,10 @@
   gather_facts: false
   vars:
     test_files:
+      - api.conf
       - galaxy.conf
       - tus.conf
+      - x_accel_redirect.conf
   tasks:
     - name: Run assertions for each test file
       ansible.builtin.include_tasks: _verify.yml
