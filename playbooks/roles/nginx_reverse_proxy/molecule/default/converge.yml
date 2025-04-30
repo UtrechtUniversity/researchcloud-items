@@ -11,6 +11,7 @@
             error_page: 502 /galaxy502.html
             proxy_pass: http://localhost:8080
             auth: sram
+            auth_sram_header: MY_HEADER
             proxy_set_header:
               GX_SECRET: foobar
             gzip: 'on'
