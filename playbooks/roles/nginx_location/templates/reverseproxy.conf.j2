@@ -24,7 +24,7 @@ set default_proxy_headers = {
 %}
 
 # keys that should not be mapped directly to nginx directives
-{%- set special_keys = ['name', 'auth', 'location', 'htpasswd', 'include_reverse_proxy_defaults'] %}
+{%- set special_keys = ['name', 'auth', 'location', 'htpasswd', 'include_reverse_proxy_defaults', 'auth_sram_header'] %}
 
 {%- if item.include_reverse_proxy_defaults | default(false) %}
 {%- set vhost_properties = dict(defaults, **item) %}
@@ -49,7 +49,7 @@ location {{ vhost_properties.location }} {
     error_page 401 = @custom_401;
     auth_request /validate;
     auth_request_set $username $upstream_http_username;
-    proxy_set_header REMOTE_USER $username;
+    proxy_set_header {{ vhost_properties.auth_sram_header | default('REMOTE_USER', true) }} $username;
     {% elif vhost_properties.auth  == 'basic' %}
     auth_basic "{{ auth.message | default('Secure') }}";
     auth_basic_user_file {{ nginx_location_htpasswd_path }}/{{ vhost_properties.htpasswd }};
