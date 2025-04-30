@@ -52,7 +52,7 @@ location {{ vhost_properties.location }} {
     proxy_set_header REMOTE_USER $username;
     {% elif vhost_properties.auth  == 'basic' %}
     auth_basic "{{ auth.message | default('Secure') }}";
-    auth_basic_user_file {{ htpasswd_location }}/{{ vhost_properties.htpasswd }};
+    auth_basic_user_file {{ nginx_location_htpasswd_path }}/{{ vhost_properties.htpasswd }};
     {% elif vhost_properties.auth == 'noauth' %}
     auth_basic "off";
     auth_request "off";

@@ -1,61 +1,14 @@
 ---
-- name: Add reverse proxy template
-  ansible.builtin.template:
-    src: templates/reverseproxy.conf.j2
-    dest: "{{ nginx_apps_location }}/{{ item.name }}.conf"
-    mode: "0640"
-    owner: root
-    group: www-data
-  with_items: "{{ nginx_reverse_proxy_locations }}"
+- name: Fail if locations are not set
+  when: (nginx_reverse_proxy_locations is not defined) or (nginx_reverse_proxy_locations is string) or (nginx_reverse_proxy_locations is not iterable)
+  ansible.builtin.fail:
+    msg: "The required variable nginx_reverse_proxy_locations was not set, or not a list."
 
-- name: Gather htpasswd files
-  ansible.builtin.set_fact:
-    _htpasswd_files: "{{ nginx_reverse_proxy_locations | map(attribute='htpasswd') | select('defined') | list }}"
-
-- name: Prepare for creating htpasswd files
-  when: _htpasswd_files | length > 0
-  block:
-    - name: Install dependencies for htpasswd module
-      ansible.builtin.package:
-        name: python3-passlib
-
-    - name: Create htpasswd location
-      ansible.builtin.file:
-        path: "{{ htpasswd_location }}"
-        owner: root
-        group: www-data
-        state: directory
-        mode: "750"
-
-- name: Create htpasswd files based on nginx_reverse_proxy_auth_info
-  when: nginx_reverse_proxy_auth_info | default('') | length > 0
-  with_items: "{{ nginx_reverse_proxy_auth_info }}"
-  no_log: true
-  community.general.htpasswd:
-    path: "{{ htpasswd_location }}/{{ item.name }}"
-    name: "{{ item.username }}"
-    password: "{{ item.password }}"
-    owner: root
-    group: www-data
-    mode: "644"
-
-- name: Get htpasswd files that were not defined in nginx_reverse_proxy_auth_info
-  ansible.builtin.set_fact:
-    _remaining_htpasswd_files: "{{ _htpasswd_files | difference(nginx_reverse_proxy_auth_info | default([]) | map(attribute='name') | list) }}"
-
-- name: Create htpasswd files with default username and password for all locations not defined in nginx_reverse_proxy_auth_info
-  with_items: "{{ _remaining_htpasswd_files }}"
-  no_log: true
-  community.general.htpasswd:
-    path: "{{ htpasswd_location }}/{{ item }}"
-    name: "{{ nginx_reverse_proxy_default_username }}"
-    password: "{{ nginx_reverse_proxy_default_password }}"
-    owner: root
-    group: www-data
-    mode: "644"
-
-- name: Restart nginx
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
-  tags: molecule-idempotence-notest
+- name: Create reverse proxies using nginx_location role
+  ansible.builtin.include_role:
+    name: nginx_location
+  vars:
+    nginx_location_default_username: "{{ nginx_reverse_proxy_default_username | default(omit, true) }}"
+    nginx_location_default_password: "{{ nginx_reverse_proxy_default_password | default(omit, true) }}"
+    nginx_location_locations: "{{ nginx_reverse_proxy_locations | map('combine', {'include_reverse_proxy_defaults': nginx_reverse_proxy_include_default_settings}) | list }}"
+    nginx_location_auth_info: "{{ nginx_reverse_proxy_auth_info }}"

@@ -1,0 +1,5 @@
+---
+nginx_location_app_config_path: /etc/nginx/app-location-conf.d
+nginx_location_htpasswd_path: /etc/nginx/passwd
+nginx_location_default_username: ""
+nginx_location_default_password: ""

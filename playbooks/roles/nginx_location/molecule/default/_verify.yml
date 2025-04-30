@@ -1,0 +1,16 @@
+---
+- name: Attempt to replace generated file with expected file
+  ansible.builtin.copy:
+    src: files/{{ item }}
+    dest: /etc/nginx/app-location-conf.d/{{ item }}
+    mode: "0640"
+    owner: root
+    group: www-data
+  diff: true
+  check_mode: true
+  register: compare_file
+
+- name: Assert nothing changed
+  ansible.builtin.assert:
+    that:
+      - not compare_file.changed
