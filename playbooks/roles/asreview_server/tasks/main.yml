@@ -5,6 +5,17 @@
   ansible.builtin.set_fact:
     asreview_server_remote_auth_secret: "{{ lookup('community.general.random_string', base64=True, length=65) }}"
 
+- name: Set storage path
+  when: asrevew_server_use_storage
+  ansible.builtin.set_fact:
+    asreview_server_storage_path: "{{ fact_workspace_storage[0]['mount'] | default('') }}"
+
+- name: Set ASReview environment
+  ansible.builtin.set_fact:
+    asreview_server_env:
+      ASREVIEW_PATH: "{{ asreview_server_storage_path | default(asreview_server_default_data_dir, true) }}/asreview_data"
+      ASREVIEW_LAB_CONFIG_PATH: "{{ asreview_server_config_file }}"
+
 - name: Ensure ASReview config dir present
   ansible.builtin.file:
     path: "{{ asreview_server_config_dir }}"
@@ -32,7 +43,7 @@
 - name: Set privileges on ASReview data dir
   ansible.builtin.file:
     state: directory
-    path: "{{ asreview_server_data_dir }}"
+    path: "{{ asreview_server_env.ASREVIEW_PATH }}"
     mode: "0750"
     owner: "{{ asrevew_server_user }}"
     group: "{{ asrevew_server_user }}"
