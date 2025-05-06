@@ -8,3 +8,4 @@ asreview_server_default_email_domain: localhost
 asreview_server_auth: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('basic', 'sram') }}"
 asreview_server_http_password: ""
 asreview_server_http_username: ""
+asrevew_server_use_storage: true
