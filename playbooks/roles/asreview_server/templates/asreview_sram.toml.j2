@@ -8,6 +8,7 @@ SESSION_COOKIE_SAMESITE = "Lax"
 SQLALCHEMY_TRACK_MODIFICATIONS = true
 ALLOW_ACCOUNT_CREATION = false
 EMAIL_VERIFICATION = false
+SQLALCHEMY_DATABASE_URI = "{{ asreview_server_db_uri }}"
 
 [REMOTE_USER]
 USER_IDENTIFIER_HEADER = '{{ asreview_server_remote_user_header }}'

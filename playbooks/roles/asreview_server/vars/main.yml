@@ -5,3 +5,5 @@ asreview_server_requirements_file: "{{ asreview_server_config_dir }}/requirement
 asreview_server_user: www-data
 asreview_server_nginx_remote_user_var: "${{ (asreview_server_auth == 'basic') | ternary('remote_user', 'username') }}"
 asreview_server_default_data_dir: "{{ asreview_server_config_dir }}"
+asreview_server_cron_script: /etc/rsc/cron_asreview_user.sh
+asreview_server_cron_logfile: /var/log/asreview_cron.log
