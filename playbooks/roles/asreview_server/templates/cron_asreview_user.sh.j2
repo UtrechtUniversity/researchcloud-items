@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+ASREVIEW_DB_URI="{{ asreview_server_db_uri }}"
+
+cd /etc/rsc/managedusers/
+
+echo "Attempting to add managed users to ASReview..."
+echo "Using ASReview database at: $ASREVIEW_DB_URI"
+echo
+
+for username in *; do
+
+if [[ "$username" == "*" ]]; then
+    echo "No managed users found."
+    exit 0
+fi
+
+echo "Adding local user $username to ASReview..."
+echo
+
+{{ asreview_server_config_dir }}/venv/bin/asreview auth-tool add-users --db "$ASREVIEW_DB_URI" -j \
+    "[{\"origin\": \"remote\", \"email\": \"$username@{{ asreview_server_default_email_domain }}\", \"name\": \"$username\", \"affiliation\": \"\", \"password\": \"\"}]"
+done
