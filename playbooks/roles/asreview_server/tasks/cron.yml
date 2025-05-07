@@ -1,0 +1,34 @@
+---
+- name: Copy cron job
+  ansible.builtin.template:
+    src: templates/cron_asreview_user.sh.j2
+    dest: "{{ asreview_server_cron_script }}"
+    mode: "0700"
+    owner: root
+    group: root
+
+- name: Run user cron job for the first time
+  tags: molecule-idempotence-notest
+  ansible.builtin.shell: "{{ asreview_server_cron_script }}"
+
+- name: Create ASReview user cron job
+  ansible.builtin.cron:
+    name: "Add local users to ASReview"
+    minute: "*/10"
+    job: "{{ asreview_server_cron_script }} >> {{ asreview_server_cron_logfile }} 2>&1"
+
+- name: Enable logrotation for cron job
+  ansible.builtin.blockinfile:
+    path: /etc/logrotate.d/asreview_cron
+    block: >
+      {{ asreview_server_cron_logfile }} {
+        daily
+        rotate 5
+        size 50M
+        compress
+        delaycompress
+        missingok
+        copytruncate
+      }
+    create: true
+    mode: "0644"
