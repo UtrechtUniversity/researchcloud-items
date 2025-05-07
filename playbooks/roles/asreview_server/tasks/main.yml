@@ -16,6 +16,10 @@
       ASREVIEW_PATH: "{{ asreview_server_storage_path | default(asreview_server_default_data_dir, true) }}/asreview_data"
       ASREVIEW_LAB_CONFIG_PATH: "{{ asreview_server_config_file }}"
 
+- name: Set ASReview DB uri
+  ansible.builtin.set_fact:
+    asreview_server_db_uri: sqlite:///{{ asreview_server_env.ASREVIEW_PATH }}/asreview.production.sqlite
+
 - name: Ensure ASReview config dir present
   ansible.builtin.file:
     path: "{{ asreview_server_config_dir }}"
@@ -135,3 +139,7 @@
         name: asreview-taskmanager
         state: started
         enabled: true
+
+- name: Install cron job to add local users to ASReview
+  when: asreview_server_cron_users
+  ansible.builtin.include_tasks: cron.yml
