@@ -9,3 +9,4 @@ asreview_server_auth: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('ba
 asreview_server_http_password: ""
 asreview_server_http_username: ""
 asrevew_server_use_storage: true
+asreview_server_cron_users: true
