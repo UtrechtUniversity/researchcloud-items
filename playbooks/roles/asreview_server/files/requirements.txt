@@ -4,4 +4,4 @@
 # The PRs will trigger the tests, so we will automatically see if the new version is still compatible with this role.
 # The Dependabot config file is in .github/dependabot.yml
 
-asreview~=2.0b0
+asreview~=1.6
