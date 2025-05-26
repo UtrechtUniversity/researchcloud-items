@@ -107,6 +107,13 @@
     content: |
       export ASREVIEW_PATH="{{ asreview_server_env.ASREVIEW_PATH }}"
 
+- name: Add ASReview to default bash path
+  ansible.builtin.copy:
+    dest: /etc/profile.d/asreview-path.sh
+    mode: "0644"
+    content: |
+      export PATH="{{ flask_app_venv }}/bin${PATH:+:${PATH}}"
+
 - name: Start taskmanager
   block:
 
