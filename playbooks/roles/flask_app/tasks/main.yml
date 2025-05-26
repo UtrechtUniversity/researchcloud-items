@@ -106,6 +106,15 @@
         VIRTUAL_ENV: "{{ flask_app_venv }}"
       with_items: "{{ flask_app_pip_requirements.split(',') }}"
 
+- name: Make venv accessible to specified group
+  tags: molecule-idempotence-notest
+  ansible.builtin.file:
+    dest: "{{ flask_app_venv }}"
+    owner: "{{ flask_app_venv_user }}"
+    group: "{{ flask_app_venv_group }}"
+    mode: "0750"
+    recurse: true
+
 - name: Set variable facts
   block:
     - name: Set auth info variable for reverse proxy role if auth basic is set
