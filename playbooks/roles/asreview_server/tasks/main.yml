@@ -85,6 +85,13 @@
     flask_app_chdir: false
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
 
+- name: Add ASReview to default bash path
+  ansible.builtin.copy:
+    dest: /etc/profile.d/asreview-path.sh
+    mode: "0644"
+    content: |
+      export PATH="{{ flask_app_venv }}/bin${PATH:+:${PATH}}"
+
 - name: Start taskmanager
   block:
 
