@@ -7,3 +7,4 @@
       vars:
         asreview_server_http_username: tester
         asreview_server_http_password: letmein
+        asreview_server_group: testuser
