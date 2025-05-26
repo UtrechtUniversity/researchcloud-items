@@ -91,12 +91,21 @@
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
     flask_app_venv_user: "{{ asreview_server_user }}"
 
-- name: Add ASReview to default bash path
+- name: Install ASReview as CLI command for all users
+  ansible.builtin.include_role:
+    name: pipx_install_systemwide
+  vars:
+    pipx_install_systemwide_requirements: "{{ asreview_server_requirements_file }}"
+    pipx_install_systemwide_packages:
+      - asreview
+    pipx_install_systemwide_use_uv: true # uv has been installed by the flask_app role
+
+- name: Add path to ASReview data to default bash environment
   ansible.builtin.copy:
-    dest: /etc/profile.d/asreview-path.sh
+    dest: /etc/profile.d/asreview.sh
     mode: "0644"
     content: |
-      export PATH="{{ flask_app_venv }}/bin${PATH:+:${PATH}}"
+      export ASREVIEW_PATH="{{ asreview_server_env.ASREVIEW_PATH }}"
 
 - name: Start taskmanager
   block:
