@@ -6,7 +6,7 @@
     asreview_server_remote_auth_secret: "{{ lookup('community.general.random_string', base64=True, length=65) }}"
 
 - name: Set storage path
-  when: asrevew_server_use_storage
+  when: asreview_server_use_storage
   ansible.builtin.set_fact:
     asreview_server_storage_path: "{{ fact_workspace_storage[0]['mount'] | default('') }}"
 
@@ -20,33 +20,34 @@
   ansible.builtin.file:
     path: "{{ asreview_server_config_dir }}"
     state: directory
-    owner: "{{ asrevew_server_user }}"
-    group: "{{ asrevew_server_user }}"
+    owner: "{{ asreview_server_user }}"
+    group: "{{ asreview_server_user }}"
     mode: "0750"
 
 - name: Ensure ASReview config file is present
   ansible.builtin.template:
     dest: "{{ asreview_server_config_file }}"
     src: templates/asreview_sram.toml.j2
-    owner: "{{ asrevew_server_user }}"
-    group: "{{ asrevew_server_user }}"
+    owner: "{{ asreview_server_user }}"
+    group: "{{ asreview_server_user }}"
     mode: "0600"
 
 - name: Ensure ASReview requirements file is present
   ansible.builtin.copy:
     dest: "{{ asreview_server_requirements_file }}"
     src: files/requirements.txt
-    owner: "{{ asrevew_server_user }}"
-    group: "{{ asrevew_server_user }}"
+    owner: "{{ asreview_server_user }}"
+    group: "{{ asreview_server_user }}"
     mode: "0600"
 
 - name: Set privileges on ASReview data dir
   ansible.builtin.file:
     state: directory
     path: "{{ asreview_server_env.ASREVIEW_PATH }}"
-    mode: "0750"
-    owner: "{{ asrevew_server_user }}"
-    group: "{{ asrevew_server_user }}"
+    mode: "02770"
+    owner: "{{ asreview_server_user }}"
+    group: "{{ asreview_server_group }}"
+    recurse: true
 
 - name: Set proxy params
   ansible.builtin.set_fact:
@@ -84,6 +85,7 @@
       module: asreview.webapp.app:create_app()
     flask_app_chdir: false
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
+    flask_app_venv_user: "{{ asreview_server_user }}"
 
 - name: Add ASReview to default bash path
   ansible.builtin.copy:
