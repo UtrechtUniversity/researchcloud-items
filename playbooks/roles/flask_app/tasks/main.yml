@@ -5,6 +5,10 @@
     msg: "You must set either flask_app_pip_pkg (to install the flask app as a pip package or from a requirements file), or flask_app_repo (to clone the app from
       a git repo)."
 
+- name: Set flask_app_venv fact so it is available in playbooks/roles that include this role
+  ansible.builtin.set_fact:
+    flask_app_venv: "{{ flask_app_base_dir }}/venv"
+
 - name: Set permissions on /var/www
   ansible.builtin.file:
     dest: /var/www
