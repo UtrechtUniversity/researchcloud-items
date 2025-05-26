@@ -1,0 +1,9 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Assert ibridges is on path for regular users
+      become: true
+      become_user: testuser
+      ansible.builtin.command: bash -l -c 'ibridges --help'

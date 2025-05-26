@@ -1,12 +1,15 @@
 ---
-- name: Install pipx
-  ansible.builtin.package:
-    name: pipx
+- name: Install pipx using pip
+  when: not pipx_install_systemwide_use_uv
+  block:
+    - name: Install pipx
+      ansible.builtin.package:
+        name: pipx
 
-- name: Install python3-venv
-  ansible.builtin.package:
-    name: python3-venv
-  when: ansible_distribution == 'Ubuntu'
+    - name: Install python3-venv
+      ansible.builtin.package:
+        name: python3-venv
+      when: ansible_distribution == 'Ubuntu'
 
 - name: Add systemwide pipx path to each user's path for installing global packages.
   when: pipx_install_systemwide_profile | length > 0
@@ -26,16 +29,21 @@
 #     PIPX_HOME: "{{ pipx_install_systemwide_location }}"
 #     PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
 
-- name: Install packages with pipx
+- name: Install requested packages
   ansible.builtin.command: >
-    pipx install
-    {% if pipx_install_systemwide_python | default('') | length > 0 %}
+    {{ pipx_install_systemwide_cmd }}
+    {% if pipx_install_systemwide_python | length > 0 %}
     --python "{{ pipx_install_systemwide_python }}"
     {% endif %}
-    --force
+    {{ pipx_install_systemwide_force | ternary('--force', '') }}
     "{{ item }}"
-  with_items: "{{ pipx_install_systemwide_packages | default([], true) }}"
+    {% if pipx_install_systemwide_use_uv and (pipx_install_systemwide_requirements | length > 0) %}
+    --with-requirements "{{ pipx_install_systemwide_requirements }}"
+    {% endif %}
   tags: molecule-idempotence-notest
+  with_items: "{{ pipx_install_systemwide_packages }}"
   environment:
     PIPX_HOME: "{{ pipx_install_systemwide_location }}"
     PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
+    UV_TOOL_DIR: "{{ pipx_install_systemwide_location }}"
+    UV_TOOL_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
