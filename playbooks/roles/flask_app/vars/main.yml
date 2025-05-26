@@ -1,6 +1,5 @@
 ---
 flask_app_base_dir: /var/www/{{ flask_app_name }}
-flask_app_venv: "{{ flask_app_base_dir }}/venv"
 flask_app_pip_pkg_defined: "{{ flask_app_pip_pkg | length > 0 }}"
 flask_app_repo_defined: "{{ flask_app_repo | length > 0 }}"
 flask_app_pip_requirements_defined: "{{ flask_app_pip_requirements | length > 0 }}"
