@@ -9,7 +9,7 @@
 
 - name: Run user cron job for the first time
   tags: molecule-idempotence-notest
-  ansible.builtin.shell: "{{ asreview_server_cron_script }}"
+  ansible.builtin.command: "{{ asreview_server_cron_script }}"
 
 - name: Create ASReview user cron job
   ansible.builtin.cron:
