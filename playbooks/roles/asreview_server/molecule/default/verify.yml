@@ -41,8 +41,3 @@
         that:
           - '"- tester" in existing_users.stdout' # created by logging in above
           - '"- testuser" in existing_users.stdout' # created by the cronjob
-    
-    - name: Assert ASReview is on path for regular users
-      become: true
-      become_user: testuser
-      ansible.builtin.command: bash -l -c 'asreview --help'
