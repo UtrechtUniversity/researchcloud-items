@@ -31,3 +31,13 @@
       become: true
       become_user: testuser
       ansible.builtin.command: bash -l -c 'asreview --help'
+
+    - name: Get existing users
+      ansible.builtin.command: /var/www/asreview/venv/bin/asreview auth-tool list-users --db sqlite:///var/www/asreview/asreview_data/asreview.production.sqlite
+      register: existing_users
+
+    - name: Assert existing users
+      ansible.builtin.assert:
+        that:
+          - '"- tester" in existing_users.stdout'
+          - '"- testuser" in existing_users.stdout' # added by the cronjob
