@@ -4,6 +4,7 @@
   block:
     - name: Refresh snaps
       ansible.builtin.command: snap refresh
+      tags: molecule-idempotence-notest
 
     - name: Install VSCodium
       ansible.builtin.command: snap install codium --classic
