@@ -2,12 +2,6 @@
 - name: Install iRODS iCommands toolset in researchcloud workspace
   hosts: localhost
   gather_facts: true
-  tasks:
-    - name: Override default icommands version for ubuntu > 20
-      # Yoda requires a lower version of the icommands than the latest version on Ubuntu >= 22
-      when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int > 20
-      ansible.builtin.set_fact:
-        irods_repo_apt_release: focal
   roles:
     - role: irods_icommands
     - role: irods_skel
