@@ -7,6 +7,5 @@
   #  vars:
   #    - irods_repo_apt_release: "bionic"
   roles:
-    - irods_repo
-    - irods_icommands
-    - irods_skel
+    - role: irods_icommands
+    - role: irods_skel
