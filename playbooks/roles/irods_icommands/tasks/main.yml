@@ -6,6 +6,7 @@
     pkg:
       - "irods-runtime=4.3.1-0~jammy"
       - "irods-icommands=4.3.1-0~jammy"
+    allow_downgrade: true
     state: present
 
 - name: Install icommands
