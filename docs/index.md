@@ -61,6 +61,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [flask_app](roles/flask_app.md) serve a Flask app with Nginx, optionally with SRAM authorization.
 - [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
+- [nextflow](playbooks/nextflow.md) [Nextflow](https://nextflow.io) workflow engine
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
@@ -99,6 +100,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
+- [nextflow](playbooks/nextflow.md) [Nextflow](https://nextflow.io) workflow engine
 - [nginx_reverse_proxy](roles/nginx_reverse_proxy.md)
 - [nginx_uwsgi](roles/nginx_uwsgi.md)
 - [poetry](roles/poetry.md)
