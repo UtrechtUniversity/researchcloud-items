@@ -23,16 +23,16 @@
       register: extra_groups
       changed_when: false
       ansible.builtin.command: grep EXTRA_GROUPS= /etc/adduser.conf
-    - name: Debug
+    - name: List groups of old user
       ansible.builtin.debug:
         msg: "{{ list_groups_olduser.stdout }}"
-    - name: Debug
+    - name: List groups of new user
       ansible.builtin.debug:
         msg: "{{ list_groups_newuser.stdout }}"
-    - name: Debug
+    - name: Lists gids of new user
       ansible.builtin.debug:
         msg: "{{ list_gids_newuser.stdout }}"
-    - name: Debug
+    - name: List EXTRA_GROUPS
       ansible.builtin.debug:
         msg: "{{ extra_groups.stdout }}"
 

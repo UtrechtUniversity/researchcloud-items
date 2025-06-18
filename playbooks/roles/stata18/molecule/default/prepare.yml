@@ -23,13 +23,13 @@
         content: mock
         mode: "0755"
 
-    - name: Create mock stata archive1
+    - name: Unpack mock stata archive1
       ansible.builtin.command:
         cmd: tar -cvzf unix/linux64/test.taz /etc/hosts # any random file
         creates: /tmp/unix/linux64/test.taz
         chdir: /tmp
 
-    - name: Create mock stata archive2
+    - name: Unpack mock stata archive2
       ansible.builtin.command:
         cmd: tar -cvzf /home/uurobot/remote-data/stata/stata18-linux/Stata18Linux64.tar.gz unix
         creates: /home/uurobot/remote-data/stata/stata18-linux/Stata18Linux64.tar.gz
