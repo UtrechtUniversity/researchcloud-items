@@ -9,6 +9,7 @@
 .vaultpw
 development_credentials.yml
 ansible.cfg
+.ansible
 
 # Vagrant
 /.vagrant
