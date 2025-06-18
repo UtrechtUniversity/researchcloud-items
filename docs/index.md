@@ -54,12 +54,13 @@ status should be indicated in the description field of the catalog plugin item.
 
 - [agisoft](playbooks/agisoft.md) install Agisoft Metashape
 - [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
+- [asreview](playbooks/asreview_server.md)  machine-learning powered webapplication for systematic reviews
 - [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
 - [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
-- [flask_app](roles/flask_app.md) serve a Flask app with Nginx, optionally with SRAM authorization.
-- [matlab](playbooks/matlab.md) Data analysis and simulation suite
+- [flask_app](roles/flask_app.md)  serve a Flask app with Nginx, optionally with SRAM authorization.
+- [matlab](playbooks/matlab.md)  Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
 - [nextflow](playbooks/nextflow.md) [Nextflow](https://nextflow.io) workflow engine
 - [python-workbench](playbooks/python-workbench.md)  Python development
@@ -67,19 +68,17 @@ status should be indicated in the description field of the catalog plugin item.
 - [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
 - [r-workbench](playbooks/r-workbench.md)  R development
-- [stata](playbooks/stata.md) Stata18 statistical analysis suite
+- [stata](playbooks/stata.md)  Stata18 statistical analysis suite
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
-- [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
-- [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
+- [shared_directories](playbooks/shared_directories.md)  create shared data directories for regular users
+- [transferuser](playbooks/transferuser.md)  dedicated user for file exchange with remote host
 
 ### Experimental
 
 - [anaconda](playbooks/anaconda.md)  python data science development
-- [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
-- [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 
 
@@ -91,12 +90,17 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 - [agisoft](roles/agisoft.md) install Agisoft Metashape
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
+- [asreview_server](roles/asreview_server.md)
 - [default_group](roles/default_group.md) set desired groups as default for regular users
 - [desktop-file](roles/desktop_file.md) add desktop icons and login items for custom apps
 - [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
 - [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
 - [ibridges](roles/ibridges.md)  installs [iBridges](https://github.com/UtrechtUniversity/iBridges), a userfriendly commandline client for iRODS (GUI and/or CLI)
 - [install_role](roles/install_role.md)
+- [irods_repo](roles/irods_repo.md)
+- [irods_icommands](roles/irods_icommands.md)
+- [irods_iselect](roles/irods_iselect.md)
+- [irods_skel](roles/irods_skel.md)
 - [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
@@ -125,11 +129,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 ### Experimental
 
 - [anaconda](roles/anaconda.md)
-- [asreview](roles/asreview.md)
 - [camunda_modeler](roles/camunda_modeler.md)
 - [camunda_server](roles/camunda_server.md)
-- [irods_repo](roles/irods_repo.md)
-- [irods_icommands](roles/irods_icommands.md)
-- [irods_iselect](roles/irods_iselect.md)
-- [irods_skel](roles/irods_skel.md)
 - [rstudio](roles/rstudio.md)

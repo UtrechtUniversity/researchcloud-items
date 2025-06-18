@@ -1,22 +1,25 @@
-# Playbook asreview
+# Playbook asreview_server
 [back to index](../index.md#Playbooks)
 
 ## Summary
-ASReview LAB is an application that uses active learning to facilitate and predict the relevancy of papers during a systematic review.
+[ASReview](https://asreview.nl/) is an application that uses active learning to facilitate and predict the relevancy of papers during a systematic review.
+
+This component installs the ASReview webapplication. Users in the collaboration will be able to login using SRAM Single Sign-on.
 
 ## Requires
-Unix-environment.
 
-## Description
-This playbook starts the play of the ASReview role, which installs ASReview.
+- Ubuntu OS
+- SURF's [SRC-Nginx](https://gitlab.com/rsc-surf-nl/plugins/plugin-nginx) component preinstalled
 
 ## Variables
-Mention any variables that can be preset by the user, and their defaults
+
+- `asreview_server_use_storage`: Boolean. When `true`, ASReview will utilize a storage unit if it is attached to the workspace. If multiple storages are attached, the first one (alphanumerically) will be used. Default: `true`.
 
 ## See also
-[asreview role](../roles/asreview.md)
+
+- [asreview_server role](../roles/asreview_server.md)
 
 ## History
-<2022> Written by Sytse Groenwold (Utrecht University)
+2025 Written by Dawa Ometto (Utrecht University)
 
 [back to index](../index.md#Playbooks)
