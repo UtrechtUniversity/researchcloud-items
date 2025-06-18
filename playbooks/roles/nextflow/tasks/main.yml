@@ -17,9 +17,23 @@
   ansible.builtin.debug:
     var: nextflow_java_installed
 
+- name: Get latest nextflow version # noqa: command-instead-of-module
+  when: nextflow_version | length == 0
+  changed_when: false
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl {{ nextflow_latest_url }} | jq -r '(.assets[] | select(.name | endswith("dist")).browser_download_url)'
+  register: nextflow_get_latest
+  args:
+    executable: bash
+
+- name: Set dowload URL
+  ansible.builtin.set_fact:
+    nextflow_download_url: "{{ nextflow_get_latest.stdout | default(nextflow_default_download_url) }}"
+
 - name: Download nextflow
   ansible.builtin.get_url:
-    url: "{{ nextflow_base_url }}/v{{ nextflow_version }}/nextflow-{{ nextflow_version }}-dist"
+    url: "{{ nextflow_download_url }}"
     dest: /usr/local/bin/nextflow
     owner: root
     group: root

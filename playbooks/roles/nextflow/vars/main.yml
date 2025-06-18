@@ -1,2 +1,4 @@
 ---
+nextflow_latest_url: https://api.github.com/repos/nextflow-io/nextflow/releases/latest
 nextflow_base_url: https://github.com/nextflow-io/nextflow/releases/download/
+nextflow_default_download_url: "{{ nextflow_base_url }}/v{{ nextflow_version }}/nextflow-{{ nextflow_version }}-dist"
