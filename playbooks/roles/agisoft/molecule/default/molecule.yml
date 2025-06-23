@@ -15,19 +15,6 @@ provisioner:
   env:
     ANSIBLE_ROLES_PATH: ../../../
 role_name_check: 1
-scenario:
-  test_sequence:
-    - dependency
-    - cleanup
-    - destroy
-    - syntax
-    - create
-    - prepare
-    - converge not necessary since we include the role in the verify step
-    - idempotence not necessary since we're only setting facts in this role
-    - verify
-    - cleanup
-    - destroy
 platforms:
   - name: workspace-src-ubuntu_focal-desktop
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
