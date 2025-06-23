@@ -53,6 +53,7 @@ status should be indicated in the description field of the catalog plugin item.
 ### Supported
 
 - [agisoft](playbooks/agisoft.md) install Agisoft Metashape
+- [alphafold](playbooks/alphafold.md) install DeepMind AlphaFold
 - [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
 - [asreview](playbooks/asreview_server.md)  machine-learning powered webapplication for systematic reviews
 - [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
@@ -89,6 +90,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 ### Supported
 
 - [agisoft](roles/agisoft.md) install Agisoft Metashape
+- [alphafold](roles/alphafold.md) install DeepMind AlphaFold
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [asreview_server](roles/asreview_server.md)
 - [default_group](roles/default_group.md) set desired groups as default for regular users

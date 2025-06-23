@@ -1,0 +1,18 @@
+---
+galaxy_info:
+  author: Dawa Ometto (UU)
+  description: Installs the alphafold3 inference docker image, and prepares an SRC storage unit for using it.
+  license: GPLv3
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
+    - name: EL
+      versions:
+        - all # not tested for specific versions
+dependencies:
+  - require_src_docker
+  - fact_regular_users
+  - fact_workspace_info

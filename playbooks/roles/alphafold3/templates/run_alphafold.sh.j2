@@ -1,0 +1,114 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+EXTRA_OPTS="$*"
+
+STORAGE_ROOT_DIR="/data"
+
+ALPHAFOLD_IMAGE_NAME="{{ alphafold_image_name }}"
+
+if [[ -z "$ALPHAFOLD_STORAGE" ]]; then
+  echo "Could not find storage volume; exiting..."
+  echo "Ensure the variable \$ALPHAFOLD_STORAGE is set correctly."
+  exit 1
+else
+    echo "Using storage: $ALPHAFOLD_STORAGE"
+fi
+
+ALPHAFOLD_DIR="${ALPHAFOLD_DIR:-{{ alphafold_dirname }}}"
+ALPHAFOLD_BASE_DIR="$ALPHAFOLD_STORAGE/$ALPHAFOLD_DIR"
+
+ALPHAFOLD_MODEL="${ALPHAFOLD_MODEL:-$ALPHAFOLD_BASE_DIR/model_parameters}"
+ALPHAFOLD_INPUT="${ALPHAFOLD_INPUT:-$ALPHAFOLD_BASE_DIR/af_input}"
+ALPHAFOLD_OUTPUT="${ALPHAFOLD_OUTPUT:-$ALPHAFOLD_BASE_DIR/af_output}"
+ALPHAFOLD_DBS="${ALPHAFOLD_DBS:-$ALPHAFOLD_BASE_DIR/public_databases}"
+
+if [[ -e "$ALPHAFOLD_MODEL" && -n $(find "$ALPHAFOLD_MODEL" -name "*.bin") ]]; then
+    echo "Found model directory..."
+elif [[ ! -e "$ALPHAFOLD_MODEL" ]]; then
+    echo "Could not find model parameters in $ALPHAFOLD_MODEL. Directory does not exist."
+    exit 1
+else
+    echo "Could not find model parameters in $ALPHAFOLD_MODEL. Please place the model parameters in that directory."
+    exit 1
+fi
+
+if [[ -e "$ALPHAFOLD_OUTPUT" ]]; then
+    echo "Found outputs directory..."
+else
+    echo "Could not find output directory $ALPHAFOLD_OUTPUT. Make sure it exists, or specify another directory by setting the \$ALPHAFOLD_OUTPUT variable."
+    exit 1
+fi
+
+if [[ -e "$ALPHAFOLD_DBS" ]]; then
+    echo "Found genetic databases directory..."
+else
+    echo "Could not find genetic databases directory $ALPHAFOLD_DBS. Make sure it exists, or specify another directory by setting the \$ALPHAFOLD_DBS variable."
+    exit 1
+fi
+
+if [[ -e "$ALPHAFOLD_INPUT" ]]; then
+    if [[ -d "$ALPHAFOLD_INPUT" ]]; then
+        INPUT_KIND="directory"
+        INPUT_OPT="--input_dir"
+        INPUT_PATH="/root/af_input/"
+    else
+        INPUT_KIND="file"
+        INPUT_OPT="--json_path"
+        INPUT_PATH="/root/af_input/$(basename "$ALPHAFOLD_INPUT")"
+    fi
+    echo "Found input $INPUT_KIND..."
+    if [[ "$INPUT_KIND" == "directory" ]]; then
+        INPUT_FILES=$(find "$ALPHAFOLD_INPUT" -name "*.json")
+        if [[ -n "$INPUT_FILES" ]]; then
+            echo
+            echo "It contains the following input files:"
+            echo "$INPUT_FILES"
+        else
+            echo "Warning: $ALPHAFOLD_INPUT does not contain any .json files."
+        fi
+    fi
+else
+    echo "Could not find input ${INPUT_KIND:-file or directory} $ALPHAFOLD_INPUT. Make sure it exists, or specify another directory by setting the \$ALPHAFOLD_INPUT variable."
+    exit 1
+fi
+
+# Check for docker and image
+echo
+docker > /dev/null 2>&1 || echo "Error: the docker command is not available, or not functioning. Please ensure it is installed correctly." && exit 1
+docker image list | grep -q "$ALPHAFOLD_IMAGE_NAME" || echo "Error: could not find docker image $ALPHAFOLD_IMAGE_NAME" && exit 1
+echo
+
+OPTS="$INPUT_OPT=$INPUT_PATH \
+--model_dir=/root/models \
+--output_dir=/root/af_output \
+$EXTRA_OPTS"
+
+echo
+echo "Will run AlphaFold3 with the following options:"
+echo
+echo "Input: $ALPHAFOLD_INPUT"
+echo "Output: $ALPHAFOLD_OUTPUT"
+echo "Model parameters: $ALPHAFOLD_MODEL"
+echo "Genetic databases: $ALPHAFOLD_DBS"
+echo "Extra options: ${EXTRA_OPTS:-none}"
+
+echo
+read -p "Proceed? [Y/y to continue, or other key to abort]" -n 1 -r
+echo    # (optional) move to a new line
+
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    cmd="docker run -it \
+      --volume \"$ALPHAFOLD_INPUT:/root/af_input\" \
+      --volume \"$ALPHAFOLD_OUTPUT:/root/af_output\" \
+      --volume \"$ALPHAFOLD_MODEL:/root/models\" \
+      --volume \"$ALPHAFOLD_DBS:/root/public_databases\" \
+      --gpus all \
+      $ALPHAFOLD_IMAGE_NAME \
+      python run_alphafold.py $OPTS"
+    eval "$cmd"
+else
+    echo "Aborting..."
+    exit 0
+fi
