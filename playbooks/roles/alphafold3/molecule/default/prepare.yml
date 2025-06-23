@@ -1,0 +1,20 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Mock storage volume
+      ansible.builtin.file:
+        path: /data/storage/alphafold3/model_parameters
+        owner: root
+        group: root
+        mode: "0755"
+        state: directory
+
+    - name: Mock model parameters
+      ansible.builtin.copy:
+        dest: /data/storage/alphafold3/model_parameters/test.bin
+        owner: root
+        group: root
+        mode: "0755"
+        content: foo

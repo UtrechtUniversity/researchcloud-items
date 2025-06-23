@@ -1,0 +1,82 @@
+---
+- name: Create default group
+  ansible.builtin.include_role:
+    name: default_group
+  vars:
+    default_group_group:
+      groupname: "{{ alphafold_default_group_name }}"
+
+- name: Ensure that permanent storage is available
+  when: fact_workspace_storage | length == 0
+  tags: molecule-notest
+  ansible.builtin.fail:
+    msg: "No permanent storage found on the workspace! Cannot execute the alphafold3 role."
+
+- name: Set storage directory
+  ansible.builtin.set_fact: # default to /data/storage for tests
+    alphafold_storage: "{{ fact_workspace_storage[0]['mount'] | default('/data/storage') }}"
+
+- name: Set storage directory variable for each user
+  ansible.builtin.copy:
+    dest: /etc/profile.d/alphafold.sh
+    mode: "0644"
+    content: |
+      export ALPHAFOLD_STORAGE="{{ alphafold_storage }}"
+
+- name: Install zstd so user can decompress model parameters
+  ansible.builtin.package:
+    name: zstd
+    state: present
+
+- name: Obtain alphafold3 sourcecode # noqa latest[git]
+  ansible.builtin.git:
+    repo: "{{ alphafold_repo_url }}"
+    dest: "{{ alphafold_repo_path }}"
+
+- name: Build image from Dockerfile
+  tags: molecule-notest
+  community.docker.docker_image:
+    build:
+      path: "{{ alphafold_repo_path }}"
+      dockerfile: "{{ alphafold_repo_docker_path }}"
+    name: "{{ alphafold_image_name }}"
+    source: build
+  async: 1800
+  poll: 60
+
+- name: Set db root path
+  ansible.builtin.set_fact:
+    db_root_path: "{{ alphafold_storage }}/{{ alphafold_dirname }}"
+
+- name: Set db path
+  ansible.builtin.set_fact:
+    db_path: "{{ db_root_path }}/public_databases"
+
+- name: Create alphafold directories with setgid
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: root
+    group: "{{ alphafold_default_group_name }}"
+    mode: "02770"
+    state: directory
+    recurse: true
+  with_items:
+    - "{{ db_root_path }}"
+    - "{{ db_path }}"
+    - "{{ db_root_path }}/model_parameters"
+    - "{{ db_root_path }}/af_input"
+    - "{{ db_root_path }}/af_output"
+
+- name: Place convenience script
+  ansible.builtin.template:
+    src: run_alphafold.sh.j2
+    dest: /usr/local/bin/run_alphafold
+    mode: "0655"
+    owner: root
+    group: root
+
+- name: Run fetch_databases
+  tags: molecule-notest
+  ansible.builtin.command: "bash {{ alphafold_repo_path }}/fetch_databases.sh {{ db_path }}"
+  args:
+    creates: "{{ db_path }}" # don't re-run fetch_databases if db_path on the storage volume already exists

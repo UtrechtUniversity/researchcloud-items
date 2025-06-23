@@ -1,0 +1,24 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    expected_msg: |
+      Using storage: /data/storage
+      Found model directory...
+      Found outputs directory...
+      Found genetic databases directory...
+      Found input directory...
+      Warning: /data/storage/alphafold3/af_input does not contain any .json files.
+
+      Error: the docker command is not available, or not functioning. Please ensure it is installed correctly.
+  tasks:
+    - name: Test convenience script
+      ansible.builtin.command: bash -l -c run_alphafold
+      register: run_alphafold
+      failed_when: run_alphafold.rc != 1
+
+    - name: Verify command failed because docker not available
+      ansible.builtin.assert:
+        that:
+          - run_alphafold.stdout == expected_msg[0:-1] # chop off final \n for comparison

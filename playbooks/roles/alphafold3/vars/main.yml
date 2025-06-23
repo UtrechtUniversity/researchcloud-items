@@ -1,0 +1,6 @@
+---
+alphafold_repo_url: https://github.com/google-deepmind/alphafold3.git
+alphafold_repo_path: /tmp/alphafold
+alphafold_repo_docker_path: docker/Dockerfile
+alphafold_image_name: alphafold3
+alphafold_dirname: alphafold3

@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  vars:
+    require_src_docker_rootless_skip: true # don't check for presence of docker
+  roles:
+    - role: alphafold3
