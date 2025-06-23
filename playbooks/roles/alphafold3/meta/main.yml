@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: Dawa Ometto (UU)
+  author: Dawa Ometto and Almed Hamzah (UU)
   description: Installs the alphafold3 inference docker image, and prepares an SRC storage unit for using it.
   license: GPLv3
   min_ansible_version: "2.9"
