@@ -8,9 +8,9 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - all
-    - name: Fedora
-      version:
-        - all
+    - name: EL
+      versions:
+        - all # not tested for specific versions
     - name: Debian
       versions:
         - all
