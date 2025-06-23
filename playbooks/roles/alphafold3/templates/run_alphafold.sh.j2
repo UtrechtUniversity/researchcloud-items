@@ -76,8 +76,8 @@ fi
 
 # Check for docker and image
 echo
-docker > /dev/null 2>&1 || echo "Error: the docker command is not available, or not functioning. Please ensure it is installed correctly." && exit 1
-docker image list | grep -q "$ALPHAFOLD_IMAGE_NAME" || echo "Error: could not find docker image $ALPHAFOLD_IMAGE_NAME" && exit 1
+docker > /dev/null 2>&1 || (echo "Error: the docker command is not available, or not functioning. Please ensure it is installed correctly." && exit 1)
+docker image list | grep -q "$ALPHAFOLD_IMAGE_NAME" || (echo "Error: could not find docker image $ALPHAFOLD_IMAGE_NAME" && exit 1)
 echo
 
 OPTS="$INPUT_OPT=$INPUT_PATH \
