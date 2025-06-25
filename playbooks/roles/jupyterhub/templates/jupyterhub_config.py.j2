@@ -1,0 +1,65 @@
+# This file is managed by Ansible
+
+from traitlets import Unicode
+
+{% if jupyterhub_auth == 'sram' or jupyterhub_activate_remote_user_auth %}
+
+from jupyterhub.handlers import LogoutHandler
+from jhub_remote_user_authenticator.remote_user_auth import RemoteUserLoginHandler, RemoteUserAuthenticator
+
+
+class MyLogoutHandler(LogoutHandler):
+
+  async def render_logout_page(self):
+    logout_endpoint = self.authenticator.logout_endpoint
+
+    self.redirect(logout_endpoint)
+
+class MyAuthenticator(RemoteUserAuthenticator):
+  """
+  Accept the authenticated user from the header, based on an Remote_User
+  """
+
+  logout_endpoint = Unicode(
+    default_value='/logout',
+    config=True,
+    help="""URL to log the user out and clean the session""")
+
+  def get_handlers(self, app):
+    return [
+      (r'/login', RemoteUserLoginHandler),
+      (r'/logout', MyLogoutHandler),
+    ]
+
+c.JupyterHub.authenticator_class = MyAuthenticator
+c.JupyterHub.shutdown_on_logout = True
+
+c.AccessTokenAuthenticator.header_name = "{{ jupyterhub_remote_user_header }}"
+c.AccessTokenAuthenticator.logout_endpoint = "/logout"
+{% endif %}
+
+c.JupyterHub.spawner_class = 'sudospawner.SudoSpawner'
+c.SudoSpawner.sudospawner_path = '{{ jupyterhub_sudospawner_path }}'
+
+# Server config
+
+c.JupyterHub.ip = "{{ jupyterhub_bind_addr }}"
+c.JypyterHub.port = {{ jupyterhub_port | int }}
+c.JupyterHub.base_url = "{{ jupyterhub_uri }}"
+
+# Configure paths for essential server files
+c.JupyterHub.cookie_secret_file = "{{ jupyterhub_user_home }}/jupyterhub_cookie_secret"
+c.JupyterHub.db_url = "sqlite:///{{ jupyterhub_user_home }}/jupyterhub.sqlite"
+c.ConfigurableHTTPProxy.pid_file = "{{ jupyterhub_user_home }}/jupyter-proxy.pid"
+
+{% if jupyterhub_enable_notebooks %}
+# Notebook config
+# This is only required when JupyterHub is actually being used to serve notebooks.
+# This is the default case. But it will not be the case, for instance, if JupyterHub is being used solely to serve apps using the standalone proxy.
+c.Spawner.default_url = '/lab?reset'
+c.Spawner.notebook_dir = '~'
+{% endif %}
+
+# BEGIN: extra configuration provided to the jupyterhub role below
+{{ jupyterhub_config_extra }}
+# END

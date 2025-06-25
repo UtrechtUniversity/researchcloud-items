@@ -1,0 +1,4 @@
+---
+jupyterhub_port: 5000
+jupyterhub_uri: /
+jupyter_standalone_proxy_port: 8000

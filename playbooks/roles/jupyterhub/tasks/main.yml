@@ -1,0 +1,97 @@
+---
+- name: Resolve omit placeholders in default proxy config
+  ansible.builtin.set_fact:
+    _jupyterhub_default_proxy_config: "{{ jupyterhub_default_proxy_config }}"
+
+- name: Create reverse proxy
+  ansible.builtin.include_role:
+    name: nginx_reverse_proxy
+  vars:
+    nginx_reverse_proxy_locations:
+      - "{{ _jupyterhub_default_proxy_config | combine(jupyterhub_proxy_config, recursive=true) }}"
+    nginx_reverse_proxy_default_username: "{{ jupyterhub_http_username | default(omit, true) }}"
+    nginx_reverse_proxy_default_password: "{{ jupyterhub_http_password | default(omit, true) }}"
+
+- name: Install configurable http proxy
+  community.general.npm:
+    name: configurable-http-proxy
+    global: true
+
+- name: Add regular users to jupyterhub group by default
+  when: jupyterhub_create_default_group
+  ansible.builtin.include_role:
+    name: default_group
+  vars:
+    default_group_group:
+      groupname: "{{ jupyterhub_allowed_users_group }}"
+
+- name: Create jupyter user
+  ansible.builtin.user:
+    name: "{{ jupyterhub_user }}"
+    home: "{{ jupyterhub_user_home }}"
+
+- name: Allow jupyter user to run sudospawner as any jupyterhub user
+  community.general.sudoers:
+    name: allow-jupyter-sudospawner
+    user: "{{ jupyterhub_user }}"
+    commands: "{{ jupyterhub_sudospawner_path }}"
+    nopassword: true
+    runas: "%{{ jupyterhub_allowed_users_group }}"
+
+- name: Create venv dir
+  ansible.builtin.file:
+    path: "{{ jupyterhub_venv }}"
+    state: directory
+    owner: "{{ jupyterhub_user }}"
+    group: "{{ jupyterhub_allowed_users_group }}"
+    mode: "02750" # setgid so jupyterhub_allowed_users_group can always read everything in the venv
+
+- name: Set venv fact for other roles to use
+  ansible.builtin.set_fact:
+    jupyterhub_venv_path: "{{ jupyterhub_venv }}"
+
+- name: All tasks in this block should trigger restarts of the jupyter services
+  notify: Reload jupyterhub service
+  block:
+
+    - name: Create Jupyter configuration directory
+      ansible.builtin.file:
+        path: /etc/jupyterhub/
+        state: directory
+        owner: "{{ jupyterhub_user }}"
+        group: "{{ jupyterhub_allowed_users_group }}"
+        mode: "0750"
+
+    - name: Create jupyter configuration
+      ansible.builtin.template:
+        src: templates/jupyterhub_config.py.j2
+        dest: /etc/jupyterhub/jupyterhub_config.py
+        owner: root # don't allow user jupyter to edit its own config, for added security.
+        group: "{{ jupyterhub_user }}"
+        mode: "0640"
+
+    - name: Create venv with uv
+      ansible.builtin.include_role:
+        name: uv
+      vars:
+        uv_become_user: "{{ jupyterhub_user }}"
+        uv_become: true
+        uv_venvs:
+          - path: "{{ jupyterhub_venv }}"
+            python_preference: system
+
+    - name: Install JupyterHub and dependencies
+      ansible.builtin.pip:
+        executable: uv_pip # uv is installed above
+        name: "{{ jupyterhub_basic_pkgs + jupyterhub_extra_pkgs }}"
+      environment:
+        VIRTUAL_ENV: "{{ jupyterhub_venv }}"
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
+
+    - name: Create jupyter systemd config
+      ansible.builtin.template:
+        dest: /usr/lib/systemd/system/jupyterhub.service
+        src: templates/jupyterhub.service.j2
+        owner: root
+        group: root
+        mode: "0644"

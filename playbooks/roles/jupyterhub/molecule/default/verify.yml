@@ -1,0 +1,50 @@
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test login
+      ansible.builtin.uri:
+        url: http://localhost:80
+        method: GET
+        headers:
+          user: testuser
+        return_content: true
+      failed_when: false
+      register: jupyterhub_login
+
+    - name: Test login with not allowed user
+      ansible.builtin.uri:
+        url: http://localhost:80
+        method: GET
+        headers:
+          user: root
+      failed_when: false
+      register: jupyterhub_login_not_allowed
+
+    - name: Test login with not existing user
+      ansible.builtin.uri:
+        url: http://localhost:80
+        method: GET
+        headers:
+          user: foo
+      failed_when: false
+      register: jupyterhub_login_not_exist
+
+    - name: Debug 1
+      ansible.builtin.debug:
+        var: jupyterhub_login
+
+    - name: Debug 2
+      ansible.builtin.debug:
+        var: jupyterhub_login_not_allowed
+
+    - name: Debug 3
+      ansible.builtin.debug:
+        var: jupyterhub_login_not_exist
+
+    - name: Assert failed logins
+      ansible.builtin.assert:
+        that:
+          - jupyterhub_login.status == 200
+          - jupyterhub_login_not_allowed.status == 500
+          - jupyterhub_login_not_exist.status == 500
