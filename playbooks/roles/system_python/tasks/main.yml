@@ -13,12 +13,15 @@
   block:
     - name: Install latest system python and corresponding venv
       ansible.builtin.package:
-        name: "{{ item }}"
+        name:
+          - python{{ system_python_latest }}
+          - python{{ system_python_latest }}-venv
         state: present
-      with_items:
-        - python{{ system_python_latest }}
-        - python{{ system_python_latest }}-venv
 
     - name: Set path to latest system python
       ansible.builtin.set_fact:
         system_python_path: /usr/bin/python{{ system_python_latest }}
+
+    - name: Set latest system python version 
+      ansible.builtin.set_fact:
+        system_python_version: "{{ system_python_latest }}"
