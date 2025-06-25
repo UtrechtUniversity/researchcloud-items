@@ -1,0 +1,15 @@
+---
+jupyterhub_port: 8000
+jupyterhub_uri: /
+jupyterhub_auth: "{{ jupyterhub_default_auth }}"
+jupyterhub_bind_addr: 127.0.0.1
+jupyterhub_extra_pkgs: []
+jupyterhub_config_extra: ""
+jupyterhub_allowed_users_group: jupyterhub
+jupyterhub_enable_notebooks: true
+jupyterhub_proxy_config: {}
+jupyterhub_http_username: ""
+jupyterhub_http_password: ""
+jupyterhub_create_default_group: true
+jupyterhub_remote_user_header: REMOTE_USER
+jupyterhub_activate_remote_user_auth: false

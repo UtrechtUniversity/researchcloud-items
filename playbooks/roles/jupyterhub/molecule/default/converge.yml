@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  vars:
+    jupyterhub_auth: noauth
+    jupyterhub_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
+    jupyterhub_proxy_config:
+      proxy_set_header:
+        REMOTE_USER: '$http_user' # allows us to set the 'user' header in tests to mock login
+  roles:
+    - role: jupyterhub

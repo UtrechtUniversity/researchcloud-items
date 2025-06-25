@@ -1,0 +1,18 @@
+---
+jupyterhub_user: jupyter
+jupyterhub_user_home: /var/www/jupyter
+jupyterhub_venv: "/usr/local/jupyterhub"
+jupyterhub_sudospawner_path: "{{ jupyterhub_venv }}/bin/sudospawner"
+jupyterhub_basic_pkgs:
+  - jupyterhub
+  - jhub-remote-user-authenticator
+  - sudospawner
+jupyterhub_default_proxy_config:
+  name: jupyterhub
+  location: "{{ jupyterhub_uri }}"
+  proxy_pass: http://{{ jupyterhub_bind_addr }}:{{ jupyterhub_port }}
+  proxy_redirect: http://{{ jupyterhub_bind_addr }}:{{ jupyterhub_port }} $scheme://$host{{ jupyterhub_uri }}
+  auth: "{{ jupyterhub_auth }}"
+  htpasswd: "{{ (jupyterhub_auth == 'basic') | ternary('jupyterhub', omit) }}"
+  auth_sram_header: "{{ jupyterhub_remote_user_header }}"
+jupyterhub_default_auth: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('basic', 'sram') }}"
