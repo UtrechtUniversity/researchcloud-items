@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Check node version
+      ansible.builtin.command: node -v
+      register: node_version
+
+    - name: Node version should match default
+      ansible.builtin.assert:
+        that:
+          - "'20.' in node_version.stdout_lines[-1]"
