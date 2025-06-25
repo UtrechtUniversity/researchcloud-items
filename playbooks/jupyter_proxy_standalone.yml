@@ -1,0 +1,6 @@
+---
+- name: Install and configure Jupyter Standalone Proxy
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - role: jupyter_standalone_proxy

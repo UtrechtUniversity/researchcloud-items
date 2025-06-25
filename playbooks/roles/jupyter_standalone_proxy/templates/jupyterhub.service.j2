@@ -1,0 +1,13 @@
+[Unit]
+Description=Jypyter Hub daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{ jupyter_venv }}/bin/jupyterhub --JupyterHub.spawner_class=sudospawner.SudoSpawner --config=/etc/jupyterhub/jupyterhub_config.py
+Restart=on-failure
+RestartSec=42s
+User={{ jupyter_user }}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,49 @@
+from traitlets import Unicode
+from jupyterhub.handlers import LogoutHandler
+from jhub_remote_user_authenticator.remote_user_auth import RemoteUserLoginHandler, RemoteUserAuthenticator
+
+
+class MyLogoutHandler(LogoutHandler):
+
+  async def render_logout_page(self):
+    logout_endpoint = self.authenticator.logout_endpoint
+
+    self.redirect(logout_endpoint)
+
+class MyAuthenticator(RemoteUserAuthenticator):
+  """
+  Accept the authenticated user from the header, based on an Remote_User
+  """
+
+  logout_endpoint = Unicode(
+    default_value='/logout',
+    config=True,
+    help="""URL to log the user out and clean the session""")
+
+  def get_handlers(self, app):
+    return [
+      (r'/login', RemoteUserLoginHandler),
+      (r'/logout', MyLogoutHandler),
+    ]
+
+c.Spawner.cmd = "jupyter-standaloneproxy"
+c.Spawner.args = ["--", "python3", "-m", "http.server", "{port}"]
+
+c.Spawner.env_keep = ["JUPYTERHUB_ACTIVITY_URL", "JUPYTERHUB_SERVER_NAME", "PATH", "PYTHONPATH", "JUPYTERHUB_SINGLEUSER_APP" ]
+
+# Todo: figure out if this can be safely removed
+# c.Authenticator.admin_users = {'ubuntu'}
+c.JupyterHub.ip = '127.0.0.1'
+c.JypyterHub.port = "{{ jupyterhub_port }}"
+c.JupyterHub.base_url = "{{ jupyterhub_uri }}"
+
+c.JupyterHub.authenticator_class = MyAuthenticator
+c.JupyterHub.shutdown_on_logout = True
+
+c.AccessTokenAuthenticator.header_name = "REMOTE_USER"
+c.AccessTokenAuthenticator.logout_endpoint = "/logout"
+
+c.JupyterHub.cookie_secret_file = '{{ jupyter_path }}/jupyterhub_cookie_secret'
+c.JupyterHub.root_dir = '/var/www/jupyter'
+c.JupyterHub.db_url = 'sqlite:///{{ jupyter_path }}/jupyterhub.sqlite'
+c.ConfigurableHTTPProxy.pid_file = '{{ jupyter_path }}/jupyter-proxy.pid'
