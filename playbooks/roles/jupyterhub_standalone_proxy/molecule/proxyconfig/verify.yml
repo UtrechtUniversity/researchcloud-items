@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test login
+      ansible.builtin.uri:
+        url: http://localhost
+        method: GET
+        follow_redirects: true
+        return_content: true
+        headers:
+          user: testuser
+      register: jupyterproxy_login
+      retries: 3
+      delay: 2
+      until: jupyterproxy_login.url == 'http://localhost/user/testuser/' # wait for server to start and to be redirected
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: jupyterproxy_login
+
+    - name: Assert testfile in content
+      ansible.builtin.assert:
+        that:
+          - "'mytestfile' in jupyterproxy_login.content"

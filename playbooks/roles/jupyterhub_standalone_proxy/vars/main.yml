@@ -1,0 +1,3 @@
+---
+jhsp_basic_pkgs:
+  - git+https://github.com/jupyterhub/jupyter-server-proxy.git[standalone]

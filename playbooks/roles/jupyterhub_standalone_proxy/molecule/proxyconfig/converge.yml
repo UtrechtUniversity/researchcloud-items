@@ -1,0 +1,28 @@
+---
+# Alternative scenario that tests using the jhsp_standalone_proxy_config parameter
+- name: Converge
+  hosts: all
+  gather_facts: true
+  vars:
+    jupyterhub_auth: noauth
+    jupyterhub_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
+    jupyterhub_proxy_config:
+      proxy_set_header:
+        REMOTE_USER: '$http_user' # allows us to set the 'user' header in tests to mock login
+  pre_tasks:
+
+    - name: Place testfile
+      ansible.builtin.copy:
+        dest: /home/testuser/mytestfile
+        owner: testuser
+        group: testuser
+        mode: "0644"
+        content: mytestfile
+
+  roles:
+    - role: jupyterhub_standalone_proxy
+      vars:
+        jhsp_standalone_proxy_config: |
+          c.StandaloneProxyServer.command = [
+              "/usr/bin/python3", "-m", "http.server", "{port}"
+          ]
