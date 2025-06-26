@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  vars:
+    - jupyterhub_http_username: testuser
+    - jupyterhub_http_password: letmein
+  roles:
+    - role: jupyterhub
