@@ -1,0 +1,10 @@
+#!/bin/bash -l
+# This script is to override the default behavior of the sudospawner
+# Normally sudospawner would start the 'jupyter-singleuser' command (and launch a notebook)
+# We want it to run jupyter-standaloneproxy instead
+# See https://github.com/jupyterhub/sudospawner?tab=readme-ov-file#custom-singleuser-launch-command
+set -e
+
+# The final line will render (by default) as:
+# exec "/usr/local/jupyterhub/bin/jupyter-standalone proxy" "--config=/etc/jupyterhub//etc/jupyterhub/standalone-proxy-config.py"
+exec "{{ jupyterhub_venv_path }}/bin/{{ jhsp_standalone_proxy_cmd }}" {% for a in jhsp_standalone_proxy_cmd_args %}"{{ a }}" {% endfor %}

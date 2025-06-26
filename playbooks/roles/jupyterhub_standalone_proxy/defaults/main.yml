@@ -1,0 +1,15 @@
+---
+jhsp_extra_pkgs: []
+jhsp_proxy_config: ""
+jhsp_standalone_proxy_cmd: "jupyter-standaloneproxy"
+jhsp_standalone_proxy_cmd_args:
+  - "--config={{ jhsp_standalone_proxy_config_file }}"
+jhsp_standalone_proxy_config_file: /etc/jupyterhub/standalone-proxy-config.py
+jhsp_standalone_proxy_config: {}
+jhsp_config_env_keep:
+  - JUPYTERHUB_ACTIVITY_URL
+  - JUPYTERHUB_SERVER_NAME
+  - PATH
+  - JUPYTERHUB_SINGLEUSER_APP
+jhsp_jupyterhub_user: jupyter
+jhsp_jupyterhub_allowed_users_group: jupyterhub
