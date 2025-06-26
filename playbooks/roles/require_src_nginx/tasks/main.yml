@@ -24,4 +24,4 @@
     - name: Stop if nginx is not installed
       ansible.builtin.fail:
         msg: Nginx must be installed and active for this component to work.
-      when: services['nginx.service'].state != 'running'
+      when: services['nginx.service'].state | default('not found', true) != 'running'
