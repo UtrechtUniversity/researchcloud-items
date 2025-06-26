@@ -29,12 +29,13 @@
 
 - name: Define python versions to be installed
   ansible.builtin.set_fact:
-    uv_python_versions_install: "{{ (uv_python_versions + (uv_venvs | map(attribute='python') | list)) | unique }}"
+    uv_python_versions_install: "{{ (uv_python_versions + (uv_venvs | map(attribute='python', default='') | list)) | select | unique }}"
 
 - name: Perform uv commands
   become: "{{ uv_become }}"
   become_user: "{{ uv_become_user }}"
   block:
+
     - name: Install desired python version
       ansible.builtin.command: uv python install -v {{ item }}
       register: _install_desired_python
@@ -51,9 +52,18 @@
       ansible.builtin.set_fact:
         uv_python_paths: "{{ (uv_python_paths | default({})) | combine({item.item: item.stdout}) }}"
       with_items: "{{ _uv_python_finds.results }}"
+      when: _uv_python_finds is defined
 
     - name: Create venvs
       ansible.builtin.command:
-        cmd: uv venv --seed --python {{ item.python }} {{ item.path }}
-        creates: "{{ item.path }}"
+        cmd: >-
+          uv venv --seed
+          {% if item.python is defined %}
+          --python {{ item.python }}
+          {% endif %}
+          {% if item.python_preference is defined %}
+          --python-preference {{ item.python_preference }}
+          {% endif %}
+          {{ item.path }}
+        creates: "{{ item.path }}/bin"
       with_items: "{{ uv_venvs }}"
