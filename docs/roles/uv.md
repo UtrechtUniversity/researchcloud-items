@@ -26,7 +26,7 @@ uv_python_paths: {
 
 ## Variables
 
-- `uv_vens`: List of dicts describing virtual environments to be initialized with `uv`. Each item in the dict is expected to contain a `python` and `path` attribute: the former determines which Python verison to use for the venv, while the latter is the location of the venv. Example: `{ path: '/tmp/foo', python: '3.11' }`. __Note__: Python versions are installed if necessary.
+- `uv_vens`: List of dicts describing virtual environments to be initialized with `uv`. Each item in the dict is expected to contain a `path` attribute: specifying the location of the venv. You can also specify the `python` attribute to install a specific python version and use it with the venv. If you want to default to the system python, don't set the `python` attribute, and instead set the `python_preference` attribute to `'system'` (see `uv venv`'s `--python-preference` option.) Examples: `{ path: '/tmp/foo', python: '3.11' }`, or `{ path: '/tmp/foo', python_preference: 'system' }`.
 - `uv_python_versions`: List of strings of python versions to be installed with `uv`. For example: `[ '3.11', '3.12.3' ]`.
 - `uv_become`: Boolean. Whether to excute UV tasks (installation of Python versions and creation of venvs) as a different (non-root) user. Default: `false`.
 - `uv_become_user`: String. If `uv_become` is set to `true`, which user should the tasks be executed as? E.g. `www-data`. Default: `root`.
