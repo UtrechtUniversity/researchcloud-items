@@ -22,6 +22,6 @@
       ansible.builtin.set_fact:
         system_python_path: /usr/bin/python{{ system_python_latest }}
 
-    - name: Set latest system python version 
+    - name: Set latest system python version
       ansible.builtin.set_fact:
         system_python_version: "{{ system_python_latest }}"
