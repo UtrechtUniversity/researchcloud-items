@@ -41,3 +41,12 @@
         that:
           - '"- tester" in existing_users.stdout' # created by logging in above
           - '"- testuser" in existing_users.stdout' # created by the cronjob
+
+    - name: Ensure we can login with the user created by cron
+      ansible.builtin.uri:
+        url: http://localhost:5000
+        method: GET
+        return_content: true
+        headers:
+          REMOTE_USER: testuser
+
