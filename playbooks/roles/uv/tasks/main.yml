@@ -3,8 +3,7 @@
   ansible.builtin.include_role:
     name: pipx_install_systemwide
   vars:
-    pipx_install_systemwide_packages:
-      - uv
+    pipx_install_systemwide_package: uv
     pipx_install_location: "{{ uu_pipx_bin }}"
     pipx_install_systemwide_profile: "" # deactivate adding uv path to /etc/profile. We're creating aliases instead.
 

@@ -96,7 +96,8 @@
     name: pipx_install_systemwide
   vars:
     pipx_install_systemwide_requirements: "{{ asreview_server_requirements_file }}"
-    pipx_install_systemwide_packages: "{{ asreview_server_base_pkgs + asreview_server_extra_pkgs }}"
+    pipx_install_systemwide_package: asreview
+    pipx_install_systemwide_extra_packages: "{{ asreview_server_extra_pkgs }}"
     pipx_install_systemwide_use_uv: true # uv has been installed by the flask_app role
 
 - name: Add path to ASReview data to default bash environment
