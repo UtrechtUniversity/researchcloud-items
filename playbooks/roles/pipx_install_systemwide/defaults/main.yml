@@ -6,4 +6,5 @@ pipx_install_systemwide_use_uv: false
 pipx_install_systemwide_requirements: ''
 pipx_install_systemwide_cmd: "{{ pipx_install_systemwide_use_uv | ternary('uv tool install', 'pipx install') }}"
 pipx_install_systemwide_python: ''
+pipx_install_systemwide_options: {}
 pipx_install_systemwide_force: true
