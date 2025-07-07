@@ -1,9 +1,11 @@
 ---
-pipx_install_systemwide_packages: []
+pipx_install_systemwide_package: ''
+pipx_install_systemwide_extra_packages: []
 pipx_install_systemwide_location: /usr/local/uu-pip
 pipx_install_systemwide_profile: uu-custom-pip.sh
 pipx_install_systemwide_use_uv: false
 pipx_install_systemwide_requirements: ''
-pipx_install_systemwide_cmd: "{{ pipx_install_systemwide_use_uv | ternary('uv tool install', 'pipx install') }}"
+pipx_install_systemwide_cmd: "{{ pipx_install_systemwide_use_uv | ternary('uv tool', 'pipx') }}"
 pipx_install_systemwide_python: ''
+pipx_install_systemwide_options: {}
 pipx_install_systemwide_force: true

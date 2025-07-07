@@ -24,26 +24,45 @@
 #   community.general.pipx:
 #     name: "{{ item }}"
 #     python: "{{ pipx_install_systemwide_python | default(omit) }}"
-#   with_items: "{{ pipx_install_systemwide_packages | default([], true) }}"
+#   with_items: "{{ pipx_install_systemwide_package | default([], true) }}"
 #   environment:
 #     PIPX_HOME: "{{ pipx_install_systemwide_location }}"
 #     PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
 
 - name: Install requested packages
   ansible.builtin.command: >
-    {{ pipx_install_systemwide_cmd }}
+    {{ pipx_install_systemwide_cmd }} install
+    {% for opt, val in pipx_install_systemwide_options.items() %}
+    --{{ opt | replace('_', '-') }}{% if val | length > 0 %}"{{ val }}"{% endif %}
+    {% endfor %}
     {% if pipx_install_systemwide_python | length > 0 %}
     --python "{{ pipx_install_systemwide_python }}"
     {% endif %}
     {{ pipx_install_systemwide_force | ternary('--force', '') }}
-    "{{ item }}"
-    {% if pipx_install_systemwide_use_uv and (pipx_install_systemwide_requirements | length > 0) %}
+    "{{ pipx_install_systemwide_package }}"
+    {% if pipx_install_systemwide_use_uv %}
+    {% if pipx_install_systemwide_requirements | length > 0 %}
     --with-requirements "{{ pipx_install_systemwide_requirements }}"
     {% endif %}
+    {% for pkg in pipx_install_systemwide_extra_packages %}
+    --with "{{ pkg }}"
+    {% endfor %}
+    {% endif %}
   tags: molecule-idempotence-notest
-  with_items: "{{ pipx_install_systemwide_packages }}"
   environment:
     PIPX_HOME: "{{ pipx_install_systemwide_location }}"
     PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
     UV_TOOL_DIR: "{{ pipx_install_systemwide_location }}"
     UV_TOOL_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
+
+- name: Install extra packages
+  # when using uv, extra packages are already installed above
+  when: pipx_install_systemwide_extra_packages | length > 0 and not pipx_install_systemwide_use_uv
+  tags: molecule-idempotence-notest
+  ansible.builtin.command: >
+    {{ pipx_install_systemwide_cmd }} inject
+    "{{ pipx_install_systemwide_package }}"
+    {{ pipx_install_systemwide_extra_packages.join(' ') }}
+  environment:
+    PIPX_HOME: "{{ pipx_install_systemwide_location }}"
+    PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"

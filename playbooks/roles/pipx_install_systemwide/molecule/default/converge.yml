@@ -7,6 +7,9 @@
       ansible.builtin.include_role:
         name: pipx_install_systemwide
       vars:
-        pipx_install_systemwide_packages:
-          - ibridges
-          - pycowsay
+        pipx_install_systemwide_package: "{{ item }}"
+        pipx_install_extra_packages:
+          - molecule
+      with_items:
+        - ibridges
+        - pycowsay
