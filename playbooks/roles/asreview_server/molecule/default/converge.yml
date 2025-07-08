@@ -5,6 +5,11 @@
   roles:
     - role: asreview_server
       vars:
-        asreview_server_http_username: tester
-        asreview_server_http_password: letmein
+        nginx_reverse_proxy_auth_info:
+          - name: asreview
+            username: tester
+            password: letmein
+          - name: asreview
+            username: testuser
+            password: letmein
         asreview_server_group: testuser
