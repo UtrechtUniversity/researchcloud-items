@@ -3,24 +3,32 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Test ASReview
-      ansible.builtin.uri:
-        url: http://localhost
-        method: GET
-        url_username: tester
-        url_password: letmein
-      register: asreview_login
 
-    - name: Test ASReview remote user is logged in
-      ansible.builtin.uri:
-        url: http://localhost/auth/get_profile
-        method: GET
-        return_content: true
-        url_username: tester
-        url_password: letmein
-        headers:
-          Cookie: "{{ asreview_login.cookies_string }}" # use the session cookie returned from the previous connection
-      register: asreview_profile_result
+    - name: Test that we can login with a user not created by cron
+      block:
+        - name: Get auth for tester
+          ansible.builtin.uri:
+            url: http://localhost
+            method: GET
+            url_username: tester
+            url_password: letmein
+          register: asreview_login
+
+        - name: Test ASReview remote user is logged in
+          ansible.builtin.uri:
+            url: http://localhost/auth/get_profile
+            method: GET
+            return_content: true
+            url_username: tester
+            url_password: letmein
+            headers:
+              Cookie: "{{ asreview_login.cookies_string }}" # use the session cookie returned from the previous connection
+          register: asreview_profile_result
+
+        - name: Assert content correct
+          ansible.builtin.assert:
+            that:
+              - '"tester" in asreview_profile_result.content'
 
     - name: Assert ASReview is on path for regular users
       become: true
@@ -36,4 +44,31 @@
         that:
           - '"tester" in asreview_profile_result.content'
           - '"- tester" in existing_users.stdout' # created by logging in above
-          # - '"- testuser" in existing_users.stdout' # created by the cronjob
+          - '"- testuser" in existing_users.stdout' # created by the cronjob
+
+    # Test this after we test whether cron has created testuser in asreview, otherwise the web login will trigger its creation
+    - name: Test that we can login with the user created by cron
+      block:
+        - name: Get auth for testuser
+          ansible.builtin.uri:
+            url: http://localhost
+            method: GET
+            url_username: testuser
+            url_password: letmein
+          register: asreview_login
+
+        - name: Test testuser is logged in
+          ansible.builtin.uri:
+            url: http://localhost/auth/get_profile
+            method: GET
+            return_content: true
+            url_username: testuser
+            url_password: letmein
+            headers:
+              Cookie: "{{ asreview_login.cookies_string }}" # use the session cookie returned from the previous connection
+          register: asreview_profile_result
+
+        - name: Assert content correct
+          ansible.builtin.assert:
+            that:
+              - '"testuser" in asreview_profile_result.content'

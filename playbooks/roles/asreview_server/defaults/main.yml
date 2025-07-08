@@ -10,5 +10,5 @@ asreview_server_http_password: ""
 asreview_server_http_username: ""
 asreview_server_use_storage: true
 asreview_server_group: www-data
-asreview_server_cron_users: false
 asreview_server_extra_pkgs: []
+asreview_server_cron_users: true
