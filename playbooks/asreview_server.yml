@@ -5,6 +5,7 @@
   vars:
     # Used to install e.g. ASReview Nemo in a separate catalog item:
     _asreview_extra_pkgs: "{{ asreview_extra_pkgs | default('') | split(',') | map('trim') | select }}"
+    _asreview_use_storage: "{{ asreview_use_storage | default('true', true) | bool }}"
   roles:
     - role: default_group
       vars:
@@ -14,3 +15,4 @@
       vars:
         asreview_server_group: asreview_user
         asreview_server_extra_pkgs: "{{ _asreview_extra_pkgs }}"
+        asreview_server_use_storage: "{{ _asreview_use_storage }}"
