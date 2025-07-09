@@ -1,0 +1,18 @@
+---
+- name: Install iBridges GUI
+  when: fact_desktop_workspace
+  ansible.builtin.include_tasks: gui.yml
+- name: Set packages to be installed
+  ansible.builtin.set_fact:
+    ibridges_packages: "{{ fact_desktop_workspace | ternary(['ibridges', 'ibridgesgui'], ['ibridges']) }}"
+
+- name: Install iBridges to systemwide location
+  ansible.builtin.include_role:
+    name: pipx_install_systemwide
+  vars:
+    pipx_install_systemwide_packages: "{{ ibridges_packages }}"
+    pipx_install_systemwide_python: "{{ ibridges_python_path | default('/usr/bin/python3') }}" # ibridges_python_path is potentially set in gui.yml
+
+- name: Install iBridges template plugin
+  ansible.builtin.include_tasks: templates.yml
+  with_items: "{{ ibridges_packages }}"

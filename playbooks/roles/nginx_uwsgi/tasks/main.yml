@@ -1,0 +1,96 @@
+---
+# This playbook prepares the ground for serving a Python webapp via uwsgi, with nginx as reverse proxy.
+# It assumes:
+# - that nginx is already installed, via the SRC-Nginx component.
+# - that the Python application is already present in {{ uwsgi_app_dir }}/{{ uwsgi_app_path }}
+#
+# Note that if you're adding/modifying the Python app after running this playbook
+# you need to restart the service "uwsgi-<yourappname>".
+
+- name: Create uwsgi app dir
+  ansible.builtin.file:
+    path: "{{ uwsgi_app_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0750"
+
+- name: Install uwsgi
+  when: not (uwsgi_venv | length > 0)
+  ansible.builtin.package:
+    name:
+      - uwsgi
+      - uwsgi-plugin-python3
+    state: present
+
+- name: Install uwsgi
+  when: uwsgi_venv | length > 0
+  block:
+    - name: Ensure build requirements for uwsgi present
+      when: ansible_os_family == 'Debian'
+      ansible.builtin.package:
+        name:
+          - build-essential
+          - python3-dev
+          - libpcre3
+          - libpcre3-dev
+
+    - name: Install uwsgi via pip
+      ansible.builtin.pip:
+        name:
+          - wheel
+          - uwsgi
+        state: present # only install if not yet present, otherwise keep existing
+        virtualenv: "{{ uwsgi_venv }}"
+
+- name: Configure uwsgi reverse proxy in nginx
+  ansible.builtin.include_role:
+    name: nginx_reverse_proxy
+  vars:
+    nginx_reverse_proxy_locations: "{{ [dict(uwsgi_default_proxy_config, **uwsgi_proxy_config)] }}"
+
+- name: Create uwsgi ini file for app
+  ansible.builtin.template:
+    src: uwsgi-example.ini.j2
+    dest: "{{ uwsgi_config_dir }}/{{ uwsgi_app_name }}.ini"
+    owner: root
+    group: www-data
+    mode: "0644"
+
+- name: Create service file for app
+  ansible.builtin.template:
+    src: uwsgi.service.j2
+    dest: /etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: Create log directory
+  ansible.builtin.file:
+    path: "{{ uwsgi_log_dir }}"
+    owner: www-data
+    group: www-data
+    mode: "0750"
+    state: directory
+
+- name: Enable logrotation for app
+  ansible.builtin.blockinfile:
+    path: /etc/logrotate.d/uwsgi
+    block: >
+      {{ uwsgi_log_dir }}/*.log {
+        daily
+        rotate 5
+        size 50M
+        compress
+        delaycompress
+        missingok
+        copytruncate
+      }
+    create: true
+    mode: "0644"
+
+- name: Start app service
+  ansible.builtin.systemd_service:
+    name: uwsgi-{{ uwsgi_app_name }}
+    state: started
+    enabled: true

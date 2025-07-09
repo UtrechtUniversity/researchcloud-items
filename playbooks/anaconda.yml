@@ -3,5 +3,4 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - anaconda
-...
+    - role: anaconda

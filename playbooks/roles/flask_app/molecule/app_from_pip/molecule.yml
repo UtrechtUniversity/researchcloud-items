@@ -1,0 +1,22 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ./prepare.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+role_name_check: 1
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW

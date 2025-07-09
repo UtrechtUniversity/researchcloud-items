@@ -2,130 +2,112 @@
 # depends: Ubuntu + desktop GUI
 #
 # Stata18 installation requires you to have prepared 1 file:
-#  1) target machine must locally have a file with Stata software tar.gz image 
+#  1) target machine must locally have a file with Stata software tar.gz image
 #    NB: You should obtain this compressed tar file from Stata.
 #
 #
 
-- name: install curses libraries to support commandline invocation of Stata
-  package:
-    name: "libncurses5"
-    state: present
+- name: Get system facts
+  ansible.builtin.setup:
+    gather_subset:
+      - min
 
-- name: create a tmp dir to unpack Stata software to
-  file:
+- name: Include dependencies (Debian family)
+  ansible.builtin.include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Create a tmp dir to unpack Stata software to
+  ansible.builtin.file:
     dest: "{{ stata18_tmp_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-- name: download and unpack Stata18 distribution tar.gz
-  unarchive:
+- name: Download and unpack Stata18 distribution tar.gz
+  ansible.builtin.unarchive:
     src: "{{ stata18_tar_dir }}/{{ stata18_tar_file }}"
-    remote_src: yes
+    remote_src: true
     dest: "{{ stata18_tmp_dir }}"
 
-- name: create stata software target dir
-  file:
+- name: Create stata software target dir
+  ansible.builtin.file:
     dest: "{{ stata18_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-# instead of running the interactive Stata "install" and "stinit" scripts, 
-# we have scripted those actions here.  
-# This Ansible script expects Stata 18.0.  In case you install a different
+# instead of running the interactive Stata "install" and "stinit" scripts,
+# we have scripted those actions here.
+# This Ansible script expects Stata 18.0. In case you install a different
 # Stata version, the below actions may need changes
 #
 
-# Note that we rename from X.tza to X.tar.gz to facilitate later extraction
-- name: copy compressed stata files to target dir while renaming to .tar.gz
-  copy:
-    src: "{{ stata18_tmp_dir }}/unix/linux64/{{ item }}.taz"
-    remote_src: yes
-    dest: "{{ stata18_dir }}/{{ item }}.tar.gz"
-    owner: root
-    mode: 0640
-  with_items:
-    - "ado"
-    - "base"
-    - "bins"
-    - "docs"
-#  - "statalib"   yet this item is not included 
+- name: Get all archive files in tmp dir
+  ansible.builtin.find:
+    paths: "{{ stata18_tmp_archive_dir }}"
+    patterns: "*.tgz,*.taz,*.tar.gz"
+    recurse: false
+  register: stata18_archives
 
-- name: copy file setrwxp to target dir
-  copy:
-    src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
-    remote_src: yes
-    dest: "{{ stata18_dir }}/setrwxp"
-    owner: root
-    mode: 0750
-
-- name: extract compressed stata files in place in target dir
-  unarchive: 
-    src: "{{ stata18_dir }}/{{ item }}.tar.gz"
-    remote_src: yes
-    dest: "{{ stata18_dir}}"
-    owner: root
-  with_items:
-    - "ado"
-    - "base"
-    - "bins"
-    - "docs"
-
-- name: clean up tar.gz files
-  file: 
-    path: "{{ stata18_dir }}/{{ item }}.tar.gz" 
-    state: absent
-  with_items:
-    - "ado"
-    - "base"
-    - "bins"
-    - "docs"
-   
-- name: run Stata setrwxp to set access rights for Stata files
-  shell: "./setrwxp now"
-  args:
-    chdir: "{{ stata18_dir }}"
-  
-- name: create Stata markfile to indicate presence of installed Stata
-  shell: "echo `date`>installed.180"
-  args:
-    chdir: "{{ stata18_dir }}"
-
-# NB: the license response file will fail if the corresponding Ansible vars have not been defined!
-#  We suggest to specify them as CO secrets
-#  see jinja script for variable names
-- name: create response file for license initiator
-  template:
+- name: Extract compressed stata files in place in target dir
+  ansible.builtin.unarchive:
+    src: "{{ item }}"
+    remote_src: true
+    dest: "{{ stata18_dir }}"
     owner: root
     group: root
-    mode: 0755
-    src: "stata_input_for_stinit.j2"
-    dest: "{{ stata18_dir }}/stinit_responses.txt"
+    mode: "0755"
+  with_items: "{{ stata18_archives.files | map(attribute='path') | list }}"
 
-- name: activate license
-  shell: "./stinit <stinit_responses.txt"
+- name: Copy Stata setup script
+  ansible.builtin.copy:
+    src: "{{ stata18_tmp_dir }}/unix/linux64/setrwxp"
+    dest: "{{ stata18_dir }}/"
+    mode: "0755"
+    remote_src: true
+
+- name: Run Stata setup script to set access rights for Stata files
+  ansible.builtin.shell: "{{ stata18_dir }}/setrwxp now"
+  tags: molecule-notest
   args:
     chdir: "{{ stata18_dir }}"
+    executable: sh
 
+- name: Create Stata markfile to indicate presence of installed Stata
+  ansible.builtin.copy:
+    dest: "{{ stata18_dir }}/installed.180"
+    owner: root
+    mode: "0644"
+    content: "{{ ansible_date_time.iso8601 }}"
+    force: false
 
-- name: install desktop launcher
-  include: desktop.yml
+- name: Activate license
+  ansible.builtin.command: ./stinit
+  tags: molecule-notest
+  args:
+    chdir: "{{ stata18_dir }}"
+    stdin: |
+      Y
+      Y
+      {{ stata18_lic_serial }}
+      {{ stata18_lic_code }}
+      {{ stata18_lic_auth }}
+      Y
+      Y
+      {{ stata18_lic_name }}
+      {{ stata18_lic_org }}
+      Y
 
-#- name: create symlink to matlab executable for bash access
-#  file:
-#    dest: /usr/local/bin/matlab
-#    src: "{{ matlab_dir }}/{{ matlab_version }}/bin/matlab"
-#    state: link
- 
-# commandline wrapper will try per-user license before network license
-#- name: create commandline wrapper to matlab executable
-#  template:
-#    owner: root
-#    group: root
-#    mode: 0755
-#    src: "matlab.j2"
-#    dest: /usr/local/bin/matlab
+- name: Install desktop launcher
+  ansible.builtin.include_role:
+    role: desktop_file
+  vars:
+    desktopfile_app_name: stata
+    desktopfile_sizes:
+      - "16"
+    desktopfile_modules:
+      - stata
+      - stata-mp
+      - stata-se

@@ -1,6 +1,6 @@
 ---
 - name: Ensure python3-pip is installed
-  package:
+  ansible.builtin.package:
     name: python3-pip
     state: present
   when: ansible_pkg_mgr == 'apt'

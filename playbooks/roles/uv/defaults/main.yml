@@ -1,0 +1,6 @@
+---
+uu_pipx_bin: /usr/local/uu-pip/bin
+uv_python_versions: []
+uv_venvs: []
+uv_become_user: root
+uv_become: false

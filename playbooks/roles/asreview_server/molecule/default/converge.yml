@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: asreview_server
+      vars:
+        asreview_server_http_username: tester
+        asreview_server_http_password: letmein
+        asreview_server_group: testuser

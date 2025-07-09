@@ -1,0 +1,14 @@
+---
+- name: Fail if locations are not set
+  when: (nginx_reverse_proxy_locations is not defined) or (nginx_reverse_proxy_locations is string) or (nginx_reverse_proxy_locations is not iterable)
+  ansible.builtin.fail:
+    msg: "The required variable nginx_reverse_proxy_locations was not set, or not a list."
+
+- name: Create reverse proxies using nginx_location role
+  ansible.builtin.include_role:
+    name: nginx_location
+  vars:
+    nginx_location_default_username: "{{ nginx_reverse_proxy_default_username | default(omit, true) }}"
+    nginx_location_default_password: "{{ nginx_reverse_proxy_default_password | default(omit, true) }}"
+    nginx_location_locations: "{{ nginx_reverse_proxy_locations | map('combine', {'include_reverse_proxy_defaults': nginx_reverse_proxy_include_default_settings}) | list }}"
+    nginx_location_auth_info: "{{ nginx_reverse_proxy_auth_info }}"

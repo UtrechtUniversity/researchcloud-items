@@ -18,6 +18,7 @@
         src: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}/"
         dest: /rsc/plugins/{{ item.name }}/
         archive: false
+        links: true
         recursive: true
         rsync_opts:
           - --exclude=".*"

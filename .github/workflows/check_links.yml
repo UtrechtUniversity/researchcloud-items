@@ -1,14 +1,18 @@
+---
 name: Check Markdown links
 
-on: push
+on:
+  push:
+    paths:
+      - '**.md'
 
 jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: gaurav-nelson/github-action-markdown-link-check@v1
-      with:
-        config-file: .markdown_link_check.json
-        folder-path: docs
-        file-path: './README.md, ./TESTING.md, CONTRIBUTING.md'
+      - uses: actions/checkout@master
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          config-file: .markdown_link_check.json
+          folder-path: docs
+          file-path: './README.md, ./TESTING.md, CONTRIBUTING.md'

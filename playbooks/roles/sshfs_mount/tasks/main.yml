@@ -1,0 +1,32 @@
+---
+- name: Install package sshfs
+  ansible.builtin.package:
+    name: sshfs
+    state: present
+
+- name: Ensure that local mountpoint exists
+  ansible.builtin.file:
+    path: "{{ sshfs_connection_info.mountpoint }}"
+    state: directory
+    owner: "{{ sshfs_connection_info.username }}"
+    mode: "0755"
+
+- name: Enable user_allow_other in fuse config
+  tags: molecule-idempotence-notest
+  ansible.builtin.lineinfile:
+    path: /etc/fuse.conf
+    regexp: ^(#)?user_allow_other$
+    line: user_allow_other
+    state: present
+
+# below is a hack to split the task of mounting the remote filesystem
+# in two parts so that privileged part of update /etc/fstab is done by root
+# Note that to make this work, only the 'state' differs
+- name: Do mount
+  tags: molecule-idempotence-notest
+  ansible.builtin.include_tasks: mount.yml
+  loop:
+    - become: false
+      state: present
+    - become: true
+      state: mounted

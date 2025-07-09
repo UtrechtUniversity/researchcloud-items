@@ -1,6 +1,15 @@
 ---
+- name: Install icommands (Ubuntu > 20)
+  # Yoda requires a lower version of the icommands than the latest version on Ubuntu >= 22. See issue #276
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int > 20
+  ansible.builtin.apt:
+    pkg:
+      - "irods-runtime=4.3.1-0~jammy"
+      - "irods-icommands=4.3.1-0~jammy"
+    allow_downgrade: true
+    state: present
 
 - name: Install icommands
-  package:
+  ansible.builtin.package:
     name: irods-icommands
     state: present

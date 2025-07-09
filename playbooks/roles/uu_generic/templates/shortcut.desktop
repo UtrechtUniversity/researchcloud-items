@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Link
+Name=ResearchCloud Help
+Comment=
+Icon=help-faq
+URL={{ uu_generic_documentation_link }}

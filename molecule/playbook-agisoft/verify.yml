@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Read license file
+      ansible.builtin.slurp:
+        path: /opt/metashape-pro/license.lic
+      register: slurp_license
+
+    - name: Set result license file
+      ansible.builtin.set_fact:
+        slurp_result: "{{ slurp_license['content'] | b64decode }}"
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: slurp_result
+
+    - name: Assert license file has correct newlines
+      ansible.builtin.assert:
+        that:
+          - "slurp_result == 'FOO\nBAR\n'"

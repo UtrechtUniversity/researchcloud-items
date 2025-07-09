@@ -1,0 +1,6 @@
+---
+uwsgi_default_proxy_config:
+  name: "{{ uwsgi_app_name }}"
+  location: "{{ uwsgi_nginx_mountpoint }}"
+  include: uwsgi_params
+  uwsgi_pass: "{{ uwsgi_nginx_backend }}"

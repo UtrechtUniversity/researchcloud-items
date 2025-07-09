@@ -17,5 +17,26 @@ In short:
 5. Submit a pull request from that branch to the main branch of the master repository. 
 6. If you receive feedback, make changes on your desktop and push to your branch on GitHub: the pull request will update automatically.
 
+**Note**: in order not to needlessly trigger test workflows, please convert your PR to a draft while you are still working on it. When ready, mark your PR as "ready for review". This will ensure tests are run.
+
 ## Style guides
+
+### Branch naming conventions
+
+When creating a new branch to base a PR on, please try to use the following naming convention:
+
+1. If your PR fixes an issue (for example issue `#123`), give your branch the name `fix/123`, `feat/123`, or `chore/123` depending on whether the issue involves a **bug** (fix), **new feature** (feat), or a **chore** (such as updating dependencies, workflow files, or fixing styling).
+2. If your PR does not fix an existing issue (preferably it should!), use descriptive naming such as `doc-add_myrole` (adding documentation), or `feat-new_rstudio`.
+
+### Commit messages
+
+Give commits clear and concise messages. Since this is a monorepo, it helps to indicate what role or playbook your commit touches. For example:
+
+1. `role fact_regular_users: use faster module to get existing users`
+2. `playbook rstudio: support Ubuntu 22`
+
+If your commit addresses a **chore** (see above), start the message with `chore: ...`. If it involves documentation, use `docs: ...`.
+
+### Documentation
+
 Use an editorial style guide when writing documenation, preferably the [Google developer documentation style guide](https://developers.google.com/style). 

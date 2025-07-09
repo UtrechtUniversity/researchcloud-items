@@ -1,0 +1,21 @@
+---
+# make sure the role sshfs_configrobot has been called prior to this role and in the SAME playbook
+# so that variable sshfs_connection_info is still available here
+
+- name: Wait until mounted filesystem is at rest
+  tags: molecule-idempotence-notest
+  ansible.builtin.command: sync
+
+- name: Umount remote filesystem
+  tags: molecule-notest
+  ansible.posix.mount:
+    path: "{{ sshfs_connection_info.mountpoint }}"
+    state: unmounted
+
+- name: Cleanup robotuser
+  tags: molecule-notest
+  ansible.builtin.user:
+    name: "{{ robotuser_name }}"
+    state: absent
+    remove: true
+    force: true

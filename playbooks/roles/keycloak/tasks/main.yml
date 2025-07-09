@@ -1,54 +1,56 @@
 ---
-- name: ensure java runtime is installed
-  package:
-    name: "default-jre"
+- name: Ensure java runtime is installed
+  ansible.builtin.package:
+    name: default-jre
     state: present
 
-- name: create keycloak user
-  user:
+- name: Create keycloak user
+  ansible.builtin.user:
     name: keycloak
 
-- name: create keycloak target dir
-  file:
+- name: Create keycloak target dir
+  ansible.builtin.file:
     dest: "{{ keycloak_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: root
     group: root
 
-- name: download keycloak tar
-  get_url:
+- name: Download keycloak tar
+  ansible.builtin.get_url:
     url: "{{ keycloak_tardir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
+    mode: "0644"
 
-- name: extract keycloak tar
-  unarchive:
+- name: Extract keycloak tar
+  ansible.builtin.unarchive:
     src: "{{ keycloak_dir }}{{ keycloak_tarfile }}"
     dest: "{{ keycloak_dir }}"
-    remote_src: yes
+    remote_src: true
+    creates: "{{ keycloak_jboss_home }}"
     owner: keycloak
     group: keycloak
 
-- name: add keycloak log dir
-  file:
+- name: Add keycloak log dir
+  ansible.builtin.file:
     dest: "{{ keycloak_jboss_log }}"
-    mode: 0755
+    mode: "0755"
     owner: keycloak
     group: keycloak
     state: directory
 
-- name: keycloak data directory
-  file:
+- name: Keycloak data directory
+  ansible.builtin.file:
     dest: "{{ keycloak_jboss_home }}/standalone/data"
-    mode: 0755
+    mode: "0755"
     owner: keycloak
     group: keycloak
     state: directory
 
-- name: keycloak tmp directory
-  file:
+- name: Keycloak tmp directory
+  ansible.builtin.file:
     dest: "{{ keycloak_jboss_home }}/standalone/tmp"
-    mode: 0755
+    mode: "0755"
     owner: keycloak
     group: keycloak
     state: directory
@@ -63,29 +65,22 @@
 #    state: directory
 #    recurse: yes
 
-- name: add keycloak as a service to systemd
-  template:
+- name: Add keycloak as a service to systemd
+  ansible.builtin.template:
     owner: root
     group: root
-    mode: 0644
-    src: "keycloak.service.j2"
-    dest: "/etc/systemd/system/keycloak.service"
+    mode: "0644"
+    src: keycloak.service.j2
+    dest: /etc/systemd/system/keycloak.service
 
-- name: enable keycloak
-  systemd:
+- name: Enable keycloak
+  notify: Restart keycloak
+  ansible.builtin.systemd:
     name: keycloak
-    enabled: yes
+    enabled: true
 
-- name: start keycloak service
-  systemd:
-    name: keycloak
-    state: started 
-
-- name: install desktop launcher
-  include: desktop.yml
-
-- name: create admin user
-  include: admin.yml
+- name: Install desktop launcher
+  ansible.builtin.include_tasks: desktop.yml
+- name: Create admin user
+  ansible.builtin.include_tasks: admin.yml
   when: keycloak_create_admin
-
- 

@@ -1,4 +1,0 @@
-#!/bin/bash install python module miniconda
-#
-echo "Creating conda environment"
-conda create -n myenv python=3.8.11

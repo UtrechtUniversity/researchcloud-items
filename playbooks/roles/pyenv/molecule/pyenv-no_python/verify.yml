@@ -4,9 +4,9 @@
   gather_facts: false
   tasks:
     - name: Get all runonce files
-      find:
+      ansible.builtin.find:
         paths: /etc/runonce.d
-        recurse: no
+        recurse: false
       register: found_scripts
 
     - name: Run runonce scripts
@@ -15,9 +15,11 @@
 
     - name: Test pyenv
       ansible.builtin.shell: su -c "bash -ic 'pyenv global'" - testuser
+      args:
+        executable: bash
       register: pyenv_global
-    
+
     - name: Assert correct global python version
       ansible.builtin.assert:
         that:
-          - "pyenv_global.stdout_lines[-1] == 'system'"
+          - pyenv_global.stdout_lines[-1] == 'system'

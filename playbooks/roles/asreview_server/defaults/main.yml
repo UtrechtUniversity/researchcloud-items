@@ -1,0 +1,12 @@
+---
+asreview_server_remote_user_header: REMOTE_USER
+asreview_server_remote_user_email_header: ""
+asreview_server_remote_user_name_header: ""
+asreview_server_remote_user_affiliation_header: ""
+asreview_server_remote_user_default_affiliation: ""
+asreview_server_default_email_domain: localhost
+asreview_server_auth: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('basic', 'sram') }}"
+asreview_server_http_password: ""
+asreview_server_http_username: ""
+asreview_server_use_storage: true
+asreview_server_group: www-data

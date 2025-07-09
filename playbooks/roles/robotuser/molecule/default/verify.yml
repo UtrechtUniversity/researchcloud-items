@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Test connection
+      become: true
+      become_user: uurobot
+      ansible.builtin.command: ssh localhost ls
+      register: ssh_test_connection
+
+    - name: Assert ssh successful
+      ansible.builtin.assert:
+        that:
+          - ssh_test_connection.rc == 0

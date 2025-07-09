@@ -1,11 +1,32 @@
 # researchcloud-items
-This repository contains [Ansible](https://docs.ansible.com) installation scripts for use in conjunction with [SURF ResearchCloud](https://portal.live.surfresearchcloud.nl). ResearchCloud catalog maintainers can configure a playbook from this repo as a script source for a plugin-type catalog item.  
-Alternatively feel free to clone this repository on a target host and locally run a playbook using the command  
-`ansible-playbook <name-of-the-playbook>`. 
+This repository contains [Ansible](https://docs.ansible.com) installation scripts for use in conjunction with [SURF ResearchCloud](https://portal.live.surfresearchcloud.nl). ResearchCloud catalog maintainers can configure components from the playbooks in this repo.
+
+The scripts in this repository all target Unix/Linux workspaces. There is a separate repisitory for install scripts for Windows workspaces [here](https://github.com/UtrechtUniversity/researchcloud-items-win).
+
+## Ansible Galaxy Collection
+
+The roles and playbooks in this repository can also be installed as an Ansible collection. The collection is named `uusrc.general`. After installation, this means you can use the roles from this repository, for example as follows:
+
+```yaml
+roles:
+    - role: uusrc.general.fact_regular_users
+```
+
+To install the collection you have two options:
+
+* install manually with `ansible-galaxy collection install git+https://github.com/utrechtuniversity/researchcloud-items.git`
+* add this repository to your `requirements.yml`:
+
+```yaml
+---
+collections:
+  - name: https://github.com/UtrechtUniversity/researchcloud-items.git
+    type: git
+```
 
 ## Documentation
 Script developers, please consult the [developer documentation](docs/index.md) before using a playbook 
-to find out if the playbook meets your use case.  
+to find out if the playbook meets your use case.
 For end-users, there is a [Primer SURF ResearchCloud](docs/primer-for-users.md).
 
 ## Applicable licences
@@ -25,4 +46,4 @@ There are two kinds of tests:
 1. Role tests. Molecule scenarios should be stored in the `playbooks/roles/<role>/molecule/` directory.
 1. Playbook tests. Molecule scenarios should be stored in the `molecule/` directory and given a `playbook-` prefix.
 
-By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/roles/pyenv/tasks/main.yml`, the scenario `molecule/role-pyenv` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/playbook-python-workbench/molecule.yml`).
+By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/foo.yml`, the scenario `molecule/playbook-foo` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/foo/molecule.yml`).

@@ -1,0 +1,28 @@
+---
+- name: Ensure virtualenvwhich is installed
+  ansible.builtin.pip:
+    name: virtualenv
+    state: present
+
+- name: Install ASReview LAB through pip
+  ansible.builtin.pip:
+    name: asreview[all]
+    virtualenv: "{{ venv_location }}"
+    virtualenv_command: virtualenv
+
+- name: Create function to source venv before launching ASReview LAB
+  ansible.builtin.copy:
+    src: set_asreview_alias
+    dest: /etc/runonce.d
+    mode: "0755"
+
+- name: Install desktop file menu item through role
+  ansible.builtin.include_role:
+    name: desktop_file
+  vars:
+    desktopfile_app_name: asreview
+    desktopfile_sizes:
+      - 48
+      - 64
+      - 96
+    desktopfile_login: true

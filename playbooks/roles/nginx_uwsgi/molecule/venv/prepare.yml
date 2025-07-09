@@ -1,0 +1,13 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Common preparation tasks
+      ansible.builtin.include_tasks: ../_prepare.yml
+
+    - name: Install build tools necessary for uwsgi
+      ansible.builtin.package:
+        name:
+          - build-essential
+          - python3-dev

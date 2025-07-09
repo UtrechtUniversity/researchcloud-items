@@ -1,0 +1,44 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: nginx_reverse_proxy
+      vars:
+        nginx_reverse_proxy_locations:
+          - name: galaxy # testing using the Galaxy component Nginx config
+            location: /
+            error_page: 502 /galaxy502.html
+            proxy_pass: http://localhost:8080
+            auth: sram
+            auth_sram_header: MY_HEADER
+            proxy_set_header:
+              GX_SECRET: foobar
+            gzip: 'on'
+            gzip_http_version: 1.1
+            gzip_vary: 'on'
+            gzip_comp_level: 6
+            gzip_proxied: any
+            gzip_types: text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript
+            gzip_buffers: 16 8k
+          - name: api
+            location: /api/
+            proxy_pass: http://localhost:8080/api/
+            auth: noauth
+          - name: tus
+            location: '/api/upload/resumable_upload'
+            proxy_set_header:
+              Host: '' # disable the default default setting set by the role
+            proxy_redirect: '' # disable the default setting set by the role
+            _proxy:
+              - proxy_pass: http://localhost:8002/files
+              - proxy_request_buffering: 'off'
+              - proxy_buffering: 'off'
+              - proxy_http_version: '1.1'
+              - proxy_redirect: 'default'
+              - proxy_set_header:
+                  X-Forwarded-Host: '$host'
+                  X-Forwarded-Proto: '$scheme'
+                  Upgrade: '$http_upgrade'
+                  Connection: '"upgrade"'
+            client_max_body_size: '0'

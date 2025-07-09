@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Testing ibridges role
+      ansible.builtin.include_role:
+        name: ibridges
+      vars:
+        pyenv_default_python: "3.8"

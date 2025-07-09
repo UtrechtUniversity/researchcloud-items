@@ -1,0 +1,12 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars:
+    test_files:
+      - galaxy.conf
+      - tus.conf
+  tasks:
+    - name: Run assertions for each test file
+      ansible.builtin.include_tasks: _verify.yml
+      with_items: "{{ test_files }}"

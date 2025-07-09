@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - name: Get all roles
-      command: ansible-galaxy list
+      ansible.builtin.command: ansible-galaxy list
       register: installed_roles
 
     - name: Assert correct global python version

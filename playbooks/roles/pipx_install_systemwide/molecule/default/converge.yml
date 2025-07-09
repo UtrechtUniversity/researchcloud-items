@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Testing pipx_install_systemwide role
+      ansible.builtin.include_role:
+        name: pipx_install_systemwide
+      vars:
+        pipx_install_systemwide_packages:
+          - ibridges
+          - pycowsay

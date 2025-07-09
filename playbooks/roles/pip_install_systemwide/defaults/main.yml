@@ -1,3 +1,0 @@
----
-custom_pip_path: /usr/local/pip # should be the same path as set by the 'pip' role
-...

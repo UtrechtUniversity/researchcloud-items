@@ -1,0 +1,10 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Create rootless docker script
+      ansible.builtin.copy:
+        dest: /etc/rsc/cron_rootless_docker.sh
+        content: test
+        mode: "0644"

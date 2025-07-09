@@ -1,0 +1,7 @@
+---
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: robot-server
+        path: robot-server.yml

@@ -14,15 +14,21 @@
     - name: Assert regular user length
       ansible.builtin.assert:
         that:
-          - "(fact_regular_users | length) == 1"
-      
+          - (fact_regular_users | length) == 1
+
     - name: Assert regular user facts
       ansible.builtin.assert:
         that:
-          - "item.user == 'testuser'"
-          - "item.userid == 1000"
-          - "item.groupid == 1003"
-          - "item.home == '/home/testuser'"
-          - "item.shell == '/usr/bin/bash'"
-          - "item.description == ''"
+          - item.user == 'testuser'
+          - item.userid == 1000
+          - item.groupid == 1003
+          - item.home == '/home/testuser'
+          - item.shell == '/usr/bin/bash'
+          - item.description == ''
       with_items: "{{ fact_regular_users }}"
+
+    - name: Assert workspace info contents
+      ansible.builtin.assert:
+        that:
+          - "'src_ws_admin' in fact_co_groups"
+          - "'testuser' in fact_co_groups['src_ws_admin']"

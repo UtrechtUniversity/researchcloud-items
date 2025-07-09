@@ -1,0 +1,23 @@
+---
+- name: Install R for Debian
+  ansible.builtin.apt:
+    name: r-base
+    update_cache: true
+    state: present
+
+- name: Install R dev
+  ansible.builtin.apt:
+    name: r-base-dev
+    state: present
+
+- name: Install RStudio for Ubuntu 20
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "20.04"
+  ansible.builtin.apt:
+    deb: https://download1.rstudio.org/electron/focal/amd64/rstudio-2024.04.2-764-amd64.deb
+    state: present
+
+- name: Install RStudio for Ubuntu 22
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "22.04"
+  ansible.builtin.apt:
+    deb: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.05.0-496-amd64.deb
+    state: present

@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: A role that installs ASReview as an app reverse proxied, using SRAM auth.
+  license: GPLv3
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
+dependencies:
+  - require_src_nginx
+  - fact_workspace_info

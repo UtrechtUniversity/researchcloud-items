@@ -1,0 +1,20 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: desktop_file
+      vars:
+        desktopfile_app_name: roletest1
+        desktopfile_sizes:
+          - 48
+        desktopfile_login: true
+    - role: desktop_file
+      vars:
+        desktopfile_app_name: roletest2
+        desktopfile_sizes:
+          - "48"
+        desktopfile_modules:
+          - roletest2
+          - roletest2-module1
+          - roletest2-module2

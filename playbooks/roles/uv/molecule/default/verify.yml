@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Get all uv python versions
+      ansible.builtin.command: uv python list
+      register: python_versions
+
+    - name: Assert correct python versions present
+      ansible.builtin.assert:
+        that:
+          - '"python{{ item }}" in python_versions.stdout'
+      with_items:
+        - 3.11
+        - 3.12
+        - 3.13
+
+    - name: Test python in venv
+      ansible.builtin.command: /tmp/test_venv/bin/python --version
+      register: python_version
+
+    - name: Assert correct python path in venv
+      ansible.builtin.assert:
+        that:
+          - '"3.13" in python_version.stdout'

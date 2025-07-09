@@ -7,6 +7,7 @@
       ansible.builtin.file:
         dest: /rsc/roles
         state: directory
+        mode: "0755"
 
     - name: Copy the role to the workspace
       ansible.posix.synchronize:
@@ -19,6 +20,7 @@
     - name: Copy test playbook to the workspace
       ansible.builtin.copy:
         dest: /rsc/test.yml
+        mode: "0644"
         content: |
           - name: Test dependency installation
             hosts: localhost
@@ -29,7 +31,7 @@
                 vars:
                   install_role_roles:
                   # Just some test roles:
-                    - ANXS.postgresql
+                    - ANXS.postgresql,v1.16.0
                     - git+https://github.com/ANXS/generic-users.git,1c6c6ee
 
               - name: Testing installed role

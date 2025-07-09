@@ -1,0 +1,24 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+
+    - name: Test /auth location
+      ansible.builtin.uri:
+        url: http://localhost/auth
+        method: GET
+        return_content: true
+      register: auth_location
+
+    - name: Debug
+      ansible.builtin.debug:
+        var: auth_location
+
+    - name: Assert reverse proxies working correctly
+      ansible.builtin.assert:
+        that:
+          - auth_location.redirected is true
+          - auth_location.url == "http://localhost/auth/"
+          - auth_location.status == 200
+          - "'Welcome to Keycloak' in auth_location.content "

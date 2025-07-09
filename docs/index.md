@@ -1,21 +1,48 @@
 # Developer documentation
-This is the developer documenation for this repository.
-See [primer SURF ResearchCloud](primer-for-users.md) for end-user documentation).
+This is the developer documentation for this repository.
+See this [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation.
 
-
-Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles).
-The playbook can be used stand-alone (run them locally on the target host) 
-or as a SURF ResearchCloud plugin.
-
-The roles serve as reusable building blocks for these playbooks.
+Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles) (reusable items that can be included in a playbook).
+The playbook and roles can be used stand-alone (run them locally on the target host), but are
+designed with the goal of deploying them in the deployment of a ResearchCloud workspace.
 
 Contributed playbooks and roles should meet criteria specified in our [item quality checklist](./item_quality_checklist.md).
 
+## External component repositories
 
-When adding documentation, please consider to format your text
-using the file [template-playbooks.md](playbooks/template-playbooks.md) to
-document a playbook
-or the file [template-roles.md](roles/template-roles.md) to document a role.
+This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). This documentation is exclusively for the playbooks and roles contained in this repo.
+
+However, some components are not part of this repository and can be found elsewhere. This can be for several reasons (see below). Below is a list of important UU-maintained ResearchCloud components outside of this repository. Documentation should be contained in these external repositories.
+
+| Name                                                                                     | Description                                                                                                                                                                                                                                 | Component type   | Why not in this repo?              |
+|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------------------------|
+| [Grobid](https://github.com/UtrechtUniversity/src-component-grobid)                      | Grobid can help you perform bibliographic analyses on  scientific papers. | Docker Compose | Non-Ansible                        |
+| [Galaxy](https://github.com/UtrechtUniversity/src-component-galaxy)                      | Galaxy is a workflow engine for bioinformatics.                                                                                                                                                                                             | Ansible          | Non-standard access rights         |
+| [ibridges-ansible](https://github.com/UtrechtUniversity/ibridges-ansible)                | A component to easily download iRODS collections to a workspace.                                                                                                                                                                            | Ansible          | Available as a separate collection |
+| [researchcloud-items-win](https://github.com/UtrechtUniversity/researchcloud-items-win/) | Various components targeting Windows workspaces                                                                                                                                                                                             | PowerShell       | Non-Ansible                        |
+
+Components for specific research projects (not intended for general use) should preferably also be stored in a separate repository. They can use the roles in this repo by [installing it as a collection](#installing-as-a-collection).
+
+## Installing as a collection
+
+The roles and playbooks in this repository can also be installed as an Ansible collection. The collection is named `uusrc.general`. After installation, this means you can use the roles from this repository, for example as follows:
+
+```yaml
+roles:
+    - role: uusrc.general.fact_regular_users
+```
+
+To install the collection you have two options:
+
+* install manually with `ansible-galaxy collection install git+https://github.com/utrechtuniversity/researchcloud-items.git`
+* add this repository to your `requirements.yml`:
+
+```yaml
+---
+collections:
+  - name: https://github.com/UtrechtUniversity/researchcloud-items.git
+    type: git
+```
 
 ## Playbooks
 The status of a playbook is either Experimental or Supported. Supported playbooks are subjected to automated [testing](./index.md#Test-driven-development) and must be fully documented.
@@ -25,14 +52,24 @@ status should be indicated in the description field of the catalog plugin item.
 
 ### Supported
 
-- [aptly](playbooks/aptly.md) serve apt repositories on the workspace
-- [ibridges](playbooks/ibridges.yml) userfriendly commandline client for iRODS
+- [agisoft](playbooks/agisoft.md) install Agisoft Metashape
+- [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
+- [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
+- [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
+- [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
+- [flask_app](roles/flask_app.md) serve a Flask app with Nginx, optionally with SRAM authorization.
+- [matlab](playbooks/matlab.md) Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
 - [python-workbench](playbooks/python-workbench.md)  Python development
+- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
+- [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
+- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
+- [r-workbench](playbooks/r-workbench.md)  R development
+- [stata](playbooks/stata.md) Stata18 statistical analysis suite
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [shared_directories](playbooks/shared_directories.md) create shared data directories for regular users
-- [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
+- [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 ### Experimental
 
@@ -40,14 +77,9 @@ status should be indicated in the description field of the catalog plugin item.
 - [asreview](playbooks/asreview.md)  machine-learning powered application for systematic reviews
 - [camunda](playbooks/camunda.md)  a business process workflow suite
 - [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
-- [docker](playbooks/docker.md) application container management
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [irods-desktop](playbooks/irods-desktop.md) desktop application tools for iRODS data grid
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
-- [matlab](playbooks/matlab.md) Data analysis and simulation suite
-- [miniconda-base](playbooks/miniconda-base.md)   Python application development
-- [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts   
-- [transferuser](playbooks/transferuser.md) dedicated user for file exchange with remote host
 
 
 ## Roles
@@ -56,46 +88,46 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 ### Supported
 
+- [agisoft](roles/agisoft.md) install Agisoft Metashape
 - [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [default_group](roles/default_group.md) set desired groups as default for regular users
+- [desktop-file](roles/desktop_file.md) add desktop icons and login items for custom apps
 - [fact_regular_users](roles/fact_regular_users.md) facts about users on the system
 - [fact_workspace_info](roles/fact_workspace_info.md) facts about the workspace, and groups and users from the CO (SRAM)
+- [ibridges](roles/ibridges.md)  installs [iBridges](https://github.com/UtrechtUniversity/iBridges), a userfriendly commandline client for iRODS (GUI and/or CLI)
 - [install_role](roles/install_role.md)
+- [keycloak](roles/keycloak.md)
+- [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
-- [nginx-reverse_proxy](roles/nginx-reverse_proxy.md)
+- [nginx_reverse_proxy](roles/nginx_reverse_proxy.md)
+- [nginx_uwsgi](roles/nginx_uwsgi.md)
 - [poetry](roles/poetry.md)
-- [pip](roles/pip.md)
-- [pip_install_systemwide](roles/pip_install_systemwide.md) install pip packages in a shared directory for all users
-- [pyenv](roles/pyenv.md)
-- [python](roles/python.md)
+- [pip](roles/pip.md)  install pip
+- [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
+- [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version
+- [robotuser](roles/robotuser.md)
+- [rstudio](roles/rstudio.md)
+- [runonce](roles/runonce.md)
+- [require_src_docker](roles/require_src_docker.md)
+- [require_src_nginx](roles/require_src_nginx.md)
+- [security_updates](roles/security_updates.md)
+- [sshfs_configrobot](roles/sshfs_configrobot.md)
+- [sshfs_mount](roles/sshfs_mount.md)
+- [sshfs_cleanup](roles/sshfs_cleanup.md)   
+- [system_python](roles/system_python.md) install latests version of python available through the system package manager
+- [tidyverse_dependencies](roles/tidyverse_dependencies.md)
+- [transferuser](roles/transferuser.md)
+- [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
+- [uv](roles/uv.md) lightning fast python version and dependency manager
 
 ### Experimental
 
 - [anaconda](roles/anaconda.md)
 - [asreview](roles/asreview.md)
-- [camunda-modeler](roles/camunda-modeler.md)
-- [camunda-server](roles/camunda-server.md)
-- [desktop-file](roles/desktop_file.md)
-- [docker](roles/docker.md)
-- [git_clone](roles/git_clone.md)
-- [irods_guisync](roles/irods_guisync.md)  NB: deprecated
+- [camunda_modeler](roles/camunda_modeler.md)
+- [camunda_server](roles/camunda_server.md)
 - [irods_repo](roles/irods_repo.md)
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
-- [keycloak](roles/keycloak.md)
-- [keycloak_behind_nginx](roles/keycloak_behind_nginx.md)
-- [matlab](roles/matlab.md)
-- [myrods-sync](roles/myrods-sync.md)  
-- [nginx-fastcgi](roles/nginx-fastcgi.md)   
-- [nginx-pam](roles/nginx-pam.md)
-- [robotuser](roles/robotuser.md)
 - [rstudio](roles/rstudio.md)
-- [runonce](roles/runonce.md)
-- [security_updates](roles/security_updates.md)
-- [sshfs-configrobot](roles/sshfs-configrobot.md)
-- [sshfs-mount](roles/sshfs-mount.md)
-- [sshfs-umount](roles/sshfs-umount.md)   
-- [transferuser](roles/transferuser.md)   
-- [userspace_applications](roles/userspace_applications.md)
-- [uwsgi](roles/uwsgi.md)

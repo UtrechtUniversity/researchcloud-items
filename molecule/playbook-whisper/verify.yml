@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check for required files
+      ansible.builtin.stat:
+        path: /home/testuser/whisper_template.ipynb
+      register: required_files
+
+    - name: Assert files exist
+      ansible.builtin.assert:
+        that: 'required_files.stat.exists'

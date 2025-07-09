@@ -1,0 +1,134 @@
+#!/bin/bash
+# Script to run a command a pause the ResearchCloud workspace when it exits.
+
+set -euo pipefail
+
+echo "Hello! This script is currently in beta. Please report any issues to UU Research Engineering."
+echo
+
+check_params(){
+  if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 [-s] mycommand ..." >&2
+    echo "-s: silent mode. Don't print additional $0 info messages to the log, only your command's output."
+    exit 1
+  fi
+}
+
+check_params "$@";
+
+if [ "$1" == "-s" ]; then
+  SILENT="true"
+  shift
+  check_params "$*"; # check param count again after having evaluted whether -s is present
+else
+  SILENT="false"
+fi
+
+echo "Please enter your ResearchCloud API token below to continue."
+
+read -s -p "ResearchCloud API token: " SRC_TOKEN
+echo
+export SRC_TOKEN="$SRC_TOKEN"
+
+COMMAND="$*"
+WORKSPACE="{{ fact_workspace_info['workspace_id'] }}"
+ENDPOINT_URL="{{ uu_generic_src_api_endpoint }}/v1/workspace/workspaces/$WORKSPACE"
+
+# Set headers required by all API curl operations
+COMMON_HEADERS=$(cat <<-END
+accept: application/json;Compute
+authorization: $SRC_TOKEN
+END
+)
+export COMMON_HEADERS="$COMMON_HEADERS"
+
+# Define curl commands for checking authorization and for pausing the workspace
+# Use curl -H @- to read headers from stdin, supplied by 'echo $COMMON_HEADERS'.
+# This ensures that $SRC_TOKEN is not written to the bash history / process list, but is interpreted as an environment variable.
+CHECK_AUTH_COMMAND="echo \"\$COMMON_HEADERS\" | curl -H @- -X 'GET' '$ENDPOINT_URL/' 2> /dev/null"
+PAUSE_COMMAND="echo \"\$COMMON_HEADERS\" | curl -H @- -H 'Content-Type: application/json;pause' -X 'POST' \
+  \"$ENDPOINT_URL/actions/pause/\" \
+  -d '{}' > /dev/null 2>&1"
+
+echo "Testing whether you are authorized to pause this workspace..."
+echo
+
+result=$(bash -c "$CHECK_AUTH_COMMAND")
+trap "Could not login to the ResearchCloud API with your token." ERR
+
+if [[ $(echo "$result" | jq '.allowed_actions | any(. == "pause")' ) == "true" ]]; then
+    echo "You are allowed to pause this workspace. Continuing..."
+else
+    echo "You are NOT allowed to pause this workspace. Stopping..."
+    exit 100
+fi
+
+LOGFILE=$(mktemp -p "$HOME" run_and_pause.XXXXXX.log)
+
+CMDMSG=$(cat <<-END
+Will run the following command, and pause the workspace when it exits:
+$COMMAND
+END
+)
+
+LOGMSG=$(cat <<-END
+run_and_pause log $(date)
+$CMDMSG
+All output from the command will be captured below.
+END
+)
+
+SEP="------"
+
+# Since we will use nohup to start a subshell (see below),
+# in order to kill both the subshell itself and the started command (which is a child of the subshell),
+# the user must use kill <pid_of_the_subshell> && pkill -P <pid_of_the_subshell>.
+KILLMSG=$(cat <<-END
+To interrupt this process, run:
+kill \$\$ && pkill -P \$\$
+Command output starts below.
+$SEP
+END
+)
+export KILLMSG="$KILLMSG"
+
+PAUSEMSG=$(cat <<-END
+$SEP
+Command exited with exit code: \$?
+Now pausing the workspace...
+END
+)
+export PAUSEMSG="$PAUSEMSG"
+
+echo
+echo "$CMDMSG"
+echo
+echo "The command's output will be saved to $LOGFILE"
+echo
+echo "Use 'tail -f $LOGFILE' to follow your command's output live."
+echo "Use 'cat $LOGFILE', 'less $LOGFILE',"
+echo "or your preferred text editor to see the entire logfile."
+echo
+
+read -p "Press any key to continue... " -n1 -s
+
+if [ "$SILENT" == "true" ]; then
+  FULL_COMMAND="$COMMAND; $PAUSE_COMMAND;"
+else
+  echo "$LOGMSG" > "$LOGFILE"
+  FULL_COMMAND="echo \"$KILLMSG\"; $COMMAND; echo \"$PAUSEMSG\"; $PAUSE_COMMAND;"
+fi
+
+# Instead of running `nohup $COMMAND; $PAUSE_COMMAND;`, we use `nohup bash -c ...` to run $COMMAND and $PAUSE_COMMAND in a subshell.
+# This means that instead of nohup starting a command in which $SRC_TOKEN will be expanded,
+# a bash process is started that references the environment variable $SRC_TOKEN, exported in this script.
+# the name of the started process will hence not contain the token.
+nohup bash -c "$FULL_COMMAND" >> "$LOGFILE" 2>&1 &
+
+echo
+echo
+echo "Now running your command, and will pause the workspace afterwards!"
+echo "To stop this process, and stop the workspace from pausing, run:"
+echo "kill $! && pkill -P $!"
+echo
+echo

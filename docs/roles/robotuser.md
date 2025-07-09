@@ -42,10 +42,10 @@ This plugin should execute a playbook to execute the following roles:
 
 ```
    roles:
-    - sshfs-configrobot
-    - sshfs-mount
+    - sshfs_configrobot
+    - sshfs_mount
     - ....  (add application-specific roles here, can access the shared data)
-    - sshfs-umount
+    - sshfs_cleanup
 ```
 The first role fetches information on the server/connection as has been prepared by the
 `robot-client` plugin in an earlier stage of the deployment process.
@@ -69,9 +69,9 @@ is generated for this user. The use case for this setting is creation of the rob
 instead of a client.
 
 ## See also
-- [sshfs-mount](sshfs-mount.md)
-- [sshfs-umount](sshfs-umount.md)
-- [sshfs-configrobot](sshfs-configrobot.md)
+- [sshfs_mount](sshfs_mount.md)
+- [sshfs_cleanup](sshfs_cleanup.md)
+- [sshfs_configrobot](sshfs_configrobot.md)
 
 ## History
 2021 Written by Ton Smeele (Utrecht University)

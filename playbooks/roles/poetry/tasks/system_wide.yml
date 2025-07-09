@@ -1,21 +1,17 @@
 ---
 - name: Download poetry installer
-  get_url:
+  ansible.builtin.get_url:
     url: https://install.python-poetry.org
     dest: /tmp/install-poetry.py
-    mode: "0777"
+    mode: "0755"
     timeout: 20
 
-- name: Install venv dependency
-  apt:
-    name: python3-venv
-
 - name: Install poetry system-wide
-  command: python3 /tmp/install-poetry.py
+  ansible.builtin.command: "{{ system_python_path }} /tmp/install-poetry.py"
   environment:
     POETRY_HOME: /opt/poetry
 
 - name: Clean installation file
-  file:
+  ansible.builtin.file:
     path: /tmp/install-poetry.py
     state: absent

@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Dawa Ometto
+  description: Install pip packages systemwide using pipx
+  license: GPLv3
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+dependencies:
+  - role: pip

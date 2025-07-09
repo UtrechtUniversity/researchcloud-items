@@ -1,0 +1,15 @@
+---
+# Performs standard UU provisining tasks:
+# DISABLED: - installs the latest security updates
+# - places documentation and contact links on the workspace
+
+- name: Standard UU Provisioning
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: uu_generic
+    - role: security_updates
+      when: uu_provisioning_security | default(true, true) | bool
+      vars:
+        security_updates_firstrun: true
+        security_updates_periodic: false

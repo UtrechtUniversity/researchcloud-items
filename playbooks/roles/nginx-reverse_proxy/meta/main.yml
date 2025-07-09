@@ -1,9 +1,0 @@
----
-galaxy_info:
-  author: Dawa Ometto
-  description: Add reverse proxies to the SRC nginx environment, including support for SRAM auth and basic auth. Builds on top of the SRC-Nginx component.
-  license: GPLv3
-  min_ansible_version: '2.9'
-  platforms:
-    - name: Debian
-    - name: Ubuntu

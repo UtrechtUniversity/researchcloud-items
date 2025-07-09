@@ -1,0 +1,5 @@
+---
+- name: Include tasks for provisioning user docs
+  ansible.builtin.include_tasks: docs.yml
+- name: Include tasks for installing generic apps
+  ansible.builtin.include_tasks: apps.yml

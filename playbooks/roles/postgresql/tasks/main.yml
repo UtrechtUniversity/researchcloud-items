@@ -1,27 +1,36 @@
 ---
 - name: Install PostgreSQL.
-  apt:
+  ansible.builtin.package:
     state: present
-    pkg:
-      - postgresql
-      - postgresql-server
-
-- name: Register if PostgreSQL is initialized.
-  stat:
-    path: /var/lib/pgsql/data/pg_hba.conf
-  register: prostgresql_data
-
-- name: Initilize PostgreSQL if not yet.
-  when: not postgresql_data.exists
-  shell: postgresql-setup initdb
-
-- name: Start PostgreSQL service
-  service:
     name: postgresql
-    state: restarted
-    enabled: true
 
-- name: Provision db and user by default
+- name: Install Postgresql-server on Redhat distro
+  ansible.builtin.package:
+    state: present
+    name: postgresql-server
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Install support for dblink postgresql on Redhat distro
+  ansible.builtin.package:
+    state: present
+    name: postgresql-contrib
+  when: ansible_pkg_mgr == 'dnf'
+
+- name: Register if Postgresql cluster is initialized
+  ansible.builtin.stat:
+    path: /var/lib/pgsql/data/pg_hba.conf
+  register: postgresql_cluster
+
+- name: (if not present) Initialize Postgresql cluster on Redhat distro
+  ansible.builtin.command: postgresql-setup --initdb
+  when: ansible_pkg_mgr == 'dnf' and not postgresql_cluster.stat.exists
+
+- name: Enable and start Postgresql
+  ansible.builtin.service:
+    enabled: true
+    state: started
+    name: postgresql
+
+- name: Optionally provision db and user
   when: postgresql_provision
-  include: provision.yml
-...
+  ansible.builtin.include_tasks: provision.yml

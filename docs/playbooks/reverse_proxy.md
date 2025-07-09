@@ -12,7 +12,7 @@ It builds on top a standard SRC [nginx](https://nginx.org/en/) environment to de
   * using SRAM
   * using HTTP basic auth.
 
-When developing your own component for a webapp, it may be better to utilize the [reverse proxy role](../roles/nginx-reverse_proxy.md) in your own component directly, rather than adding this component to a separate component for your webapp in an SRC Catalog Item. However, this component may be useful when wanting to add reverse proxy capabilities to components that you don't control or can't customize further (such as docker or docker-compose components on SRC).
+When developing your own component for a webapp, it may be better to utilize the [reverse proxy role](../roles/nginx_reverse_proxy.md) in your own component directly, rather than adding this component to a separate component for your webapp in an SRC Catalog Item. However, this component may be useful when wanting to add reverse proxy capabilities to components that you don't control or can't customize further (such as docker or docker-compose components on SRC).
 
 ## Requires
 
@@ -39,7 +39,7 @@ When using HTTP basic auth, you must set the `htpasswd` attribute to refer to a 
 - {name: test_authoff, location: = /test_basicauth/api, auth: noauth, proxy_pass: "http://localhost:8000/bin/"} # turn off sram auth for sublocation /test_sramauth/api
 ```
 
-You can add keys to these dicts corresponding to nginx configuration detectives. E.g. `alias: /bla` will add an `alias /bla;` directive to the configuraiton. See the relevant [role](../roles/nginx-reverse_proxy.md) for more documentation of options and defaults.
+You can add keys to these dicts corresponding to nginx configuration detectives. E.g. `alias: /bla` will add an `alias /bla;` directive to the configuraiton. See the relevant [role](../roles/nginx_reverse_proxy.md) for more documentation of options and defaults.
 
 `reverse_proxy_auth_info`: Optional. String. A list of YAML objects defining authentication information that will be turned into valid htpasswd files. The name of the htpasswd file should correspond to the one set in the `reverse_proxy_locations` variable. Example:
 
@@ -59,7 +59,8 @@ If one of the `htpasswd` files defined in `reverse_proxy_locations` is not found
 
 ## See also
 
-Role [nginx-reverse_proxy](../roles/nginx-reverse_proxy.md)
+- Role [nginx_reverse_proxy](../roles/nginx_reverse_proxy.md)
+- Role [require_src_nginx](../roles/require_src_nginx.md)
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)

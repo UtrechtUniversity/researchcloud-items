@@ -1,0 +1,45 @@
+---
+driver:
+  name: docker
+  image_settings: &image_settings
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+platforms:
+  - name: workspace-src-ubuntu_desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    privileged: ${CI-false}
+    capabilities:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse:/dev/fuse:rwm
+    networks:
+      - name: matlab_test_network
+    <<: *image_settings
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - cleanup
+    - destroy
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+  env:
+    extra_prepare_tasks: ../../playbook-matlab/extra_prepare.yml  # relative to <repo_root>/molecule/ext/src-molecule
+    components:
+      - name: matlab
+        path: matlab.yml
+        parameters:
+          matlab_iso_dir: "/data/volume_2"  # This needs to be the same here, in docker-compose.yml, and in extra_prepare.yml

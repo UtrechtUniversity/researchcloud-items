@@ -1,0 +1,9 @@
+---
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: r-workbench
+        path: r-workbench.yml
+        parameters:
+          r_workbench_packages: '- {name: dplyr}\n- {name: Biobase, type: bioconductor}'

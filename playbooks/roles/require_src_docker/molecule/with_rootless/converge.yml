@@ -1,0 +1,23 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Converge and expect no failure
+      block:
+        - name: Include role
+          ansible.builtin.include_role:
+            name: require_src_docker
+          vars:
+            require_src_docker_rootless: true
+          register: role_execution
+
+        - name: Check execution halted
+          ansible.builtin.fail:
+            msg: Execution should stop before this task when Nginx is not present
+          register: should_not_run
+      rescue:
+        - name: Assert role succeeded
+          ansible.builtin.assert:
+            that:
+              - should_not_run is defined

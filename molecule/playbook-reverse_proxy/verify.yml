@@ -18,6 +18,10 @@
         return_content: true
       register: root_location
 
+    - name: Check for custom header header in / location
+      ansible.builtin.command: curl -v http://localhost/bin/
+      register: check_headers
+
     - name: Test /test_basicauth2 location
       ansible.builtin.uri:
         url: http://localhost/test_basicauth2
@@ -61,9 +65,10 @@
       ansible.builtin.assert:
         that:
           - sramauth_location.redirected is true
-          - sramauth_location.url == "http://localhost/?client_id=foo&redirect_uri=http://localhost/oauth2_callback?rdpath=/test_sramauth/&response_type=token&scope=openid&response_format=query_param"
+          - sramauth_location.url == "http://localhost/auth_endpoint?client_id=foo&redirect_uri=http://localhost/oauth2_callback&response_type=token&scope=openid&response_format=query_param"
           - basicauth_location.status == 200
           - "'bin' in basicauth_location.content"
           - root_location.status == 200
+          - "'myheader: foo' in check_headers.stderr"
           - "'whoami' in root_location.content"
           - "' application/x-xpinstall' in api_location.content"

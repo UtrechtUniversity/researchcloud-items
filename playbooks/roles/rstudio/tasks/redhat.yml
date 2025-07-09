@@ -1,0 +1,12 @@
+---
+- name: Update extra packages
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+
+- name: Install R
+  ansible.builtin.package:
+    name:
+      - R
+      - https://s3.amazonaws.com/rstudio-ide-build/desktop/rhel8/x86_64/rstudio-2022.02.0-443-x86_64.rpm
+    state: present

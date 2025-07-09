@@ -1,0 +1,14 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install snapd
+      ansible.builtin.package:
+        name: snapd
+        state: present
+
+    - name: Activate snapd
+      ansible.builtin.systemd_service:
+        name: snapd
+        state: started

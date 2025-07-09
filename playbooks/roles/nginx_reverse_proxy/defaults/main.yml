@@ -1,0 +1,5 @@
+---
+nginx_reverse_proxy_include_default_settings: true
+nginx_reverse_proxy_default_username: ""
+nginx_reverse_proxy_default_password: ""
+nginx_reverse_proxy_auth_info: ""

@@ -4,7 +4,7 @@
   gather_facts: true
   tasks:
     - name: Testing userspace pyenv role
-      include_role:
+      ansible.builtin.include_role:
         name: pyenv
       vars:
-        pyenv_default_python: '3.8'
+        pyenv_default_python: "3.8"

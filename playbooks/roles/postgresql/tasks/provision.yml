@@ -1,16 +1,16 @@
 ---
 - name: Install PostgreSQL python library for Ansible module.
-  pip:
+  ansible.builtin.pip:
     name: psycopg2-binary
     state: present
 
 - name: Create PostgreSQL database
-  postgresql_db:
+  community.postgresql.postgresql_db:
     name: "{{ postgresql_db_name }}"
     state: present
 
 - name: Create database user.
-  postgresql_user:
+  community.postgresql.postgresql_user:
     name: "{{ postgresql_db_name }}"
     password: "{{ postgresql_db_password }}"
     state: present
@@ -18,13 +18,12 @@
   become_user: postgres
 
 - name: Grant user access to database.
-  postgresql_privs:
+  community.postgresql.postgresql_privs:
     type: database
-    database: 
-    roles: 
-    grant_option: no
+    database:
+    roles:
+    grant_option: false
     privs: all
   become: true
   become_user: postgres
   notify: restart postgres
-...

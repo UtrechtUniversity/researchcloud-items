@@ -1,0 +1,25 @@
+[Unit]
+Description=uWSGI instance for {{ uwsgi_app_name }}
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+{% if uwsgi_chdir | length > 0 %}
+WorkingDirectory={{ uwsgi_app_dir }}
+{% endif %}
+StandardOutput=append:/var/log/uwsgi/{{ uwsgi_app_name }}.log
+StandardError=append:/var/log/uwsgi/{{ uwsgi_app_name }}_err.log
+{% for var_name, value in uwsgi_env.items() %}
+Environment="{{ var_name }}={{ value }}"
+{% endfor %}
+{% if uwsgi_venv | length > 0 %}
+Environment="PATH={{ uwsgi_venv }}/bin"
+ExecStart={{ uwsgi_venv }}/bin/uwsgi --ini {{ uwsgi_config_dir }}/{{ uwsgi_app_name }}.ini
+{% else %}
+ExecStart=/usr/bin/uwsgi --ini {{ uwsgi_app_dir }}/{{ uwsgi_app_name }}.ini
+{% endif %}
+
+# Check env
+[Install]
+WantedBy=multi-user.target

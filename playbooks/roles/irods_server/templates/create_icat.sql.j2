@@ -1,0 +1,18 @@
+DO $$
+BEGIN
+CREATE user {{ irods_server_db_username }} with password '{{ irods_server_db_password }}';
+EXCEPTION WHEN duplicate_object THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
+END
+$$;
+
+CREATE EXTENSION IF NOT EXISTS dblink;
+
+DO $$
+BEGIN
+PERFORM dblink_exec('', 'CREATE DATABASE {{ irods_server_db_name }}');
+EXCEPTION WHEN duplicate_database THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
+END
+$$;
+
+grant all privileges on database {{ irods_server_db_name }} to {{ irods_server_db_username }};
+alter database {{ irods_server_db_name }} owner to {{ irods_server_db_username }};

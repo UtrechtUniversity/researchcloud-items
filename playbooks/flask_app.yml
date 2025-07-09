@@ -1,0 +1,22 @@
+---
+- name: Serve flask app with Nginx
+  hosts: localhost
+  gather_facts: true
+  vars:
+    flask_app_repo: "{{ flask_repo | default('', true) }}"
+    flask_app_pip_pkg: "{{ flask_pip_pkg | default('', true) }}"
+    flask_app_pip_requirements: "{{ flask_pip_requirements | default('', true) }}"
+    flask_app_version: "{{ flask_version | default('', true) }}"
+    flask_app_name: "{{ flask_name | default('FlaskApp', true) }}"
+    flask_app_num_workers: "{{ flask_num_workers | default('2', true) }}"
+    flask_app_python_version: "{{ flask_python_version | default('3.10', true) }}"
+    flask_app_module_path: "{{ flask_module_path | default('app.py', true) }}"
+    flask_app_http_username: "{{ flask_http_username | default('', true) }}"
+    flask_app_http_password: "{{ flask_http_password | default('', true) }}"
+    flask_app_proxy_auth: "{{ flask_proxy_auth | default('sram', true) }}"
+    flask_app_location: "{{ flask_proxy_location | default('/', true) }}"
+    flask_app_uwsgi_env: "{{ dict( ( flask_uwsgi_env | default('') ).split(' ') | map('regex_search', '.+=.+') | select | map('split', '=')) }}" # String -> dict
+    flask_app_uwsgi_config_block: "{{ flask_uwsgi_config_block | default('') | replace('\\n', '\n') }}"
+    flask_app_chdir: "{{ flask_chdir | default(true, true) }}"
+  roles:
+    - role: flask_app

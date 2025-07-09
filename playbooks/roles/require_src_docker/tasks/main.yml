@@ -1,0 +1,27 @@
+---
+- name: Check for presence of Docker
+  tags: molecule-idempotence-notest
+  block:
+    - name: Fail if Docker not present (rootless)
+      when: require_src_docker_rootless
+      block:
+        - name: Check for cron script that enables rootless docker for each user
+          ansible.builtin.stat:
+            path: /etc/rsc/cron_rootless_docker.sh
+          register: stat_rootless_docker_script
+
+        - name: Fail
+          when: not stat_rootless_docker_script.stat.exists
+          ansible.builtin.fail:
+            msg: Docker must be installed rootlessly in previous component ('Docker Environment' by SURF).
+
+    - name: Fail if Docker not present (rootful)
+      when: not require_src_docker_rootless
+      block:
+        - name: Populate service facts
+          ansible.builtin.service_facts:
+
+        - name: Fail
+          ansible.builtin.fail:
+            msg: Docker must be installed in a previous component.
+          when: services['docker.service'] is not defined or services['docker.service'].state != 'running'

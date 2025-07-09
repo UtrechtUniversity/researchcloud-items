@@ -8,10 +8,10 @@
         path: /opt/miniconda/condabin/conda
       register: miniconda_systemwide
 
-    - name: Stat miniconda testuser
+    - name: Check if miniconda installation for testuser exists
       ansible.builtin.stat:
         path: /home/testuser/miniconda/condabin/conda
-      register: miniconda_userspace
+      register: miniconda_testuser_installed
 
     - name: Create test user
       ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
@@ -19,10 +19,10 @@
     - name: Runonce for new testuser
       ansible.builtin.command: su - -l -c /etc/runonce.d/runonce_conda.sh testuser2
 
-    - name: Stat miniconda testuser2
+    - name: Check if miniconda for testuser2 has been initialized
       ansible.builtin.stat:
         path: /home/testuser2/miniconda/bin/conda
-      register: miniconda_userspace2
+      register: miniconda_testuser2_initialized
 
     - name: Look for proof that conda init was run
       ansible.builtin.command: grep conda /home/testuser2/.bashrc
@@ -32,8 +32,8 @@
       ansible.builtin.assert:
         that:
           - miniconda_systemwide.stat.exists is false
-          - miniconda_userspace.stat.exists is true
-          - miniconda_userspace2.stat.exists is true
+          - miniconda_testuser_installed.stat.exists is false
+          - miniconda_testuser2_initialized.stat.exists is true
 
     - name: Assert conda initialized
       ansible.builtin.assert:

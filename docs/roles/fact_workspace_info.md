@@ -4,9 +4,9 @@
 ## Summary
 Makes information about the workspace and CO available as Ansible facts. Provides three facts:
 
-- `fact_workspace_info` -- dict object containing info about the workspace (CO, user endpoint URL, etc.)/
-- `fact_co_users` -- list of dict objects representing the SRAM users on the workspace.
-- `fact_co_groups` -- dict with group names from the CO as keys, and lists of usernames in those groups as values. 
+- `fact_workspace_info` -- Dict. Object containing info about the workspace (CO, user endpoint URL, etc.)/
+- `fact_desktop_workspace` -- Boolean. True if the workspace has a desktop environment.
+- `fact_workspace_storage` -- List. List of Strings of paths to ResearchCloud storage volumes mounted on the workspace.
 
 ## Requires
 Linux flavor operating system.
@@ -31,63 +31,28 @@ See here for example output of the facts.
 }
 ```
 
-`fact_co_users`:
+`fact_workspace_storage`: 
 
 ```json
-"fact_co_users": [
+ "fact_workspace_storage": [
     {
-        "integer_id": 1781,
-        "research_drive_secret": null,
-        "roles": [
-            "rsc_developers",
-            "src_developers",
-            "@all",
-            "src_co_developer"
-        ],
-        "services": [],
-        "ssh_keys": [
-            "ssh-rsa bla"
-        ],
-        "username": "foo"
+        "mount": "/data/foo",
+        "device": "/dev/vdb1",
+        "fstype": "xfs",
+        "options": "rw,relatime,attr2,inode64,logbufs=8,logbsize=32k,noquota",
+        "size_total": 53659811840,
+        "size_available": 24005615616,
+        "block_size": 4096,
+        "block_total": 13100540,
+        "block_available": 5860746,
+        "block_used": 7239794,
+        "inode_total": 26213824,
+        "inode_available": 26196400,
+        "inode_used": 17424,
+        "uuid": "8a9dd671-1c48-4201-bc3h-350fcd883421"
     }
-]
+ ]
 ```
-
-`fact_co_groups`:
-
-```json
-"fact_co_groups": {
-    "@all": [
-        "user1",
-        "user2"
-    ],
-    "rsc_developers": [
-        "user1",
-        "user2"
-    ],
-    "src_co_admin": [
-        "user1",
-        "user2"
-    ],
-    "src_co_developer": [
-        "user1",
-        "user2"
-    ],
-    "src_co_wallet": [
-        "user1",
-        "user2"
-    ],
-    "src_developers": [
-        "user1",
-        "user2"
-    ],
-    "src_ws_admin": [
-        "user1",
-        "user2"
-    ]
-}
-```
-
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)

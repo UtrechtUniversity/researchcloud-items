@@ -3,5 +3,6 @@
   hosts: localhost
   gather_facts: true
   roles:
-    - agisoft
-...
+    - role: agisoft
+      vars:
+        license: "{{ content | replace('\\n', '\n') }}"

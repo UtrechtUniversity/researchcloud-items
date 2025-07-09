@@ -1,0 +1,35 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 80/tcp
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+    components:
+        - name: flask_app
+          path: flask_app.yml
+          parameters:
+            flask_name: hello
+            flask_module_path: hello/app.py
+            flask_proxy_auth: basic
+            flask_uwsgi_env: "MY_ENV1=foo MY_ENV2=bar"
+            flask_http_username: tester
+            flask_http_password: letmein
+            flask_repo: https://github.com/UtrechtUniversity/flask-examples.git
+            flask_pip_requirements: 'requirements.txt'
+            flask_proxy_location: '/'
+            flask_uwsgi_config_block: >
+              vacuum = false # just to test the flask_app_uswgi_config_block option

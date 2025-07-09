@@ -1,0 +1,9 @@
+---
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: nextflow
+        path: nextflow.yml
+        parameters:
+          nextflow_version: 24.10.2

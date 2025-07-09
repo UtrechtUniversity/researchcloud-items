@@ -3,13 +3,13 @@
   block:
     - name: Get homedir
       register: homedir
-      find:
-        paths: ['/home']
+      ansible.builtin.find:
+        paths: [/home]
         file_type: directory
 
     - name: Place KERNEL-README.ipynb in user's home directories.
-      copy:
+      ansible.builtin.copy:
         src: whisper_template.ipynb
-        dest: "{{item['path']}}/"
-        mode: 0777
+        dest: "{{ item['path'] }}/"
+        mode: "0777"
       with_items: "{{ homedir['files'] }}"

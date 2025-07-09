@@ -7,17 +7,23 @@ on:
   pull_request:
     branches:
       - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
 
 jobs:
 
   define_scenarios:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Get changed scenarios
         id: changed-scenarios
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46
         with:
           dir_names: true
           dir_names_max_depth: 2
@@ -25,14 +31,16 @@ jobs:
               molecule/playbook-*/*.yml
       - name: Get changed playbooks
         id: changed-playbooks
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v46
         with:
           files: |
               playbooks/*.yml
+      - name: List all changed files
+        run: echo '${{ steps.changed-playbooks.outputs.all_changed_files }}' '${{ steps.changed-scenarios.outputs.all_changed_files }}'
       - name: Set matrix based on changed files
         id: set-scenario-matrix
         run: |
-          PLAYBOOKS=(${playbooks})
+          PLAYBOOKS=(${{steps.changed-playbooks.outputs.all_changed_files}})
           PLAYBOOKS=("${PLAYBOOKS[@]/#playbooks\//playbook-}") # playbooks/foo.yml -> playbook-foo.yml
           PLAYBOOKS=("${PLAYBOOKS[@]/%.yml/}") # playbook-foo.yml -> playbook-foo
           echo "DEBUG PLAYBOOKS: ${PLAYBOOKS[*]}"
@@ -70,6 +78,7 @@ jobs:
       ANSIBLE_STDOUT_CALLBACK: yaml
       MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
       REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
+      ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
       CRUN_VER: 1.11.2
     strategy:
       fail-fast: false
@@ -95,6 +104,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r ${{ env.REQUIREMENTS_FILE }}
+      - run: ansible-galaxy install -r ${{ env.ANSIBLE_REQUIREMENTS_FILE }}
+      - run: ansible-galaxy install -r requirements.yml
       - name: Check if scenario exists
         id: check_scenario_exists
         run: |

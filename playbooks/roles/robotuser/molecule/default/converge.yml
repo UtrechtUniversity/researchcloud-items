@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: robotuser
+      vars:
+        robotuser_generate_ssh_key: "true"
+    - role: robotuser
+      vars:
+        robotuser_generate_ssh_key: "false"
+        robotuser_key: foo
+        robotuser_server: localhost
+        robotuser_sourcepath: /tmp/
+    - role: sshfs_configrobot
+    - role: sshfs_mount
+    - role: sshfs_cleanup

@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Install uv
+      ansible.builtin.include_role:
+        name: uv
+    - name: Testing pipx_install_systemwide role with uv
+      ansible.builtin.include_role:
+        name: pipx_install_systemwide
+      vars:
+        pipx_install_systemwide_use_uv: true
+        pipx_install_systemwide_packages:
+          - ibridges
+          - pycowsay

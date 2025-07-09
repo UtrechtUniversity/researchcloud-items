@@ -1,17 +1,17 @@
 ---
 - name: Install conda in shared environments
-  command: "{{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p {{ miniconda_install_dir }}"
+  ansible.builtin.command: "{{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p {{ miniconda_install_dir }}"
   tags: molecule-idempotence-notest
 
 - name: Create .condarc file for shares packages and environments
-  template:
+  ansible.builtin.template:
     src: .condarc.j2
     dest: "{{ miniconda_install_dir }}/.condarc"
     mode: "0755"
 
 # Without this, any package downloaded by another person is not retrievable from the cache by others.
 - name: Setuid rights on pkgs/ directory for multi-user support
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     group: "{{ miniconda_groupname }}"
     mode: g+rwxs
@@ -19,4 +19,3 @@
   loop:
     - "{{ miniconda_install_dir }}/pkgs/"
     - "{{ miniconda_install_dir }}/envs/"
-...

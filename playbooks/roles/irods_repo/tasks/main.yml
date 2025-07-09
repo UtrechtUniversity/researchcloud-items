@@ -2,23 +2,33 @@
 # adds iRODS repository, method depends on distro
 
 - name: Enable iRODS repository, yum package manager
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: iRODS
     description: RENCI iRODS Repository
-    baseurl: '{{ irods_repo_url }}/yum/pool/centos{{ irods_repo_yum_major_version }}/{{ ansible_architecture }}'
-    gpgkey: '{{ irods_repo_url }}/irods-signing-key.asc'
+    baseurl: "{{ irods_repo_url }}/yum/pool/centos{{ irods_distribution_major_version }}/{{ ansible_architecture }}"
+    gpgkey: "{{ irods_repo_url }}/irods-signing-key.asc"
     gpgcheck: true
   when: ansible_pkg_mgr  == 'yum'
+
+- name: Enable iRODS repository, dnf package manager
+  ansible.builtin.yum_repository:
+    name: iRODS
+    description: RENCI iRODS Repository
+    baseurl: "{{ irods_repo_url }}/yum/pool/el{{ ansible_distribution_major_version }}/{{ ansible_architecture }}"
+    gpgkey: "{{ irods_repo_url }}/irods-signing-key.asc"
+    gpgcheck: true
+  when: ansible_pkg_mgr == "dnf"
 
 - name: Download irods key
   ansible.builtin.get_url:
     url: "{{ irods_repo_url }}/irods-signing-key.asc"
     dest: "{{ irods_key_location }}"
+    mode: "0644"
   when: ansible_pkg_mgr == 'apt'
 
 - name: Add iRODS repository for apt package manager
-  apt_repository:
-    repo: "deb [signed-by={{ irods_key_location }}] {{ irods_repo_url }}/apt/ {{ ansible_distribution_release }} main"
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by={{ irods_key_location }}] {{ irods_repo_url }}/apt/ {{ irods_repo_apt_release }} main
     state: present
     filename: renci-irods
     update_cache: true

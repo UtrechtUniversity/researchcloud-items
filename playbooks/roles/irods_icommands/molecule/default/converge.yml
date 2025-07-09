@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: irods_icommands # irods_repo is auto-required by this role
+    - role: irods_iselect
+    - role: irods_skel

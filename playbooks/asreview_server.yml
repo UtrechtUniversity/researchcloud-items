@@ -1,0 +1,12 @@
+---
+- name: Install ASReview as server app
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: default_group
+      vars:
+        default_group_group:
+          groupname: asreview_user
+    - role: asreview_server
+      vars:
+        asreview_server_group: asreview_user

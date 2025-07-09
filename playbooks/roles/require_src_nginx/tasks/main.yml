@@ -1,0 +1,27 @@
+---
+- name: Check for presence of SRC Nginx
+  tags: molecule-idempotence-notest
+  block:
+    - name: Check for presence of SRC Nginx SRAM authentication config
+      ansible.builtin.lineinfile:
+        line: "{{ item }}"
+        dest: /etc/nginx/app-location-conf.d/authentication.conf
+      check_mode: true
+      register: src_nginx_config
+      with_items:
+        - location @custom_401 {
+        - location = /oauth2_callback {
+        - location = /validate {
+
+    - name: Stop if SRC nginx config is not present
+      ansible.builtin.fail:
+        msg: The SRC-Nginx component must be run before this component
+      when: src_nginx_config.changed
+
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+
+    - name: Stop if nginx is not installed
+      ansible.builtin.fail:
+        msg: Nginx must be installed and active for this component to work.
+      when: services['nginx.service'].state != 'running'
