@@ -1,9 +1,11 @@
 ---
 apt:
-  repo_keys: []
+  repo_keys:
+  - 'https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub'
   repos:
-  - 'deb http://archive.ubuntu.com/ubuntu focal main multiverse universe restricted'
-  - 'deb http://archive.ubuntu.com/ubuntu focal-security main multiverse universe restricted'
+  - 'deb http://archive.ubuntu.com/ubuntu jammy main multiverse universe restricted'
+  - 'deb http://archive.ubuntu.com/ubuntu jammy-security main multiverse universe restricted'
+  - 'deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64'
   packages:
   - ncdu
   - ffmpeg
