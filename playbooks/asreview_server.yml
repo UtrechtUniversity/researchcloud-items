@@ -2,6 +2,9 @@
 - name: Install ASReview as server app
   hosts: localhost
   gather_facts: true
+  vars:
+    # Used to install e.g. ASReview Nemo in a separate catalog item:
+    _asreview_extra_pkgs: "{{ asreview_extra_pkgs | default('') | split(',') | map('trim') | select }}"
   roles:
     - role: default_group
       vars:
@@ -10,3 +13,4 @@
     - role: asreview_server
       vars:
         asreview_server_group: asreview_user
+        asreview_server_extra_pkgs: "{{ _asreview_extra_pkgs }}"

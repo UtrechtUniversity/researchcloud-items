@@ -7,3 +7,5 @@ asreview_server_nginx_remote_user_var: "${{ (asreview_server_auth == 'basic') | 
 asreview_server_default_data_dir: "{{ asreview_server_config_dir }}"
 asreview_server_cron_script: /etc/rsc/cron_asreview_user.sh
 asreview_server_cron_logfile: /var/log/asreview_cron.log
+asreview_server_base_pkgs:
+  - asreview
