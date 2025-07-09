@@ -9,6 +9,7 @@ apt:
   - ffmpeg
   - libcudnn8
   - libcudnn8-dev
+
 miniconda:
   name: whisperX
   channels:
@@ -20,7 +21,6 @@ miniconda:
   - ipykernel
   - pip
   - pip:
-    - ffmpeg-python
     - openai-whisper
     - whisperx
   prefix: /etc/miniconda/envs
