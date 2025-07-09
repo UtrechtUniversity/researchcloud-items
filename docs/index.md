@@ -103,6 +103,8 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
+- [jupyterhub](roles/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io) on the workspace, with SRAM auth.
+- [jupyterhub_standalone_proxy](roles/jupyterhub_standalone_proxy.md) use [Jupyter Standalone Proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/standalone.html) to spawn an arbritary web application running as a logged in user.
 - [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
