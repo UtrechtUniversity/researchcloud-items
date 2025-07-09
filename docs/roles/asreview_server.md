@@ -30,7 +30,8 @@ This role installs the ASReview webapplication. It utilizes the [nginx_reverse_p
 - `asreview_server_use_storage`: Boolean. When `true`, ASReview will utilize a storage unit if it is attached to the workspace. If multiple storages are attached, the first one (alphanumerically) will be used. Default: `true`.
 - `asreview_server_group`: String. Name of the group for the webserver that should have access to ASReview data. Default: `www-data`.
 - `asreview_server_cron_users`: Boolean. If true, periodically (every 15 mins) check for new users from SRAM and add them to ASReview. Default: `true`.
-- 
+- `asreview_server_extra_pkgs`: List of extra `pypi` packages (in addition to `asreview`) that should be installed into ASReview's `venv`. Can be used to install ASReview extras such as the `asreview-dory` package.
+
 ## See also
 
 - Role [flask_app](./flask_app.md)

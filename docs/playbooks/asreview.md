@@ -14,6 +14,7 @@ This component installs the ASReview webapplication. Users in the collaboration 
 ## Variables
 
 - `asreview_server_use_storage`: Boolean. When `true`, ASReview will utilize a storage unit if it is attached to the workspace. If multiple storages are attached, the first one (alphanumerically) will be used. Default: `true`.
+- `asreview_extra_pkgs`: String. Comma-separated extra packages (in addition to `asreview`) that should be installed into ASReview's `venv`. Can be used to install ASReview extras such as the `asreview-dory` package.
 
 ## See also
 
