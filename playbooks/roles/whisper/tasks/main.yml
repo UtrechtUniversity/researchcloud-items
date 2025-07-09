@@ -1,4 +1,12 @@
 ---
+- name: Install libcudnn
+  when: ansible_pkg_mgr == 'apt'
+  ansible.builtin.apt:
+    name:
+      - libcudnn8
+      - libcudnn8-dev
+    state: present
+    update_cache: true
 - name: Copy whisper template jupyter notebook to user's home directories
   block:
     - name: Get homedir
