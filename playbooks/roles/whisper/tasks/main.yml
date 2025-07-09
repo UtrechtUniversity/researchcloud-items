@@ -6,8 +6,7 @@
       - libcudnn8
       - libcudnn8-dev
     state: present
-    update_cache: yes
-    
+    update_cache: true
 - name: Copy whisper template jupyter notebook to user's home directories
   block:
     - name: Get homedir
