@@ -7,6 +7,8 @@ jupyterhub_basic_pkgs:
   - jupyterhub
   - jhub-remote-user-authenticator
   - sudospawner
+  - jupyter-server-proxy
+  - jupyterlab-git
 jupyterhub_default_proxy_config:
   name: jupyterhub
   location: "{{ jupyterhub_uri }}"
