@@ -13,3 +13,11 @@ jupyterhub_http_password: ""
 jupyterhub_create_default_group: true
 jupyterhub_remote_user_header: REMOTE_USER
 jupyterhub_activate_remote_user_auth: false
+jupyterhub_config_env_keep:
+  - JUPYTERHUB_ACTIVITY_URL
+  - JUPYTERHUB_SERVER_NAME
+  - PATH
+  - JUPYTERHUB_SINGLEUSER_APP
+  - PYTHONPATH
+  - CONDA_ROOT
+  - CONDA_DEFAULT_ENV
