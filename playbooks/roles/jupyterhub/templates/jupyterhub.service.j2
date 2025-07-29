@@ -9,6 +9,5 @@ Restart=on-failure
 RestartSec=42s
 User={{ jupyterhub_user }}
 Environment=PATH=/usr/local/bin:{{ jupyterhub_venv }}/bin:/usr/bin/:/bin
-Environment=PYTHONPATH={{ jupyterhub_venv }}
 [Install]
 WantedBy=multi-user.target
