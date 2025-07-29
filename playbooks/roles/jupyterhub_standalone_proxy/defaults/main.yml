@@ -11,5 +11,9 @@ jhsp_config_env_keep:
   - JUPYTERHUB_SERVER_NAME
   - PATH
   - JUPYTERHUB_SINGLEUSER_APP
+  - PYTHONPATH
+  - CONDA_ROOT
+  - CONDA_DEFAULT_ENV
 jhsp_jupyterhub_user: jupyter
 jhsp_jupyterhub_allowed_users_group: jupyterhub
+jhsp_enable_notebook: false # standalone proxy mode by default
