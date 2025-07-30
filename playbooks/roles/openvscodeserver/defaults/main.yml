@@ -1,0 +1,6 @@
+---
+openvscode_server_dir: /opt/openvscode-server
+openvscode_server_user: root
+openvscode_server_group: root
+openvscodeserver_version: ''
+openvscodeserver_arch: "{{ (ansible_architecture == 'x86_64') | ternary('x64', ansible_architecture)"

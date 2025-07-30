@@ -1,0 +1,21 @@
+---
+- name: Install OpenVSCode Server
+  hosts: localhost
+  gather_facts: true
+  vars:
+    _openvscode_base_path: "{{ openvscode_base_path | default('/', true) }}"
+  roles:
+    - role: openvscodeserver
+    - role: jupyterhub_standalone_proxy
+      vars:
+        jupyterhub_uri: "{{ _openvscode_base_path }}"
+        jhsp_standalone_proxy_cmd_args:
+          - "--"
+          - "{{ openvscodeserver_cmd_path }}"
+          - "--disable-telemetry"
+          - "--accept-server-license-terms"
+          - "--server-base-path={{ _openvscode_base_path }}"
+          - "--socket-path={unix_socket}"
+          # - "--server-data-dir="
+          # - "--user-data-dir="
+          # - "--extensions-dir="
