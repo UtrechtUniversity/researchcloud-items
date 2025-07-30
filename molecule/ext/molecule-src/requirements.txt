@@ -1,4 +1,5 @@
 # Default requirements file for running SRC molecule tests
+ansible~=9.12
 molecule~=24.7
 molecule-plugins~=23.5
 jmespath~=1.0
