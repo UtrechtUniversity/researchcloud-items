@@ -4,8 +4,6 @@
   gather_facts: true
   vars:
     _openvscode_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', openvscode_fqdn) }}"
-    _openvscode_pip_executable: "{{ openvscode_pip_executable | default('pip', true) }}"
-    _openvscode_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', openvscode_fqdn) }}"
     _openvscode_standalone: "{{ openvscode_standalone | default(true, true) | bool }}"
     _openvscode_base_path: "{{ openvscode_base_path | default('/', true) }}"
     _openvscode_jupyter_venv_path: "{{ openvscode_jupyter_venv_path | default('') }}"
