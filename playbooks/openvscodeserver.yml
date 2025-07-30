@@ -4,28 +4,23 @@
   gather_facts: true
   vars:
     _openvscode_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', openvscode_fqdn) }}"
-    _openvscode_pip_executable: "{{ openvscode_pip_executable | default('pip', true) }}"
-    _openvscode_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', openvscode_fqdn) }}"
-    _openvscode_standalone: "{{ openvscode_standalone | default(true, true) | bool }}"
     _openvscode_base_path: "{{ openvscode_base_path | default('/', true) }}"
-    _openvscode_jupyter_venv_path: "{{ openvscode_jupyter_venv_path | default('') }}"
-    _openvscode_jupyter_config_dir: "{{ openvscode_jupyter_config_dir | default('') }}"
-    _openvscode_jupyter_force_install: "{{ openvscode_jupyter_force_install | default(false, true) | bool }}"
+    _openvscode_jupyter_force_install: "{{ openvscode_jupyter_force_install | default(false, true) | bool }}" # should be set to true if a previous component has already installed JupyterHub.
   roles:
     - role: openvscodeserver
     - role: jupyterhub_standalone_proxy
-      when: _openvscode_standalone # install jupyterhub and openvscodeserver as a standalone app.
+      when: _openvscode_jupyter_force_install
+      # install jupyterhub and openvscodeserver as a standalone app.
       vars:
         jupyterhub_uri: "{{ _openvscode_base_path }}"
         jhsp_external_addr: "{{ _openvscode_fqdn }}"
-        jhsp_force_install: "{{ _openvscode_jupyter_force_install }}"
     - role: jupyterhub_app
       vars:
         jupyterhub_app_name: openvscode
-        jupyterhub_app_venv: "{{ _openvscode_jupyter_venv_path | default(jupyterhub_venv_path, true) }}"
-        jupyterhub_app_config_dir: "{{ _openvscode_jupyter_config_dir | default(jupyterhub_config_dir_path, true) | default(omit) }}"
-        jupyterhub_app_pip: jupyter-openvscodeserver-proxy==0.9.3
-        jupyterhub_app_pip_executable: "{{ openvscode_pip_executable | default(omit, true) }}"
+        jupyterhub_app_venv: "{{ openvscode_jupyter_venv_path | default('') }}"
+        jupyterhub_app_config_dir: "{{ openvscode_jupyter_config_dir | default('') }}"
+        jupyterhub_app_pip: jupyter-openvscodeserver-proxy==0.9.3 # this will install the extension even when running in standalone mode, but in that case it will do nothing.
+        jupyterhub_app_pip_executable: "{{ _openvscode_jupyter_force_install | ternary('uv_pip', 'pip') }}" # when force install is true, uv will be installed -- use it for better performance.
         jupyterhub_app_standalone_config: |
           from utils import *
 

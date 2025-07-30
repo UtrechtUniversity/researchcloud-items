@@ -1,0 +1,6 @@
+---
+openvscodeserver_latest_url: https://api.github.com/repos/gitpod-io/openvscode-server/releases/latest
+openvscodeserver_base_url: https://github.com/gitpod-io/openvscode-server/releases/download/
+openvscodeserver_default_download_url: "{{ openvscodeserver_base_url }}/openvscode-server-{{ openvscodeserver_version }}/openvscode-server-{{ openvscodeserver_version
+  }}-{{ openvscodeserver_arch }}{{ openvscodeserver_ext }}"
+openvscodeserver_ext: ".tar.gz"

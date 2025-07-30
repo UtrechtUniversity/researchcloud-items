@@ -1,5 +1,6 @@
 ---
 jupyterhub_port: 8000
+jupyterhub_config_dir: /usr/local/etc/jupyter/
 jupyterhub_uri: /
 jupyterhub_auth: "{{ jupyterhub_default_auth }}"
 jupyterhub_bind_addr: 127.0.0.1
@@ -16,8 +17,13 @@ jupyterhub_activate_remote_user_auth: false
 jupyterhub_config_env_keep:
   - JUPYTERHUB_ACTIVITY_URL
   - JUPYTERHUB_SERVER_NAME
-  - PATH
+  - JUPYTERHUB_API_URL
+  - JUPYTERHUB_API_TOKEN
+  - JUPYTERHUB_SERVICE_URL
   - JUPYTERHUB_SINGLEUSER_APP
+  - JUPYTERHUB_USER
+  - JUPYTERHUB_GROUP
   - PYTHONPATH
+  - PATH
   - CONDA_ROOT
   - CONDA_DEFAULT_ENV

@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test OpenVSCode Server
+      ansible.builtin.uri:
+        url: http://localhost/ide
+        method: GET
+        headers:
+          user: testuser
+        return_content: true
+        follow_redirects: true
+      register: openvscode_login
+      failed_when: openvscode_login.url != 'http://localhost/ide/user/testuser/'
+      retries: 5
+      delay: 3
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"vscode-workbench" in openvscode_login.content'
