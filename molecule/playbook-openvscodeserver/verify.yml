@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test OpenVSCode Server
+      ansible.builtin.uri:
+        url: http://localhost
+        method: GET
+        headers:
+          user: testuser
+      register: openvscode_login
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"Welcome" in openvscode_login.content'
