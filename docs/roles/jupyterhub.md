@@ -14,7 +14,10 @@ Install [JupyterHub](https://jupyterhub.readthedocs.io/en/stable/) on the worksp
 
 This role installs the JupyterHub webapplication.
 
-The role will set the `jupyterhub_venv_path` fact to the path of the virtual environment containing JupyterHub, for other roles or playbooks to use.
+The role will set certain facts that can be used by other roles to know where JupyterHub is installed: 
+
+- `jupyterhub_venv_path`. String. Path of the virtual environment containing JupyterHub.
+- `jupyterhub_config_dir_path`. String. Path to the directory containing the main configuration files (see `jupyterhub_config_dir` below).
 
 ### Authentication and authorization
 
@@ -33,10 +36,11 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 - `jupyterhub_auth`: String. Should be one of `sram`, `basic`, or `noauth`. See the [nginx location role](./nginx_location.md). Default: `sram`.
 - `jupyterhub_bind_addr`: String. IP address/host on which the hub will be listening. Default: `127.0.0.1`.
 - `jupyterhub_extra_pkgs`: List. Extra pypi packages that will be installed in jupyterhub's `venv` in addition the required base packages. Default: `[]`.
+- `jupyterhub_config_dir`: String.  Path where the configuration files should be stored. Default: `/usr/local/etc/jupyterhub`.
 - `jupyterhub_config_extra`: String. Extra python code that will be inserted in the JupyterHub config file. The config object is called `c`. See the [JupyterHub docs](https://jupyterhub.readthedocs.io/en/5.2.1/reference/api/app.html). Default: `""`.
 - `jupyterhub_allowed_users_group`: String. Name of the group, users in which will be able to use `jupyterhub`.
 - `jupyterhub_enable_notebooks`: Boolean. Whether to actually enable the use of notebooks. This can be disabled for non-standard use of JupyterHub, e.g. with the [standalone proxy](./jupyterhub_standalone_proxy.md). Default: `true`.
-- `jupyterhub_config_env_keep`: List of environment variables, the values of which will be passed along to each spawned webapplication. Default: `['JUPYTERHUB_ACTIVITY_URL', 'JUPYTERHUB_SERVER_NAME', 'PATH', 'PYTHONPATH', 'CONDA_ROOT', 'CONDA_DEFAULT_ENV', 'JUPYTERHUB_SINGLEUSER_APP']`.
+- `jupyterhub_config_env_keep`: List of environment variables, the values of which will be passed along to each spawned webapplication. Default: `['JUPYTERHUB_ACTIVITY_URL', 'JUPYTERHUB_SERVER_NAME', 'JUPYTERHUB_API_URL', 'JUPYTERHUB_API_TOKEN', 'JUPYTERHUB_SERVICE_URL', 'JUPYTERHUB_SINGLEUSER_APP', 'JUPYTERHUB_USER', 'JUPYTERHUB_GROUP', 'PYTHONPATH', 'PATH', 'CONDA_ROOT', 'CONDA_DEFAULT_ENV]`.
 - `jupyterhub_proxy_config`: Dict. Settings that will be passed on to the `nginx_reverse_proxy` role. Will be merged with the default proxy settings, so this variable allows you to override settings. See the [proxy role](./nginx_reverse_proxy.md) for what the dict should look like. Default: `{}`.
 - `jupyterhub_http_username`: String. HTTP username to use when setting `jupyterhub_auth` to `basic`. Default: `""`.
 - `jupyterhub_http_password`: String. Default:: `""`.

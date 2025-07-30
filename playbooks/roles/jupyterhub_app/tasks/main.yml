@@ -1,0 +1,38 @@
+---
+- name: Get info on venv group
+  ansible.builtin.stat:
+    path: "{{ _jupyterhub_app_venv }}"
+  register: jupyterhub_app_stat
+
+- name: Fail if venv does not exist
+  when: not (jupyterhub_app_stat.stat.isdir is defined and jupyterhub_app_stat.stat.isdir)
+  ansible.builtin.fail:
+    msg: "Could not find venv in {{ _jupyterhub_app_venv }}. Exiting!"
+
+- name: Install extension into venv
+  when: jupyterhub_app_pip | length > 0
+  ansible.builtin.pip:
+    executable: "{{ jupyterhub_app_pip_executable }}"
+    name: "{{ jupyterhub_app_pip }}"
+  environment:
+    VIRTUAL_ENV: "{{ _jupyterhub_app_venv }}"
+
+- name: Install standalone config
+  when: jupyterhub_app_standalone_config | length > 0
+  block:
+
+    - name: Create standalone config dir
+      ansible.builtin.file:
+        dest: "{{ _jupyterhub_app_standalone_config_dir }}"
+        state: directory
+        owner: root
+        group: "{{ jupyterhub_app_stat.stat.gr_name }}"
+        mode: "0755"
+
+    - name: Place standalone proxy config
+      ansible.builtin.copy:
+        dest: "{{ _jupyterhub_app_standalone_config_dir }}/{{ jupyterhub_app_name }}.conf.py"
+        owner: root
+        group: "{{ jupyterhub_app_stat.stat.gr_name }}"
+        mode: "0644"
+        content: "{{ jupyterhub_app_standalone_config }}"

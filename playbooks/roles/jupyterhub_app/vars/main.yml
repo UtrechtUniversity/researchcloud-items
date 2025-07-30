@@ -1,0 +1,4 @@
+---
+_jupyterhub_app_venv: "{{ jupyterhub_app_venv | default(jupyterhub_venv_path, true) | default('/usr/local/jupyterhub') }}" # jupyterhub_venv_path is set by the jupyterhub role if it was called in the same playbook.
+_jupyterhub_app_config_dir: "{{ jupyterhub_app_config_dir | default(jupyterhub_config_dir_path, true) | default('/usr/local/etc/jupyter') }}" # jupyterhub_config_dir_path is set by the jupyterhub role if it was called in the same playbook.
+_jupyterhub_app_standalone_config_dir: "{{ _jupyterhub_app_config_dir }}/standalone"

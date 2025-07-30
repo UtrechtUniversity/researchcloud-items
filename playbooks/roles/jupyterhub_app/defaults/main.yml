@@ -1,0 +1,6 @@
+---
+jupyterhub_app_name: app
+jupyterhub_app_venv: ""
+jupyterhub_app_config_dir: ""
+jupyterhub_app_standalone_config: ""
+jupyterhub_app_pip_executable: pip
