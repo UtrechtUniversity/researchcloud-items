@@ -13,12 +13,15 @@ Follow the installation and setup instructions below, then run:
 ### Requirements
 
 1. Docker and/or Podman (to spin up test containers)
-1. Python and pip   
+1. Python and pip
 1. Ansible
 1. Molecule
 1. Access to the [test container images](https://github.com/UtrechtUniversity/SRC-test-workspace)
 
-Before you start, run `pip install -r molecule/ext/molecule-src/requirements.txt` to install Molecule itself and other python dependencies.
+Before you start, run:
+
+* `pip install -r molecule/ext/molecule-src/requirements.txt` to install Molecule itself and other python dependencies.
+* `ansible-galaxy install -r molecule/ext/molecule-src/requirements.yml` to install Ansible collection dependencies.
 
 The default `molecule.yml` is configured to use the images from [this package](https://github.com/UtrechtUniversity/SRC-test-workspace/), but you can override this to use other images.
 
