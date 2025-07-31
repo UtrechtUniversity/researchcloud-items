@@ -1,3 +1,4 @@
 ---
 jhsp_basic_pkgs:
   - git+https://github.com/jupyterhub/jupyter-server-proxy.git[standalone]
+jhsp_standalone_proxy_config_file: "{{ jhsp_standalone_proxy_config_dir }}/{{ jhsp_app_name }}.conf.py"
