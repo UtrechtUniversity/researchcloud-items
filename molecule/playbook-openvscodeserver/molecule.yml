@@ -1,4 +1,16 @@
 ---
+platforms:
+  - name: workspace-src-ubuntu_jammy-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
 provisioner:
   name: ansible
   env:
@@ -6,6 +18,8 @@ provisioner:
       - name: openvscodeserver
         path: openvscodeserver.yml
         parameters:
+          openvscode_standalone: true
+          openvscode_pip_executable: uv_pip
           jupyterhub_auth: noauth
           jupyterhub_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
           jupyterhub_proxy_config:
