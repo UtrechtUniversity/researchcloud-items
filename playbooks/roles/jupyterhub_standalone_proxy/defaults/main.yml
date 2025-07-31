@@ -11,5 +11,6 @@ jhsp_config_env_keep:
   - JUPYTERHUB_SERVER_NAME
   - PATH
   - JUPYTERHUB_SINGLEUSER_APP
+  - PYTHONPATH
 jhsp_jupyterhub_user: jupyter
 jhsp_jupyterhub_allowed_users_group: jupyterhub
