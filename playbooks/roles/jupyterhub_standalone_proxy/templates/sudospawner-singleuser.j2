@@ -3,8 +3,34 @@
 # Normally sudospawner would start the 'jupyter-singleuser' command (and launch a notebook)
 # We want it to run jupyter-standaloneproxy instead
 # See https://github.com/jupyterhub/sudospawner?tab=readme-ov-file#custom-singleuser-launch-command
-set -e
+set -eo pipefail
 
-# The final line will render (by default) as:
-# exec "/usr/local/jupyterhub/bin/jupyter-standalone proxy" "--config=/etc/jupyterhub//etc/jupyterhub/standalone-proxy-config.py"
+# Add jhsp_standalone_proxy_config_dir to PYTHONPATH so utils.py in that directory can be loaded as a module
+export PYTHONPATH="$PYTHONPATH:{{ jhsp_standalone_proxy_config_dir }}"
+
+{% if jhsp_standalone_proxy_cmd_args | length > 0 %}
+
 exec "{{ jupyterhub_venv_path }}/bin/{{ jhsp_standalone_proxy_cmd }}" {% for a in jhsp_standalone_proxy_cmd_args %}"{{ a }}" {% endfor %}
+
+{% else %}
+
+# Check if a config file was passed by the SudoSpawner as an argument to this script ($1)
+if [[ $# -eq 1 ]]; then
+    # In this case, we expect $1 to be the bare name of a config file: e.g. app.conf.py
+    # So we need to prefix the standalone config directory to obtain an absolute path
+    CONFIG_DIR="/usr/local/etc/jupyter/standalone"
+    FILE_NAME="$1"
+    # Check that FILE_NAME is a filename and not a path (does not contain a slash)
+    # This is to guard against directory traversal
+    if [[ "$FILE_NAME" != *"/"* ]]; then
+        CONFIG_FILE="$CONFIG_DIR/$FILE_NAME"
+    fi
+fi
+
+if [[ -z "$CONFIG_FILE" || ! -e "$CONFIG_FILE" ]]; then
+    echo "No valid standalone app config provided: $CONFIG_FILE"
+    exit 1
+fi
+
+exec "{{ jupyterhub_venv_path }}/bin/{{ jhsp_standalone_proxy_cmd }}" "--config=$CONFIG_FILE"
+{% endif %}
