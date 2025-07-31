@@ -5,7 +5,7 @@
   tasks:
     - name: Test OpenVSCode Server
       ansible.builtin.uri:
-        url: http://localhost
+        url: http://localhost/test
         method: GET
         headers:
           user: testuser
