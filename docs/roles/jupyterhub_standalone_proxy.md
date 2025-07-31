@@ -24,17 +24,22 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 
 Only users in the group specified by `jupyterhub_allowed_users_group` variable are allowed to spawn in this way.
 
+### utils.py
+
+TODO
+
 ## Variables
 
 - `jhsp_enable_notebook`: Boolean. Whether standard settings for Jupyter Notebook should be enabled on the hood. Default: `false`. May be useful to set to `true` if you want to also serve notebook servers using the hub created by this role.
 - `jhsp_extra_pkgs`: List. Extra pypi packages that will be installed in jupyterhub's `venv` in addition the required base packages. Default: `[]`.
-- `jhsp_standalone_proxy_config_file`: String. Path to the config file for `jupyter-standalone-proxy`. Default: `/etc/jupyterhub/standalone-proxy-config.py`.
+- `jhsp_standalone_proxy_config_file`: String. Path to the config file for `jupyter-standalone-proxy`. Default: `/usr/local/etc/jupyter/standalone-proxy-config.py`.
 - `jhsp_standalone_proxy_config`:  String. Contents of the config file for `jupyter-standalone-proxy`.  Default: `""`.
 - `jhsp_standalone_proxy_cmd`: String. The command that will be spawned when a user logs in. Default: `"jupyter-standaloneproxy"`.
 - `jhsp_standalone_proxy_cmd_args`: List of command line args provided to `jhsp_standalone_proxy_cmd`. Default: `["--config={{ jhsp_standalone_proxy_config_file }}"]`.
-- `jhsp_config_env_keep`: List of environment variables, the values of which will be passed along to each spawned webapplication. Overrides `env_keep` set by the [JupyterhHub role](./jupyterhub.md). Default: `['JUPYTERHUB_ACTIVITY_URL', 'JUPYTERHUB_SERVER_NAME', 'PATH', 'PYTHONPATH', 'CONDA_ROOT', 'CONDA_DEFAULT_ENV', 'JUPYTERHUB_SINGLEUSER_APP']`.
+- `jhsp_config_env_keep`: List of environment variables, the values of which will be passed along to each spawned webapplication. Overrides `env_keep` set by the [JupyterhHub role](./jupyterhub.md). Default: `['JUPYTERHUB_ACTIVITY_URL', 'JUPYTERHUB_SERVER_NAME', 'JUPYTERHUB_API_URL', 'JUPYTERHUB_API_TOKEN', 'JUPYTERHUB_SERVICE_URL', 'JUPYTERHUB_SINGLEUSER_APP', 'JUPYTERHUB_USER', 'JUPYTERHUB_GROUP', 'PYTHONPATH', 'PATH']`.
 - `jhsp_jupyterhub_user`: String. The user the hub itself should run as. Default: `jupyter`.
 - `jhsp_jupyterhub_allowed_users_group`: String. Name of the group, users in which will be able to use the hub.
+- `jhsp_external_addr`: String. FQDN at whcih the service will be reached. Used to allowlist this FQDN for CORS when a proxied stanadlone app uses websockets (see [utils.py](#utilspy) above).
 
 ## Examples
 
