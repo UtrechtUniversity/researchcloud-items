@@ -22,6 +22,7 @@
 
 - name: Create standalone proxy config
   notify: Reload jupyterhub service
+  when: jhsp_standalone_proxy_config | length > 0
   ansible.builtin.copy:
     dest: "{{ jhsp_standalone_proxy_config_file }}"
     # don't let user jupyter edit this config file for security reasons
