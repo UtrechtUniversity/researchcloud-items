@@ -13,13 +13,13 @@
   ansible.builtin.set_fact:
     openvscodeserver_download_url: "{{ openvscodeserver_get_latest.stdout | default(openvscodeserver_default_download_url) }}"
 
-- name: Create openvscodeserver dir
+- name: Create openvscodeserver basedir
   ansible.builtin.file:
-    dest: "{{ openvscodeserver_dir }}"
+    dest: "{{ openvscodeserver_dir | dirname }}"
     state: directory
     mode: "0755"
-    owner: "{{ openvscodeserver_user }}"
-    group: "{{ openvscodeserver_group }}"
+    owner: "{{ openvscodeserver_user | default(omit, true) }}"
+    group: "{{ openvscodeserver_group | default(omit, true) }}"
 
 - name: Download and unarchive openvscode-server
   ansible.builtin.unarchive:
