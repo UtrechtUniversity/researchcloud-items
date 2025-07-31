@@ -4,7 +4,7 @@
     name: jupyterhub
   vars:
     jupyterhub_user: "{{ jhsp_jupyterhub_user }}"
-    jupyterhub_enable_notebooks: false # standalone proxy mode
+    jupyterhub_enable_notebooks: "{{ jhsp_enable_notebook }}"
     jupyterhub_extra_pkgs: "{{ jhsp_basic_pkgs + jhsp_extra_pkgs }}"
     jupyterhub_allowed_users_group: "{{ jhsp_jupyterhub_allowed_users_group }}"
     jupyterhub_config_extra: |

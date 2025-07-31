@@ -36,6 +36,7 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 - `jupyterhub_config_extra`: String. Extra python code that will be inserted in the JupyterHub config file. The config object is called `c`. See the [JupyterHub docs](https://jupyterhub.readthedocs.io/en/5.2.1/reference/api/app.html). Default: `""`.
 - `jupyterhub_allowed_users_group`: String. Name of the group, users in which will be able to use `jupyterhub`.
 - `jupyterhub_enable_notebooks`: Boolean. Whether to actually enable the use of notebooks. This can be disabled for non-standard use of JupyterHub, e.g. with the [standalone proxy](./jupyterhub_standalone_proxy.md). Default: `true`.
+- `jupyterhub_config_env_keep`: List of environment variables, the values of which will be passed along to each spawned webapplication. Default: `['JUPYTERHUB_ACTIVITY_URL', 'JUPYTERHUB_SERVER_NAME', 'PATH', 'PYTHONPATH', 'CONDA_ROOT', 'CONDA_DEFAULT_ENV', 'JUPYTERHUB_SINGLEUSER_APP']`.
 - `jupyterhub_proxy_config`: Dict. Settings that will be passed on to the `nginx_reverse_proxy` role. Will be merged with the default proxy settings, so this variable allows you to override settings. See the [proxy role](./nginx_reverse_proxy.md) for what the dict should look like. Default: `{}`.
 - `jupyterhub_http_username`: String. HTTP username to use when setting `jupyterhub_auth` to `basic`. Default: `""`.
 - `jupyterhub_http_password`: String. Default:: `""`.
