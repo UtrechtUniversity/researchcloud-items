@@ -1,0 +1,10 @@
+from tornado.websocket import WebSocketHandler
+
+def custom_check_origin_patch():
+    """Monkey patch the check_origin method to allow CORS from the required"""
+    def custom_check_origin(self, origin):
+        return origin in [
+            'http://{{ jhsp_external_addr }}',
+            'https://{{ jhsp_external_addr }}',
+        ]
+    WebSocketHandler.check_origin = custom_check_origin

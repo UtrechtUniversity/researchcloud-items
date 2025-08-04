@@ -3,6 +3,7 @@
   hosts: localhost
   gather_facts: true
   vars:
+    _openvscode_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', openvscode_fqdn) }}"
     _openvscode_pip_executable: "{{ openvscode_pip_executable | default('pip', true) }}"
     _openvscode_standalone: "{{ openvscode_standalone | default(true, true) }}"
     _openvscode_base_path: "{{ openvscode_base_path | default('/', true) }}"
@@ -14,17 +15,22 @@
       when: _openvscode_standalone # install jupyterhub and openvscodeserver as a standalone app.
       vars:
         jupyterhub_uri: "{{ _openvscode_base_path }}"
+        jhsp_external_addr: "{{ _openvscode_fqdn }}"
         jhsp_standalone_proxy_config: |
-          c.StandaloneProxyServer.command = [
-              "{{ openvscodeserver_cmd_path }}",
+          from utils import *
+
+          custom_check_origin_patch() # apply monkeypatch for custom CORS allowlist for websockets
+
+          c.StandaloneProxyServer.unix_socket = True
+
+          c.StandaloneProxyServer.command =  [
+              "/opt/openvscode-server/bin/openvscode-server",
               "--disable-telemetry",
               "--accept-server-license-terms",
-              "--server-base-path={{ _openvscode_base_path }}"
-              "--socket-path={unix_socket}"
+              "--server-base-path={{ _openvscode_base_path }}",
+              "--socket-path={unix_socket}",
+              "--without-connection-token",
           ]
-          # - "--server-data-dir="
-          # - "--user-data-dir="
-          # - "--extensions-dir="
 
   tasks:
     - name: Install Jupyter Server OpenVSCode extension
