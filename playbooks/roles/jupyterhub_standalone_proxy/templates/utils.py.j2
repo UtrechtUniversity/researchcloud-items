@@ -1,10 +1,56 @@
+import glob
+import os
+from pathlib import Path
+
+# File containing general utilities useful for standalone proxy app configs
+# Can be imported from within a config file with "from utils import *"
+
+# Monkeypatch tornado's WebSocketHandler
+# This is necessary to allow-list certain domains for CORS when using websockets
+
 from tornado.websocket import WebSocketHandler
 
-def custom_check_origin_patch():
-    """Monkey patch the check_origin method to allow CORS from the required"""
+def patch_check_origin():
+    """Monkey patch the check_origin method to allow CORS from the required domains"""
     def custom_check_origin(self, origin):
         return origin in [
             'http://{{ jhsp_external_addr }}',
             'https://{{ jhsp_external_addr }}',
         ]
     WebSocketHandler.check_origin = custom_check_origin
+
+def get_standalone_proxy_config(standalone_proxy_cfg_dir, spawner):
+  standalone_cfgs = glob.glob(f"%s/*.conf.py" % standalone_proxy_cfg_dir)
+
+  if len(standalone_cfgs) == 0:
+    raise Exception(f"No standalone proxy app config (ending with .conf.py) found in %s" % standalone_proxy_cfg_dir)
+  elif len(standalone_cfgs) == 1:
+    spawner.args = [os.path.basename(standalone_cfgs[0])]
+    return spawner
+  else:
+    opts = [
+      '<option value="{f}">{f}</option>'.format(f=os.path.basename(filename))
+      for filename in standalone_cfgs
+    ]
+
+    spawner.options_form = f"""
+          <label for="select-application">Choose Application: </label>
+          <select name="application" required>
+          {opts}
+          </select>
+    """ %  opts
+
+    default_app = os.path.basename(standalone_cfgs[0])
+    def select_application(spawner):
+      application = spawner.user_options.get("application")
+      if application:
+          filename = application[0]
+          if not '/' in filename and os.path.exists(os.path.join(standalone_proxy_cfg_dir, filename)):
+            spawner.args = [filename]
+          else:
+            raise Exception(f"Not a valid standalone app: %s" % filename)
+      else:
+          spawner.args = [default_app]
+
+    spawner.pre_spawn_hook = select_application
+    return spawner

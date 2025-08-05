@@ -3,10 +3,38 @@
 # Normally sudospawner would start the 'jupyter-singleuser' command (and launch a notebook)
 # We want it to run jupyter-standaloneproxy instead
 # See https://github.com/jupyterhub/sudospawner?tab=readme-ov-file#custom-singleuser-launch-command
-set -e
+set -eo pipefail
 
+# Add jhsp_standalone_proxy_config_dir to PYTHONPATH so utils.py in that directory can be loaded as a module
 export PYTHONPATH="$PYTHONPATH:{{ jhsp_standalone_proxy_config_dir }}"
 
+{% if jhsp_proxy_config | length > 0 %}
+
+# If proxy config file contents were provided to the role, use the location of the provided config file.
+CONFIG_FILE="{{ jhsp_standalone_proxy_config_file }}"
+
+{% else %}
+
+# If no proxy config file contents were provided to the role, attempt to use $1 as a config file.
+if [[ $# -eq 1 ]]; then
+    # In this case, we expect $1 to be the bare name of a config file: e.g. app.conf.py
+    # So we need to prefix the standalone config directory to obtain an absolute path
+    CONFIG_DIR="/usr/local/etc/jupyter/standalone"
+    FILE_NAME="$1"
+    # Check that FILE_NAME is a filename and not a path (does not contain a slash)
+    # This is to guard against directory traversal
+    if [[ "$FILE_NAME" != *"/"* ]]; then
+        CONFIG_FILE="$CONFIG_DIR/$FILE_NAME"
+    fi
+fi
+
+{% endif %}
+
+if [[ -z "$CONFIG_FILE" || ! -e "$CONFIG_FILE" ]]; then
+    echo "No valid standalone app config provided: $CONFIG_FILE"
+    exit 1
+fi
+
 # The final line will render (by default) as:
-# exec "/usr/local/jupyterhub/bin/jupyter-standalone proxy" "--config=/etc/jupyterhub//etc/jupyterhub/standalone-proxy-config.py"
-exec "{{ jupyterhub_venv_path }}/bin/{{ jhsp_standalone_proxy_cmd }}" {% for a in jhsp_standalone_proxy_cmd_args %}"{{ a }}" {% endfor %}
+# exec "/usr/local/jupyterhub/bin/jupyter-standalone proxy" "--config=/usr/local/etc/jupyter/standalone-proxy-config.py"
+exec "{{ jupyterhub_venv_path }}/bin/{{ jhsp_standalone_proxy_cmd }}" {% for a in jhsp_standalone_proxy_cmd_args %}"{{ a }}"{% endfor %} "--config=$CONFIG_FILE"

@@ -2,9 +2,8 @@
 jhsp_extra_pkgs: []
 jhsp_proxy_config: ""
 jhsp_standalone_proxy_cmd: "jupyter-standaloneproxy"
-jhsp_standalone_proxy_cmd_args:
-  - "--config={{ jhsp_standalone_proxy_config_file }}"
-jhsp_standalone_proxy_config_dir: /etc/jupyterhub/standalone
+jhsp_standalone_proxy_cmd_args: []
+jhsp_standalone_proxy_config_dir: /usr/local/etc/jupyter/standalone
 jhsp_standalone_proxy_config_file: "{{ jhsp_standalone_proxy_config_dir }}/standalone-proxy-config.py"
 jhsp_standalone_proxy_config: {}
 jhsp_config_env_keep:
@@ -18,8 +17,6 @@ jhsp_config_env_keep:
   - JUPYTERHUB_GROUP
   - PYTHONPATH
   - PATH
-  - CONDA_ROOT
-  - CONDA_DEFAULT_ENV
 jhsp_jupyterhub_user: jupyter
 jhsp_jupyterhub_allowed_users_group: jupyterhub
 jhsp_enable_notebook: false # standalone proxy mode by default

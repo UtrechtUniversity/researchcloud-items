@@ -11,6 +11,10 @@
       {% if jhsp_config_env_keep | length > 0 %}
       c.Spawner.env_keep = {{ jhsp_config_env_keep | string }}
       {% endif %}
+      import sys
+      sys.path.append('{{ jhsp_standalone_proxy_config_dir | dirname }}')
+      from standalone.utils import get_standalone_proxy_config
+      c.Spawner = get_standalone_proxy_config('{{ jhsp_standalone_proxy_config_dir }}', c.Spawner)
 
 - name: Install sudospawner-singleuser script
   ansible.builtin.template:
@@ -22,21 +26,32 @@
 
 - name: Create standalone config dir and files
   block:
-    - name: Create standalone proxy config
+    # SECURITY NOTE: It is essential that the config files in the standalone config dir are not user-editable!
+    # If an end user OR the user under which JupyterHub is running ('jupyter') could edit this file,
+    # then the command run by jupyter-standaloneproxy could be arbitrarily changed.
+    # This means that arbitrary commands could be run with sudospawner.
+    # We prevent this by setting root as the owner and mode "0640".
+    # The file should be readable by users in the hub-users group (default: 'jupyterhub'),
+    # because it will be read by jupyter-standalone executed as one of the 'regular' users.
+    # This ensures that only the intended command specified by jhsp_standalone_proxy_cmd and jhsp_standalone_proxy_cmd_args
+    # can ever by run by sudospawner.
+
+    - name: Create standalone proxy config dir
+      ansible.builtin.file:
+        dest: "{{ jhsp_standalone_proxy_config_dir }}"
+        owner: root
+        group: "{{ jhsp_jupyterhub_allowed_users_group }}"
+        mode: "0755"
+        state: directory
+
+    - name: Create user-provided standalone proxy config
       notify: Reload jupyterhub service
       when: jhsp_standalone_proxy_config | length > 0
       ansible.builtin.copy:
         dest: "{{ jhsp_standalone_proxy_config_file }}"
-        # don't let user jupyter edit this config file for security reasons
-        # if jupyetr user could edit this file, then the command run by jupyter-standaloneproxy could be arbitrarily changed
-        # in case of an exploit of the hub. This means that arbitrary commands could be run with sudospawner.
-        # We prevent this by setting root as the owner and mode "0640". The file should be readable by users in the hub group,
-        # because it will be read by jupyter-standalone executed as one of the 'regular' users.
-        # This ensures that only the intended command specified by jhsp_standalone_proxy_cmd and jhsp_standalone_proxy_cmd_args
-        # can ever by run by sudospawner.
         owner: root
         group: "{{ jhsp_jupyterhub_allowed_users_group }}"
-        mode: "0640"
+        mode: "0644"
         content: "{{ jhsp_standalone_proxy_config }}"
 
     - name: Create standalone proxy utils
@@ -45,12 +60,12 @@
         src: templates/utils.py.j2
         owner: root
         group: "{{ jhsp_jupyterhub_allowed_users_group }}"
-        mode: "0640"
+        mode: "0644"
 
-    - name: Create standalone proxy init file
-      ansible.builtin.file:
+    - name: Create standalone proxy module init file
+      ansible.builtin.copy:
         dest: "{{ jhsp_standalone_proxy_config_dir }}/__init__.py"
         owner: root
         group: "{{ jhsp_jupyterhub_allowed_users_group }}"
-        mode: "0640"
+        mode: "0644"
         content: ""
