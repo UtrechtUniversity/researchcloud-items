@@ -7,8 +7,8 @@
     _openvscode_pip_executable: "{{ openvscode_pip_executable | default('pip', true) }}"
     _openvscode_standalone: "{{ openvscode_standalone | default(true, true) }}"
     _openvscode_base_path: "{{ openvscode_base_path | default('/', true) }}"
-    _openvscode_jupyter_venv_path: "{{ openvscode_jupyter_venv_path | default(jupyterhub_venv_path, true) }}"
-
+    _openvscode_jupyter_venv_path: "{{ openvscode_jupyter_venv_path | default('') }}"
+    _openvscode_jupyter_config_dir: "{{ openvscode_jupyter_config_dir | default('') }}"
   roles:
     - role: openvscodeserver
     - role: jupyterhub_standalone_proxy
@@ -16,7 +16,13 @@
       vars:
         jupyterhub_uri: "{{ _openvscode_base_path }}"
         jhsp_external_addr: "{{ _openvscode_fqdn }}"
-        jhsp_standalone_proxy_config: |
+    - role: jupyterhub_app
+      vars:
+        jupyterhub_app_name: openvscode
+        jupyterhub_app_venv: "{{ _openvscode_jupyter_venv_path | default(jupyterhub_venv_path, true) }}"
+        jupyterhub_app_config_dir: "{{ _openvscode_jupyter_config_dir | default(jupyterhub_config_dir_path, true) | default(omit) }}"
+        jupyterhub_app_pip: jupyter-openvscodeserver-proxy==0.9.3
+        jupyterhub_app_standalone_config: |
           from utils import *
 
           custom_check_origin_patch() # apply monkeypatch for custom CORS allowlist for websockets
@@ -31,12 +37,3 @@
               "--socket-path={unix_socket}",
               "--without-connection-token",
           ]
-
-  tasks:
-    - name: Install Jupyter Server OpenVSCode extension
-      when: not _openvscode_standalone # jupyterhub is already installed, add an extension for openvscodeserver.
-      ansible.builtin.pip:
-        executable: "{{ _openvscode_pip_executable }}"
-        name: jupyter-openvscodeserver-proxy==0.9.3
-      environment:
-        VIRTUAL_ENV: "{{ _openvscode_jupyter_venv_path }}"

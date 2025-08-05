@@ -21,6 +21,8 @@ provisioner:
           openvscode_standalone: true
           openvscode_pip_executable: uv_pip
           openvscode_base_path: "/ide"
+          jhsp_external_addr: localhost:8080
+          jupyterhub_app_pip_executable: uv_pip
           jupyterhub_auth: noauth
           jupyterhub_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
           jupyterhub_proxy_config:
