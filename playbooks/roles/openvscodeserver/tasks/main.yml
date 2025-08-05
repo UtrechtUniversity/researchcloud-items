@@ -13,7 +13,7 @@
   ansible.builtin.set_fact:
     openvscodeserver_download_url: "{{ openvscodeserver_get_latest.stdout | default(openvscodeserver_default_download_url) }}"
 
-- name: Create openvscodeserver basedir
+- name: Create openvscodeserver base dir
   ansible.builtin.file:
     dest: "{{ openvscodeserver_dir | dirname }}"
     state: directory
@@ -24,11 +24,30 @@
 - name: Download and unarchive openvscode-server
   ansible.builtin.unarchive:
     src: "{{ openvscodeserver_download_url }}"
-    dest: "{{ openvscodeserver_dir }}"
+    dest: "{{ openvscodeserver_dir | dirname }}"
     remote_src: true
     owner: "{{ openvscodeserver_user }}"
     group: "{{ openvscodeserver_group }}"
     mode: "0755"
+    creates: "{{ openvscodeserver_dir }}"
+  register: openvscodeserver_download
+
+- name: Find exact name of extracted folder
+  when: openvscodeserver_download.changed
+  ansible.builtin.find:
+    paths: "{{ openvscodeserver_dir | dirname }}"
+    patterns: 'openvscode-server-v*'
+  register: openvscodeserver_find_unpacked
+
+- name: Create link to extracted folder
+  when: openvscodeserver_download.changed
+  ansible.builtin.file:
+    src: "{{ openvscodeserver_find_unpacked.files[0].path }}"
+    dest: "{{ openvscodeserver_dir }}"
+    owner: "{{ openvscodeserver_user }}"
+    group: "{{ openvscodeserver_group }}"
+    mode: "0755"
+    state: link
 
 - name: Set location of openvscode-server cmd for other roles
   ansible.builtin.set_fact:
