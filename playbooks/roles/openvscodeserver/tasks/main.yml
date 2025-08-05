@@ -37,6 +37,7 @@
   ansible.builtin.find:
     paths: "{{ openvscodeserver_dir | dirname }}"
     patterns: 'openvscode-server-v*'
+    file_type: directory
   register: openvscodeserver_find_unpacked
 
 - name: Create link to extracted folder
