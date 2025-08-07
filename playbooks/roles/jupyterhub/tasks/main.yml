@@ -47,6 +47,7 @@
     mode: "02750" # setgid so jupyterhub_allowed_users_group can always read everything in the venv
 
 - name: Set venv fact for other roles to use
+  when: jupyterhub_venv_path is not defined
   ansible.builtin.set_fact:
     jupyterhub_venv_path: "{{ jupyterhub_venv }}"
 
@@ -64,6 +65,7 @@
 
     - name: Create jupyter configuration
       ansible.builtin.template:
+        force: "{{ jupyterhub_force_install }}"
         src: templates/jupyterhub_config.py.j2
         dest: /etc/jupyterhub/jupyterhub_config.py
         owner: root # don't allow user jupyter to edit its own config, for added security.
@@ -90,6 +92,7 @@
 
     - name: Create jupyter systemd config
       ansible.builtin.template:
+        force: "{{ jupyterhub_force_install }}"
         dest: /usr/lib/systemd/system/jupyterhub.service
         src: templates/jupyterhub.service.j2
         owner: root
