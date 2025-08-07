@@ -43,6 +43,7 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 - `jupyterhub_create_default_group`: Boolean. Default: `true`.
 - `jupyterhub_remote_user_header`: String. Which HTTP header should be used to get the username from, when using remote user auth (SRAM). Default: `REMOTE_USER`.
 - `jupyterhub_activate_remote_user_auth`: Boolean. Whether to enable remote user auth in the JupyterHub config. You can set this to `true` in order to test remote auth without actually having SRAM or another external auth provider, e.g. in CI. Default: `false`.
+- `jupyterhub_force_install`: Boolean. If true, overwrite JupyterHub config files. If false, configuration files from an already existing installation of JupyterHub will be left alone. This can be useful when this role is executed by multiple components on a workspace in sequence. Default: `false`.
 
 ## See also
 
