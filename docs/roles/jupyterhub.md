@@ -43,8 +43,8 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 - `jupyterhub_config_env_keep`: List of environment variables, the values of which will be passed along to each spawned webapplication. Default: `['JUPYTERHUB_ACTIVITY_URL', 'JUPYTERHUB_SERVER_NAME', 'JUPYTERHUB_API_URL', 'JUPYTERHUB_API_TOKEN', 'JUPYTERHUB_SERVICE_URL', 'JUPYTERHUB_SINGLEUSER_APP', 'JUPYTERHUB_USER', 'JUPYTERHUB_GROUP', 'PYTHONPATH', 'PATH', 'CONDA_ROOT', 'CONDA_DEFAULT_ENV]`.
 - `jupyterhub_proxy_config`: Dict. Settings that will be passed on to the `nginx_reverse_proxy` role. Will be merged with the default proxy settings, so this variable allows you to override settings. See the [proxy role](./nginx_reverse_proxy.md) for what the dict should look like. Default: `{}`.
 - `jupyterhub_http_username`: String. HTTP username to use when setting `jupyterhub_auth` to `basic`. Default: `""`.
-- `jupyterhub_http_password`: String. Default:: `""`.
-- `jupyterhub_create_default_group`: Boolean. Default: `true`.
+- `jupyterhub_http_password`: String. Default: `""`.
+- `jupyterhub_create_default_group`: Boolean. Whether the group specified by `jupyterhub_allowed_users_group` should be created as a default group for all users. Default: `true`.
 - `jupyterhub_remote_user_header`: String. Which HTTP header should be used to get the username from, when using remote user auth (SRAM). Default: `REMOTE_USER`.
 - `jupyterhub_activate_remote_user_auth`: Boolean. Whether to enable remote user auth in the JupyterHub config. You can set this to `true` in order to test remote auth without actually having SRAM or another external auth provider, e.g. in CI. Default: `false`.
 
