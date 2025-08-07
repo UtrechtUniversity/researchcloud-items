@@ -60,10 +60,12 @@ status should be indicated in the description field of the catalog plugin item.
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
 - [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
+- [jupyterhub](playbooks/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io/)
 - [flask_app](roles/flask_app.md)  serve a Flask app with Nginx, optionally with SRAM authorization.
 - [matlab](playbooks/matlab.md)  Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
 - [nextflow](playbooks/nextflow.md) [Nextflow](https://nextflow.io) workflow engine
+- [openvscodeserver](playbooks/openvscodeserver.md) installs the OpenVSCode web IDE and serves it for all users
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
@@ -104,13 +106,15 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
 - [jupyterhub](roles/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io) on the workspace, with SRAM auth.
+- [jupyterhub_app](roles/jupyterhub_app.md) install arbitrary applications as an extension for JupyterLab, or as a standalone app served with JupyterHub.
 - [jupyterhub_standalone_proxy](roles/jupyterhub_standalone_proxy.md) use [Jupyter Standalone Proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/standalone.html) to spawn an arbritary web application running as a logged in user.
 - [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
 - [miniconda](roles/miniconda.md)
 - [nextflow](playbooks/nextflow.md) [Nextflow](https://nextflow.io) workflow engine
 - [nginx_reverse_proxy](roles/nginx_reverse_proxy.md)
-- [nginx_uwsgi](roles/nginx_uwsgi.md)
+- [nginx_uwsgi](roles/nginx_uwsgi.md) serve uWSGI applications with the SRC-Nginx installation
+- [openvscode](roles/openvscodeserver.md) install OpenVSCode server
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
