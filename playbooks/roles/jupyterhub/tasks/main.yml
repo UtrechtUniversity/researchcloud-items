@@ -47,6 +47,7 @@
     mode: "02750" # setgid so jupyterhub_allowed_users_group can always read everything in the venv
 
 - name: Set venv fact for other roles to use
+  when: jupyterhub_venv_path is not defined
   ansible.builtin.set_fact:
     jupyterhub_venv_path: "{{ jupyterhub_venv }}"
 
@@ -83,9 +84,10 @@
     - name: Install JupyterHub and dependencies
       ansible.builtin.pip:
         executable: uv_pip # uv is installed above
-        name: "{{ jupyterhub_basic_pkgs + jupyterhub_extra_pkgs }}"
+        name: "{{ (jupyterhub_basic_pkgs + jupyterhub_extra_pkgs) | select }}"
+        break_system_packages: "{{ ansible_version.full is ansible.builtin.version('2.17', '>=') | ternary(jupyterhub_system_pip, omit) }}" # break_system_packages only exists on ansible >= 2.17
       environment:
-        VIRTUAL_ENV: "{{ jupyterhub_venv }}"
+        VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
         CC: gcc # https://github.com/astral-sh/uv/issues/6488
 
     - name: Create jupyter systemd config

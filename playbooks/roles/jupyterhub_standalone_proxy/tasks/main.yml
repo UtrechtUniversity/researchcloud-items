@@ -21,6 +21,7 @@
 
 - name: Install sudospawner-singleuser script
   ansible.builtin.template:
+    force: "{{ jhsp_force_install }}"
     dest: "{{ jupyterhub_venv_path }}/bin/sudospawner-singleuser"
     src: templates/sudospawner-singleuser.j2
     owner: "{{ jhsp_jupyterhub_user }}"
@@ -51,6 +52,7 @@
       notify: Reload jupyterhub service
       when: jhsp_standalone_proxy_config | length > 0
       ansible.builtin.copy:
+        force: "{{ jhsp_force_install }}"
         dest: "{{ jhsp_standalone_proxy_config_file }}"
         owner: root
         group: "{{ jhsp_jupyterhub_allowed_users_group }}"
@@ -59,6 +61,7 @@
 
     - name: Create standalone proxy utils
       ansible.builtin.template:
+        force: "{{ jhsp_force_install }}"
         dest: "{{ jhsp_standalone_proxy_config_dir }}/utils.py"
         src: templates/utils.py.j2
         owner: root

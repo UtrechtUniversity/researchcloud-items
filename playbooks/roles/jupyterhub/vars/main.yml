@@ -18,3 +18,4 @@ jupyterhub_default_proxy_config:
   htpasswd: "{{ (jupyterhub_auth == 'basic') | ternary('jupyterhub', omit) }}"
   auth_sram_header: "{{ jupyterhub_remote_user_header }}"
 jupyterhub_default_auth: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('basic', 'sram') }}"
+jupyterhub_system_pip: "{{ (jupyterhub_venv | default('system', true)) == 'system' }}"
