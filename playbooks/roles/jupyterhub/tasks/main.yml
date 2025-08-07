@@ -1,4 +1,5 @@
----
+---  
+
 - name: Resolve omit placeholders in default proxy config
   ansible.builtin.set_fact:
     _jupyterhub_default_proxy_config: "{{ jupyterhub_default_proxy_config }}"
@@ -47,6 +48,7 @@
     mode: "02750" # setgid so jupyterhub_allowed_users_group can always read everything in the venv
 
 - name: Set venv fact for other roles to use
+  when: jupyterhub_venv_path is not defined
   ansible.builtin.set_fact:
     jupyterhub_venv_path: "{{ jupyterhub_venv }}"
 
@@ -56,16 +58,21 @@
 
     - name: Create Jupyter configuration directory
       ansible.builtin.file:
-        path: /etc/jupyterhub/
+        path: "{{ jupyterhub_config_dir }}"
         state: directory
         owner: "{{ jupyterhub_user }}"
         group: "{{ jupyterhub_allowed_users_group }}"
         mode: "0750"
 
+    - name: Set config dir fact for other roles to use
+      ansible.builtin.set_fact:
+        jupyterhub_config_dir_path: "{{ jupyterhub_config_dir }}"
+
     - name: Create jupyter configuration
       ansible.builtin.template:
+        force: "{{ jupyterhub_force_install }}"
         src: templates/jupyterhub_config.py.j2
-        dest: /etc/jupyterhub/jupyterhub_config.py
+        dest: "{{ jupyterhub_config_dir }}/jupyterhub_config.py"
         owner: root # don't allow user jupyter to edit its own config, for added security.
         group: "{{ jupyterhub_user }}"
         mode: "0640"
@@ -90,6 +97,7 @@
 
     - name: Create jupyter systemd config
       ansible.builtin.template:
+        force: "{{ jupyterhub_force_install }}"
         dest: /usr/lib/systemd/system/jupyterhub.service
         src: templates/jupyterhub.service.j2
         owner: root

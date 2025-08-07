@@ -21,6 +21,7 @@
   roles:
     - role: jupyterhub_standalone_proxy
       vars:
+        jhsp_force_install: true # set this to true to test idempotence of the configuration tasks
         jhsp_standalone_proxy_cmd_args:
           - "--"
           - "/usr/bin/python3"

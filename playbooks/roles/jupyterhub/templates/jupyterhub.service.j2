@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart={{ jupyterhub_venv }}/bin/jupyterhub --config=/etc/jupyterhub/jupyterhub_config.py
+ExecStart={{ jupyterhub_venv }}/bin/jupyterhub --config={{ jupyterhub_config_dir }}/jupyterhub_config.py
 Restart=on-failure
 RestartSec=42s
 User={{ jupyterhub_user }}

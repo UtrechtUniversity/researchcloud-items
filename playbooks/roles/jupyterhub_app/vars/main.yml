@@ -1,0 +1,1 @@
+jupyterhub_app_standalone_config_dir: "{{ jupyterhub_app_config_dir }}/standalone"

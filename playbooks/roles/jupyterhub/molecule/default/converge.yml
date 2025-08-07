@@ -10,3 +10,5 @@
         REMOTE_USER: '$http_user' # allows us to set the 'user' header in tests to mock login
   roles:
     - role: jupyterhub
+      vars:
+        jupyterhub_force_install: true # set this to true to test idempotence of the configuration tasks
