@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test OpenRefine
+      ansible.builtin.uri:
+        url: http://localhost/refine
+        method: GET
+        headers:
+          user: testuser
+        return_content: true
+        follow_redirects: true
+      register: openrefine_login
+      failed_when: openrefine_login.failed or openrefine_login.url != 'http://localhost/refine/user/testuser/'
+      retries: 5
+      delay: 3
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"OpenRefine" in openrefine_login.content'
