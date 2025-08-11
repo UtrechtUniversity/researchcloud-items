@@ -1,0 +1,7 @@
+---
+openrefine_latest_url: https://api.github.com/repos/OpenRefine/OpenRefine/releases/latest
+openrefine_base_url: https://github.com/OpenRefine/OpenRefine/releases/download/
+openrefine_default_download_url: "{{ openrefine_base_url }}/{{ openrefine_version }}/openrefine-linux-{{ openrefine_version
+  }}{{ openrefine_ext }}"
+openrefine_ext: ".tar.gz"
+openrefine_icon: "{{ openrefine_dir }}/openrefine_logo.svg"

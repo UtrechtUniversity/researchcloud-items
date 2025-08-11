@@ -1,0 +1,23 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test OpenRefine
+      ansible.builtin.uri:
+        url: http://localhost/hub/spawn/testuser?next=%2Fhub%2Fuser%2Ftestuser%2Fopenrefine%2F
+        method: GET
+        headers:
+          user: testuser # mock SRAM login
+        return_content: true
+        follow_redirects: true
+      register: openrefine_login
+      failed_when: openrefine_login.failed or openrefine_login.url != 'http://localhost/user/testuser/openrefine/?redirects=1'
+      retries: 5
+      delay: 3
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"OpenRefine" in openrefine_login.content'
+          - '"files-importing-controller.css" in openrefine_login.content' # check that FileExtension is active

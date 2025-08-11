@@ -1,0 +1,31 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: jupyterhub
+        path: jupyterhub.yml
+        parameters:
+          jupyter_auth: noauth
+          jupyter_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
+          jupyter_proxy_config: "{ proxy_set_header: { REMOTE_USER: '$$http_user'} }"
+      - name: openrefine
+        path: openrefine.yml
+        parameters:
+          openrefine_base_path: "/refine"
+          openrefine_extra_extensions: "[ {url: 'https://github.com/OpenRefine/CommonsExtension/releases/download/v0.1.3/openrefine-commons-extension-0.1.3.zip', get_latest: false, name: 'commons-extension'} ]"
+          openrefine_jupyter_force_install: 'false'
+          #openrefine_max_memory: '60M'
+          jupyterhub_app_pip_executable: uv_pip
