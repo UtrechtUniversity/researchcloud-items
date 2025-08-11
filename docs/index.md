@@ -66,6 +66,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [miniconda](playbooks/miniconda.md)  Python development
 - [nextflow](playbooks/nextflow.md) [Nextflow](https://nextflow.io) workflow engine
 - [openvscodeserver](playbooks/openvscodeserver.md) installs the OpenVSCode web IDE and serves it for all users
+- [openrefine](playbooks/openrefine.md) installs the OpenRefine data cleaning and manipulation webapp
 - [python-workbench](playbooks/python-workbench.md)  Python development
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
@@ -115,6 +116,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx_reverse_proxy](roles/nginx_reverse_proxy.md)
 - [nginx_uwsgi](roles/nginx_uwsgi.md) serve uWSGI applications with the SRC-Nginx installation
 - [openvscode](roles/openvscodeserver.md) install OpenVSCode server
+- [openrefine](roles/openrefine.md) installs the OpenRefine data cleaning and manipulation webapp
 - [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users

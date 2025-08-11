@@ -7,10 +7,16 @@ This role installs [OpenRefine]https://openrefine.org/), an open-source web appl
 
 This component uses JupyterHub to spawn a separate instance of OpenRefine for each user that logs in via the browser. This way, users do not have access to each other's data. The playbook can be added to a workspace that already contains a working JupterHub installation, or it can install JupyterHub itself (see the `openrefine_jupyter_force_install` parameter).
 
+### Security note
+
+JupyterHub spawns servers (JupyterLab) running under the `uid` of the user logged in the browser. Authentication in the browser is handled by SRAM: after logging in, the name of the user is set by SRAM in the `REMOTE_USER` header, and this is passed along to JupyterHub.
+
+At the moment OpenRefine listens on a TCP port. This means users with shell access (and JupyterLab provides a shell!) can easily bypass authentication by hitting the address on localhost on which another user's OpenRefine server is listening. **Do not provide shell access to untrusted users**.
+
 ## Variables
 
 - `openrefine_version`: String. Specific version which should be fetched. Should correspond to one of the version string from the [openrefine GitHub releases](https://github.com/OpenRefine/OpenRefine/releases/), e.g. `3.9.3`. Default: `""` (which means the latest version will be fetched).
-- `openrefine_extensions`. Optional. String. A YAML-string of a list of dictionaries that specify extensions to be downloaded. See the [role documentation](../roles/openrefine.md) for the specification of the dictionaries.
+- `openrefine_extra_extensions`. Optional. String. A YAML-string of a list of dictionaries that specify extensions to be downloaded. See the [role documentation](../roles/openrefine.md) for the specification of the dictionaries.
 
 Note: the [FilesExtension](https://github.com/OpenRefine/FilesExtension) extension (which allows the user to import data from the server's local filesystem) is already installed by default.
 

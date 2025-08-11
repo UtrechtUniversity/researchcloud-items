@@ -7,6 +7,14 @@ This role installs [OpenVSCode Server](https://github.com/gitpod-io/openvscode-s
 
 By default, the latest archive from the OpenVSCode server GitHub releases is fetched.
 
+## Description
+
+The role:
+
+- Downloads OpenVSCode Server from GitHub (by default the latest version is fetched, but see the `openvscodeserver_version` variable below).
+- Places it in `openvscodeserver_dir` (see below).
+- Sets the `openvscodeserver_cmd_path` fact to a path to the OpenVSCode Server executable.
+
 ## Variables
 
 - `openvscodeserver_dir`: String. Location where openvscode should be installed. Default: `/opt/openvscode-server`.
