@@ -5,7 +5,7 @@
   vars:
     _openvscode_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', openvscode_fqdn) }}"
     _openvscode_base_path: "{{ openvscode_base_path | default('/', true) }}"
-    _openvscode_jupyter_force_install: "{{ openvscode_jupyter_force_install | default(false, true) | bool }}" # should be set to true if a previous component has already installed JupyterHub.
+    _openvscode_jupyter_force_install: "{{ openvscode_jupyter_force_install | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
   roles:
     - role: openvscodeserver
     - role: jupyterhub_standalone_proxy
@@ -29,7 +29,7 @@
           c.StandaloneProxyServer.unix_socket = True
 
           c.StandaloneProxyServer.command =  [
-              "/opt/openvscode-server/bin/openvscode-server",
+              "{{ openvscodeserver_cmd_path }}",
               "--disable-telemetry",
               "--accept-server-license-terms",
               "--server-base-path={{ _openvscode_base_path }}",

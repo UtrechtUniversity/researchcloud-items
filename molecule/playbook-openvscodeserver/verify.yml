@@ -12,7 +12,7 @@
         return_content: true
         follow_redirects: true
       register: openvscode_login
-      failed_when: openvscode_login.url != 'http://localhost/ide/user/testuser/'
+      failed_when: openvscode_login.failed or openvscode_login.url != 'http://localhost/ide/user/testuser/'
       retries: 5
       delay: 3
 
