@@ -18,8 +18,6 @@ provisioner:
       - name: openvscodeserver
         path: openvscodeserver.yml
         parameters:
-          openvscode_standalone: 'true'
-          openvscode_pip_executable: uv_pip
           openvscode_base_path: "/ide"
           openvscode_jupyter_force_install: 'true'
           jhsp_external_addr: localhost:8080
