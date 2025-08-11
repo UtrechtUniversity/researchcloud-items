@@ -5,7 +5,7 @@
 
 Installs [OpenVSCode Server](https://github.com/gitpod-io/openvscode-server), a webapplication that is a completely open source version of the server version of VSCode. Applying this role will provide the user with a fully functional web IDE running on the workspace, accessible through the browser at the workspace's FQDN (login via SRAM).
 
-This component uses JupyterHub to spawn a separate instance of OpenVSCode Server for each user that logs in via the browser. This way, users do not have access to each other's data. The playbook can be added to a workspace that already contains a working JupterHub installatino, or it can install JupyterHub itself (see the `openvscode_jupyter_force_install` parameter).
+This component uses JupyterHub to spawn a separate instance of OpenVSCode Server for each user that logs in via the browser. This way, users do not have access to each other's data. The playbook can be added to a workspace that already contains a working JupterHub installation, or it can install JupyterHub itself (see the `openvscode_jupyter_force_install` parameter).
 
 ## Requires
 
