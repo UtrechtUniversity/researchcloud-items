@@ -1,0 +1,18 @@
+---
+- name: Install JupyterHub
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: jupyterhub
+      vars:
+        jupyterhub_uri: "{{ jupyter_uri | default('/', true) }}"
+        jupyterhub_extra_pkgs: "{{ jupyter_extra_pkgs | default('', true) | split(',') }}"
+        jupyterhub_config_extra: "{{ jupyter_config_extra | default('', true) }}"
+        jupyterhub_auth: "{{ jupyter_auth | default(omit, true) }}"
+        jupyterhub_activate_remote_user_auth: "{{ jupyter_activate_remote_user_auth | default(omit, true) }}"
+        jupyterhub_proxy_config: |
+          {% if jupyter_proxy_config is defined and (jupyter_proxy_config | length) > 0 %}
+          {{ jupyter_proxy_config | from_yaml }}
+          {% else %}
+          {{ omit }}
+          {% endif %}

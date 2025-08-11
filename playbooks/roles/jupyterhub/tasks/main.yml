@@ -1,5 +1,4 @@
----  
-
+---
 - name: Resolve omit placeholders in default proxy config
   ansible.builtin.set_fact:
     _jupyterhub_default_proxy_config: "{{ jupyterhub_default_proxy_config }}"

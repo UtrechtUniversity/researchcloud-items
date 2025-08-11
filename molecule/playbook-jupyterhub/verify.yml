@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test login
+      ansible.builtin.uri:
+        url: http://localhost:80
+        method: GET
+        headers:
+          user: testuser
+        return_content: true
+        follow_redirects: true
+      failed_when: false
+      register: jupyterhub_login
+      retries: 5
+      delay: 3
+
+    - name: Assert failed logins
+      ansible.builtin.assert:
+        that:
+          - jupyterhub_login.status == 200
