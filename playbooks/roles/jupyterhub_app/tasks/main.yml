@@ -9,6 +9,13 @@
   ansible.builtin.fail:
     msg: "Could not find venv in {{ _jupyterhub_app_venv }}. Exiting!"
 
+- name: Install jupyter-server-proxy
+  ansible.builtin.pip:
+    executable: "{{ jupyterhub_app_pip_executable }}"
+    name: jupyter-server-proxy
+  environment:
+    VIRTUAL_ENV: "{{ _jupyterhub_app_venv }}"
+
 - name: Install extension into venv
   when: jupyterhub_app_pip | length > 0
   ansible.builtin.pip:

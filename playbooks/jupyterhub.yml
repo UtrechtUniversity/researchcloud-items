@@ -2,11 +2,14 @@
 - name: Install JupyterHub
   hosts: localhost
   gather_facts: true
+  vars:
+    _jupyterhub_default_pkgs: # Extensions that should be installed on the hub (pypi packages)
+      - jupyterlab-git
   roles:
     - role: jupyterhub
       vars:
         jupyterhub_uri: "{{ jupyter_uri | default('/', true) }}"
-        jupyterhub_extra_pkgs: "{{ jupyter_extra_pkgs | default('', true) | split(',') }}"
+        jupyterhub_extra_pkgs: "{{ _jupyterhub_default_pkgs + (jupyter_extra_pkgs | default('', true) | split(',')) }}"
         jupyterhub_config_extra: "{{ jupyter_config_extra | default('', true) }}"
         jupyterhub_auth: "{{ jupyter_auth | default(omit, true) }}"
         jupyterhub_activate_remote_user_auth: "{{ jupyter_activate_remote_user_auth | default(omit, true) }}"
