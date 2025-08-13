@@ -103,8 +103,11 @@ For more complicated applications, you may need to do some additional work in th
 The resulting config for a JupyterLab server extension will look as follows:
 
 ```python
-settings = {'command': ['/usr/bin/python3', '-m' 'http.server', '-p', '{port}'], 'launcher_entry': {'icon_path': '/path/to/my/icon.svg', 'category': 'Other'} }
-c.ServerProxy.servers.update(settings) # use update instead of assignment so multiple apps can be added to the config.
+settings = { "Example":
+{'command': ['/usr/bin/python3', '-m' 'http.server', '-p', '{port}'], 'launcher_entry': {'icon_path': '/path/to/my/icon.svg', 'category': 'Other'}
+}
+c.ServerProxy.servers.update({
+}) # use update instead of assignment so multiple apps can be added to the config.
 ```
 
 The resulting config for a standalone app will look as follows:
