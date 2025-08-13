@@ -24,6 +24,7 @@ provisioner:
         parameters:
           asreview_server_http_username: tester
           asreview_server_http_password: letmein
+          asreview_extra_pkgs: 'tiny, molecule' # test installing extra packages into the venv -- in real life this is needed for ASReview Dory, but we don't want to install that in a test container.
 scenario:
   test_sequence:
     - dependency

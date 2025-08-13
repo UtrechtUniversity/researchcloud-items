@@ -22,7 +22,12 @@
           Cookie: "{{ asreview_login.cookies_string }}" # use the session cookie returned from the previous connection
       register: asreview_profile_result
 
+    - name: Find installed packages in venv
+      ansible.builtin.command: /var/www/asreview/venv/bin/pip list
+      register: installed_pkgs
+
     - name: Assert content correct
       ansible.builtin.assert:
         that:
           - '"tester" in asreview_profile_result.content'
+          - '"molecule" in installed_pkgs.stdout and "tiny" in installed_pkgs.stdout' # added with asreview_extra_packages
