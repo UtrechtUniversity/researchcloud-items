@@ -1,8 +1,22 @@
 ---
 jupyterhub_app_name: app
 jupyterhub_app_venv: ""
-jupyterhub_app_config_dir: ""
-jupyterhub_app_standalone_config: ""
-jupyterhub_app_pip: ""
 jupyterhub_app_pip_executable: pip
-jupyterhub_app_server_config: ""
+jupyterhub_app_config_dir: ""
+jupyterhub_app_pip: ""
+jupyterhub_app_command: []
+jupyterhub_app_icon_path: ""
+jupyterhub_app_category: ""
+jupyterhub_app_server:
+  command: "{{ jupyterhub_app_command }}"
+  launcher_entry:
+    title: "{{ jupyterhub_app_name }}"
+    icon_path: "{{ jupyterhub_app_icon_path | default('') }}"
+    category: "{{ jupyterhub_app_category | default('Notebook', true) }}" # 'Notebook' is the default in JupyterLab if no category is set
+jupyterhub_app_server_config: |
+  settings = { "{{ jupyterhub_app_name }}":
+    {{ jupyterhub_app_server | string }}
+  }
+  c.ServerProxy.servers.update(settings)
+jupyterhub_app_standalone_config: |
+  c.StandaloneProxyServer.command = {{ jupyterhub_app_command | default(jupyterhub_app_server.command, true) | default([], true) | string }}

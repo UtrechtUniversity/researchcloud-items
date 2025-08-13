@@ -12,14 +12,6 @@
         url: https://api.github.com/repos/OpenRefine/FilesExtension/releases/latest
         ext: .zip
     _openrefine_extra_extensions: "{{ openrefine_extra_extensions | default('[]', true) | from_yaml }}"
-    _oprenrefine_command:
-      - "{{ openrefine_cmd_path }}" # set by the `openrefine` role
-      - -H
-      - "{{ _openrefine_fqdn }}"
-      - -p
-      - "{port}"
-      - -m # max memory
-      - "{{ openrefine_max_memory | default(((ansible_memtotal_mb * 0.85) | int | string) ~ 'M', true) }}"
   roles:
     - role: openrefine
       vars:
@@ -36,17 +28,12 @@
         jupyterhub_app_venv: "{{ openrefine_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ openrefine_jupyter_config_dir | default('') }}"
         jupyterhub_app_pip_executable: "{{ _openrefine_jupyter_force_install | ternary('uv_pip', 'pip') }}" # when force install is true, uv will be installed -- use it for better performance.
-        jupyterhub_app_standalone_config: |
-          c.StandaloneProxyServer.command = {{ _oprenrefine_command | string }}
-        jupyterhub_app_server_config: |
-          c.ServerProxy.servers.update(
-            { "openrefine":
-              {
-                "command": {{ _oprenrefine_command | string }},
-                "launcher_entry": {
-                  "icon_path": "{{ openrefine_icon_path }}",
-                  "title": "OpenRefine",
-                }
-              }
-            }
-          )
+        jupyterhub_app_icon_path: "{{ openrefine_icon_path }}"
+        jupyterhub_app_command:
+          - "{{ openrefine_cmd_path }}" # set by the `openrefine` role
+          - -H
+          - "{{ _openrefine_fqdn }}"
+          - -p
+          - "{port}"
+          - -m # max memory
+          - "{{ openrefine_max_memory | default(((ansible_memtotal_mb * 0.85) | int | string) ~ 'M', true) }}"

@@ -25,7 +25,7 @@
     VIRTUAL_ENV: "{{ _jupyterhub_app_venv }}"
 
 - name: Add jupyter-serverproxy traitlets config
-  when: jupyterhub_app_server_config | length > 0
+  when: not (jupyterhub_app_pip | length > 0) and (jupyterhub_app_server_config | length) > 0
   ansible.builtin.blockinfile:
     path: "{{ _jupyterhub_app_config_dir }}/jupyter_server_config.py"
     owner: root
