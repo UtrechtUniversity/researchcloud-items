@@ -13,9 +13,4 @@
         jupyterhub_config_extra: "{{ jupyter_config_extra | default('', true) }}"
         jupyterhub_auth: "{{ jupyter_auth | default(omit, true) }}"
         jupyterhub_activate_remote_user_auth: "{{ jupyter_activate_remote_user_auth | default(omit, true) }}"
-        jupyterhub_proxy_config: |
-          {% if jupyter_proxy_config is defined and (jupyter_proxy_config | length) > 0 %}
-          {{ jupyter_proxy_config | from_yaml }}
-          {% else %}
-          {{ omit }}
-          {% endif %}
+        jupyterhub_proxy_config: "{{ jupyter_proxy_config | default('{}', true) | from_yaml }}"
