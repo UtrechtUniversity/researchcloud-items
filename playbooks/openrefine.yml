@@ -11,7 +11,7 @@
         get_latest: true
         url: https://api.github.com/repos/OpenRefine/FilesExtension/releases/latest
         ext: .zip
-    _openrefine_extra_extensions: "{{ openrefine_extra_extensions | default('[]', true) | from_yaml }}"
+    _openrefine_extra_extensions: "{{ openrefine_extra_extensions.split('\\n') | default(['[]'], true) | join('\n') | from_yaml }}"
   roles:
     - role: openrefine
       vars:
@@ -32,8 +32,8 @@
         jupyterhub_app_command:
           - "{{ openrefine_cmd_path }}" # set by the `openrefine` role
           - -H
-          - "{{ _openrefine_fqdn }}"
+          - "*"
           - -p
-          - "{port}"
+          - "{port}" # magic variable that will be substituted with the spawn port by JupyterHub
           - -m # max memory
           - "{{ openrefine_max_memory | default(((ansible_memtotal_mb * 0.85) | int | string) ~ 'M', true) }}"
