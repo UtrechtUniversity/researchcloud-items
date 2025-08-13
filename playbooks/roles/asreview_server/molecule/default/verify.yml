@@ -22,11 +22,6 @@
           Cookie: "{{ asreview_login.cookies_string }}" # use the session cookie returned from the previous connection
       register: asreview_profile_result
 
-    - name: Assert content correct
-      ansible.builtin.assert:
-        that:
-          - '"tester" in asreview_profile_result.content'
-
     - name: Assert ASReview is on path for regular users
       become: true
       become_user: testuser
@@ -36,8 +31,9 @@
       ansible.builtin.command: /var/www/asreview/venv/bin/asreview auth-tool list-users --db sqlite:///var/www/asreview/asreview_data/asreview.production.sqlite
       register: existing_users
 
-    - name: Assert existing users
+    - name: Assertions
       ansible.builtin.assert:
         that:
+          - '"tester" in asreview_profile_result.content'
           - '"- tester" in existing_users.stdout' # created by logging in above
           # - '"- testuser" in existing_users.stdout' # created by the cronjob
