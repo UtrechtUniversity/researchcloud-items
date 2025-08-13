@@ -3,4 +3,5 @@
   ansible.builtin.systemd:
     state: restarted
     daemon_reload: true
+    enabled: true
     name: jupyterhub
