@@ -10,6 +10,7 @@
     msg: "Could not find venv in {{ _jupyterhub_app_venv }}. Exiting!"
 
 - name: Install jupyter-server-proxy
+  notify: Restart JupyterHub
   ansible.builtin.pip:
     executable: "{{ jupyterhub_app_pip_executable }}"
     name: jupyter-server-proxy
@@ -17,6 +18,7 @@
     VIRTUAL_ENV: "{{ _jupyterhub_app_venv }}"
 
 - name: Install extension into venv
+  notify: Restart JupyterHub
   when: jupyterhub_app_pip | length > 0
   ansible.builtin.pip:
     executable: "{{ jupyterhub_app_pip_executable }}"
@@ -26,6 +28,7 @@
 
 - name: Add jupyter-serverproxy traitlets config
   when: not (jupyterhub_app_pip | length > 0) and (jupyterhub_app_server_config | length) > 0
+  notify: Restart JupyterHub
   ansible.builtin.blockinfile:
     path: "{{ _jupyterhub_app_config_dir }}/jupyter_server_config.py"
     owner: root
@@ -48,6 +51,7 @@
         mode: "0755"
 
     - name: Place standalone proxy config
+      notify: Restart JupyterHub
       ansible.builtin.copy:
         dest: "{{ _jupyterhub_app_standalone_config_dir }}/{{ jupyterhub_app_name }}.conf.py"
         owner: root
