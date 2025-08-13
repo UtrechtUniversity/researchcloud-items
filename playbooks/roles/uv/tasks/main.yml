@@ -38,7 +38,9 @@
     - name: Install desired python version
       ansible.builtin.command: uv python install -v {{ item }}
       register: _install_desired_python
-      changed_when: '"Skipping" not in _install_desired_python.stderr'
+      changed_when:
+        - '"Skipping" not in _install_desired_python.stderr'
+        - '"is already for" not in _install_desired_python.stderr'
       with_items: "{{ uv_python_versions_install }}"
 
     - name: Set uv python install path facts step 1
