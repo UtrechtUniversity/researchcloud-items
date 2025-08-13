@@ -11,7 +11,12 @@
         get_latest: true
         url: https://api.github.com/repos/OpenRefine/FilesExtension/releases/latest
         ext: .zip
-    _openrefine_extra_extensions: "{{ openrefine_extra_extensions.split('\\n') | default(['[]'], true) | join('\n') | from_yaml }}"
+    _openrefine_extra_extensions: |
+      {% if openrefine_extra_extensions is defined and openrefine_extra_extensions | length > 0 %}
+      {{ openrefine_extra_extensions.split('\\n') | join('\n') | from_yaml }}
+      {% else %}
+      {{ [] }}
+      {% endif %}
   roles:
     - role: openrefine
       vars:
