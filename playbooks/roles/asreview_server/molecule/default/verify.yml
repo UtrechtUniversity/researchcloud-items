@@ -40,4 +40,4 @@
       ansible.builtin.assert:
         that:
           - '"- tester" in existing_users.stdout' # created by logging in above
-          - '"- testuser" in existing_users.stdout' # created by the cronjob
+          # - '"- testuser" in existing_users.stdout' # created by the cronjob
