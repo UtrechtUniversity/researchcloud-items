@@ -13,7 +13,7 @@ jupyterhub_default_proxy_config:
   location: "{{ jupyterhub_uri }}"
   proxy_pass: http://{{ jupyterhub_bind_addr }}:{{ jupyterhub_port }}
   proxy_redirect: http://{{ jupyterhub_bind_addr }}:{{ jupyterhub_port }} $scheme://$host{{ jupyterhub_uri }}
-  auth: "{{ jupyterhub_default_auth }}"
+  auth: "{{ jupyterhub_auth | default(jupyterhub_default_auth, true) }}"
   htpasswd: "{{ (jupyterhub_auth == 'basic') | ternary('jupyterhub', omit) }}"
   auth_sram_header: "{{ jupyterhub_remote_user_header }}"
 jupyterhub_system_pip: "{{ (jupyterhub_venv | default('system', true)) == 'system' }}"
