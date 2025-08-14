@@ -44,6 +44,15 @@
     group: "{{ asreview_server_user }}"
     mode: "0600"
 
+# This is a workaround:
+# We want to keep the asreview requirement in a requirements file so dependabot can handle it.
+# ...but Dependabot can't handle a jinja2 file, so we can't use a template.
+# Instead of manually installing the extra requirements in a separate task, we add them to the req file here.
+- name: Add extra packages to requirements file
+  ansible.builtin.blockinfile:
+    path: "{{ asreview_server_requirements_file }}"
+    block: "{{ asreview_server_extra_pkgs | join('\n') }}"
+
 - name: Set privileges on ASReview data dir
   ansible.builtin.file:
     state: directory
@@ -97,7 +106,6 @@
   vars:
     pipx_install_systemwide_requirements: "{{ asreview_server_requirements_file }}"
     pipx_install_systemwide_package: asreview
-    pipx_install_systemwide_extra_packages: "{{ asreview_server_extra_pkgs }}"
     pipx_install_systemwide_use_uv: true # uv has been installed by the flask_app role
 
 - name: Add path to ASReview data to default bash environment
