@@ -50,6 +50,17 @@
     mode: "0755"
     state: link
 
+- name: Copy icon
+  ansible.builtin.copy:
+    src: files/openvscode-logo.svg
+    dest: "{{ openvscodeserver_icon }}"
+    group: "{{ openvscodeserver_group }}"
+    mode: "0644"
+
 - name: Set location of openvscode-server cmd for other roles
   ansible.builtin.set_fact:
     openvscodeserver_cmd_path: "{{ openvscodeserver_dir }}/bin/openvscode-server"
+
+- name: Set location of openvscode-server icon for other roles
+  ansible.builtin.set_fact:
+    openvscodeserver_icon_path: "{{ openvscodeserver_icon }}"

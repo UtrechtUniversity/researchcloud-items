@@ -14,6 +14,7 @@ The role:
 - Downloads OpenVSCode Server from GitHub (by default the latest version is fetched, but see the `openvscodeserver_version` variable below).
 - Places it in `openvscodeserver_dir` (see below).
 - Sets the `openvscodeserver_cmd_path` fact to a path to the OpenVSCode Server executable.
+- Sets the `openvscodeserver_icon_path` fact to a path to the OpenVSCode Server logo.
 
 ## Variables
 
