@@ -31,8 +31,9 @@ For end-users, there is a [Primer SURF ResearchCloud](docs/primer-for-users.md).
 
 ## Applicable licences
 Some of the code maintained in this repo is derived from other sources. As a consequence, unfortunately we are unable to provide the entire repo content under a single general license. We use the following licensing policy:
-1) If their exists a license file in the root directory of a role then that license applies to all files belonging to that role. 
-2) In all other cases the license specified in the top-level directory of this repository applies. 
+1) If there exists a license file in the root directory of a role then that license applies to all files belonging to that role.
+2) Logo's, pictures and icon files for external applications (for instance, for documentation purposes or for displaying app icons to endusers) not created by UU naturally do not fall under our license, but are used under fair use.
+3) In all other cases the license specified in the top-level directory of this repository applies. 
 
 ## Contributing
 We are very happy with any contributions in terms of new Ansible scripts for Research Plug-ins and/or documentation. Read the contributing [guidelines](./CONTRIBUTING.md).
