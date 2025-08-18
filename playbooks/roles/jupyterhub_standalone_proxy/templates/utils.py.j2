@@ -54,3 +54,6 @@ def get_standalone_proxy_config(standalone_proxy_cfg_dir, spawner):
 
     spawner.pre_spawn_hook = select_application
     return spawner
+
+def get_homedir():
+  return os.getenv('HOME', '/data')
