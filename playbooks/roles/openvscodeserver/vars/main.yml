@@ -4,3 +4,4 @@ openvscodeserver_base_url: https://github.com/gitpod-io/openvscode-server/releas
 openvscodeserver_default_download_url: "{{ openvscodeserver_base_url }}/openvscode-server-{{ openvscodeserver_version }}/openvscode-server-{{ openvscodeserver_version
   }}-{{ openvscodeserver_arch }}{{ openvscodeserver_ext }}"
 openvscodeserver_ext: ".tar.gz"
+openvscodeserver_icon: "{{ openvscodeserver_dir }}/openvscode.svg"
