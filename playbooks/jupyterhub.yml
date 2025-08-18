@@ -11,6 +11,6 @@
         jupyterhub_uri: "{{ jupyter_uri | default('/', true) }}"
         jupyterhub_extra_pkgs: "{{ _jupyterhub_default_pkgs + (jupyter_extra_pkgs | default('', true) | split(',')) }}"
         jupyterhub_config_extra: "{{ jupyter_config_extra | default('', true) }}"
-        jupyterhub_auth: "{{ jupyter_auth | default(omit, true) }}"
+        jupyterhub_auth: "{{ jupyter_auth | default('sram', true) }}"
         jupyterhub_activate_remote_user_auth: "{{ jupyter_activate_remote_user_auth | default(omit, true) }}"
         jupyterhub_proxy_config: "{{ jupyter_proxy_config | default('{}', true) | from_yaml }}"
