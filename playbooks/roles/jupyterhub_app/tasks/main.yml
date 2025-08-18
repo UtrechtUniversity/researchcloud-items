@@ -1,11 +1,14 @@
 ---
 - name: Get info on venv group
+  when: not _jupyterhub_app_venv == 'system'
   ansible.builtin.stat:
     path: "{{ _jupyterhub_app_venv }}"
   register: jupyterhub_app_stat
 
 - name: Fail if venv does not exist
-  when: not _jupyterhub_app_system_pip or not (jupyterhub_app_stat.stat.isdir is defined and jupyterhub_app_stat.stat.isdir)
+  when:
+    - not _jupyterhub_app_venv == 'system'
+    - not (jupyterhub_app_stat.stat.isdir is defined and jupyterhub_app_stat.stat.isdir)
   ansible.builtin.fail:
     msg: "Could not find venv in {{ _jupyterhub_app_venv }}. Exiting!"
 
