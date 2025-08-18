@@ -5,15 +5,22 @@
   register: jupyterhub_app_stat
 
 - name: Fail if venv does not exist
-  when: not (jupyterhub_app_stat.stat.isdir is defined and jupyterhub_app_stat.stat.isdir)
+  when: not _jupyterhub_app_system_pip or not (jupyterhub_app_stat.stat.isdir is defined and jupyterhub_app_stat.stat.isdir)
   ansible.builtin.fail:
     msg: "Could not find venv in {{ _jupyterhub_app_venv }}. Exiting!"
+
+- name: Install virtualenv dependency
+  when: _jupyterhub_app_venv != 'system' and not 'uv' in jupyterhub_app_pip_executable
+  ansible.builtin.pip:
+    name: virtualenv
+    break_system_packages: "{{ ansible_version.full is ansible.builtin.version('2.17', '>=') | ternary(true, omit) }}"
 
 - name: Install jupyter-server-proxy
   notify: Restart JupyterHub
   ansible.builtin.pip:
-    executable: "{{ jupyterhub_app_pip_executable }}"
+    executable: "{{ _jupyterhub_app_system_pip | ternary(omit, jupyterhub_app_pip_executable) }}"
     name: jupyter-server-proxy
+    virtualenv: "{{ (_jupyterhub_app_venv == 'system' or not _jupyterhub_app_system_pip) | ternary(omit, _jupyterhub_app_venv) }}"
   environment:
     VIRTUAL_ENV: "{{ _jupyterhub_app_venv }}"
 
@@ -21,8 +28,9 @@
   notify: Restart JupyterHub
   when: jupyterhub_app_pip | length > 0
   ansible.builtin.pip:
-    executable: "{{ jupyterhub_app_pip_executable }}"
+    executable: "{{ _jupyterhub_app_system_pip | ternary(omit, jupyterhub_app_pip_executable) }}"
     name: "{{ jupyterhub_app_pip }}"
+    virtualenv: "{{ (_jupyterhub_app_venv == 'system' or not _jupyterhub_app_system_pip) | ternary(omit, _jupyterhub_app_venv) }}"
   environment:
     VIRTUAL_ENV: "{{ _jupyterhub_app_venv }}"
 
