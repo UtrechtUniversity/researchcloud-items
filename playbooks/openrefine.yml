@@ -17,6 +17,8 @@
       {% else %}
       {{ [] }}
       {% endif %}
+    _openrefine_pip_cmd: "{{ openvscode_pip_cmd | default((_openrefine_jupyter_force_install | ternary('uv_pip', 'pip')), true) }}"
+
   roles:
     - role: openrefine
       vars:
@@ -32,7 +34,7 @@
         jupyterhub_app_name: openrefine
         jupyterhub_app_venv: "{{ openrefine_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ openrefine_jupyter_config_dir | default('') }}"
-        jupyterhub_app_pip_executable: "{{ _openrefine_jupyter_force_install | ternary('uv_pip', 'pip') }}" # when force install is true, uv will be installed -- use it for better performance.
+        jupyterhub_app_pip_executable: "{{ _openrefine_pip_cmd }}" # when force install is true, uv will be installed -- use it for better performance.
         jupyterhub_app_icon_path: "{{ openrefine_icon_path }}"
         jupyterhub_app_command:
           - "{{ openrefine_cmd_path }}" # set by the `openrefine` role
