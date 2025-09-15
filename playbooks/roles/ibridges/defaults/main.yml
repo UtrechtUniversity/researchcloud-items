@@ -1,3 +1,4 @@
 ---
 ibridges_systemwide_location: /usr/local/uu-pip
-ibridges_template_plugin: ibridges-servers-uu
+ibridges_plugins: []
+ibridges_plugins_gui: []
