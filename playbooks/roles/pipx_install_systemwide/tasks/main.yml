@@ -62,7 +62,7 @@
   ansible.builtin.command: >
     {{ pipx_install_systemwide_cmd }} inject
     "{{ pipx_install_systemwide_package }}"
-    {{ pipx_install_systemwide_extra_packages.join(' ') }}
+    {{ pipx_install_systemwide_extra_packages | join(' ') }}
   environment:
     PIPX_HOME: "{{ pipx_install_systemwide_location }}"
     PIPX_BIN_DIR: "{{ pipx_install_systemwide_location }}/bin"
