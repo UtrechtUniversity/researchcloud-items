@@ -5,4 +5,7 @@
 
   roles:
     - role: ibridges
+      vars:
+        ibridges_plugins:
+          - git+https://github.com/iBridges-for-iRODS/ibridges-plugin-dataverse.git
     - role: irods_skel
