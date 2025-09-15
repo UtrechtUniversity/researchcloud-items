@@ -1,0 +1,4 @@
+---
+ibridges_default_plugins:
+  - ibridges-servers-uu
+ibridges_install_plugins: "{{ ibridges_default_plugins + ibridges_plugins }}"

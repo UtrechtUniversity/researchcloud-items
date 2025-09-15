@@ -12,8 +12,5 @@
   vars:
     pipx_install_systemwide_package: "{{ item }}"
     pipx_install_systemwide_python: "{{ ibridges_python_path | default('/usr/bin/python3') }}" # ibridges_python_path is potentially set in gui.yml
-  with_items: "{{ ibridges_packages }}"
-
-- name: Install iBridges template plugin
-  ansible.builtin.include_tasks: templates.yml
+    pipx_install_systemwide_extra_packages: "{{ ibridges_install_plugins }}"
   with_items: "{{ ibridges_packages }}"
