@@ -11,6 +11,7 @@
         name:
           - flask
           - ibridges-servers-uu
+        virtualenv: /usr/local/uu-pip/venvs/ibridges
         state: present
       register: packages_installed
       failed_when: packages_installed.changed
