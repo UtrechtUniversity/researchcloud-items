@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Get changed roles
         id: changed-roles
-        uses: tj-actions/changed-files@v46
+        uses: tj-actions/changed-files@v47
         with:
           json: true
           escape_json: false
