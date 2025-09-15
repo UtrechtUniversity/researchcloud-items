@@ -1,0 +1,16 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Run ibridges
+      ansible.builtin.shell: . /etc/profile.d/uu-custom-pip.sh && ibridges
+
+    - name: Ensure requested packages are already installed
+      ansible.builtin.pip:
+        name:
+          - flask
+          - ibridges-servers-uu
+        state: present
+      register: packages_installed
+      failed_when: packages_installed.changed

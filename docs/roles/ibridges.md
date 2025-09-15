@@ -15,6 +15,10 @@ Installs [iBridges](https://github.com/UtrechtUniversity/iBridges), the userfrie
 * adds the iBridges command line utility to each user's `$PATH`
 * on Desktop workspaces, installs the GUI application as well (Desktop item is places in the applications menu and on the desktop).
 
+## Variables
+
+- `ibridges_plugins`: List. List of string Pypi packages to install into the same virtual environment as iBridges. Can be used to install iBridges plugins, such as [ibridges-servers-uu](https://github.com/iBridges-for-iRODS/ibridges-servers-uu).
+
 
 ## See also
 - Role [ibridges](../roles/ibridges.md)

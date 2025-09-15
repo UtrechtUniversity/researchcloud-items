@@ -8,3 +8,5 @@
         name: ibridges
       vars:
         pyenv_default_python: "3.8"
+        ibridges_plugins:
+          - flask

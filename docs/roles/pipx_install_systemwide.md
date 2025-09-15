@@ -23,7 +23,6 @@ This role:
 
 - `pipx_install_systemwide_package`: String. Required. Package to install. For example: `ibridges`.
 - `pipx_install_systemwide_options`: List. Optional. Additional arguments that are passed to the `install` command.
--
 - `pipx_install_systemwide_executable`: String. Path to the Python executable to use for installing. Default: omitted.
 - `pipx_install_systemwide_location`: String. Default: `/usr/local/pip`.
 - `pipx_install_systemwide_profile`: String. Name of the script to be placed in `/etc/profile.d` updating the user's path. Default: `uu-custom-pip.sh`. Will not be created when empty.
