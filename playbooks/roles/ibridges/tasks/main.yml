@@ -4,6 +4,7 @@
   ansible.builtin.include_tasks: gui.yml
 
 - name: Install iBridges GUI to systemwide location
+  when: fact_desktop_workspace
   ansible.builtin.include_role:
     name: pipx_install_systemwide
   vars:
