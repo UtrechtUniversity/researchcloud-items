@@ -16,9 +16,9 @@ provisioner:
     ANSIBLE_ROLES_PATH: ../../../
 role_name_check: 1
 platforms:
-  - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
-    <<: *image_settings
+  # - name: workspace-src-ubuntu_noble-desktop
+  #   image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop
+  #   <<: *image_settings
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
     <<: *image_settings
