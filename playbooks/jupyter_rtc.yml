@@ -1,0 +1,10 @@
+---
+- name: Add Real Time Collaboration Plugin to JupyterHub
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - role: jupyterhub_rtc
+      vars:
+        jupyterhub_rtc_share_all_users: "{{ jupyter_rtc_share_all_users | default(false, true) | bool }}"
+        jupyterhub_rtc_venv: "{{ jupyter_rtc_venv }}"
+        jupyterhub_rtc_config_path: "{{ jupyter_rtc_config_path }}"

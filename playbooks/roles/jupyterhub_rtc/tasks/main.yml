@@ -1,0 +1,31 @@
+---
+- name: Create shared user and its group
+  when: not jupyterhub_rtc_share_all_users
+  block:
+    - name: Ensure group jupyterhub_rtc_group exists
+      ansible.builtin.group:
+        name: "{{ jupyterhub_rtc_group }}"
+        state: present
+
+    - name: Create user jupyterhub_rtc_user
+      ansible.builtin.user:
+        name: "{{ jupyterhub_rtc_user }}"
+        groups: "{{ jupyterhub_rtc_group | default(omit, true) }}"
+        append: true
+        state: present
+
+- name: Add RTC to jupyterhub config
+  notify: Restart JupyterHub
+  ansible.builtin.blockinfile:
+    path: "{{ jupyterhub_rtc_config_path }}"
+    block: "{{ jupyterhub_rtc_share_all_users | ternary(jupyterhub_rtc_all_users, jupyterhub_rtc_shared_user) }}"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK -- Jupyter RTC"
+
+- name: Install RTC plugin
+  notify: Restart JupyterHub
+  ansible.builtin.pip:
+    name: jupyter-collaboration
+    virtualenv: "{{ (jupyterhub_rtc_venv == 'system') | ternary(omit, jupyterhub_rtc_venv) }}"
+  environment:
+    VIRTUAL_ENV: "{{ (jupyterhub_rtc_venv == 'system') | ternary(omit, jupyterhub_rtc_venv) }}"

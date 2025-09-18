@@ -1,0 +1,47 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Create testuser2
+      ansible.builtin.user:
+        name: testuser2
+        group: jupyterhub
+        state: present
+
+    - name: Test login
+      ansible.builtin.uri:
+        url: http://localhost:80/hub/spawn/testuser
+        method: GET
+        headers:
+          user: testuser
+        follow_redirects: true
+      failed_when: false
+      register: jupyterhub_login_testuser
+      retries: 5
+      delay: 3
+
+    - name: Sleep to wait for testuser's server to spawn
+      ansible.builtin.wait_for:
+        timeout: 10
+      delegate_to: localhost
+
+    - name: Test login into testuser's server with testuser2
+      ansible.builtin.uri:
+        url: http://localhost:80/user/testuser/lab
+        method: GET
+        headers:
+          user: testuser2
+        return_content: true
+        follow_redirects: true
+      failed_when: false
+      register: jupyterhub_login_testuser2
+      retries: 5
+      delay: 3
+
+    - name: Assertions
+      ansible.builtin.assert:
+        that:
+          - jupyterhub_login_testuser.status == 200
+          - jupyterhub_login_testuser2.status == 200
+          - '"/hub/api/oauth2/authorize" in jupyterhub_login_testuser2.url or "/hub/spawn-pending/shared" in jupyterhub_login_testuser2.url'

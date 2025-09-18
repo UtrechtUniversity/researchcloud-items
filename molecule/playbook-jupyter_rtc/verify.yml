@@ -5,7 +5,7 @@
   tasks:
     - name: Test login
       ansible.builtin.uri:
-        url: http://localhost:80
+        url: http://localhost:80/hub/spawn/shared
         method: GET
         headers:
           user: testuser
@@ -13,7 +13,7 @@
         follow_redirects: true
       failed_when: false
       register: jupyterhub_login
-      retries: 5
+      retries: 10
       delay: 3
 
     - name: Assert successful login

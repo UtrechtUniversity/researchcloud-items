@@ -5,7 +5,7 @@
   tasks:
     - name: Test login
       ansible.builtin.uri:
-        url: http://localhost:80
+        url: http://localhost:80/hub/spawn/shared
         method: GET
         headers:
           user: testuser
@@ -16,7 +16,8 @@
       retries: 5
       delay: 3
 
-    - name: Assert successful login
+    - name: Assertions
       ansible.builtin.assert:
         that:
           - jupyterhub_login.status == 200
+          - '"/hub/api/oauth2/authorize" in jupyterhub_login.url or "/hub/spawn-pending/shared" in jupyterhub_login.url'
