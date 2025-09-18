@@ -1,0 +1,28 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: jupyterhub
+        path: jupyterhub.yml
+        parameters:
+          jupyter_auth: noauth
+          jupyter_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
+          jupyter_proxy_config: "{ proxy_set_header: { REMOTE_USER: '$$http_user'} }"
+      - name: jupyter_rtc
+        path: jupyter_rtc.yml
+        parameters:
+          jupyterhub_rtc_venv: /usr/local/jupyterhub
+          jupyterhub_rtc_config_path: /usr/local/etc/jupyter/jupyterhub_config.py

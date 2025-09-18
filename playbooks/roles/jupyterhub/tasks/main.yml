@@ -68,12 +68,15 @@
         jupyterhub_config_dir_path: "{{ jupyterhub_config_dir }}"
 
     - name: Create jupyter configuration
-      ansible.builtin.template:
-        src: templates/jupyterhub_config.py.j2
+      ansible.builtin.blockinfile:
+        block: "{{ lookup('template', 'jupyterhub_config.py.j2') }}"
         dest: "{{ jupyterhub_config_dir }}/jupyterhub_config.py"
         owner: root # don't allow user jupyter to edit its own config, for added security.
+        create: true
         group: "{{ jupyterhub_user }}"
         mode: "0640"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR MAIN JUPYTERHUB CONFIG"
+        insertafter: BOF
 
     - name: Create venv with uv
       ansible.builtin.include_role:
