@@ -5,7 +5,7 @@
   tasks:
     - name: Test login
       ansible.builtin.uri:
-        url: http://localhost:80
+        url: http://localhost:80/user/shared/lab
         method: GET
         headers:
           user: testuser
