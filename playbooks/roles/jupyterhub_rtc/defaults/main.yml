@@ -1,0 +1,6 @@
+---
+jupyterhub_rtc_share_all_users: false
+jupyterhub_rtc_venv: /usr/local/jupyterhub
+jupyterhub_rtc_config_path: /usr/local/etc/jupyter/jupyterhub_config.py
+jupyterhub_rtc_user: shared
+jupyterhub_rtc_group: jupyterhub
