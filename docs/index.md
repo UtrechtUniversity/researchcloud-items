@@ -61,6 +61,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
 - [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
 - [jupyterhub](playbooks/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io/)
+- [jupyter_rtc](playbooks/jupyter_rtc.md) add Real-time Collaboration functionality to an existing [JupyterHub](https://jupyterhub.readthedocs.io/).
 - [flask_app](roles/flask_app.md)  serve a Flask app with Nginx, optionally with SRAM authorization.
 - [matlab](playbooks/matlab.md)  Data analysis and simulation suite
 - [miniconda](playbooks/miniconda.md)  Python development
@@ -108,6 +109,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_skel](roles/irods_skel.md)
 - [jupyterhub](roles/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io) on the workspace, with SRAM auth.
 - [jupyterhub_app](roles/jupyterhub_app.md) install arbitrary applications as an extension for JupyterLab, or as a standalone app served with JupyterHub.
+- [jupyterhub_rtc](roles/jupyterhub_rtc.md) add real-time collaboration functionality to an existing JupyterHub.
 - [jupyterhub_standalone_proxy](roles/jupyterhub_standalone_proxy.md) use [Jupyter Standalone Proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/standalone.html) to spawn an arbritary web application running as a logged in user.
 - [keycloak](roles/keycloak.md)
 - [matlab](roles/matlab.md)
