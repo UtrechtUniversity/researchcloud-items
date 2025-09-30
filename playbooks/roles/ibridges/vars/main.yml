@@ -1,7 +1,7 @@
 ---
 ibridges_default_plugins:
   - ibridges-servers-uu
-  - git+https://github.com/iBridges-for-iRODS/ibridges-plugin-dataverse.git@split
+  - git+https://github.com/iBridges-for-iRODS/ibridges-plugin-dataverse.git
 ibridges_default_plugins_gui:
   - ibridgesdvn[gui]
 ibridges_install_plugins: "{{ ibridges_default_plugins + ibridges_plugins }}"
