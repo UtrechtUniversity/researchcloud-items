@@ -7,7 +7,7 @@
     - role: ibridges
       vars:
         ibridges_plugins:
-          - git+https://github.com/iBridges-for-iRODS/ibridges-plugin-dataverse.git@split
+          - git+https://github.com/iBridges-for-iRODS/ibridges-plugin-dataverse.git
         ibridges_plugins_gui:
           - ibridgesdvn[gui]
     - role: irods_skel
