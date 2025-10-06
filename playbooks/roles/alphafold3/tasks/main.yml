@@ -79,4 +79,4 @@
   tags: molecule-notest
   ansible.builtin.command: "bash {{ alphafold_repo_path }}/fetch_databases.sh {{ db_path }}"
   args:
-    creates: "{{ db_path }}" # don't re-run fetch_databases if db_path on the storage volume already exists
+    creates: "{{ db_path }}/*.*" # don't re-run fetch_databases if db_path on the storage volume already exists
