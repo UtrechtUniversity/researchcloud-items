@@ -1,7 +1,8 @@
 ---
-- name: Install pyenv and miniconda
+- name: Install miniconda
   hosts: localhost
   gather_facts: true
-
   roles:
     - role: miniconda
+      vars:
+        miniconda_shared_editable: "{{ miniconda_install_systemwide | default(false, true) | bool }}"

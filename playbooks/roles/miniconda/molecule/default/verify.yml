@@ -3,24 +3,9 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Create test user
-      ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
-
-    - name: Runonce for new testuser
-      ansible.builtin.command: su - -l -c /home/testuser2/runonce.d/runonce_conda.sh testuser2
-
-    - name: Ensure condabin is added to path so user can run conda init on demand
-      ansible.builtin.lineinfile:
-        name: /home/testuser2/.bashrc
-        line: export PATH="/data/ext/miniconda/condabin${PATH:+:${PATH}}"
-        state: present
-      check_mode: true
-      register: condabin
-      failed_when: (condabin is changed) or (condabin is failed)
-
     - name: Ensure conda is not auto-initialized
       ansible.builtin.lineinfile:
-        name: /home/testuser2/.bashrc
+        name: /home/testuser/.bashrc
         line: conda initialize >>>
         state: present
       check_mode: true
@@ -32,16 +17,31 @@
         path: /data/ext/miniconda/condabin/conda
       register: miniconda_systemwide
 
-    - name: Stat miniconda user
-      ansible.builtin.stat:
-        path: /home/testuser2/miniconda/condabin/conda
-      register: miniconda_userspace
+    - name: Create dummy conda file
+      ansible.builtin.copy:
+        dest: /root/environment.yml
+        owner: root
+        group: root
+        mode: "0750"
+        content: |
+          name: test
+          dependencies:
+            - ipykernel
 
-    - name: Assert miniconda installed globally and not for individual users
+    - name: Test conda create with root
+      ansible.builtin.command: bash -l -c 'conda create -n test -y --override-channels -c conda-forge'
+      register: conda_create
+
+    # Ensure the conda env created by root is available for testuser
+    - name: Conda env list
+      become: true
+      become_user: testuser
+      ansible.builtin.command: bash -l -c 'conda env list'
+      register: conda_env_list
+
+    - name: Assertions
       ansible.builtin.assert:
         that:
           - miniconda_systemwide.stat.exists is true
-          - miniconda_userspace.stat.exists is false
-
-    - name: Test conda list
-      ansible.builtin.command: su - -l -c "/data/ext/miniconda/bin/conda list" testuser2
+          - '"environment location: /data/ext/miniconda" in conda_create.stdout'
+          - '"/data/ext/miniconda/envs/test" in conda_env_list.stdout'
