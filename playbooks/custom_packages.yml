@@ -3,9 +3,9 @@
   hosts: localhost
   gather_facts: true
   vars:
-    _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | list }}"
-    _custom_packages_kernels: "{{ (_custom_packages_kernels | default('')).split(',') | map('split') | list }}"
-    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/', true) }}"
+    _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | select | list }}"
+    _custom_packages_kernels: "{{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}"
+    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/data/local-data', true) }}"
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/envs', true) }}"
     _custom_packages_env_group: "{{ custom_packages_env_group | default('root', true) }}"
   # pre_tasks: # todo: create julia role
@@ -18,6 +18,13 @@
   #   - name: Install juliaup
   #     community.general.cargo:
   #       name: juliaup
+  pre_tasks:
+    - name: Debug
+      debug:
+        var: _custom_packages_projects
+    - name: Debug
+      debug:
+        var: _custom_packages_kernels
   roles:
     - role: pipx_install_systemwide
       vars:
@@ -52,7 +59,7 @@
 
     - name: Fetch every project
       ansible.builtin.command:
-        cmd: repo2kernel fetch {{ item }} {{ _custom_packages_code_dir }} --dataverse 
+        cmd: repo2kernel fetch {{ item }} {{ _custom_packages_code_dir }} #todo: dataverse?
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
 
@@ -72,4 +79,4 @@
       ansible.builtin.command:
         cmd: repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}
       failed_when: false
-      with_items: "{{ }}"
+      with_items: "{{ _custom_packages_kernels }}"
