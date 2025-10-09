@@ -7,10 +7,10 @@
     _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
     _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
     _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | select | list }}"
-    _custom_packages_kernels: "{{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}"
+    _custom_packages_kernels: "[ {{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}]"
     _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
-    _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/envs', true) }}"
-    _custom_packages_env_group: "{{ custom_packages_env_group | default('root', true) }}"
+    _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
+    _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
   roles:
     - role: uv
       when: _install_uv
@@ -29,7 +29,7 @@
   tasks:
     - name: Ensure desired group exists
       ansible.builtin.group:
-        name: "{{ _custom_packages_env_group }}"
+        name: "{{ _custom_packages_group }}"
         state: present
 
     - name: Create env dir
@@ -37,7 +37,7 @@
         path: "{{ _custom_packages_env_dir }}"
         state: directory
         owner: root
-        group: "{{ _custom_packages_env_group }}"
+        group: "{{ _custom_packages_group }}"
         mode: "02750" # setgid so new files are created with the right group ownership
 
     - name: Create code dir
@@ -45,7 +45,7 @@
         path: "{{ _custom_packages_code_dir }}"
         state: directory
         owner: root
-        group: "{{ _custom_packages_env_group }}"
+        group: "{{ _custom_packages_group }}"
         mode: "02750" # setgid so new files are created with the right group ownership
 
     - name: Fetch every project
@@ -56,7 +56,7 @@
 
     - name: Find fetched project directories
       ansible.builtin.find:
-        paths: "{{ _custom_packages_code_dir }}/*"
+        patterns: "{{ _custom_packages_code_dir }}/*"
         file_type: directory
       register: fetched_projects
 
