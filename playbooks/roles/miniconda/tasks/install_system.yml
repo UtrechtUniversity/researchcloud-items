@@ -1,20 +1,40 @@
 ---
-- name: Install conda in shared environments
+- name: Install conda globally
   ansible.builtin.command: "{{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p {{ miniconda_install_dir }}"
   tags: molecule-idempotence-notest
+  args:
+    creates: "{{ miniconda_install_dir }}"
 
-- name: Create .condarc file for shares packages and environments
+- name: Add conda to each user's path
+  ansible.builtin.copy:
+    dest: /etc/profile.d/uu-conda.sh
+    mode: "0644"
+    content: |
+      export PATH="{{ miniconda_install_dir }}/condabin${PATH:+:${PATH}}"
+
+- name: Create general .condarc file for shared packages and environments
   ansible.builtin.template:
-    src: .condarc.j2
+    src: condarc.j2
     dest: "{{ miniconda_install_dir }}/.condarc"
     mode: "0755"
+    owner: root
+    group: root
+
+# This task ensures that root always installs packages into the global environment
+- name: Ensure root user always installs conda packages in shared system cache
+  ansible.builtin.copy:
+    dest: "/root/.condarc"
+    mode: "0600"
+    content: |
+      pkgs_dirs:
+        - {{ miniconda_install_dir }}/pkgs/
 
 # Without this, any package downloaded by another person is not retrievable from the cache by others.
 - name: Setuid rights on pkgs/ directory for multi-user support
   ansible.builtin.file:
     path: "{{ item }}"
     group: "{{ miniconda_groupname }}"
-    mode: g+rwxs
+    mode: "{{ (miniconda_shared_editable | default(false, true) | bool) | ternary('02775', '02755') }}"
     recurse: true
   loop:
     - "{{ miniconda_install_dir }}/pkgs/"

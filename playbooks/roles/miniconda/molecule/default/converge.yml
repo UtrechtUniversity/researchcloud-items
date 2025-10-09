@@ -10,7 +10,5 @@
       ansible.builtin.include_role:
         name: miniconda
       vars:
-        miniconda_systemwide: "true"
-        miniconda_userspace: "false"
         miniconda_install_dir: /data/ext/miniconda
         miniconda_auto_init: "false"

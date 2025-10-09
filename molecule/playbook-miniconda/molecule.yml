@@ -6,8 +6,8 @@ provisioner:
   name: ansible
   env:
     components:
-      - name: miniconda_userspace
+      - name: miniconda_auto_init
         path: miniconda.yml
         parameters:
-          miniconda_userspace: 'true'
-          miniconda_autoinit: 'true'
+          miniconda_auto_init: 'true'
+          miniconda_shared_editable: 'false'

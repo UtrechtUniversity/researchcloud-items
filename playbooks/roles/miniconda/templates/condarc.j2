@@ -1,0 +1,11 @@
+envs_dirs:
+  - ~/.conda/envs/
+  - {{ miniconda_install_dir }}/envs/
+  - {{ miniconda_uu_envs_dir }}
+
+pkgs_dirs:
+{% if _miniconda_shared_editable %}
+  - {{ miniconda_install_dir }}/pkgs/
+{% endif %}
+
+auto_activate_base: false
