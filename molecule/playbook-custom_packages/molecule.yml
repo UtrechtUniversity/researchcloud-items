@@ -1,0 +1,9 @@
+---
+provisioner:
+  name: ansible
+  env:
+    components:
+      - name: custom_packages
+        path: custom_packages.yml
+        vars:
+          custom_packages_projects: doi:10.7910/DVN/6ZXAGT/3YRRYJ

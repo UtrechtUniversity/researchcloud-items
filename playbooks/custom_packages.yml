@@ -1,0 +1,75 @@
+---
+- name: Install dependencies for arbitrary projects and create Jupyter kernels
+  hosts: localhost
+  gather_facts: true
+  vars:
+    _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | list }}"
+    _custom_packages_kernels: "{{ (_custom_packages_kernels | default('')).split(',') | map('split') | list }}"
+    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/', true) }}"
+    _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/envs', true) }}"
+    _custom_packages_env_group: "{{ custom_packages_env_group | default('root', true) }}"
+  # pre_tasks: # todo: create julia role
+  #   - name: Install cargo
+  #     ansible.builtin.package:
+  #       name:
+  #         - rustc
+  #         - cargo
+  #       state: present
+  #   - name: Install juliaup
+  #     community.general.cargo:
+  #       name: juliaup
+  roles:
+    - role: pipx_install_systemwide
+      vars:
+        pipx_install_systemwide_use_uv: true # this will also install UV
+        pipx_install_systemwide_package: git+https://github.com/UtrechtUniversity/repo2kernel
+    - role: miniconda
+      vars:
+        miniconda_systemwide: true
+        miniconda_userspace: false
+        miniconda_auto_init: false
+  tasks:
+    - name: Ensure desired group exists
+      ansible.builtin.group:
+        name: "{{ _custom_packages_env_group }}"
+        state: present
+
+    - name: Create env dir
+      ansible.builtin.file:
+        path: "{{ _custom_packages_env_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_env_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+
+    - name: Create code dir
+      ansible.builtin.file:
+        path: "{{ _custom_packages_code_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_env_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+
+    - name: Fetch every project
+      ansible.builtin.command:
+        cmd: repo2kernel fetch {{ item }} {{ _custom_packages_code_dir }} --dataverse 
+      register: fetch
+      with_items: "{{ _custom_packages_projects }}"
+
+    - name: Find fetched project directories
+      ansible.builtin.find:
+        paths: "{{ _custom_packages_code_dir/* }}"
+        file_type: directory
+      register: fetched_projects
+
+    - name: Create kernel for every fetched project
+      ansible.builtin.shell:
+        cmd: repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} {{ item.path }} > {{ item.path}}/repo2kernel.log }} 2>&1
+      failed_when: false
+      with_items: "{{ fetched_projects }}"
+
+    - name: Create kernel for every requested interpreter
+      ansible.builtin.command:
+        cmd: repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}
+      failed_when: false
+      with_items: "{{ }}"
