@@ -1,5 +1,10 @@
 envs_dirs:
+  - ~/.conda/envs/
   - {{ miniconda_install_dir }}/envs/
+  - {{ miniconda_uu_envs_dir }}
 
 pkgs_dirs:
+  - ~/.conda/pkgs/
   - {{ miniconda_install_dir }}/pkgs/
+
+auto_activate_base: false
