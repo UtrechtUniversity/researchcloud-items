@@ -19,6 +19,10 @@
     content: |
       export PATH="{{ pipx_install_systemwide_location }}/bin${PATH:+:${PATH}}"
 
+- name: Set systemwide pipx path fact for availability in other roles
+  ansible.builtin.set_fact:
+    fact_global_python_tools: "{{ pipx_install_systemwide_location }}/bin/"
+
 # community.general.pipx is currently not available on ResearchCloud, so use 'command' below.
 # - name: Install packages
 #   community.general.pipx:
