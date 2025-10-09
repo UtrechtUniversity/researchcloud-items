@@ -1,0 +1,105 @@
+---
+- name: Install dependencies for arbitrary projects and create Jupyter kernels
+  hosts: localhost
+  gather_facts: true
+  vars:
+    _install_uv: "{{ custom_packages_install_uv | default(true, true) | bool }}"
+    _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
+    _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
+    _custom_packages_projects: "[ {{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }} ]"
+    _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split') | select | list }} ]"
+    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
+    _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
+    _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
+    _custom_packages_create_kernels: "{{ custom_packages_create_kernels | default(true, true) | bool }}"
+    _custom_packages_extra_path: "{{ custom_packages_extra_path | default('/usr/local/jupyterhub/bin', true) }}" # repo2kernel commands require some commands to be available on PATH. In particular, 'jupyter' is required by the IRKernel package used to create R-kernels.
+  pre_tasks:
+    - name: Debug projects
+      ansible.builtin.debug:
+        msg: "Will install dependencies for the following requested projects: {{ _custom_packages_projects }}"
+    - name: Debug extra envs
+      ansible.builtin.debug:
+        msg: "Will install the following additional environments: {{ _custom_packages_extra_envs }}"
+  roles:
+    - role: uv
+      when: _install_uv
+    - role: pipx_install_systemwide
+      vars:
+        pipx_install_systemwide_use_uv: true
+        pipx_install_systemwide_package: git+https://github.com/UtrechtUniversity/repo2kernel
+    - role: miniconda
+      when: _install_conda
+    - role: julia
+      when: _install_julia
+  tasks:
+    - name: Ensure desired group exists
+      ansible.builtin.group:
+        name: "{{ _custom_packages_group }}"
+        state: present
+
+    - name: Create env dir
+      # setgid recursive makes this task not idempotent
+      tags: molecule-idempotence-notest
+      ansible.builtin.file:
+        path: "{{ _custom_packages_env_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+        recurse: true
+
+    - name: Create code dir
+      ansible.builtin.file:
+        path: "{{ _custom_packages_code_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+
+    - name: Fetch every project
+      tags: molecule-idempotence-notest
+      # use bash -l to use a login shell, so paths are correctly sourced
+      ansible.builtin.command:
+        cmd: >
+          bash -l -c 'repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/'
+      register: fetch
+      with_items: "{{ _custom_packages_projects }}"
+
+    - name: Find fetched project directories
+      ansible.builtin.find:
+        paths: "{{ _custom_packages_code_dir }}"
+        file_type: directory
+      register: fetched_projects
+
+    - name: Create kernel for every fetched project
+      tags: molecule-idempotence-notest
+      # use bash -l to use a login shell, so paths are correctly sourced
+      ansible.builtin.shell:
+        cmd: bash -l -c 'repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1'
+      failed_when: false
+      when: fetched_projects is defined
+      with_items: "{{ fetched_projects.files }}"
+      environment:
+        PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
+
+    - name: Create kernel for every requested interpreter
+      tags: molecule-idempotence-notest
+      # use bash -l to use a login shell, so paths are correctly sourced
+      ansible.builtin.command:
+        cmd: "bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}'"
+      failed_when: false
+      with_items: "{{ _custom_packages_extra_envs }}"
+      environment:
+        PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
+
+    # After running various commands above, ensure the right privileges are still est
+    - name: Set privileges for env dir
+      # setgid recursive makes this task not idempotent
+      tags: molecule-idempotence-notest
+      ansible.builtin.file:
+        path: "{{ _custom_packages_env_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+        recurse: true

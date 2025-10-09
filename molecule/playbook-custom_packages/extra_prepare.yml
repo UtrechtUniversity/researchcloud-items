@@ -1,0 +1,6 @@
+---
+- name: Install jupyter (dependency of IRKernel)
+  ansible.builtin.apt:
+    name: jupyter
+    install_recommends: false
+    state: present
