@@ -35,6 +35,12 @@
     src: "{{ find_julia.files[0].path }}/bin/julia"
     state: link
 
+- name: Create global symlink for juliaup
+  ansible.builtin.file:
+    dest: /usr/local/bin/juliaup
+    src: "{{ julia_shared_env_path }}/bin/juliaup"
+    state: link
+
 # After installation of julia, ensure permissions are set so every user can use the shared envs
 - name: Set permissions for shared env dir
   ansible.builtin.file:

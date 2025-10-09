@@ -56,6 +56,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [alphafold](playbooks/alphafold.md) install DeepMind AlphaFold
 - [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
 - [asreview](playbooks/asreview_server.md)  machine-learning powered webapplication for systematic reviews
+- [custom packages](playbooks/custom_packages.md) download projects, install their dependencies into separate environments, and create Jupyter kernels for them
 - [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
