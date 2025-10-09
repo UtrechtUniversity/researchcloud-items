@@ -24,8 +24,8 @@
         miniconda_systemwide: true
         miniconda_userspace: false
         miniconda_auto_init: false
-    - role: julia
-      when: _install_julia
+    # - role: julia
+    #   when: _install_julia
   tasks:
     - name: Ensure desired group exists
       ansible.builtin.group:
@@ -50,19 +50,19 @@
 
     - name: Fetch every project
       ansible.builtin.command:
-        cmd: repo2kernel fetch {{ item }} {{ _custom_packages_code_dir }} #todo: dataverse?
+        cmd: repo2kernel fetch --create-subdir {{ item }} {{ _custom_packages_code_dir }}/
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
 
     - name: Find fetched project directories
       ansible.builtin.find:
-        patterns: "{{ _custom_packages_code_dir }}/*"
+        paths: "{{ _custom_packages_code_dir }}"
         file_type: directory
       register: fetched_projects
 
     - name: Create kernel for every fetched project
       ansible.builtin.shell:
-        cmd: repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} {{ item.path }} > {{ item.path}}/repo2kernel.log }} 2>&1
+        cmd: repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1
       failed_when: false
       when: fetched_projects is defined
       with_items: "{{ fetched_projects.files }}"
