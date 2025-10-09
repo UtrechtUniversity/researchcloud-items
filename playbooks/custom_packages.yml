@@ -5,7 +5,7 @@
   vars:
     _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | select | list }}"
     _custom_packages_kernels: "{{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}"
-    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/data/local-data', true) }}"
+    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-data', true) }}"
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/envs', true) }}"
     _custom_packages_env_group: "{{ custom_packages_env_group | default('root', true) }}"
   # pre_tasks: # todo: create julia role
@@ -18,17 +18,11 @@
   #   - name: Install juliaup
   #     community.general.cargo:
   #       name: juliaup
-  pre_tasks:
-    - name: Debug
-      debug:
-        var: _custom_packages_projects
-    - name: Debug
-      debug:
-        var: _custom_packages_kernels
   roles:
+    - role: uv
     - role: pipx_install_systemwide
       vars:
-        pipx_install_systemwide_use_uv: true # this will also install UV
+        pipx_install_systemwide_use_uv: true
         pipx_install_systemwide_package: git+https://github.com/UtrechtUniversity/repo2kernel
     - role: miniconda
       vars:
