@@ -59,7 +59,7 @@
 
     - name: Find fetched project directories
       ansible.builtin.find:
-        paths: "{{ _custom_packages_code_dir/* }}"
+        paths: "{{ _custom_packages_code_dir }}/*"
         file_type: directory
       register: fetched_projects
 
@@ -67,7 +67,7 @@
       ansible.builtin.shell:
         cmd: repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} {{ item.path }} > {{ item.path}}/repo2kernel.log }} 2>&1
       failed_when: false
-      with_items: "{{ fetched_projects }}"
+      with_items: "{{ fetched_projects.files }}"
 
     - name: Create kernel for every requested interpreter
       ansible.builtin.command:
