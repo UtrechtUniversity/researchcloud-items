@@ -6,9 +6,9 @@
     _install_uv: "{{ custom_packages_install_uv | default(true, true) | bool }}"
     _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
     _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
-    _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | select | list }}"
+    _custom_packages_projects: "{{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }}"
     _custom_packages_kernels: "[ {{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}]"
-    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
+    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/', true) }}"
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
     _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
   roles:
@@ -50,7 +50,7 @@
 
     - name: Fetch every project
       ansible.builtin.command:
-        cmd: repo2kernel fetch --create-subdir {{ item }} {{ _custom_packages_code_dir }}/
+        cmd: repo2kernel fetch --create-subdir {{ item[0] }} {{ '--ref '~item[1] if item[1] else '' }} {{ _custom_packages_code_dir }}/
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
 
