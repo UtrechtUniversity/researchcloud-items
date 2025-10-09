@@ -1,0 +1,81 @@
+---
+- name: Install dependencies for arbitrary projects and create Jupyter kernels
+  hosts: localhost
+  gather_facts: true
+  vars:
+    _install_uv: "{{ custom_packages_install_uv | default(true, true) | bool }}"
+    _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
+    _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
+    _custom_packages_projects: "[ {{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }} ]"
+    _custom_packages_kernels: "[ {{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}]"
+    _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
+    _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
+    _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
+  roles:
+    - role: uv
+      when: _install_uv
+    - role: pipx_install_systemwide
+      vars:
+        pipx_install_systemwide_use_uv: true
+        pipx_install_systemwide_package: git+https://github.com/UtrechtUniversity/repo2kernel
+    - role: miniconda
+      when: _install_conda
+      vars:
+        miniconda_shared_editable: false
+    - role: julia
+      when: _install_julia
+  tasks:
+    - name: Ensure desired group exists
+      ansible.builtin.group:
+        name: "{{ _custom_packages_group }}"
+        state: present
+
+    - name: Create env dir
+      ansible.builtin.file:
+        path: "{{ _custom_packages_env_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+
+    - name: Create code dir
+      ansible.builtin.file:
+        path: "{{ _custom_packages_code_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
+
+    - name: Fetch every project
+      ansible.builtin.command:
+        cmd: "{{ fact_global_python_tools }}/repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ _custom_packages_code_dir }}/"
+      register: fetch
+      with_items: "{{ _custom_packages_projects }}"
+
+    - name: Find fetched project directories
+      ansible.builtin.find:
+        paths: "{{ _custom_packages_code_dir }}"
+        file_type: directory
+      register: fetched_projects
+
+    - name: Create kernel for every fetched project
+      ansible.builtin.shell:
+        cmd: '{{ fact_global_python_tools }}/repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1'
+      failed_when: false
+      when: fetched_projects is defined
+      with_items: "{{ fetched_projects.files }}"
+
+    - name: Create kernel for every requested interpreter
+      ansible.builtin.command:
+        cmd: "{{ fact_global_python_tools }}/repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}"
+      failed_when: false
+      with_items: "{{ _custom_packages_kernels }}"
+
+    # After running various commands above, ensure the right privileges are still est
+    - name: Set privileges for env dir
+      ansible.builtin.file:
+        path: "{{ _custom_packages_env_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "02750" # setgid so new files are created with the right group ownership
