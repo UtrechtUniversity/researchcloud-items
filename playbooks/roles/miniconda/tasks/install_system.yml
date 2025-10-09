@@ -5,7 +5,14 @@
   args:
     creates: "{{ miniconda_install_dir }}"
 
-- name: Create .condarc file for shares packages and environments
+- name: Add conda to each user's path
+  ansible.builtin.copy:
+    dest: /etc/profile.d/uu-conda.sh
+    mode: "0644"
+    content: |
+      export PATH="{{ miniconda_install_dir }}/condabin${PATH:+:${PATH}}"
+
+- name: Create .condarc file for shared packages and environments
   ansible.builtin.template:
     src: .condarc.j2
     dest: "{{ miniconda_install_dir }}/.condarc"
