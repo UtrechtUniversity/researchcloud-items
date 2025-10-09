@@ -1,16 +1,5 @@
 ---
-- name: Convert parameters to booleans
-  ansible.builtin.set_fact:
-    install_systemwide: "{{ miniconda_systemwide | bool }}"
-    install_userspace: "{{ miniconda_userspace | bool }}"
-    install_userspace_preinstall: "{{ miniconda_userspace_preinstall | bool }}"
-    auto_init: "{{ miniconda_auto_init | bool }}"
-
-- name: Check if not both systemwide and userspace are true or false
-  when: install_systemwide == install_userspace
-  ansible.builtin.meta: end_play
 - name: Create miniconda multi-user group and add new users to it automatically
-  when: install_systemwide
   ansible.builtin.include_role:
     name: default_group
   vars:
@@ -30,23 +19,11 @@
     dest: "{{ miniconda_download_dest }}/{{ miniconda_install_script }}"
     mode: "0755"
 
-# Done in seperate task file to allow proper looping with fact_regular_users.
-- name: Install per user
-  when: install_userspace and install_userspace_preinstall
-  ansible.builtin.include_tasks: install_user.yml
-  with_items:
-    - "{{ fact_regular_users }}"
-
-# Done in seperate task to be consistent, since per-user installation is also done that way.
 - name: Install system-wide
-  when: install_systemwide
   ansible.builtin.include_tasks: install_system.yml
-- name: Set `conda init` command
-  when: install_systemwide
-  ansible.builtin.set_fact:
-    miniconda_conda_init: "{{ miniconda_install_dir }}/bin/conda init"
 
 - name: Place runonce script to init conda for each user
+  when: _miniconda_auto_init
   ansible.builtin.template:
     src: runonce_conda.sh.j2
     dest: /etc/runonce.d/runonce_conda.sh

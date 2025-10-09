@@ -1,37 +1,5 @@
 #!/bin/bash
 set -eo pipefail
 
-{% if install_userspace -%}
-MINICONDA_DEST=~/miniconda
-if [[ ! -d "$MINICONDA_DEST" ]]; then
-    echo "Installing miniconda"
-    {{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p "$MINICONDA_DEST"
-fi
-{% else -%}
-MINICONDA_DEST="{{ miniconda_install_dir }}"
-{% endif -%}
-
-{% if auto_init -%}
 echo "Running miniconda init"
-#
-{{ miniconda_conda_init }}
-#
-# In case conda does not recognize the shell, it needs to be specified like below
-# {{ miniconda_conda_init }} bash
-{% else -%}
-# Add miniconda/condabin (but not miniconda/bin) to the user's path so they can manually run `conda init`
-
-EXPORT_MINICONDA_PATH="export PATH=\"$MINICONDA_DEST/condabin\${PATH:+:\${PATH}}\""
-
-if [[ -n "$ZSH_VERSION" ]]; then
-  RC_FILE="$HOME/.zshrc"
-elif [[ -n "$BASH_VERSION" ]]; then
-  RC_FILE="$HOME/.bashrc"
-else
-  echo "You are using a shell other than zsh or bash. Could not automatically setup miniconda for you. Please add the following to your shell's profile or rc file:"
-  echo "$EXPORT_MINICONDA_PATH"
-  exit 1
-fi
-
-echo "$EXPORT_MINICONDA_PATH" >> "$RC_FILE"
-{% endif -%}
+{{ miniconda_install_dir }}/bin/conda init
