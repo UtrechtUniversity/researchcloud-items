@@ -2,6 +2,8 @@
 - name: Install conda in shared environments
   ansible.builtin.command: "{{ miniconda_download_dest }}/{{ miniconda_install_script }} -b -p {{ miniconda_install_dir }}"
   tags: molecule-idempotence-notest
+  args:
+    creates: "{{ miniconda_install_dir }}"
 
 - name: Create .condarc file for shares packages and environments
   ansible.builtin.template:
