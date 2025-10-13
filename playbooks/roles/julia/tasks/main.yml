@@ -1,0 +1,42 @@
+---
+- name: Add depot paths to every user's profile
+  ansible.builtin.copy:
+    dest: /etc/profile.d/uu-julia.sh
+    mode: "0644"
+    content: |
+      # note the ":" before the new path, which ensures the default depot path in the user's home directory is prepended by Julia
+      # This is needed because Julia expects the first depot in the path to be writeable
+      export JULIA_DEPOT_PATH=":{{ julia_shared_env_path }}"
+      export JULIA_LOAD_PATH="{{ julia_shared_env_path }}/environments:"
+
+- name: Install Juliaup and default Julia # noqa command-instead-of-module risky-shell-pipe
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes --path {{ julia_shared_env_path }}
+  args:
+    executable: /bin/sh
+    creates: "{{ julia_shared_env_path }}/bin/juliaup"
+  environment:
+    JULIAUP_DEPOT_PATH: "{{ julia_shared_env_path }}"
+    JULIA_DEPOT_PATH: "{{ julia_shared_env_path }}"
+
+- name: Find installed julia binary
+  ansible.builtin.find:
+    paths: "{{ julia_shared_env_path }}/juliaup/"
+    file_type: directory
+  register: find_julia
+
+- name: Create global symlink to julia
+  ansible.builtin.file:
+    dest: /usr/local/bin/julia
+    src: "{{ find_julia.files[0].path }}/bin/julia"
+    state: link
+
+# After installation of julia, ensure permissions are set so every user can use the shared envs
+- name: Set permissions for shared env dir
+  ansible.builtin.file:
+    path: "{{ julia_shared_env_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+    recurse: true

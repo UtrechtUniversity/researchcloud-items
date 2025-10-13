@@ -107,6 +107,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [irods_icommands](roles/irods_icommands.md)
 - [irods_iselect](roles/irods_iselect.md)
 - [irods_skel](roles/irods_skel.md)
+- [julia](roles/julia.md) install the Julia language
 - [jupyterhub](roles/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io) on the workspace, with SRAM auth.
 - [jupyterhub_app](roles/jupyterhub_app.md) install arbitrary applications as an extension for JupyterLab, or as a standalone app served with JupyterHub.
 - [jupyterhub_rtc](roles/jupyterhub_rtc.md) add real-time collaboration functionality to an existing JupyterHub.
@@ -126,6 +127,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [robotuser](roles/robotuser.md)
 - [rstudio](roles/rstudio.md)
 - [runonce](roles/runonce.md)
+- [rust](roles/rust.md) install the Rust language
 - [require_src_docker](roles/require_src_docker.md)
 - [require_src_nginx](roles/require_src_nginx.md)
 - [security_updates](roles/security_updates.md)

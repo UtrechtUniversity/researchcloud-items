@@ -1,0 +1,32 @@
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Create test env
+      ansible.builtin.command: julia --project=@test -e 'using Pkg; Pkg.add("IJulia"); Pkg.resolve();'
+      environment:
+        JULIA_DEPOT_PATH: /usr/local/uu/env/julia
+
+    - name: Test pre-existing env
+      become: true
+      become_user: testuser
+      ansible.builtin.command: bash -l -c 'julia --project=@test -e "using Pkg; Pkg.status();"'
+      args:
+        executable: bash
+      register: test_pre_existing_env
+
+    - name: Test new env
+      become: true
+      become_user: testuser
+      ansible.builtin.command: bash -l -c "julia --project=@newproject -e 'using Pkg; Pkg.resolve(); Pkg.status();'"
+      args:
+        executable: bash
+      register: test_new_env
+
+    - name: Assertions
+      ansible.builtin.assert:
+        that:
+          - '"Status `/usr/local/uu/env/julia/environments/" in test_pre_existing_env.stdout'
+          - '"IJulia" in test_pre_existing_env.stdout'
+          - '"Status `~/.julia/environments/" in test_new_env.stdout'
+          - '"IJulia" not in test_new_env.stdout'
