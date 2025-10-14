@@ -8,7 +8,7 @@
   ansible.builtin.include_role:
     name: pipx_install_systemwide
   vars:
-    pipx_install_systemwide_package: ibridgesgui
+    pipx_install_systemwide_package: ibridgesgui --include-deps
     pipx_install_systemwide_python: "{{ ibridges_python_path | default('/usr/bin/python3') }}"
     pipx_install_systemwide_extra_packages: "{{ ibridges_install_plugins + ibridges_install_plugins_gui }}"
 
