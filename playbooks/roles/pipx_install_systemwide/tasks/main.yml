@@ -33,7 +33,7 @@
   ansible.builtin.command: >
     {{ pipx_install_systemwide_cmd }} install
     {% for opt, val in pipx_install_systemwide_options.items() %}
-    --{{ opt | replace('_', '-') }}{% if val | length > 0 %}"{{ val }}"{% endif %}
+    --{{ opt | replace('_', '-') }}{% if val is string %} "{{ val }}"{% endif %}
     {% endfor %}
     {% if pipx_install_systemwide_python | length > 0 %}
     --python "{{ pipx_install_systemwide_python }}"
