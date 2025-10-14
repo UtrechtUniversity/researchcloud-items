@@ -7,10 +7,18 @@
     _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
     _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
     _custom_packages_projects: "[ {{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }} ]"
-    _custom_packages_kernels: "[ {{ (custom_packages_kernels | default('')) | split(',') | map('trim') | map('split') | select | list }}]"
+    _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split') | select | list }} ]"
     _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
     _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
+    _custom_packages_create_kernels: "{{ custom_packages_create_kernels | default(true, true) | bool }}"
+  pre_tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "Will install dependencies for the following requested projects: {{ _custom_packages_projects }}"
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "Will install the following additional environments: {{ _custom_packages_extra_envs }}"
   roles:
     - role: uv
       when: _install_uv
@@ -20,8 +28,6 @@
         pipx_install_systemwide_package: git+https://github.com/UtrechtUniversity/repo2kernel
     - role: miniconda
       when: _install_conda
-      vars:
-        miniconda_shared_editable: false
     - role: julia
       when: _install_julia
   tasks:
@@ -36,6 +42,7 @@
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
+        recurse: true
         mode: "02750" # setgid so new files are created with the right group ownership
 
     - name: Create code dir
@@ -48,7 +55,8 @@
 
     - name: Fetch every project
       ansible.builtin.command:
-        cmd: "{{ fact_global_python_tools }}/repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ _custom_packages_code_dir }}/"
+        cmd: >
+          {{ fact_global_python_tools }}/repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
 
@@ -69,7 +77,7 @@
       ansible.builtin.command:
         cmd: "{{ fact_global_python_tools }}/repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}"
       failed_when: false
-      with_items: "{{ _custom_packages_kernels }}"
+      with_items: "{{ _custom_packages_extra_envs }}"
 
     # After running various commands above, ensure the right privileges are still est
     - name: Set privileges for env dir
@@ -79,3 +87,4 @@
         owner: root
         group: "{{ _custom_packages_group }}"
         mode: "02750" # setgid so new files are created with the right group ownership
+        recurse: true
