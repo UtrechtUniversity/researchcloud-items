@@ -15,6 +15,7 @@
     pipx_install_systemwide_extra_packages: "{{ ibridges_install_plugins + ibridges_install_plugins_gui }}"
 
 - name: Install iBridges CLI to systemwide location
+  when: not fact_desktop_workspace
   ansible.builtin.include_role:
     name: pipx_install_systemwide
   vars:
