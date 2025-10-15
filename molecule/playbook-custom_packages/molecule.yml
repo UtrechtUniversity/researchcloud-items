@@ -1,7 +1,22 @@
 ---
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence # too many tasks are not idempotent
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
 provisioner:
   name: ansible
   env:
+    extra_prepare_tasks: ../../playbook-custom_packages/extra_prepare.yml 
     components:
       - name: custom_packages
         path: custom_packages.yml

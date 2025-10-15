@@ -37,13 +37,15 @@
         state: present
 
     - name: Create env dir
+      # setgid recursive makes this task not idempotent
+      tags: molecule-idempotence-notest
       ansible.builtin.file:
         path: "{{ _custom_packages_env_dir }}"
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
-        recurse: true
         mode: "02750" # setgid so new files are created with the right group ownership
+        recurse: true
 
     - name: Create code dir
       ansible.builtin.file:
@@ -69,6 +71,10 @@
 
     - name: Create kernel for every fetched project
       tags: molecule-idempotence-notest
+      become: true
+      become_user: root
+      become_method: sudo
+      become_flags: -l
       ansible.builtin.shell:
         cmd: '{{ fact_global_python_tools }}/repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1'
       failed_when: false
@@ -77,6 +83,10 @@
 
     - name: Create kernel for every requested interpreter
       tags: molecule-idempotence-notest
+      become: true
+      become_user: root
+      become_method: sudo
+      become_flags: -l
       ansible.builtin.command:
         cmd: "{{ fact_global_python_tools }}/repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}"
       failed_when: false
@@ -84,6 +94,8 @@
 
     # After running various commands above, ensure the right privileges are still est
     - name: Set privileges for env dir
+      # setgid recursive makes this task not idempotent
+      tags: molecule-idempotence-notest
       ansible.builtin.file:
         path: "{{ _custom_packages_env_dir }}"
         state: directory
