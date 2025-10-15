@@ -57,6 +57,9 @@
 
     - name: Fetch every project
       tags: molecule-idempotence-notest
+      become: true
+      become_user: root
+      become_flags: -l # sudo -l to use a login shell, so paths are correctly sourced
       ansible.builtin.command:
         cmd: >
           {{ fact_global_python_tools }}/repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/
@@ -73,8 +76,7 @@
       tags: molecule-idempotence-notest
       become: true
       become_user: root
-      become_method: sudo
-      become_flags: -l
+      become_flags: -l # sudo -l to use a login shell, so paths are correctly sourced
       ansible.builtin.shell:
         cmd: '{{ fact_global_python_tools }}/repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1'
       failed_when: false
@@ -85,8 +87,7 @@
       tags: molecule-idempotence-notest
       become: true
       become_user: root
-      become_method: sudo
-      become_flags: -l
+      become_flags: -l # sudo -l to use a login shell, so paths are correctly sourced
       ansible.builtin.command:
         cmd: "{{ fact_global_python_tools }}/repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}"
       failed_when: false
