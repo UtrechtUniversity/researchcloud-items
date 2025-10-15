@@ -13,10 +13,10 @@
     _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
     _custom_packages_create_kernels: "{{ custom_packages_create_kernels | default(true, true) | bool }}"
   pre_tasks:
-    - name: Debug
+    - name: Debug projects
       ansible.builtin.debug:
         msg: "Will install dependencies for the following requested projects: {{ _custom_packages_projects }}"
-    - name: Debug
+    - name: Debug extra envs
       ansible.builtin.debug:
         msg: "Will install the following additional environments: {{ _custom_packages_extra_envs }}"
   roles:
