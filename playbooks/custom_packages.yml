@@ -54,6 +54,7 @@
         mode: "02750" # setgid so new files are created with the right group ownership
 
     - name: Fetch every project
+      tags: molecule-idempotence-notest
       ansible.builtin.command:
         cmd: >
           {{ fact_global_python_tools }}/repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/
@@ -67,6 +68,7 @@
       register: fetched_projects
 
     - name: Create kernel for every fetched project
+      tags: molecule-idempotence-notest
       ansible.builtin.shell:
         cmd: '{{ fact_global_python_tools }}/repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1'
       failed_when: false
@@ -74,6 +76,7 @@
       with_items: "{{ fetched_projects.files }}"
 
     - name: Create kernel for every requested interpreter
+      tags: molecule-idempotence-notest
       ansible.builtin.command:
         cmd: "{{ fact_global_python_tools }}/repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}"
       failed_when: false
