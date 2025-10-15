@@ -1,0 +1,25 @@
+---
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence # too many tasks are not idempotent
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
+provisioner:
+  name: ansible
+  env:
+    extra_prepare_tasks: ../../playbook-custom_packages/extra_prepare.yml 
+    components:
+      - name: custom_packages
+        path: custom_packages.yml
+        parameters:
+          custom_packages_projects: doi:10.7910/DVN/OWVFCE, https://zenodo.org/records/1211089, https://github.com/binder-examples/requirements.git, https://github.com/binder-examples/conda.git@nbgitpuller, https://github.com/binder-examples/demo-julia.git
+          custom_packages_extra_envs: python 3.13, r 4.5.1
