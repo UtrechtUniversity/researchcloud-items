@@ -13,6 +13,7 @@ Miniconda is installed systemwide, with both the `conda` binary and a global pac
 Users can use these global packages and environments (`conda env list`, `conda activate`), create environments in their home directories (`conda create -n myenv`), or if `miniconda_shared_editable` is set to true (see below), create new global environments (`conda create -p /opt/miniconda/envs/myenv`).
 
 ## Variables
+- `miniconda_no_defaults`: Boolean determining whether the conda channel `defaults` should be disabled by default. This can be desirable because of licensing reasons. If true, this sets the fully open source `conda-forge` channel as a default. Default: `true`.
 - `miniconda_shared_editable`: Boolean determining whether the global system environments and pacakges should be writeable by all users. Default: `true`.
 - `miniconda_auto_init`: Boolean determining whether `conda init` should be run automatically for each user.
 - `miniconda_download_dest`: Directory to store the download files. Default: `/usr/local/miniconda`.

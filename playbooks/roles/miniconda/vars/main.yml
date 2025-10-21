@@ -2,3 +2,4 @@
 miniconda_conda_init: ~/miniconda/bin/conda init
 _miniconda_shared_editable: "{{ miniconda_shared_editable | bool }}"
 _miniconda_auto_init: "{{ miniconda_auto_init | bool }}"
+_miniconda_no_defaults: "{{ miniconda_no_defaults | default(true, true) | bool }}"
