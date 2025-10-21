@@ -9,3 +9,9 @@ pkgs_dirs:
 {% endif %}
 
 auto_activate_base: false
+
+{% if _miniconda_no_defaults %}
+channels:
+  - nodefaults
+  - conda-forge
+{% endif %}
