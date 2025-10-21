@@ -5,6 +5,7 @@ jupyterhub_venv: "/usr/local/jupyterhub"
 jupyterhub_sudospawner_path: "{{ jupyterhub_venv }}/bin/sudospawner"
 jupyterhub_basic_pkgs:
   - jupyterhub
+  - jupyterlab
   - jhub-remote-user-authenticator
   - sudospawner
 jupyterhub_default_proxy_config:
