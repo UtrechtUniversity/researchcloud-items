@@ -41,11 +41,23 @@ This component:
 
 This component uses the [repo2kernel](https://github.com/UtrechtUniversity/repo2kernel) utility. This is broadly compatible with Jupyter's [Binder](https://jupyter.org/binder), so that any projects that can be launched with Binder can most likely also be resolved by `repo2kernel`.
 
-The installed environments can also be used without Jupyter:
+### Downloading projects
+
+Downloaded projects will by default will stored in the directory specified by the `custom_packages_code_dir` [parameter](parameter). Each project will be stored in its own folder, which will receive a name that is based on the provided project identifier. For instance, if a DOI was provided, the directory name will be the DOI (with certain disallowed characters removed). If a URL to a git repo was provided, e.g. `https://github.com/UtrechtUniversity/repo2kernel.git` the name of the project's directory will be `repo2kernel`.
+
+Users can specify a specific version (e.g. git tag, brach or commit) of a project by adding `@myversion` after a project identifier. For instance: `https://github.com/binder-examples/conda.git@nbgitpuller` will fetch the `nbgitpuller`.
+
+### Using this component without Jupyter 
+
+The installed environments can also be used without Jupyter by setting the `custom_packages_create_kernels` [parameter](#parameter) to `false`. Naturally, projects will be downloaded as normal, and the created dependency environments can be used manually:
 
 - For Julia projects, the installed Julia packages will automatically be added to the `JULIA_DEPOT_PATH`.
 - For Python projects, users can activate the created virtual environments (under `{{custom_packages_env_dir}}/python`).
 - For Conda and R projects, users can activate the created `conda` environments (under `{{custom_packages_env_dir}}/conda`).
+
+### Error handling
+
+It is possible that `repo2kernel` fails to create the required dependency environments, or to install a kernel for it. In that case, the component will not fail, so the workspace is still created. Debug output for `repo2kernel` is saved in each downloaded project's folder, by default in `/local-share/<project_name>/repo2kernel.log`.
 
 ## Parameters
 
