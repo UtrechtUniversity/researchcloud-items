@@ -89,6 +89,8 @@
             python_preference: system
 
     - name: Install JupyterHub and dependencies
+      become_user: "{{ jupyterhub_user }}"
+      become: true
       ansible.builtin.pip:
         executable: uv_pip # uv is installed above
         name: "{{ (jupyterhub_basic_pkgs + jupyterhub_extra_pkgs) | select }}"
