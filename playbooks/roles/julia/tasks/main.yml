@@ -26,11 +26,8 @@
   register: find_julia
 
 - name: Run ldconfig for installed julia
-  ansible.builtin.command: ldconfig -v {{ find_julia.files[0].path }}/{{ item }}
+  ansible.builtin.command: ldconfig -v {{ find_julia.files[0].path }}/lib {{ find_julia.files[0].path }}/lib/julia
   changed_when: false
-  with_items:
-    - "lib/"
-    - "lib/julia/"
 
 - name: Create global symlink for julia
   ansible.builtin.file:
