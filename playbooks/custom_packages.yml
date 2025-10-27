@@ -77,13 +77,14 @@
       ansible.builtin.shell:
         cmd: bash -l -c 'repo2kernel create --base-env-dir {{ _custom_packages_env_dir }} "{{ item.path }}" > "{{ item.path }}/repo2kernel.log" 2>&1'
       failed_when: false
-      when: fetched_projects is defined
+      when: fetched_projects is defined and (fetched_projects.files | length) > 0
       with_items: "{{ fetched_projects.files }}"
       environment:
         PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
 
     - name: Create kernel for every requested interpreter
       tags: molecule-idempotence-notest
+      when: (_custom_packages_extra_envs | length) > 0
       # use bash -l to use a login shell, so paths are correctly sourced
       ansible.builtin.command:
         cmd: "bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}'"
