@@ -25,21 +25,29 @@
     file_type: directory
   register: find_julia
 
-- name: Run ldconfig for installed julia
-  ansible.builtin.command: ldconfig -v {{ find_julia.files[0].path }}/lib {{ find_julia.files[0].path }}/lib/julia
-  changed_when: false
-
-- name: Create global symlink for julia
-  ansible.builtin.file:
+# Create a shim for all users to be able to run julia.
+# We run julia with its own compiled shared libraries in the library path.
+# We do not want to simply run `ldconfig` on the library path, because this would cause interference with other applications.
+- name: Create global shim for julia
+  ansible.builtin.copy:
     dest: /usr/local/bin/julia
-    src: "{{ find_julia.files[0].path }}/bin/julia"
-    state: link
+    owner: root
+    group: root
+    mode: "0755"
+    content: |
+      #!/bin/sh
+      LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} {{ find_julia.files[0].path }}/bin/julia "$@"
 
-- name: Create global symlink for juliaup
-  ansible.builtin.file:
+# Same for juliaup
+- name: Create global shim for juliaup
+  ansible.builtin.copy:
     dest: /usr/local/bin/juliaup
-    src: "{{ julia_shared_env_path }}/bin/juliaup"
-    state: link
+    owner: root
+    group: root
+    mode: "0755"
+    content: |
+      #!/bin/sh
+      LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} {{ find_julia.files[0].path }}/bin/juliaup "$@"
 
 # After installation of julia, ensure permissions are set so every user can use the shared envs
 - name: Set permissions for shared env dir
