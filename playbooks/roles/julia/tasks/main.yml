@@ -36,7 +36,8 @@
     mode: "0755"
     content: |
       #!/bin/sh
-      LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} {{ find_julia.files[0].path }}/bin/julia "$@"
+      export LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+      {{ find_julia.files[0].path }}/bin/julia "$@"
 
 # Same for juliaup
 - name: Create global shim for juliaup
@@ -47,7 +48,7 @@
     mode: "0755"
     content: |
       #!/bin/sh
-      LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}} {{ find_julia.files[0].path }}/bin/juliaup "$@"
+      {{ julia_shared_env_path }}/bin/juliaup "$@"
 
 # After installation of julia, ensure permissions are set so every user can use the shared envs
 - name: Set permissions for shared env dir
