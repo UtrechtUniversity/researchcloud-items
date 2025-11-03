@@ -1,4 +1,8 @@
 ---
+- name: Set fact containing path to julia shared env dir for other rols
+  ansible.builtin.set_fact:
+    fact_julia_dir: "{{ julia_shared_env_path }}"
+
 - name: Add depot paths to every user's profile
   ansible.builtin.copy:
     dest: /etc/profile.d/uu-julia.sh
@@ -9,12 +13,12 @@
       export JULIA_DEPOT_PATH=":{{ julia_shared_env_path }}"
       export JULIA_LOAD_PATH="{{ julia_shared_env_path }}/environments:"
 
-- name: Install Juliaup and default Julia # noqa command-instead-of-module risky-shell-pipe
+- name: Install Juliaup for root and default Julia # noqa command-instead-of-module risky-shell-pipe
   ansible.builtin.shell:
-    cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes --path {{ julia_shared_env_path }}
+    cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes
   args:
     executable: /bin/sh
-    creates: "{{ julia_shared_env_path }}/bin/juliaup"
+    creates: "/root/.julia/bin/juliaup"
   environment:
     JULIAUP_DEPOT_PATH: "{{ julia_shared_env_path }}"
     JULIA_DEPOT_PATH: "{{ julia_shared_env_path }}"
@@ -39,16 +43,8 @@
       export LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
       {{ find_julia.files[0].path }}/bin/julia "$@"
 
-# Same for juliaup
-- name: Create global shim for juliaup
-  ansible.builtin.copy:
-    dest: /usr/local/bin/juliaup
-    owner: root
-    group: root
-    mode: "0755"
-    content: |
-      #!/bin/sh
-      {{ julia_shared_env_path }}/bin/juliaup "$@"
+# We don't create a global juliaup shim because juliaup in multi-user environments currently (November 2025) doesn't work:
+# https://github.com/JuliaLang/juliaup/issues/276
 
 # After installation of julia, ensure permissions are set so every user can use the shared envs
 - name: Set permissions for shared env dir
