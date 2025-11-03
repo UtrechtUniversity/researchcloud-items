@@ -12,7 +12,7 @@ Installs the [Julia](https://julialang.org/) programming language, along with [j
 
 This role installs `juliaup`, the latest `julia`, and makes available a shared Julia packages depot for all users. The steps it takes are:
 
-1. Installs `juliaup` to the shared environment (`/usr/local/uu/env/julia` by default).
+1. Installs `juliaup` for the `root` user only. *Note*: installing `juliaup` globally for all users currently (November 2025) does not work because of [this issue](https://github.com/JuliaLang/juliaup/issues/276).
 2. `juliaup` will automatically install the latest stable version of `julia`.
 3. We symlink the installed `julia` interpreter to `/usr/local/bin/julia` so all users can use it.
 4. We set the `JULIA_DEPOT_PATH` and `JULIA_LOAD_PATH` variables for all users such that `julia` will detect the shared depot. However, the shared depot is read-only. When users install new packages, they will be installed into the user's own julia depot directory (`~/.julia` by default).
