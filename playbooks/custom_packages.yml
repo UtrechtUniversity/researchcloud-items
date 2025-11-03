@@ -9,7 +9,9 @@
     _custom_packages_projects: "[ {{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }} ]"
     _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split') | select | list }} ]"
     _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
+    _custom_packages_code_dir_mode: "{{ (custom_packages_projects_editable | default(true, true) | bool) | ternary('02770', '02750') }}" # setgid so new files are created with the right group ownership
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
+    _custom_packages_env_dir_mode: "{{ (custom_packages_envs_editable | default(false, true) | bool) | ternary('02770', '02750') }}" # setgid so new files are created with the right group ownership
     _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
     _custom_packages_create_kernels: "{{ custom_packages_create_kernels | default(true, true) | bool }}"
     _custom_packages_extra_path: "{{ custom_packages_extra_path | default('/usr/local/jupyterhub/bin', true) }}" # repo2kernel commands require some commands to be available on PATH. In particular, 'jupyter' is required by the IRKernel package used to create R-kernels.
@@ -45,7 +47,7 @@
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
-        mode: "02750" # setgid so new files are created with the right group ownership
+        mode: "{{ _custom_packages_env_dir_mode }}"
         recurse: true
 
     - name: Create code dir
@@ -54,7 +56,7 @@
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
-        mode: "02750" # setgid so new files are created with the right group ownership
+        mode: "{{ _custom_packages_code_dir_mode }}"
 
     - name: Fetch every project
       tags: molecule-idempotence-notest
@@ -101,5 +103,16 @@
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
-        mode: "02750" # setgid so new files are created with the right group ownership
+        mode: "{{ _custom_packages_env_dir_mode }}"
+        recurse: true
+
+    - name: Set privileges for code dirs
+      # setgid recursive makes this task not idempotent
+      tags: molecule-idempotence-notest
+      ansible.builtin.file:
+        path: "{{ _custom_packages_code_dir }}"
+        state: directory
+        owner: root
+        group: "{{ _custom_packages_group }}"
+        mode: "{{ _custom_packages_code_dir_mode }}"
         recurse: true

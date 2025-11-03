@@ -71,6 +71,8 @@ It is possible that `repo2kernel` fails to create the required dependency enviro
 - `custom_packages_group`: String. Group that will be used for group-ownership of the code and environment paths. Default: `root`.
 - `custom_packages_create_kernels`: Boolean. Whether to create kernels for the created environments (or only install dependencies). Default: `true`.
 - `custom_packages_extra_path`: String. Extra PATH directories in which repo2kernel will search for dependencies. Default: `/usr/local/jupyterhub/bin` (which adds the default UU [JupyterHub](../roles/jupyterhub.md)'s `jupyter` executable to path).
+- `custom_packages_projects_editable`: Boolean. Whether the created project directories should be editable by `custom_packages_group`. Default: `true`.
+- `custom_packages_envs_editable`: Boolean. Whether the environment directories should be editable by `custom_packages_group`. This allows users to modify the used kernel environments after they are created. *Warning: if multiple users are using the shared environment directories, this can lead to issues*. Default: `false`.
 
 ## History
 2025 Written by Dawa Ometto (Utrecht University)
