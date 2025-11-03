@@ -30,8 +30,12 @@ jobs:
     name: Ansible Lint # Naming the build is important to use it as a status check
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
       - uses: actions/checkout@v5
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
         with:
           args: "playbooks/"
+          setup_python: "false"
