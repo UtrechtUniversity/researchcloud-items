@@ -18,7 +18,7 @@
     cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes
   args:
     executable: /bin/sh
-    creates: "/root/.julia/bin/juliaup"
+    creates: "/root/.juliaup"
   environment:
     JULIAUP_DEPOT_PATH: "{{ julia_shared_env_path }}"
     JULIA_DEPOT_PATH: "{{ julia_shared_env_path }}"
