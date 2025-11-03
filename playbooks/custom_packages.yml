@@ -82,7 +82,7 @@
       when: fetched_projects is defined
       with_items: "{{ fetched_projects.files }}"
       environment:
-        PATH: "{{ fact_julia_dir }}/bin:{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
+        PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
 
     - name: Create kernel for every requested interpreter
       tags: molecule-idempotence-notest
@@ -92,7 +92,7 @@
       failed_when: false
       with_items: "{{ _custom_packages_extra_envs }}"
       environment:
-        PATH: "{{ fact_julia_dir }}/bin{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
+        PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
 
     # After running various commands above, ensure the right privileges are still est
     - name: Set privileges for env dir

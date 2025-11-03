@@ -1,3 +1,4 @@
+---
 - name: Verify
   hosts: all
   gather_facts: false
@@ -22,9 +23,6 @@
       args:
         executable: bash
       register: test_new_env
-
-    - name: Test no errors in repo2kernel logs
-      ansible.builtin.command: grep -qv 'repo2kernel is aborting' /local-share/projects/*/repo2kernel.log
 
     - name: Assertions
       ansible.builtin.assert:

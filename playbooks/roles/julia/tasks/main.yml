@@ -13,12 +13,12 @@
       export JULIA_DEPOT_PATH=":{{ julia_shared_env_path }}"
       export JULIA_LOAD_PATH="{{ julia_shared_env_path }}/environments:"
 
-- name: Install Juliaup for root and default Julia # noqa command-instead-of-module risky-shell-pipe
+- name: Install Juliaup for root and default Julia version # noqa command-instead-of-module risky-shell-pipe
   ansible.builtin.shell:
     cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes
   args:
     executable: /bin/sh
-    creates: "/root/.juliaup"
+    creates: /root/.juliaup
   environment:
     JULIAUP_DEPOT_PATH: "{{ julia_shared_env_path }}"
     JULIA_DEPOT_PATH: "{{ julia_shared_env_path }}"
