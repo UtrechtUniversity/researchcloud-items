@@ -6,7 +6,11 @@
     _install_uv: "{{ custom_packages_install_uv | default(true, true) | bool }}"
     _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
     _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
+    # take a comma-separated list, e.g. "https://github.com/foo/bar, https://github.com/bar/foo@main", turn it into a list of lists of the form:
+    # [["https://github.com/foo/bar"], ["https://github.com/bar/foo", "main"]]
     _custom_packages_projects: "[ {{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }} ]"
+    # take a comma-separated list, e.g "python 3, julia", turn it into a list of lists of the form:
+    # [["python", "3"], ["julia"]]
     _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split', ' ') | select | list }} ]"
     _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
     _custom_packages_code_dir_mode: "{{ (custom_packages_projects_editable | default(true, true) | bool) | ternary('770', '750') }}"
@@ -63,7 +67,7 @@
         cmd: >
           bash -l -c 'repo2kernel fetch --create-subdir
           {% if  item | length > 1 %}
-          {{ item[0]}} --ref {{ item[1] }}
+          {{ item[0] }} --ref {{ item[1] }}
           {% else %}
           {{ item[0] }}
           {% endif %}
@@ -96,7 +100,7 @@
         cmd: >
           bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }}
           {% if item | length > 1 %}
-          {{ item[0]}} --version {{ item[1] }}
+          {{ item[0] }} --version {{ item[1] }}
           {% else %}
           {{ item[0] }}
           {% endif %}'
