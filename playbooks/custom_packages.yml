@@ -59,9 +59,9 @@
     - name: Fetch every project
       tags: molecule-idempotence-notest
       # use bash -l to use a login shell, so paths are correctly sourced
-      ansible.builtin.command:
+      ansible.builtin.command: # if no version was specified, item will be a string, otherwise a list consisting of the language and the version
         cmd: >
-          bash -l -c 'repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/'
+          bash -l -c 'repo2kernel fetch --create-subdir {{ item is string | ternary(item, item[0]~' --ref '~item[1]) }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/'
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
 
@@ -85,8 +85,8 @@
     - name: Create kernel for every requested interpreter
       tags: molecule-idempotence-notest
       # use bash -l to use a login shell, so paths are correctly sourced
-      ansible.builtin.command:
-        cmd: "bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}'"
+      ansible.builtin.command: # if no version was specified, item will be a string, otherwise a list consisting of the language and the version
+        cmd: "bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ (item is string) | ternary(item, item[0]~' --version '~item[1]) }}'"
       failed_when: false
       with_items: "{{ _custom_packages_extra_envs }}"
       environment:
