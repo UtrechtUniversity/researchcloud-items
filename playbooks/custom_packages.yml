@@ -6,8 +6,12 @@
     _install_uv: "{{ custom_packages_install_uv | default(true, true) | bool }}"
     _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
     _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
+    # take a comma-separated list, e.g. "https://github.com/foo/bar, https://github.com/bar/foo@main", turn it into a list of lists of the form:
+    # [["https://github.com/foo/bar"], ["https://github.com/bar/foo", "main"]]
     _custom_packages_projects: "[ {{ (custom_packages_projects | default('')).split(',') | map('trim') | map('split', '@') | select | list }} ]"
-    _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split') | select | list }} ]"
+    # take a comma-separated list, e.g "python 3, julia", turn it into a list of lists of the form:
+    # [["python", "3"], ["julia"]]
+    _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split', ' ') | select | list }} ]"
     _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
     _custom_packages_code_dir_mode: "{{ (custom_packages_projects_editable | default(true, true) | bool) | ternary('770', '750') }}"
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
@@ -59,11 +63,18 @@
     - name: Fetch every project
       tags: molecule-idempotence-notest
       # use bash -l to use a login shell, so paths are correctly sourced
-      ansible.builtin.command:
+      ansible.builtin.command: # if no version was specified, item will be a string, otherwise a list consisting of the language and the version
         cmd: >
-          bash -l -c 'repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/'
+          bash -l -c 'repo2kernel fetch --create-subdir
+          {% if  item | length > 1 %}
+          {{ item[0] }} --ref {{ item[1] }}
+          {% else %}
+          {{ item[0] }}
+          {% endif %}
+          {{ _custom_packages_code_dir }}/'
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
+      when: item[0] # will be false when empty project list was passed in
 
     - name: Find fetched project directories
       ansible.builtin.find:
@@ -85,10 +96,17 @@
     - name: Create kernel for every requested interpreter
       tags: molecule-idempotence-notest
       # use bash -l to use a login shell, so paths are correctly sourced
-      ansible.builtin.command:
-        cmd: "bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}'"
+      ansible.builtin.command: # if no version was specified, item will be a string, otherwise a list consisting of the language and the version
+        cmd: >
+          bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }}
+          {% if item | length > 1 %}
+          {{ item[0] }} --version {{ item[1] }}
+          {% else %}
+          {{ item[0] }}
+          {% endif %}'
       failed_when: false
       with_items: "{{ _custom_packages_extra_envs }}"
+      when: item[0] # will be false when empty env list was passed in
       environment:
         PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
 
