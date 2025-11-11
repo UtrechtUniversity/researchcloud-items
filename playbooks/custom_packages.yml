@@ -128,6 +128,14 @@
             - mode: "02{{ _custom_packages_env_dir_mode }}"
               recurse: false
 
+        - name: Set setgid on all subdirs of env dir
+          # repo2kernel unfortunately creates subdirectories that do not respect the parent directory's setgid
+          # this is no problem if the env dir is not supposed to be editable by everyone in _custom_packages_group (default)
+          # if it is supposed to be writeable, files in subdirectories will not preserve group ownership
+          # hack: just apply setgid to all subdirectories of the main env dir
+          ansible.builtin.command: find {{ _custom_packages_env_dir }} -type d -exec chmod g+s {} +
+          when: custom_packages_envs_editable | default(false, true)
+
         - name: Set project dirs privs
           ansible.builtin.file:
             path: "{{ item.path }}"
