@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test rstudio
+      ansible.builtin.uri:
+        url: http://localhost/hub/spawn/testuser?next=%2Fhub%2Fuser%2Ftestuser%2Frstudio%2F
+        method: GET
+        headers:
+          user: testuser # mock SRAM login
+        return_content: true
+        follow_redirects: true
+      register: rstudio_login
+      failed_when: rstudio_login.failed or rstudio_login.url != 'http://localhost/user/testuser/rstudio/?redirects=1'
+      retries: 5
+      delay: 3
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"RStudio" in rstudio_login.content'

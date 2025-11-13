@@ -1,0 +1,34 @@
+---
+- name: Install RStudio Server in JupyterHub
+  hosts: localhost
+  gather_facts: true
+  vars:
+    _rstudio_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', rstudio_fqdn) }}"
+    _rstudio_base_path: "{{ rstudio_base_path | default('/', true) }}"
+    _rstudio_jupyter_force_install: "{{ rstudio_jupyter_force_install | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
+  pre_tasks:
+    - name: Install R for Debian
+      ansible.builtin.apt:
+        name:
+          - r-base
+          - r-base-dev
+        update_cache: true
+        state: present
+
+    - name: Install RStudio for Ubuntu 22
+      ansible.builtin.apt:
+        deb: https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2024.12.0-467-amd64.deb
+        state: present
+  roles:
+    - role: jupyterhub_standalone_proxy
+      when: _rstudio_jupyter_force_install
+      # install jupyterhub and rstudio as a standalone app.
+      vars:
+        jupyterhub_uri: "{{ _rstudio_base_path }}"
+        jhsp_external_addr: "{{ _rstudio_fqdn }}"
+    - role: jupyterhub_app
+      vars:
+        jupyterhub_app_name: rstudio
+        jupyterhub_app_venv: "{{ rstudio_jupyter_venv_path | default('') }}"
+        jupyterhub_app_config_dir: "{{ rstudio_jupyter_config_dir | default('') }}"
+        jupyterhub_app_pip: jupyter-rsession-proxy
