@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test rstudio
+      ansible.builtin.uri:
+        url: http://localhost/rstudio/
+        method: GET
+        headers:
+          user: testuser # mock SRAM login
+        return_content: true
+        follow_redirects: true
+      register: rstudio_login
+      failed_when: rstudio_login.failed or rstudio_login.url != 'http://localhost/rstudio/user/testuser/'
+      retries: 5
+      delay: 3
+
+    - name: Assert content correct
+      ansible.builtin.assert:
+        that:
+          - '"Posit" in rstudio_login.content'
