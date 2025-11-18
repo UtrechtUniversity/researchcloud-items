@@ -78,6 +78,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
 - [shared_directories](playbooks/shared_directories.md)  create shared data directories for regular users
 - [transferuser](playbooks/transferuser.md)  dedicated user for file exchange with remote host
+- [uu_provisioning](playbooks/uu_provisioning.md) common tasks for UU workspaces
 
 ### Experimental
 
