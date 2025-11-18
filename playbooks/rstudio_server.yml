@@ -19,6 +19,14 @@
       ansible.builtin.apt:
         deb: https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2024.12.0-467-amd64.deb
         state: present
+    # - add kernel
+    - name: Get all kernels
+      ansible.builtin.command: "{{ rstudio_jupyter_venv_path }}/bin/jupyter list kernelspec --json"
+      register: all_kernels_json
+
+    - name: Get R kernels
+      ansible.builtin.set_fact:
+        all_r_kernels: "{{ all_kernels_json | from_json | selectattr('language', 'equals', 'R') | map('attr', 'spec') | list }}"
   roles:
     - role: jupyterhub_standalone_proxy
       when: _rstudio_jupyter_force_install
@@ -26,9 +34,32 @@
       vars:
         jupyterhub_uri: "{{ _rstudio_base_path }}"
         jhsp_external_addr: "{{ _rstudio_fqdn }}"
-    - role: jupyterhub_app
+  tasks:
+    
+    - ansible.builtin.include_role:
+        role: jupyterhub_app
       vars:
         jupyterhub_app_name: rstudio
         jupyterhub_app_venv: "{{ rstudio_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ rstudio_jupyter_config_dir | default('') }}"
-        jupyterhub_app_pip: jupyter-rsession-proxy
+        jupyterhub_app_pip: jupyter-rsession-proxy # install without running entrypoint
+        jupyterhub_app_server_config: |
+          settings = { "RStudio {{ item['display_name'] }}":
+            jupyter_rsession_proxy.setup_rserver()
+          }
+          settings['env']['PATH'] = "{{ item['argv'][0] | basename }}:{{ ansible_env.PATH }}"
+          settings['launcher_entry']['title'] = "{{ item['display_name'] }}"
+          c.ServerProxy.servers.update(settings)
+        jupyterhub_app_standalone_config: |
+          c.StandaloneProxyServer.unix_socket = True
+          settings = jupyter-rsession-proxy.setup_rserver()
+          # make the following dynamic:
+          c.StandaloneProxyServer.command = settings['command']
+          c.StandaloneProxyServer.timeout = settings['timeout']
+          c.StandaloneProxyServer.rewrite_response = settings['rewrite_response']
+      environment:
+        PATH: "{{ item['argv'][0] | basename }}:{{ ansible_env.PATH }}" # add the path to this kernel's R executable to the front of PATH, so RStudio selects the correct R version
+        # RSERVER_TIMEOUT
+
+        JUPYTER_RSESSION_PROXY_THREAD_POOL_SIZE: 
+      with_items: "{{ all_r_kernels }}"
