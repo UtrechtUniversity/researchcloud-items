@@ -2,6 +2,7 @@
 # Performs standard UU provisining tasks:
 # DISABLED: - installs the latest security updates
 # - places documentation and contact links on the workspace
+# - optionally allows group src_co_admin to sudo
 
 - name: Standard UU Provisioning
   hosts: localhost
@@ -13,3 +14,23 @@
       vars:
         security_updates_firstrun: true
         security_updates_periodic: false
+  tasks:
+    # This is to ensure that the Collaborative Organisation admin group can use sudo on the machine,
+    # allowing us to disable the ResearchCloud co_passwordless_sudo parameter,
+    # which grants passwordless sudo to *all* CO users on the machine.
+    - name: Allow src_co_admin group to use sudo
+      when: uu_provisioning_co_admin_sudo | default(false, true) | bool
+      block:
+        - name: Set passwordless sudo
+          community.general.sudoers:
+            name: allow-co-admin-sudo
+            group: src_co_admin, wheel # for good measure also grant these privileges to wheel, which should contain the same users as src_co_admin
+            nopassword: true
+            commands: ALL
+        # This is necessary because src_co_admin users are currently also added to group wheel.
+        # wheel is granted sudo with password *after* the above directive is read; so we have to remove that.
+        - name: Override sudo with password for wheel
+          ansible.builtin.lineinfile:
+            path: /etc/sudoers
+            state: absent
+            regexp: '^%wheel'
