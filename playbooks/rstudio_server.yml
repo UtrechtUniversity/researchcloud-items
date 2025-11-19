@@ -23,6 +23,7 @@
       ansible.builtin.set_fact:
         all_r_kernels: "{{  (all_kernels_json.stdout | from_json)['kernelspecs'].values() | map(attribute='spec') | selectattr('language', 'equalto', 'R') | list }}"
 
+
     # move to role
     - name: Install R for Debian
       when: all_r_kernels | length < 1
@@ -43,30 +44,21 @@
   tasks:
     - name: Install jupyter-rsession-proxy
       ansible.builtin.pip:
-        name: jupyter-rsession-proxy
+        name: git+https://github.com/dometto/jupyter-rsession-proxy.git@multiple_servers
         state: present
         virtualenv: "{{ _rstudio_jupyter_venv_path }}"
-    
+
     - ansible.builtin.include_role:
         role: jupyterhub_app
-      with_items: "{{ all_r_kernels }}" # for each installed R kernel, create an RStudio server config
+      loop: "{{ all_r_kernels }}" # for each installed R kernel, create an RStudio server config
+      loop_control:
+        index_var: idx
       vars:
         jupyterhub_app_name: rstudio
         jupyterhub_app_venv: "{{ _rstudio_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ rstudio_jupyter_config_dir | default('') }}"
         jupyterhub_app_server_config: |
-          # first we get the default server settings form the jupyter_rsession_proxy module...
-          settings = { "RStudio {{ item['display_name'] }}":
-            jupyter_rsession_proxy.setup_rserver()
-          }
-          # ...then we prepend the path to this R interpreter to PATH, so this server will use the correct R
-          settings['env']['PATH'] = f"{{ item['argv'][0] | dirname }}:{settings['env']['PATH']}"
-          settings['launcher_entry']['title'] = "RStudio ({{ item['display_name'] }})"
-          c.ServerProxy.servers.update(settings)
-        jupyterhub_app_standalone_config: |
-          c.StandaloneProxyServer.unix_socket = True
-          settings = jupyter-rsession-proxy.setup_rserver()
-          # make the following dynamic:
-          c.StandaloneProxyServer.command = settings['command']
-          c.StandaloneProxyServer.timeout = settings['timeout']
-          c.StandaloneProxyServer.rewrite_response = settings['rewrite_response']
+          from jupyter_rsession_proxy import setup_rserver
+          c.ServerProxy.servers.update({
+            "rstudio1{{ idx }}": setup_rserver(prefix="rstudio{{ idx }}", r_path="{{ item['argv'][0] }}", launcher_title="RStudio ({{ item['display_name']}})"),
+          })
