@@ -1,13 +1,10 @@
 ---
-- name: Install desktop apps
+- name: Install snap desktop apps
   when: fact_desktop_workspace
-  block:
-    - name: Install snap apps
-      community.general.snap:
-        classic: true
-        name:
-          - codium
-          - pycharm-community
+  community.general.snap:
+    classic: true
+    name:
+      - codium
 
 - name: Install run_and_pause script
   ansible.builtin.template:
