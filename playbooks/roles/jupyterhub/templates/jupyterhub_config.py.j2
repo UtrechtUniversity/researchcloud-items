@@ -51,9 +51,12 @@ c.Spawner.args = [
 c.Spawner.env_keep = {{ jupyterhub_config_env_keep | string }}
 
 # Server config
-
+{% if jupyterhub_enable_unix_socket %}
+c.JupyterHub.hub_bind_url = "unix+http://{{ jupyterhub_user_home | replace("") }}%2Fjupyterhub.sock"
+{% else %}
 c.JupyterHub.ip = "{{ jupyterhub_bind_addr }}"
 c.JypyterHub.port = {{ jupyterhub_port | int }}
+{% endif %}
 c.JupyterHub.base_url = "{{ jupyterhub_uri }}"
 
 # Configure paths for essential server files

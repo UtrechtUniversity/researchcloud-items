@@ -14,6 +14,7 @@ jupyterhub_http_password: ""
 jupyterhub_create_default_group: true
 jupyterhub_remote_user_header: REMOTE_USER
 jupyterhub_activate_remote_user_auth: false
+jupyterhub_enable_unix_socket: true
 jupyterhub_config_env_keep:
   - JUPYTERHUB_ACTIVITY_URL
   - JUPYTERHUB_SERVER_NAME
