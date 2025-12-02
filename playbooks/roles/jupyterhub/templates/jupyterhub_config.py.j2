@@ -40,6 +40,7 @@ c.AccessTokenAuthenticator.logout_endpoint = "/logout"
 
 {% if jupyterhub_debug %}
 # Debug settings
+import logging
 c.JupyterHub.log_level = logging.DEBUG
 c.ConfigurableHTTPProxy.debug = True
 {% endif %}

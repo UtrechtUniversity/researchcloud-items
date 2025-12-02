@@ -28,3 +28,4 @@ jupyterhub_config_env_keep:
   - PATH
   - CONDA_ROOT
   - CONDA_DEFAULT_ENV
+jupyterhub_debug: false
