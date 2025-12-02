@@ -8,5 +8,6 @@
     jupyterhub_proxy_config:
       proxy_set_header:
         REMOTE_USER: '$http_user' # allows us to set the 'user' header in tests to mock login
+    jupyterhub_debug: true
   roles:
     - role: jupyterhub
