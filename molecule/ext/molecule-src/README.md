@@ -101,7 +101,7 @@ The above config file does not provide a `platforms` key, so tests for this scen
 ```yaml
 platforms:
   - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop # You can also change this to another image
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop-pilot # You can also change this to another image
     pre_build_image: true
     # The following lines are an example of how to specify a container registry to pull the image from, if it is not already available locally.
     registry:
