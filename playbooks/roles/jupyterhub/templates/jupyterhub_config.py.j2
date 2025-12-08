@@ -38,6 +38,12 @@ c.AccessTokenAuthenticator.header_name = "{{ jupyterhub_remote_user_header }}"
 c.AccessTokenAuthenticator.logout_endpoint = "/logout"
 {% endif %}
 
+{% if jupyterhub_debug %}
+# Debug settings
+c.JupyterHub.log_level = logging.DEBUG
+c.ConfigurableHTTPProxy.debug = True
+{% endif %}
+
 # Spawner config
 
 c.JupyterHub.spawner_class = 'sudospawner.SudoSpawner'
@@ -51,10 +57,18 @@ c.Spawner.args = [
 c.Spawner.env_keep = {{ jupyterhub_config_env_keep | string }}
 
 # Server config
-
+{% if jupyterhub_enable_unix_socket %}
+c.JupyterHub.hub_bind_url = "unix+http://{{ jupyterhub_user_home | replace("/", "%2F") }}%2Fjupyterhub.sock"
+c.JupyterHub.hub_connect_url = c.JupyterHub.hub_bind_url
+c.Spawner.environment.update({
+  'JUPYTERHUB_API_URL': "http://localhost:8000/hub/api",
+  'JUPYTERHUB_ACTIVITY_URL': lambda spawner : f"http://localhost:8000/hub/api/users/{spawner.user.name}/activity"
+})
+{% else %}
 c.JupyterHub.ip = "{{ jupyterhub_bind_addr }}"
 c.JypyterHub.port = {{ jupyterhub_port | int }}
 c.JupyterHub.base_url = "{{ jupyterhub_uri }}"
+{% endif %}
 
 # Configure paths for essential server files
 c.JupyterHub.cookie_secret_file = "{{ jupyterhub_user_home }}/jupyterhub_cookie_secret"
