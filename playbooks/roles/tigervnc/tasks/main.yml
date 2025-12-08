@@ -5,6 +5,7 @@
     name:
       - tigervnc-standalone-server
       - tigervnc-xorg-extension
+      - dbus-x11
     state: present
 
 - name: Set path to default start script
