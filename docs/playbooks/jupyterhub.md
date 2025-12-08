@@ -12,6 +12,8 @@ Although SURF also has a *Jupyter Notebooks* component that installs JupyterHub,
 - Configure the Hub to be able to add arbitrary extensions to JupyterLab, or arbritary standalone apps to the Hub, using other components.
     - See the [jupyterhub_app role](../roles/jupyterhub_app.md) for this.
 
+On Desktop workspaces, this playbook will also install [TigerVNC](../../roles/tigervnc/) and install the JupyterHub extension [jupyter-remote-desktop-proxy)](github.com/jupyterhub/jupyter-remote-desktop-proxy) to allow the user to start a Desktop session from JupyterHub.
+
 ## Requires
 
 * Debian-based system
