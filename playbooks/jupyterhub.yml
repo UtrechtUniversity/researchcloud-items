@@ -6,11 +6,28 @@
     _jupyterhub_default_pkgs: # Extensions that should be installed on the hub (pypi packages)
       - jupyterlab-git
   roles:
+    - role: fact_workspace_info
+    - role: tigervnc
+      when: fact_desktop_workspace
     - role: jupyterhub
       vars:
         jupyterhub_uri: "{{ jupyter_uri | default('/', true) }}"
         jupyterhub_extra_pkgs: "{{ _jupyterhub_default_pkgs + (jupyter_extra_pkgs | default('', true) | split(',')) }}"
-        jupyterhub_config_extra: "{{ jupyter_config_extra | default('', true) }}"
+        jupyterhub_config_extra: |
+          {{ jupyter_config_extra | default('', true) }}
+          {% if fact_desktop_workspace %}
+          from pwd import getpwnam
+          c.Spawner.environment.update({
+            'JUPYTER_REMOTE_DESKTOP_PROXY_XSTARTUP': '{{ tigervnc_xstartup_path }}',
+            # We need to specify the following variable because the standard tigervnc xstartup script does not set it correctly
+            # spawner.user is the user the vnc server will run as
+            'XDG_RUNTIME_DIR': lambda spawner : f"/run/user/{getpwnam(spawner.user.name).pw_uid}"
+          })
+          {% endif %}
         jupyterhub_auth: "{{ jupyter_auth | default('sram', true) }}"
         jupyterhub_activate_remote_user_auth: "{{ jupyter_activate_remote_user_auth | default(omit, true) }}"
         jupyterhub_proxy_config: "{{ jupyter_proxy_config | default('{}', true) | from_yaml }}"
+    - role: jupyterhub_app
+      vars:
+        jupyterhub_app_pip: jupyter-remote-desktop-proxy
+      when: fact_desktop_workspace
