@@ -11,3 +11,5 @@ galaxy_info:
     - name: EL
       versions:
         - all # not tested for specific versions
+dependencies:
+  - role: system_python
