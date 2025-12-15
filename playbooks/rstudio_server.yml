@@ -6,15 +6,16 @@
     _rstudio_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', rstudio_fqdn) }}"
     _rstudio_base_path: "{{ rstudio_base_path | default('/', true) }}"
     _rstudio_jupyter_venv_path: "{{ rstudio_jupyter_venv_path | default('/usr/local/jupyterhub', true) }}"
-    _rstudio_jupyter_force_install: "{{ rstudio_jupyter_force_install | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
-    _rstudio_pip_cmd: "{{ _rstudio_jupyter_force_install | ternary('uv_pip', 'pip') }}" # if force install is true, then uv is definitely available -- use it for performance
+    _rstudio_standalone: "{{ rstudio_standalone | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
+    _rstudio_pip_cmd: "{{ _rstudio_standalone | ternary('uv_pip', 'pip') }}" # if force install is true, then uv is definitely available -- use it for performance
   pre_tasks:
     - name: Get installed R kernels
-      when: not _rstudio_jupyter_force_install
+      when: not _rstudio_standalone
       block:
         - name: Get all kernels
           ansible.builtin.command: "{{ _rstudio_jupyter_venv_path }}/bin/jupyter kernelspec list --json"
           register: all_kernels_json
+          changed_when: false
 
         - name: Get R kernels
           ansible.builtin.set_fact:
@@ -31,7 +32,7 @@
       vars:
         rstudio_kind: server
     - role: jupyterhub_standalone_proxy
-      when: _rstudio_jupyter_force_install
+      when: _rstudio_standalone
       # install jupyterhub and rstudio as a standalone app.
       vars:
         jupyterhub_uri: "{{ _rstudio_base_path }}"
