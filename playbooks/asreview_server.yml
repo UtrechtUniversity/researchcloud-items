@@ -1,4 +1,5 @@
 ---
+# run PR test
 - name: Install ASReview as server app
   hosts: localhost
   gather_facts: true
