@@ -20,13 +20,6 @@
         - name: Get R kernels
           ansible.builtin.set_fact:
             all_r_kernels: "{{  (all_kernels_json.stdout | from_json)['kernelspecs'].values() | map(attribute='spec') | selectattr('language', 'equalto', 'R') | list }}"
-
-    - name: Install jupyter-rsession-proxy
-      ansible.builtin.pip:
-        name: git+https://github.com/dometto/jupyter-rsession-proxy.git@multiple_servers
-        state: present
-        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
-
   roles:
     - role: rstudio
       vars:
@@ -50,3 +43,15 @@
             "rstudio{{ loop.index }}": setup_rserver(prefix="rstudio{{ loop.index }}", r_path="{{ server['argv'][0] }}", launcher_title="RStudio ({{ server['display_name']}})"),
             {% endfor %}
           })
+  tasks:
+    - name: Install jupyter-rsession-proxy
+      notify: Restart JupyterHub
+      ansible.builtin.pip:
+        name: git+https://github.com/dometto/jupyter-rsession-proxy.git@multiple_servers
+        state: present
+        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
+  handlers:
+    - name: Restart JupyterHub
+      ansible.builtin.service:
+        state: restarted
+        name: jupyterhub
