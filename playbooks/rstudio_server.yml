@@ -39,7 +39,7 @@
         jupyterhub_app_server_config: |
           from jupyter_rsession_proxy import setup_rserver
           c.ServerProxy.servers.update({
-            {% for server in all_r_kernels %}
+            {% for server in all_r_kernels | default([]) %}
             "rstudio{{ loop.index }}": setup_rserver(prefix="rstudio{{ loop.index }}", r_path="{{ server['argv'][0] }}", launcher_title="RStudio ({{ server['display_name']}})"),
             {% endfor %}
           })
