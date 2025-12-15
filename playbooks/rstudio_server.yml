@@ -43,6 +43,15 @@
             "rstudio{{ loop.index }}": setup_rserver(prefix="rstudio{{ loop.index }}", r_path="{{ server['argv'][0] }}", launcher_title="RStudio ({{ server['display_name']}})"),
             {% endfor %}
           })
+        jupyterhub_app_standalone_config: |
+          from utils import *
+          from jupyter_rsession_proxy import setup_rserver
+          patch_check_origin() # apply monkeypatch for custom CORS allowlist for websockets
+
+          config = setup_rserver()
+          c.StandaloneProxyServer.unix_socket = True
+          c.StandaloneProxyServer.command = config['command']
+
   tasks:
     - name: Install jupyter-rsession-proxy
       notify: Restart JupyterHub
