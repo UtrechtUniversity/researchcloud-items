@@ -1,0 +1,69 @@
+---
+- name: Install RStudio Server in JupyterHub
+  hosts: localhost
+  gather_facts: true
+  vars:
+    _rstudio_fqdn: "{{ ('molecule-notest' in ansible_skip_tags) | ternary('localhost', rstudio_fqdn) }}"
+    _rstudio_base_path: "{{ rstudio_base_path | default('/', true) }}"
+    _rstudio_jupyter_venv_path: "{{ rstudio_jupyter_venv_path | default('/usr/local/jupyterhub', true) }}"
+    _rstudio_standalone: "{{ rstudio_standalone | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
+    _rstudio_pip_cmd: "{{ _rstudio_standalone | ternary('uv_pip', 'pip') }}" # if force install is true, then uv is definitely available -- use it for performance
+  pre_tasks:
+    - name: Get installed R kernels
+      when: not _rstudio_standalone
+      block:
+        - name: Get all kernels
+          ansible.builtin.command: "{{ _rstudio_jupyter_venv_path }}/bin/jupyter kernelspec list --json"
+          register: all_kernels_json
+          changed_when: false
+
+        - name: Get R kernels
+          ansible.builtin.set_fact:
+            all_r_kernels: "{{  (all_kernels_json.stdout | from_json)['kernelspecs'].values() | map(attribute='spec') | selectattr('language', 'equalto', 'R') | list }}"
+  roles:
+    - role: rstudio
+      vars:
+        rstudio_kind: server
+    - role: jupyterhub_standalone_proxy
+      when: _rstudio_standalone
+      # install jupyterhub and rstudio as a standalone app.
+      vars:
+        jupyterhub_uri: "{{ _rstudio_base_path }}"
+        jhsp_external_addr: "{{ _rstudio_fqdn }}"
+        jupyterhub_app_pip_executable: "{{ _rstudio_pip_cmd }}" # when force install is true, uv will be installed -- use it for better performance.
+    - role: jupyterhub_app
+      vars:
+        jupyterhub_app_name: rstudio
+        jupyterhub_app_venv: "{{ _rstudio_jupyter_venv_path | default('') }}"
+        jupyterhub_app_config_dir: "{{ rstudio_jupyter_config_dir | default('') }}"
+        jupyterhub_app_server_config: |
+          from jupyter_rsession_proxy import setup_rserver
+          c.ServerProxy.servers.update({
+            {% for server in all_r_kernels | default([]) %}
+            "rstudio{{ loop.index }}": setup_rserver(prefix="rstudio{{ loop.index }}", r_path="{{ server['argv'][0] }}", launcher_title="RStudio ({{ server['display_name']}})"),
+            {% endfor %}
+          })
+        jupyterhub_app_standalone_config: |
+          from utils import *
+          from jupyter_rsession_proxy import setup_rserver
+          patch_check_origin() # apply monkeypatch for custom CORS allowlist for websockets
+
+          config = setup_rserver(prefix="")
+          c.StandaloneProxyServer.unix_socket = True
+          c.StandaloneProxyServer.command = config['command']
+          c.StandaloneProxyServer.rewrite_response = config['rewrite_response']
+          c.StandaloneProxyServer.timeout = config['timeout']
+          c.StandaloneProxyServer.environment = config['environment']
+
+  tasks:
+    - name: Install jupyter-rsession-proxy
+      notify: Restart JupyterHub
+      ansible.builtin.pip:
+        name: git+https://github.com/dometto/jupyter-rsession-proxy.git@multiple_servers
+        state: present
+        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
+  handlers:
+    - name: Restart JupyterHub
+      ansible.builtin.service:
+        state: restarted
+        name: jupyterhub
