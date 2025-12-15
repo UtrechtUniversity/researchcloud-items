@@ -1,0 +1,13 @@
+rstudio_links:
+  Ubuntu:
+    focal:
+      desktop: https://download1.rstudio.org/electron/focal/amd64/rstudio-2024.04.2-764-amd64.deb
+    jammy:
+      desktop: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.09.2-418-amd64.deb
+      server: https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2025.09.2-418-amd64.deb
+    noble:
+      desktop: https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.09.2-418-amd64.deb
+      server: https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2025.09.2-418-amd64.deb
+  RedHat:
+    desktop: https://download1.rstudio.org/electron/rhel9/x86_64/rstudio-2025.09.2-418-x86_64.rpm
+    server: https://download2.rstudio.org/server/rhel9/x86_64/rstudio-server-rhel-2025.09.2-418-x86_64.rpm

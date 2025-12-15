@@ -9,31 +9,27 @@
     _rstudio_jupyter_force_install: "{{ rstudio_jupyter_force_install | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
     _rstudio_pip_cmd: "{{ _rstudio_jupyter_force_install | ternary('uv_pip', 'pip') }}" # if force install is true, then uv is definitely available -- use it for performance
   pre_tasks:
-    # move to role
-    - name: Install RStudio for Ubuntu 22
-      ansible.builtin.apt:
-        deb: https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2024.12.0-467-amd64.deb
+    - name: Get installed R kernels
+      when: not _rstudio_jupyter_force_install
+      block:
+        - name: Get all kernels
+          ansible.builtin.command: "{{ _rstudio_jupyter_venv_path }}/bin/jupyter kernelspec list --json"
+          register: all_kernels_json
+
+        - name: Get R kernels
+          ansible.builtin.set_fact:
+            all_r_kernels: "{{  (all_kernels_json.stdout | from_json)['kernelspecs'].values() | map(attribute='spec') | selectattr('language', 'equalto', 'R') | list }}"
+
+    - name: Install jupyter-rsession-proxy
+      ansible.builtin.pip:
+        name: git+https://github.com/dometto/jupyter-rsession-proxy.git@multiple_servers
         state: present
+        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
 
-    - name: Get all kernels
-      ansible.builtin.command: "{{ _rstudio_jupyter_venv_path }}/bin/jupyter kernelspec list --json"
-      register: all_kernels_json
-
-    - name: Get R kernels
-      ansible.builtin.set_fact:
-        all_r_kernels: "{{  (all_kernels_json.stdout | from_json)['kernelspecs'].values() | map(attribute='spec') | selectattr('language', 'equalto', 'R') | list }}"
-
-
-    # move to role
-    - name: Install R for Debian
-      when: all_r_kernels | length < 1
-      ansible.builtin.apt:
-        name:
-          - r-base
-          - r-base-dev
-        update_cache: true
-        state: present
   roles:
+    - role: rstudio
+      vars:
+        rstudio_kind: server
     - role: jupyterhub_standalone_proxy
       when: _rstudio_jupyter_force_install
       # install jupyterhub and rstudio as a standalone app.
@@ -41,18 +37,7 @@
         jupyterhub_uri: "{{ _rstudio_base_path }}"
         jhsp_external_addr: "{{ _rstudio_fqdn }}"
         jupyterhub_app_pip_executable: "{{ _rstudio_pip_cmd }}" # when force install is true, uv will be installed -- use it for better performance.
-  tasks:
-    - name: Install jupyter-rsession-proxy
-      ansible.builtin.pip:
-        name: git+https://github.com/dometto/jupyter-rsession-proxy.git@multiple_servers
-        state: present
-        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
-
-    - ansible.builtin.include_role:
-        role: jupyterhub_app
-      loop: "{{ all_r_kernels }}" # for each installed R kernel, create an RStudio server config
-      loop_control:
-        index_var: idx
+    - role: jupyterhub_app
       vars:
         jupyterhub_app_name: rstudio
         jupyterhub_app_venv: "{{ _rstudio_jupyter_venv_path | default('') }}"
@@ -60,5 +45,7 @@
         jupyterhub_app_server_config: |
           from jupyter_rsession_proxy import setup_rserver
           c.ServerProxy.servers.update({
-            "rstudio1{{ idx }}": setup_rserver(prefix="rstudio{{ idx }}", r_path="{{ item['argv'][0] }}", launcher_title="RStudio ({{ item['display_name']}})"),
+            {% for server in all_r_kernels %}
+            "rstudio{{ loop.index }}": setup_rserver(prefix="rstudio{{ loop.index }}", r_path="{{ server['argv'][0] }}", launcher_title="RStudio ({{ server['display_name']}})"),
+            {% endfor %}
           })
