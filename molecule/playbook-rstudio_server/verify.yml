@@ -12,8 +12,9 @@
         return_content: true
         follow_redirects: true
       register: rstudio_login
-      retries: 5
-      delay: 3
+      retries: 6
+      delay: 5
+      
 
     - name: Assert content correct
       ansible.builtin.assert:

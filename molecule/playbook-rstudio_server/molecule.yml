@@ -25,5 +25,5 @@ provisioner:
         path: rstudio_server.yml
         parameters:
           rstudio_base_path: "/rstudio"
-          rstudio_jupyter_force_install: 'false'
+          rstudio_standalone: 'false'
           jupyterhub_app_pip_executable: uv_pip
