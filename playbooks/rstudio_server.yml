@@ -48,9 +48,12 @@
           from jupyter_rsession_proxy import setup_rserver
           patch_check_origin() # apply monkeypatch for custom CORS allowlist for websockets
 
-          config = setup_rserver()
+          config = setup_rserver(prefix="")
           c.StandaloneProxyServer.unix_socket = True
           c.StandaloneProxyServer.command = config['command']
+          c.StandaloneProxyServer.rewrite_response = config['rewrite_response']
+          c.StandaloneProxyServer.timeout = config['timeout']
+          c.StandaloneProxyServer.environment = config['environment']
 
   tasks:
     - name: Install jupyter-rsession-proxy
