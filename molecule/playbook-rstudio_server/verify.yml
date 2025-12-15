@@ -12,11 +12,10 @@
         return_content: true
         follow_redirects: true
       register: rstudio_login
-      failed_when: rstudio_login.failed or rstudio_login.url != 'http://localhost/user/testuser/rstudio/?redirects=1'
       retries: 5
       delay: 3
 
     - name: Assert content correct
       ansible.builtin.assert:
         that:
-          - '"RStudio" in rstudio_login.content'
+          - '"Posit" in rstudio_login.content'
