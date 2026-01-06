@@ -6,7 +6,7 @@
     - name: Debug -- list all components to be executed
       ansible.builtin.debug:
         msg: "{{ item.name }}"
-      with_items: "{{ lookup('env', 'components') }}"
+      with_items: "{{ lookup('env', 'components') | from_yaml }}"
 
     - name: Run components
       ansible.builtin.include_tasks: _run_component.yml
@@ -17,4 +17,4 @@
           parameters: "{{ item.parameters | default({}) | to_json }}"
           script_folder: "{{ item.name }}"
           path: "{{ item.path }}"
-      with_items: "{{ lookup('env', 'components') }}"
+      with_items: "{{ lookup('env', 'components') | from_yaml }}"

@@ -23,6 +23,10 @@
       ansible.builtin.set_fact:
         found_kernels: "{{ kernels.files | map(attribute='path') | list }}"
 
+    - name: Get repo2kernel logs
+      ansible.builtin.shell: cat /local-share/projects/*/*.log
+      register: logfiles
+
     - name: Assertions
       ansible.builtin.assert:
         that:
@@ -30,9 +34,9 @@
           - "'/local-share/projects/requirements.git' in found_code_repos"
           - "'/local-share/projects/conda.git' in found_code_repos"
           - "'/local-share/projects/demo-julia.git' in found_code_repos"
-          - "'/local-share/projects/zenodo-1211089' in found_code_repos"
           - "'/usr/local/share/jupyter/kernels/python-requirements' in found_kernels"
           - "'/usr/local/share/jupyter/kernels/python-conda' in found_kernels"
           - "'/usr/local/share/jupyter/kernels/julia-demo-julia-1.12' in found_kernels"
           - "'/usr/local/share/jupyter/kernels/python-v3.13' in found_kernels"
           - "'/usr/local/share/jupyter/kernels/r-v4.5.1' in found_kernels"
+          - '"repo2kernel is aborting" not in logfiles.stdout'

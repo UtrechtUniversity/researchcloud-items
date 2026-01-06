@@ -1,0 +1,13 @@
+---
+- name: Install tigervnc
+  when: ansible_os_family == "Debian"
+  ansible.builtin.package:
+    name:
+      - tigervnc-standalone-server
+      - tigervnc-xorg-extension
+      - dbus-x11
+    state: present
+
+- name: Set path to default start script
+  ansible.builtin.set_fact:
+    tigervnc_xstartup_path: "{{ tigervnc_xstartup | default(tigervnc_default_xstartup_path['{{ ansible_os_family }}'], true) | default(tigervnc_default_xstartup_path['default']) }}"

@@ -16,7 +16,7 @@ jobs:
       DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
       DOCKER_REGISTRY: ghcr.io
       ANSIBLE_FORCE_COLOR: '1'
-      ANSIBLE_STDOUT_CALLBACK: yaml
+      ANSIBLE_RESULT_FORMAT: yaml
       MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
       REQUIREMENTS_FILE: requirements.txt
       PLAYBOOK_DIR: ../../../ # relative to molecule/ext/molecule-src/molecule.yml
@@ -37,7 +37,7 @@ jobs:
           ]
           EOF
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - run: git clone https://github.com/UtrechtUniversity/SRC-molecule-test.git molecule
       - run: mkdir molecule/ext && cd molecule/ext && ln -s ../../ molecule-src
       - run: pip install -r ${{ env.REQUIREMENTS_FILE }}

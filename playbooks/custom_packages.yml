@@ -6,10 +6,16 @@
     _install_uv: "{{ custom_packages_install_uv | default(true, true) | bool }}"
     _install_conda: "{{ custom_packages_install_conda | default(true, true) | bool }}"
     _install_julia: "{{ custom_packages_install_julia | default(true, true) | bool }}"
+    # take a comma-separated list, e.g. "https://github.com/foo/bar, https://github.com/bar/foo@main", turn it into a list of lists of the form:
+    # [["https://github.com/foo/bar"], ["https://github.com/bar/foo", "main"]]
     _custom_packages_projects: "[ {{ (custom_packages_projects | default('')) | split(',') | map('trim') | map('split', '@') | select | list }} ]"
-    _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split') | select | list }} ]"
+    # take a comma-separated list, e.g "python 3, julia", turn it into a list of lists of the form:
+    # [["python", "3"], ["julia"]]
+    _custom_packages_extra_envs: "[ {{ (custom_packages_extra_envs | default('')) | split(',') | map('trim') | map('split', ' ') | select | list }} ]"
     _custom_packages_code_dir: "{{ custom_packages_code_dir | default ('/local-share/projects', true) }}"
+    _custom_packages_code_dir_mode: "{{ (custom_packages_projects_editable | default(true, true) | bool) | ternary('770', '750') }}"
     _custom_packages_env_dir: "{{ custom_packages_env_dir | default('/usr/local/uu/env', true) }}"
+    _custom_packages_env_dir_mode: "{{ (custom_packages_envs_editable | default(false, true) | bool) | ternary('770', '750') }}"
     _custom_packages_group: "{{ custom_packages_group | default('root', true) }}"
     _custom_packages_create_kernels: "{{ custom_packages_create_kernels | default(true, true) | bool }}"
     _custom_packages_extra_path: "{{ custom_packages_extra_path | default('/usr/local/jupyterhub/bin', true) }}" # repo2kernel commands require some commands to be available on PATH. In particular, 'jupyter' is required by the IRKernel package used to create R-kernels.
@@ -38,15 +44,13 @@
         state: present
 
     - name: Create env dir
-      # setgid recursive makes this task not idempotent
       tags: molecule-idempotence-notest
       ansible.builtin.file:
         path: "{{ _custom_packages_env_dir }}"
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
-        mode: "02750" # setgid so new files are created with the right group ownership
-        recurse: true
+        mode: "02{{ _custom_packages_env_dir_mode }}"
 
     - name: Create code dir
       ansible.builtin.file:
@@ -54,16 +58,23 @@
         state: directory
         owner: root
         group: "{{ _custom_packages_group }}"
-        mode: "02750" # setgid so new files are created with the right group ownership
+        mode: "02{{ _custom_packages_code_dir_mode }}"
 
     - name: Fetch every project
       tags: molecule-idempotence-notest
       # use bash -l to use a login shell, so paths are correctly sourced
-      ansible.builtin.command:
+      ansible.builtin.command: # if no version was specified, item will be a string, otherwise a list consisting of the language and the version
         cmd: >
-          bash -l -c 'repo2kernel fetch --create-subdir {{ item[0] }} {{ (item | length == 2) | ternary('--ref '~item[-1], '') }} {{ (not _custom_packages_create_kernels) | ternary('--no-kernel', '') }} {{ _custom_packages_code_dir }}/'
+          bash -l -c 'repo2kernel fetch --create-subdir
+          {% if  item | length > 1 %}
+          {{ item[0] }} --ref {{ item[1] }}
+          {% else %}
+          {{ item[0] }}
+          {% endif %}
+          {{ _custom_packages_code_dir }}/'
       register: fetch
       with_items: "{{ _custom_packages_projects }}"
+      when: item[0] # will be false when empty project list was passed in
 
     - name: Find fetched project directories
       ansible.builtin.find:
@@ -86,21 +97,63 @@
       tags: molecule-idempotence-notest
       when: (_custom_packages_extra_envs | length) > 0
       # use bash -l to use a login shell, so paths are correctly sourced
-      ansible.builtin.command:
-        cmd: "bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }} {{ item[0] }} --version {{ item[1] }}'"
+      ansible.builtin.command: # if no version was specified, item will be a string, otherwise a list consisting of the language and the version
+        cmd: >
+          bash -l -c 'repo2kernel new --base-env-dir {{ _custom_packages_env_dir }}
+          {% if item | length > 1 %}
+          {{ item[0] }} --version {{ item[1] }}
+          {% else %}
+          {{ item[0] }}
+          {% endif %}'
       failed_when: false
       with_items: "{{ _custom_packages_extra_envs }}"
+      when: item[0] # will be false when empty env list was passed in
       environment:
         PATH: "{{ _custom_packages_extra_path }}:{{ ansible_env.PATH }}"
 
-    # After running various commands above, ensure the right privileges are still est
-    - name: Set privileges for env dir
-      # setgid recursive makes this task not idempotent
+    - name: Apply correct privileges to projects and envs
       tags: molecule-idempotence-notest
-      ansible.builtin.file:
-        path: "{{ _custom_packages_env_dir }}"
-        state: directory
-        owner: root
-        group: "{{ _custom_packages_group }}"
-        mode: "02750" # setgid so new files are created with the right group ownership
-        recurse: true
+      block:
+        - name: Set env dir privs
+          ansible.builtin.file:
+            path: "{{ _custom_packages_env_dir }}"
+            state: directory
+            owner: root
+            group: "{{ _custom_packages_group }}"
+            mode: "{{ item.mode }}"
+            recurse: "{{ item.recurse }}"
+          # setgid with recurse is bad, so re-apply setgid after recursively setting privs.
+          with_items:
+            - mode: "0{{ _custom_packages_env_dir_mode }}"
+              recurse: true
+            - mode: "02{{ _custom_packages_env_dir_mode }}"
+              recurse: false
+
+        - name: Set setgid on all subdirs of env dir
+          # repo2kernel unfortunately creates subdirectories that do not respect the parent directory's setgid
+          # this is no problem if the env dir is not supposed to be editable by everyone in _custom_packages_group (default)
+          # if it is supposed to be writeable, files in subdirectories will not preserve group ownership
+          # hack: just apply setgid to all subdirectories of the main env dir
+          ansible.builtin.command: find {{ _custom_packages_env_dir }} -type d -exec chmod g+s {} +
+          when: custom_packages_envs_editable | default(false, true)
+
+        - name: Set project dirs privs
+          ansible.builtin.file:
+            path: "{{ item.path }}"
+            state: directory
+            owner: root
+            group: "{{ _custom_packages_group }}"
+            mode: "0{{ _custom_packages_code_dir_mode }}"
+            recurse: true
+          with_items: "{{ fetched_projects.files }}"
+
+        # setgid with recurse is bad, so re-apply setgid after recursively setting privs.
+        - name: Apply project dirs setgid
+          ansible.builtin.file:
+            path: "{{ item.path }}"
+            state: directory
+            owner: root
+            group: "{{ _custom_packages_group }}"
+            mode: "02{{ _custom_packages_code_dir_mode }}"
+            recurse: false
+          with_items: "{{ fetched_projects.files }}"

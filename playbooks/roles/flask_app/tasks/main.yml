@@ -118,7 +118,7 @@
 - name: Set variable facts
   block:
     - name: Set auth info variable for reverse proxy role if auth basic is set
-      when: flask_app_proxy_auth == 'basic'
+      when: flask_app_proxy_auth == 'basic' and nginx_reverse_proxy_auth_info is undefined
       ansible.builtin.set_fact:
         nginx_reverse_proxy_auth_info:
           - name: "{{ flask_app_name }}"

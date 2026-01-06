@@ -23,7 +23,7 @@
         rsync_opts:
           - --exclude=".*"
         ssh_connection_multiplexing: true
-      with_items: "{{ lookup('env', 'components') }}"
+      with_items: "{{ lookup('env', 'components') | from_yaml }}"
 
     # Apt cache is normally updated at deploy time by the SRC-OS component.
     # Make sure it is fresh so our tests use recent apt repo information.

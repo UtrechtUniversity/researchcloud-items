@@ -1,5 +1,5 @@
 # Role Agisoft
-[back to index](../index.md#Playbooks)
+[back to index](../index.md#Roles)
 
 ## Summary
 Installs Agisoft Metashape, a tool for a photogrammetry pipeline.
@@ -19,4 +19,4 @@ Downloads and extracts the Metashape package, and installs the license file (see
 ## History
 2022-24 Written by Jelle Treep and Dawa Ometto (Utrecht University)
 
-[back to index](../index.md#Playbooks)
+[back to index](../index.md#Roles)

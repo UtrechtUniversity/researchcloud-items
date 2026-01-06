@@ -7,6 +7,12 @@
     owner: root
     group: root
 
+- name: Init db
+  become: true
+  become_user: "{{ asreview_server_user }}"
+  tags: molecule-idempotence-notest
+  ansible.builtin.command: "{{ asreview_server_config_dir }}/venv/bin/asreview auth-tool create-db --db-uri {{ asreview_server_db_uri }}"
+
 - name: Run user cron job for the first time
   tags: molecule-idempotence-notest
   ansible.builtin.command: "{{ asreview_server_cron_script }}"

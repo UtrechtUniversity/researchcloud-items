@@ -1,4 +1,8 @@
 ---
+- name: Set fact containing path to julia shared env dir for other rols
+  ansible.builtin.set_fact:
+    fact_julia_dir: "{{ julia_shared_env_path }}"
+
 - name: Add depot paths to every user's profile
   ansible.builtin.copy:
     dest: /etc/profile.d/uu-julia.sh
@@ -9,12 +13,12 @@
       export JULIA_DEPOT_PATH=":{{ julia_shared_env_path }}"
       export JULIA_LOAD_PATH="{{ julia_shared_env_path }}/environments:"
 
-- name: Install Juliaup and default Julia # noqa command-instead-of-module risky-shell-pipe
+- name: Install Juliaup for root and default Julia version # noqa command-instead-of-module risky-shell-pipe
   ansible.builtin.shell:
-    cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes --path {{ julia_shared_env_path }}
+    cmd: curl -fsSL https://install.julialang.org | sh -s -- --yes
   args:
     executable: /bin/sh
-    creates: "{{ julia_shared_env_path }}/bin/juliaup"
+    creates: /root/.juliaup
   environment:
     JULIAUP_DEPOT_PATH: "{{ julia_shared_env_path }}"
     JULIA_DEPOT_PATH: "{{ julia_shared_env_path }}"
@@ -25,21 +29,22 @@
     file_type: directory
   register: find_julia
 
-- name: Run ldconfig for installed julia
-  ansible.builtin.command: ldconfig -v {{ find_julia.files[0].path }}/lib {{ find_julia.files[0].path }}/lib/julia
-  changed_when: false
-
-- name: Create global symlink for julia
-  ansible.builtin.file:
+# Create a shim for all users to be able to run julia.
+# We run julia with its own compiled shared libraries in the library path.
+# We do not want to simply run `ldconfig` on the library path, because this would cause interference with other applications.
+- name: Create global shim for julia
+  ansible.builtin.copy:
     dest: /usr/local/bin/julia
-    src: "{{ find_julia.files[0].path }}/bin/julia"
-    state: link
+    owner: root
+    group: root
+    mode: "0755"
+    content: |
+      #!/bin/sh
+      export LD_LIBRARY_PATH={{ find_julia.files[0].path }}/lib/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+      {{ find_julia.files[0].path }}/bin/julia "$@"
 
-- name: Create global symlink for juliaup
-  ansible.builtin.file:
-    dest: /usr/local/bin/juliaup
-    src: "{{ julia_shared_env_path }}/bin/juliaup"
-    state: link
+# We don't create a global juliaup shim because juliaup in multi-user environments currently (November 2025) doesn't work:
+# https://github.com/JuliaLang/juliaup/issues/276
 
 # After installation of julia, ensure permissions are set so every user can use the shared envs
 - name: Set permissions for shared env dir

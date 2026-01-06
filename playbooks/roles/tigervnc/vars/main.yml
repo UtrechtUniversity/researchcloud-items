@@ -1,0 +1,3 @@
+tigervnc_default_xstartup_path:
+  Debian: /etc/X11/Xtigervnc-session
+  default: /etc/X11/Xtigervnc-session
