@@ -31,7 +31,7 @@ scenario:
     - destroy
 platforms:
   - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-pilot-desktop
     <<: *image_settings
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
