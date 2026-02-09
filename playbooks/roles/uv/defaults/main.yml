@@ -4,3 +4,4 @@ uv_python_versions: []
 uv_venvs: []
 uv_become_user: root
 uv_become: false
+uv_force_install: true
