@@ -21,10 +21,21 @@
       - min
   when: ansible_os_family is not defined
 
+- name: Determine whether ansible is running in a virtual env
+  ansible.builtin.set_fact:
+    fact_src_ansible_venv: "{{ lookup('ansible.builtin.env', 'VIRTUAL_ENV') }}"
+
 # jmespath is required for filter
 - name: Install jmespath globally
+  when: not fact_src_ansible_venv # ansible is using the global python interpreter
   ansible.builtin.package:
     name: python3-jmespath # same package name on debian, ubuntu, rocky/el
+
+- name: Install jmespath into the venv used by Ansible
+  when: fact_src_ansible_venv # ansible is not using the global python interpreter
+  ansible.builtin.pip:
+    name: jmespath # same package name on debian, ubuntu, rocky/el
+    executable: "{{ fact_src_ansible_venv }}/bin/pip"
 
 - name: Read database /etc/passwd
   no_log: true
