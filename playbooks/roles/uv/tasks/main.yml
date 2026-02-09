@@ -1,5 +1,6 @@
 ---
 - name: Install uv with pipx
+  when: uv_force_install
   ansible.builtin.include_role:
     name: pipx_install_systemwide
   vars:
