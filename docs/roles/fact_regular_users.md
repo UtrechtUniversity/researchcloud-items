@@ -8,7 +8,7 @@ Defines the following facts:
 
 - `fact_regular_users` -- list of dicts containing user info about regular users.
 - `fact_co_groups` -- dict with group names from the CO as keys, and lists of usernames in those groups as values.
- - `fact_src_ansible_venv`: -- string path to the python environment currently being used by Ansible. Can be used to install additional `pip` dependencies for Ansible modules into the correct environment. Empty string if Ansible is not using a virtual environment (but instead the global system python environment).
+ - `fact_src_ansible_venv` -- string path to the python environment currently being used by Ansible. Can be used to install additional `pip` dependencies for Ansible modules into the correct environment. Empty string if Ansible is not using a virtual environment (but instead the global system python environment).
 
 ## Requires
 Linux flavor operating system.
