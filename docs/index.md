@@ -1,27 +1,12 @@
 # Developer documentation
-This is the developer documentation for this repository.
-See this [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation.
+This is the developer documentation for UU's primary repository containing components for SURF ResearchCloud.
+See this [primer SURF ResearchCloud](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for end-user documentation. See [here](https://github.com/UtrechtUniversity/researchcloud-items#other-component-repos) for an overview of secondary component repos.
 
 Below is a section for [playbooks](#Playbooks) and a section for [roles](#Roles) (reusable items that can be included in a playbook).
 The playbook and roles can be used stand-alone (run them locally on the target host), but are
 designed with the goal of deploying them in the deployment of a ResearchCloud workspace.
 
 Contributed playbooks and roles should meet criteria specified in our [item quality checklist](./item_quality_checklist.md).
-
-## External component repositories
-
-This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). This documentation is exclusively for the playbooks and roles contained in this repo.
-
-However, some components are not part of this repository and can be found elsewhere. This can be for several reasons (see below). Below is a list of important UU-maintained ResearchCloud components outside of this repository. Documentation should be contained in these external repositories.
-
-| Name                                                                                     | Description                                                                                                                                                                                                                                 | Component type   | Why not in this repo?              |
-|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------------------------|
-| [Grobid](https://github.com/UtrechtUniversity/src-component-grobid)                      | Grobid can help you perform bibliographic analyses on  scientific papers. | Docker Compose | Non-Ansible                        |
-| [Galaxy](https://github.com/UtrechtUniversity/src-component-galaxy)                      | Galaxy is a workflow engine for bioinformatics.                                                                                                                                                                                             | Ansible          | Non-standard access rights         |
-| [ibridges-ansible](https://github.com/UtrechtUniversity/ibridges-ansible)                | A component to easily download iRODS collections to a workspace.                                                                                                                                                                            | Ansible          | Available as a separate collection |
-| [researchcloud-items-win](https://github.com/UtrechtUniversity/researchcloud-items-win/) | Various components targeting Windows workspaces                                                                                                                                                                                             | PowerShell       | Non-Ansible                        |
-
-Components for specific research projects (not intended for general use) should preferably also be stored in a separate repository. They can use the roles in this repo by [installing it as a collection](#installing-as-a-collection).
 
 ## Installing as a collection
 
