@@ -1,7 +1,7 @@
 # researchcloud-items
 This repository contains [Ansible](https://docs.ansible.com) installation scripts for use in conjunction with [SURF ResearchCloud](https://portal.live.surfresearchcloud.nl). ResearchCloud catalog maintainers can configure components from the playbooks in this repo.
 
-The scripts in this repository all target Unix/Linux workspaces. There is a separate repisitory for install scripts for Windows workspaces [here](https://github.com/UtrechtUniversity/researchcloud-items-win).
+This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). However, some UU components are not part of this repository and can be found elsewhere. See [here](#other-component-repos) for an overview.
 
 ## Ansible Galaxy Collection
 
@@ -46,5 +46,21 @@ There are two kinds of tests:
 
 1. Role tests. Molecule scenarios should be stored in the `playbooks/roles/<role>/molecule/` directory.
 1. Playbook tests. Molecule scenarios should be stored in the `molecule/` directory and given a `playbook-` prefix.
+
+# Other component repos
+
+This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). However, some UU components are not part of this repository and can be found elsewhere.
+
+This can be for several reasons (see below). Below is a list of important UU-maintained ResearchCloud components outside of this repository. Documentation should be contained in these external repositories.
+
+| Name                                                                                     | Description                                                                                                                                                                                                                                 | Component type   | Why not in this repo?              |
+|------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|------------------------------------|
+| [Grobid](https://github.com/UtrechtUniversity/src-component-grobid)                      | Grobid can help you perform bibliographic analyses on  scientific papers. | Docker Compose | Non-Ansible                        |
+| [Galaxy](https://github.com/UtrechtUniversity/src-component-galaxy)                      | Galaxy is a workflow engine for bioinformatics.                                                                                                                                                                                             | Ansible          | Non-standard access rights         |
+| [ibridges-ansible](https://github.com/UtrechtUniversity/ibridges-ansible)                | A component to easily download iRODS collections to a workspace.                                                                                                                                                                            | Ansible          | Available as a separate collection |
+| [Open WebUI](https://github.com/UtrechtUniversity/src-component-openwebui)                      | Extensible, feature-rich, and user-friendly self-hosted AI platform designed to operate entirely offline. | Ansible                        |  Non-standard access rights |
+| [researchcloud-items-win](https://github.com/UtrechtUniversity/researchcloud-items-win/) | Various components targeting Windows workspaces                                                                                                                                                                                             | PowerShell       | Non-Ansible                        |
+
+Components for specific research projects (not intended for general use) should preferably also be stored in a separate repository. They can use the roles in this repo by [installing it as a collection](#ansible-galaxy-collection).
 
 By following this convention, the CI workflow knows that when a pull request modifies e.g. `playbooks/foo.yml`, the scenario `molecule/playbook-foo` should be run. The CI tests are also run when anything changes in the scenario itself (so e.g. when you change `molecule/foo/molecule.yml`).
