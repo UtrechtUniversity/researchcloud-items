@@ -1,23 +1,8 @@
 ---
-- name: Install icommands (Ubuntu 22)
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == 22
-  ansible.builtin.apt:
-    pkg:
-      - "irods-runtime=4.3.1-0~jammy"
-      - "irods-icommands=4.3.1-0~jammy"
-    allow_downgrade: true
-    state: present
-
-- name: Install icommands (Ubuntu 24)
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version == 24
-  ansible.builtin.apt:
-    pkg:
-      - "irods-runtime=4.3.4-0~noble"
-      - "irods-runtime=4.3.4-0~noble"
-    allow_downgrade: true
-    state: present
-
 - name: Install icommands
-  ansible.builtin.package:
-    name: irods-icommands
+  ansible.builtin.apt:
+    pkg:
+      - irods-runtime
+      - irods-icommands
+      - irods-icommands
     state: present
