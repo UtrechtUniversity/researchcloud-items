@@ -7,7 +7,6 @@
     _rstudio_base_path: "{{ rstudio_base_path | default('/', true) }}"
     _rstudio_jupyter_venv_path: "{{ rstudio_jupyter_venv_path | default('/usr/local/jupyterhub', true) }}"
     _rstudio_standalone: "{{ rstudio_standalone | default(false, true) | bool }}" # should be set to true unless a previous component has already installed JupyterHub.
-    _rstudio_pip_cmd: "{{ _rstudio_standalone | ternary('uv_pip', 'pip') }}" # if force install is true, then uv is definitely available -- use it for performance
   pre_tasks:
     - name: Get installed R kernels
       when: not _rstudio_standalone
@@ -30,12 +29,12 @@
       vars:
         jupyterhub_uri: "{{ _rstudio_base_path }}"
         jhsp_external_addr: "{{ _rstudio_fqdn }}"
-        jupyterhub_app_pip_executable: "{{ _rstudio_pip_cmd }}" # when force install is true, uv will be installed -- use it for better performance.
     - role: jupyterhub_app
       vars:
         jupyterhub_app_name: rstudio
         jupyterhub_app_venv: "{{ _rstudio_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ rstudio_jupyter_config_dir | default('') }}"
+        jupyterhub_app_pip_executable: "{{ rstudio_pip_cmd | default('uv_pip', true) }}"
         jupyterhub_app_server_config: |
           from jupyter_rsession_proxy import setup_rserver
           c.ServerProxy.servers.update({
