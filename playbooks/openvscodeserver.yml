@@ -14,7 +14,7 @@
       - "--socket-path={unix_socket}"
       - "--without-connection-token"
 #      - "--default-folder=./" #
-    _openvscode_pip_cmd: "{{ openvscode_pip_cmd | default((_openvscode_jupyter_force_install | ternary('uv_pip', 'pip')), true) }}"
+    _openvscode_pip_cmd: "{{ openvscode_pip_cmd | default('uv_pip', true) }}"
   roles:
     - role: openvscodeserver
     - role: jupyterhub_standalone_proxy
@@ -28,7 +28,7 @@
         jupyterhub_app_name: openvscode
         jupyterhub_app_venv: "{{ openvscode_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ openvscode_jupyter_config_dir | default('') }}"
-        jupyterhub_app_pip_executable: "{{ _openvscode_pip_cmd }}" # when force install is true, uv will be installed -- use it for better performance.
+        jupyterhub_app_pip_executable: "{{ _openvscode_pip_cmd }}"
         jupyterhub_app_server:
           command: "{{ _openvscode_cmd }}"
           unix_socket: true
