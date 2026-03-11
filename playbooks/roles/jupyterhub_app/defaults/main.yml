@@ -1,7 +1,7 @@
 ---
 jupyterhub_app_name: app
 jupyterhub_app_venv: ""
-jupyterhub_app_pip_executable: pip
+jupyterhub_app_pip_executable: uv_pip
 jupyterhub_app_config_dir: ""
 jupyterhub_app_pip: ""
 jupyterhub_app_command: []
