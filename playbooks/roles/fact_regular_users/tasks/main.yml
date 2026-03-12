@@ -22,8 +22,13 @@
   when: ansible_os_family is not defined
 
 - name: Determine whether ansible is running in a virtual env
+  ansible.builtin.stat:
+    path: /etc/src/venv/src-venv
+  register: src_ansible_venv
+
+- name: Set src_ansible_venv fact
   ansible.builtin.set_fact:
-    fact_src_ansible_venv: "{{ lookup('ansible.builtin.env', 'VIRTUAL_ENV') }}"
+    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary('/etc/src/venv/src-venv', '') }}"
 
 # jmespath is required for filter
 - name: Install jmespath globally
