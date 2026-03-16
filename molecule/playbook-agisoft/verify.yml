@@ -19,4 +19,4 @@
     - name: Assert license file has correct newlines
       ansible.builtin.assert:
         that:
-          - "slurp_result == 'FOO\nBAR\n'"
+          - "slurp_result == 'FOO\\nBAR\\n'"
