@@ -10,7 +10,7 @@ driver:
         password: $DOCKER_PW
 platforms: # Test on ubuntu focal and jammy by default
   - name: workspace-src-ubuntu_focal
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-pilot
     <<: *image_settings
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
