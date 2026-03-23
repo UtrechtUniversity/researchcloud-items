@@ -1,7 +1,7 @@
 {
     "admin_password": "{{ irods_server_admin_password }}",
-    "default_resource_directory": "/var/lib/irods/Vault",
-    "default_resource_name": "demoResc",
+    "default_resource_directory": "{{ irods_server_default_rsc_path }}",
+    "default_resource_name": "{{ irods_server_default_rsc_name }}",
     "host_system_information": {
         "service_account_user_name": "irods",
         "service_account_group_name": "irods"
