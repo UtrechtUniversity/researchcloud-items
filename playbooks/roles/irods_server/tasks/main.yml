@@ -80,7 +80,7 @@
     force: false
 
 - name: Configure hooks
-  loop: irods_server_hooks_files | dict2items
+  loop: "{{ irods_server_hooks_files | dict2items }}"
   ansible.builtin.copy:
     content: "{{ item.value }}"
     dest: /etc/irods/{{ item.key }}
