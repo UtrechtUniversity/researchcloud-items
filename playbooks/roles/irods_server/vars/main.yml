@@ -1,2 +1,3 @@
 ---
 irods_server_default_rsc_path: "{{ (irods_server_use_external_storage and (fact_workspace_storage[0]['mount'] | default(false, true))) or '/var/lib/irods' }}/Vault" # if set to use external storage, and an external storage was found, use the first external storage
+irods_server_db_driver: "{{ ansible_pkg_mgr == 'dnf' | ternary('PostgreSQL', 'PostgreSQL ANSI') }}"
