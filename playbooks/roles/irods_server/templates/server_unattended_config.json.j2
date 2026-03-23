@@ -123,10 +123,11 @@
                         "core"
                     ],
                     "re_rulebase_set": [
-                        "core",
-                        {%- for filename in irods_server_hooks_files.keys() %}
-                        "{{ filename }}",
+                        "core"
+                        {%- for filename in irods_server_hooks_files.keys() -%}
+                        , "{{ filename }}"
                         {%- endfor %}
+
                     ],
                     "regexes_for_supported_peps": [
                         "ac[^ ]*",
