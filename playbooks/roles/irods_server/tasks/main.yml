@@ -11,7 +11,6 @@
     name:
       - irods-server
       - irods-database-plugin-postgres
-      - irods-rule-engine-plugin-python
       - irods-icommands
 
 - name: Prepare systemd unit file for irods
@@ -26,7 +25,7 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
-- name: Configure ODBC driver for Rocky 9+
+- name: Configure ODBC driver
   ansible.builtin.set_fact:
     irods_server_db_driver: "PostgreSQL"
   when: ansible_pkg_mgr == 'dnf'
@@ -61,14 +60,17 @@
 - name: Generate zone key
   ansible.builtin.command: openssl rand -hex 16
   register: irods_server_zone_key
+  changed_when: false
 
 - name: Generate negotiation key
   ansible.builtin.command: openssl rand -hex 16
   register: irods_server_negotiation_key
+  changed_when: false
 
 - name: Generate control plane key
   ansible.builtin.command: openssl rand -hex 16
   register: irods_server_control_plane_key
+  changed_when: false
 
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists
@@ -86,10 +88,11 @@
     state: present
     line: "    return"
 
-- name: Configure empty python ruleset core.py
+- name: Configure empty ruleset
   ansible.builtin.copy:
-    content: ""
-    dest: /etc/irods/core.py
+  when: irods_server_core_re or irods_server_core_re == ""
+    content: "{{ irods_server_core_re }}"
+    dest: /etc/irods/core.re
     mode: "0644"
     force: false
 
