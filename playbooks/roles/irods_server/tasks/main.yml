@@ -89,10 +89,18 @@
     line: "    return"
 
 - name: Configure empty ruleset
-  ansible.builtin.copy:
   when: irods_server_core_re or irods_server_core_re == ""
+  ansible.builtin.copy:
     content: "{{ irods_server_core_re }}"
     dest: /etc/irods/core.re
+    mode: "0644"
+    force: false
+
+- name: Configure hooks
+  loop: irods_server_hooks_files | dict2items
+  ansible.builtin.copy:
+    content: "{{ item.value }}"
+    dest: /etc/irods/{{ item.key }}
     mode: "0644"
     force: false
 
