@@ -10,3 +10,4 @@ irods_server_db_host: localhost
 irods_server_db_port: 5432
 irods_server_db_driver: "PostgreSQL ANSI"
 irods_server_start: start
+irods_server_core_re: false
