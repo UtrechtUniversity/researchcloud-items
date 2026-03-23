@@ -47,11 +47,6 @@
     irods_server_host: "{{ workspace_fqdn }}"
   when: workspace_fqdn is defined
 
-# below update of hostname ensures that demoResc iRODS resource will have proper host attribute
-- name: Ensure hostname is FQDN (hack needed because hostname FQDN incomplete)
-  ansible.builtin.command: hostname "{{ workspace_fqdn }}"
-  when: workspace_fqdn is defined
-
 - name: Generate zone key
   ansible.builtin.command: openssl rand -hex 16
   register: irods_server_zone_key
@@ -75,13 +70,6 @@
     owner: root
     group: root
     mode: "0600"
-
-- name: Bypass hostname check in iRODS setup (hack needed for irods 4.3.3 because workspace FQDN != localhost)
-  ansible.builtin.lineinfile:
-    path: /var/lib/irods/scripts/setup_irods.py
-    insertafter: ^def check_hostname
-    state: present
-    line: "    return"
 
 - name: Configure empty ruleset
   when: irods_server_core_re or irods_server_core_re == ""
