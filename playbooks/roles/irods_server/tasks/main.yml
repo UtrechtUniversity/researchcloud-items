@@ -25,11 +25,6 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
-- name: Configure ODBC driver
-  ansible.builtin.set_fact:
-    irods_server_db_driver: "PostgreSQL"
-  when: ansible_pkg_mgr == 'dnf'
-
 - name: Create ICAT database and db user and password protect PostgreSQL loopback access
   ansible.builtin.include_tasks: icat.yml
   args:
