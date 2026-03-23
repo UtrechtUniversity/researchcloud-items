@@ -12,6 +12,7 @@
       - irods-server
       - irods-database-plugin-postgres
       - irods-icommands
+      - python3-distro # needed for the setup_irods.py script
 
 - name: Prepare systemd unit file for irods
   ansible.builtin.template:
