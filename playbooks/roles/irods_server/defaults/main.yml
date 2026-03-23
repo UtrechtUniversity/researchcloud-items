@@ -11,3 +11,6 @@ irods_server_db_port: 5432
 irods_server_db_driver: "PostgreSQL ANSI"
 irods_server_start: start
 irods_server_core_re: false
+irods_server_hooks_files:
+  hooks.re: ""
+  hooks_training.re: "{{ irods_server_hooks_training }}"

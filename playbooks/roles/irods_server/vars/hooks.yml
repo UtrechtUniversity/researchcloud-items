@@ -1,0 +1,2 @@
+---
+irods_server_hooks_training: "{{ lookup('ansible.builtin.file', 'hooks_training.re') }}"
