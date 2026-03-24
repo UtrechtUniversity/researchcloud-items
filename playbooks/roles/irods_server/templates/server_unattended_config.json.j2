@@ -114,6 +114,13 @@
         "plugin_configuration": {
             "authentication": {},
             "database": {
+                "host": "{{ irods_server_db_host }}",
+                "name": "{{ irods_server_db_name }}",
+                "odbc_driver": "{{ irods_server_db_driver }}",
+                "password": "{{ irods_server_db_password }}",
+                "port": {{ irods_server_db_port }},
+                "username": "{{ irods_server_db_username }}",
+                "technology": "postgres",
                 "postgres": {
                     "db_host": "{{ irods_server_db_host }}",
                     "db_name": "{{ irods_server_db_name }}",
