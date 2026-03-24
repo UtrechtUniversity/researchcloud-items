@@ -13,3 +13,4 @@ irods_server_hooks_files:
   hooks.re: "{{ irods_server_hooks_training }}"
 irods_server_default_rsc_name: trainingResc
 irods_server_use_external_storage: true
+irods_server_python_plugin: false

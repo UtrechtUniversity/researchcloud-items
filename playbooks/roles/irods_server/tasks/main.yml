@@ -14,6 +14,13 @@
       - irods-icommands
       - python3-distro # needed for the setup_irods.py script
 
+- name: Install iRODS python rules plugin
+  when: irods_server_python_plugin
+  ansible.builtin.package:
+    state: present
+    name:
+      - irods-rule-engine-plugin-python
+
 - name: Prepare systemd unit file for irods
   ansible.builtin.template:
     src: irods.service.j2

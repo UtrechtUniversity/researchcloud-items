@@ -158,12 +158,13 @@
                 },
                 "shared_memory_instance": "irods_rule_language_rule_engine"
             },
+            {%- if irods_server_python_plug -%}
             {
                 "instance_name": "irods_rule_engine_plugin-python-instance", 
                 "plugin_name": "irods_rule_engine_plugin-python", 
                 "plugin_specific_configuration": {}
-            }, 
-
+            },
+            {%- endif %}
             {
                 "instance_name": "irods_rule_engine_plugin-cpp_default_policy-instance",
                 "plugin_name": "irods_rule_engine_plugin-cpp_default_policy",
