@@ -3,6 +3,11 @@
 # Matlab installation requires that the target machine must locally have a file with Matlab software ISO image
 #    NB: You should obtain this ISO image from MathWorks Inc.
 #
+- name: Install apt dependency
+  ansible.builtin.package:
+    name: libxt6
+    state: present
+
 - name: Check if the configuration file exists
   ansible.builtin.stat:
     path: "{{ matlab_configfile_path }}"
