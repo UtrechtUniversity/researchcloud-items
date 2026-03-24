@@ -24,9 +24,9 @@
 - name: Get installed packages
   ansible.builtin.package_facts:
 
-- name: Set irods version
+- name: Get irods major version
   ansible.builtin.set_fact:
-    irods_server_version: "{{ package_facts['irods-server'].version | split('.') | list | first }}"
+    irods_server_version: "{{ ansible_facts.packages['irods-server'][0]['version'] | split('.') | list | first }}"
 
 - name: Prepare systemd unit file for irods
   ansible.builtin.template:
