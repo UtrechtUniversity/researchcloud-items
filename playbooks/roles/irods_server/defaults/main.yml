@@ -1,4 +1,5 @@
 ---
+irods_server_version: ""
 irods_server_admin_password: rods
 irods_server_zone: tempZone
 irods_server_host: "{{ ansible_fqdn }}"

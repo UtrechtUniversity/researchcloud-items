@@ -9,9 +9,9 @@
   ansible.builtin.package:
     state: present
     name:
-      - irods-server
-      - irods-database-plugin-postgres
-      - irods-icommands
+      - irods-server{% if irods_server_version %}={{ irods_server_version }}{% endif %}
+      - irods-database-plugin-postgres{% if irods_server_version %}={{ irods_server_version }}{% endif %}
+      - irods-icommands{% if irods_server_version %}={{ irods_server_version }}{% endif %}
       - python3-distro # needed for the setup_irods.py script
 
 - name: Install iRODS python rules plugin
@@ -19,7 +19,14 @@
   ansible.builtin.package:
     state: present
     name:
-      - irods-rule-engine-plugin-python
+      - irods-rule-engine-plugin-python{% if irods_server_version %}={{ irods_server_version }}{% endif %}
+
+- name: Get installed packages
+  ansible.builtin.package_facts:
+
+- name: Set irods version
+  ansible.builtin.set_fact:
+    irods_server_version: "{{ package_facts['irods-server'].version | split('.') | list | first }}"
 
 - name: Prepare systemd unit file for irods
   ansible.builtin.template:
@@ -73,7 +80,7 @@
 - name: Prepare iRODS server configuration file
   when: not irods_config_data.stat.exists
   ansible.builtin.template:
-    src: server_unattended_config.json.j2
+    src: server_unattended_config_v{{ irods_server_version }}.json.j2
     dest: /etc/irods/server_unattended_config.json
     owner: root
     group: root
