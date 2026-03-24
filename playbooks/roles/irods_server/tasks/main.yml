@@ -72,7 +72,7 @@
     group: root
     mode: "0600"
 
-- name: Configure empty ruleset
+- name: Configure ruleset
   when: irods_server_core_re or irods_server_core_re == ""
   ansible.builtin.copy:
     content: "{{ irods_server_core_re }}"
