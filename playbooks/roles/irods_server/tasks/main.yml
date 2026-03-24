@@ -103,12 +103,20 @@
     force: false
 
 - name: Run irods configuration script
-  when: irods_server_start == "start"
   ansible.builtin.command: /var/lib/irods/scripts/setup_irods.py -v --json_configuration_file /etc/irods/server_unattended_config.json
+  failed_when: false
+  register: irods_config
+
+- name: Debug config script output
+  ansible.builtin.debug:
+    msg: "{{ irods_config.stdout }}"
+
+- name: Kill test server # debug
+  ansible.builtin.shell: killall -r "irods"
   failed_when: false
 
 - name: Start and enable iRODS as service
-  when: irods_server_start == "start"
+  failed_when: false
   ansible.builtin.service:
     enabled: true
     name: irods
