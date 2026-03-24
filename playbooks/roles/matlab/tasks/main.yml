@@ -4,7 +4,7 @@
 #    NB: You should obtain this ISO image from MathWorks Inc.
 #
 - name: Install apt dependency
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: libxt6
     state: present
 
