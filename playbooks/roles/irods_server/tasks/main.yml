@@ -29,16 +29,13 @@
     irods_server_version: "{{ ansible_facts.packages['irods-server'][0]['version'] | split('.') | list | first }}"
 
 - name: Prepare systemd unit file for irods
+  notify: Reload systemd service
   ansible.builtin.template:
     src: irods.service_v{{ irods_server_version }}.j2
     dest: /lib/systemd/system/irods.service
     owner: root
     group: root
     mode: "0644"
-
-- name: Reload systemd daemon
-  ansible.builtin.systemd:
-    daemon_reload: true
 
 - name: Create ICAT database and db user and password protect PostgreSQL loopback access
   ansible.builtin.include_tasks: icat.yml
@@ -51,16 +48,6 @@
   ansible.builtin.service:
     name: postgresql
     state: restarted
-
-- name: Register if iRODS server is initialized.
-  ansible.builtin.stat:
-    path: /etc/irods/server_config.json
-  register: irods_config_data
-
-- name: Register FQDN (hack needed because hostname FQDN incomplete during workspace deployment)
-  ansible.builtin.set_fact:
-    irods_server_host: "{{ workspace_fqdn }}"
-  when: workspace_fqdn is defined
 
 - name: Generate zone key
   ansible.builtin.command: openssl rand -hex 16
@@ -78,15 +65,16 @@
   changed_when: false
 
 - name: Prepare iRODS server configuration file
-  when: not irods_config_data.stat.exists
   ansible.builtin.template:
     src: server_unattended_config_v{{ irods_server_version }}.json.j2
     dest: /etc/irods/server_unattended_config.json
     owner: root
     group: root
     mode: "0600"
+  register: place_irods_config
 
 - name: Configure ruleset
+  notify: Restart irods
   when: irods_server_core_re or irods_server_core_re == ""
   ansible.builtin.copy:
     content: "{{ irods_server_core_re }}"
@@ -95,6 +83,7 @@
     force: false
 
 - name: Configure hooks
+  notify: Restart irods
   loop: "{{ irods_server_hooks_files | dict2items }}"
   ansible.builtin.copy:
     content: "{{ item.value }}"
@@ -103,6 +92,8 @@
     force: false
 
 - name: Run irods configuration script
+  when: place_irods_config.changed
+  notify: Restart irods
   ansible.builtin.command: /var/lib/irods/scripts/setup_irods.py -v --json_configuration_file /etc/irods/server_unattended_config.json
   failed_when: false
   register: irods_config
@@ -116,7 +107,6 @@
   failed_when: false
 
 - name: Start and enable iRODS as service
-  failed_when: false
   ansible.builtin.service:
     enabled: true
     name: irods
