@@ -104,7 +104,8 @@
 
 - name: Run irods configuration script
   when: irods_server_start == "start"
-  ansible.builtin.command: /var/lib/irods/scripts/setup_irods.py --json_configuration_file /etc/irods/server_unattended_config.json
+  ansible.builtin.command: /var/lib/irods/scripts/setup_irods.py -v --json_configuration_file /etc/irods/server_unattended_config.json
+  failed_when: false
 
 - name: Start and enable iRODS as service
   when: irods_server_start == "start"
