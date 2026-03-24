@@ -61,6 +61,7 @@ c.Spawner.env_keep = {{ jupyterhub_config_env_keep | string }}
 {% if jupyterhub_enable_unix_socket %}
 c.JupyterHub.hub_bind_url = "unix+http://{{ jupyterhub_user_home | replace("/", "%2F") }}%2Fjupyterhub.sock"
 c.JupyterHub.hub_connect_url = c.JupyterHub.hub_bind_url
+c.JupyterHub.ip = "127.0.0.1" # necessary so JupyterHub will start ConfigurableHTTPProxy on the right IP
 c.Spawner.environment.update({
   'JUPYTERHUB_API_URL': "http://localhost:8000/hub/api",
   'JUPYTERHUB_ACTIVITY_URL': lambda spawner : f"http://localhost:8000/hub/api/users/{spawner.user.name}/activity"
