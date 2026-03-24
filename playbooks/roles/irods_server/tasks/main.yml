@@ -29,7 +29,7 @@
     irods_server_version: "{{ ansible_facts.packages['irods-server'][0]['version'] | split('.') | list | first }}"
 
 - name: Prepare systemd unit file for irods
-  ansible.builtin.file:
+  ansible.builtin.template:
     src: irods.service_v{{ irods_server_version }}.j2
     dest: /lib/systemd/system/irods.service
     owner: root
