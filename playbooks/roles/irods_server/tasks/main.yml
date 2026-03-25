@@ -87,7 +87,7 @@
   loop: "{{ irods_server_hooks_files | dict2items }}"
   ansible.builtin.copy:
     content: "{{ item.value }}"
-    dest: /etc/irods/{{ item.key }}
+    dest: /etc/irods/{{ item.key }}.re
     mode: "0644"
     force: false
 
