@@ -8,3 +8,5 @@
     enabled: true
     name: irods
     state: restarted
+  failed_when: false
+  register: restarted_irods
