@@ -37,7 +37,9 @@
     irods_server_version: "{{ ansible_facts.packages['irods-server'][0]['version'] | split('.') | list | first }}"
 
 - name: Prepare systemd unit file for irods
-  notify: Reload systemd service
+  notify:
+    - Reload systemd service
+    - Restart irods
   ansible.builtin.template:
     src: irods.service_v{{ irods_server_version }}.j2
     dest: /lib/systemd/system/irods.service
@@ -79,7 +81,7 @@
     owner: root
     group: root
     mode: "0600"
-  register: place_irods_config
+  register: restart_triggered
 
 - name: Configure ruleset
   notify: Restart irods
@@ -89,6 +91,7 @@
     dest: /etc/irods/core.re
     mode: "0644"
     force: false
+  register: restart_triggered
 
 - name: Configure hooks
   notify: Restart irods
@@ -98,17 +101,18 @@
     dest: /etc/irods/{{ item.key }}.re
     mode: "0644"
     force: false
+  register: restart_triggered
 
 - name: Run irods configuration script
   when: place_irods_config.changed
   notify: Restart irods
   ansible.builtin.command: /var/lib/irods/scripts/setup_irods.py -v --json_configuration_file /etc/irods/server_unattended_config.json
   failed_when: false
-  register: irods_config
+  register: restart_triggered
 
 - name: Debug config script output
   ansible.builtin.debug:
-    msg: "{{ irods_config.stdout }}"
+    msg: "{{ restart_triggered.stdout }}"
 
 - name: Kill test server # debug
   ansible.builtin.shell: killall -r "irods"
@@ -120,3 +124,5 @@
     enabled: true
     name: irods
     state: started
+  failed_when: false
+  when: restart_triggered is not defined # ensure the service is in state started, even if the *re*-start handler was not
