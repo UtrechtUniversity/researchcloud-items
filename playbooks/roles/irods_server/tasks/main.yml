@@ -115,6 +115,7 @@
   failed_when: false
 
 - name: Start and enable iRODS as service
+  failed_when: false
   ansible.builtin.service:
     enabled: true
     name: irods
