@@ -2,6 +2,7 @@
     "admin_password": "{{ irods_server_admin_password }}",
     "default_resource_directory": "{{ irods_server_default_rsc_path }}",
     "default_resource_name": "{{ irods_server_default_rsc_name }}",
+    "host": "{{ irods_server_host }}",
     "host_system_information": {
         "service_account_user_name": "irods",
         "service_account_group_name": "irods"
@@ -13,7 +14,7 @@
         "irods_cwd": "/tempZone/home/rods",
         "irods_default_hash_scheme": "SHA256",
         "irods_default_number_of_transfer_threads": 4,
-        "irods_default_resource": "demoResc",
+        "irods_default_resource": "{{ irods_server_default_rsc_name }}",
         "irods_encryption_algorithm": "AES-256-CBC",
         "irods_encryption_key_size": 32,
         "irods_encryption_num_hash_rounds": 16,
@@ -77,7 +78,7 @@
         "default_dir_mode": "0750",
         "default_file_mode": "0600",
         "default_hash_scheme": "SHA256",
-        "default_resource_name": {{ irods_server_default_rsc_name }},
+        "default_resource_name": "{{ irods_server_default_rsc_name  }}",
         "encryption": {
             "algorithm": "AES-256-CBC",
             "key_size": 32,

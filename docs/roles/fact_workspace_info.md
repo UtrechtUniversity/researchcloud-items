@@ -7,6 +7,7 @@ Makes information about the workspace and CO available as Ansible facts. Provide
 - `fact_workspace_info` -- Dict. Object containing info about the workspace (CO, user endpoint URL, etc.)/
 - `fact_desktop_workspace` -- Boolean. True if the workspace has a desktop environment.
 - `fact_workspace_storage` -- List. List of Strings of paths to ResearchCloud storage volumes mounted on the workspace.
+- `fact_src_ansible_venv` -- string path to the python environment currently being used by Ansible. Can be used to install additional `pip` dependencies for Ansible modules into the correct environment. Empty string if Ansible is not using a virtual environment (but instead the global system python environment).
 
 ## Requires
 Linux flavor operating system.
