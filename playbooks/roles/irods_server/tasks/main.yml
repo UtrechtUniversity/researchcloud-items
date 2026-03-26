@@ -104,7 +104,7 @@
   register: restart_triggered
 
 - name: Run irods configuration script
-  when: place_irods_config.changed
+  when: restart_triggered.changed
   notify: Restart irods
   ansible.builtin.command: /var/lib/irods/scripts/setup_irods.py -v --json_configuration_file /etc/irods/server_unattended_config.json
   failed_when: false
