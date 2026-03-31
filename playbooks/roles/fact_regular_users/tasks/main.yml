@@ -23,7 +23,7 @@
 
 - name: Determine whether ansible is running in a virtual env
   ansible.builtin.stat:
-    path: /etc/src/venv/ansible_env
+    path: "{{ lookup('env', 'VIRTUAL_ENV') | default('/etc/src/venv/src-venv') }}"
   register: src_ansible_venv
 
 - name: Set src_ansible_venv fact
