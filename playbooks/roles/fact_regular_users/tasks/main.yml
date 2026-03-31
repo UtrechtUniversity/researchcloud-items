@@ -37,7 +37,7 @@
     name: python3-jmespath # same package name on debian, ubuntu, rocky/el
 
 - name: Install jmespath into the venv used by Ansible
-  when: fact_src_ansible_venv # ansible is not using the global python interpreter
+  when: (fact_src_ansible_venv | length) > 0 # ansible is not using the global python interpreter
   ansible.builtin.pip:
     name: jmespath # same package name on debian, ubuntu, rocky/el
     executable: "{{ fact_src_ansible_venv }}/bin/pip"
