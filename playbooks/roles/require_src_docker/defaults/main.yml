@@ -1,3 +1,0 @@
----
-require_src_docker_rootless: false
-require_src_docker_rootless_skip: false

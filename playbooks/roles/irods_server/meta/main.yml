@@ -1,4 +1,0 @@
----
-dependencies:
-  - postgresql
-  - irods_repo

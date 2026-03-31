@@ -1,5 +1,0 @@
----
-- name: Restart JupyterHub
-  ansible.builtin.service:
-    state: restarted
-    name: jupyterhub

@@ -1,3 +1,0 @@
----
-nodesource_key_location: /usr/share/keyrings/nodesource.asc
-nodesource_repo: https://deb.nodesource.com/node_{{ nodesource_node_version }}.x

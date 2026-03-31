@@ -1,7 +1,0 @@
----
-- name: Install iRODS iCommands toolset in researchcloud workspace
-  hosts: localhost
-  gather_facts: true
-  roles:
-    - role: irods_icommands
-    - role: irods_skel

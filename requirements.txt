@@ -1,0 +1,6 @@
+# Default requirements file for running SRC molecule tests
+molecule~=26.3
+molecule-plugins~=25.8
+jmespath~=1.1
+docker~=7.1
+podman~=5.8

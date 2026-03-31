@@ -1,5 +1,0 @@
----
-dependencies:
-  - role: pip
-  - role: runonce
-    when: poetry_per_user

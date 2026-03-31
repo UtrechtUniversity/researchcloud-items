@@ -1,7 +1,0 @@
----
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: icommands
-        path: icommands.yml
