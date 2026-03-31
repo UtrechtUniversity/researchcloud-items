@@ -10,7 +10,7 @@ driver:
         password: $DOCKER_PW
 platforms:
   - name: workspace-src-ubuntu_desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop-pilot
     privileged: ${CI-false}
     capabilities:
       - SYS_ADMIN

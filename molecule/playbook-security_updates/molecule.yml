@@ -1,7 +1,7 @@
 ---
 platforms:
   - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop-pilot
     command: /sbin/init
     pre_build_image: true
     registry:

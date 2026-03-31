@@ -9,7 +9,7 @@ provisioner:
 role_name_check: 1
 platforms:
   - name: workspace-src-ubuntu_desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop-pilot
     pre_build_image: true
     registry:
       url: $DOCKER_REGISTRY

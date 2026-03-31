@@ -11,7 +11,7 @@ provisioner:
 role_name_check: 1
 platforms:
   - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-pilotop
     pre_build_image: true
     command: /sbin/init
     privileged: true # needed for snapd
