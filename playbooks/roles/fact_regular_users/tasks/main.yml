@@ -23,12 +23,12 @@
 
 - name: Determine whether ansible is running in a virtual env
   ansible.builtin.stat:
-    path: /etc/src/venv/src-venv
+    path: /etc/src/venv/ansible_env
   register: src_ansible_venv
 
 - name: Set src_ansible_venv fact
   ansible.builtin.set_fact:
-    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary('/etc/src/venv/src-venv', '') }}"
+    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary(src_ansible_venv.stat.path, '') }}"
 
 # jmespath is required for filter
 - name: Install jmespath globally
