@@ -9,8 +9,8 @@ driver:
         username: $DOCKER_USER
         password: $DOCKER_PW
 platforms: # Test on ubuntu focal and jammy by default
-  - name: workspace-src-ubuntu_focal
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
+  - name: workspace-src-ubuntu_noble
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble
     <<: *image_settings
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
@@ -28,3 +28,4 @@ provisioner:
     ANSIBLE_VERBOSITY: ${ANSIBLE_VERBOSITY:-"2"}
     ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH:-'../../roles'}
     REQUIREMENTS_FILE: ${REQUIREMENTS_FILE:-"../../requirements.txt"}
+    WORKSPACE_ANSIBLE_VENV: ${WORKSPACE_ANSIBLE_VENV-"/etc/src/venv/ansible_env"}
