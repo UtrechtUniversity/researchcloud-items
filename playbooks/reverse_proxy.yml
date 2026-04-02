@@ -10,12 +10,12 @@
 
     - name: Parse reverse proxy locations variable as yaml
       ansible.builtin.set_fact:
-        locations: "{{ reverse_proxy_locations.split('\\n') | join('\n') | from_yaml }}"
+        locations: "{{ reverse_proxy_locations.split('\\n') | list | join('\n') | from_yaml }}"
 
     - name: Parse auth info variable as yaml
       when: reverse_proxy_auth_info is defined and reverse_proxy_auth_info | length > 0
       ansible.builtin.set_fact:
-        auth_info: "{{ reverse_proxy_auth_info.split('\\n') | join('\n') | from_yaml }}"
+        auth_info: "{{ reverse_proxy_auth_info.split('\\n') | list | join('\n') | from_yaml }}"
       no_log: true
 
   roles:
