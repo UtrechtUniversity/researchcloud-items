@@ -1,5 +1,12 @@
 ---
 - name: Install curses libraries to support commandline invocation of Stata
+  when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version < 24) or (ansible_distribution == "Debian" and ansible_distribution_major_version <= 12)
   ansible.builtin.package:
     name: libncurses5
+    state: present
+
+- name: Install curses libraries to support commandline invocation of Stata
+  when: (ansible_distribution == "Ubuntu" and ansible_distribution_major_version >= 24) or (ansible_distribution == "Debian" and ansible_distribution_major_version > 12)
+  ansible.builtin.package:
+    name: libncurses6
     state: present
