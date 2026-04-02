@@ -1,16 +1,34 @@
 ---
 - name: Set OS version as int
   ansible.builtin.set_fact:
-    stata18_os_version: "{{ ansible_distribution_major_version | int }}"
+    stata18_os_version: "{{  }}"
 
-- name: Install curses libraries to support commandline invocation of Stata
-  when: (ansible_distribution == "Ubuntu" and stata18_os_version < 24) or (ansible_distribution == "Debian" and stata18_os_version <= 12)
-  ansible.builtin.package:
-    name: libncurses5
-    state: present
+- name: Debian dependencies
+  when: ansible_distribution == "Debian"
+  block:
+    - name: Install ncurses
+      when: (ansible_distribution_major_version | int) <= 12
+      ansible.builtin.package:
+        name: libncurses5
+        state: present
 
-- name: Install curses libraries to support commandline invocation of Stata
-  when: (ansible_distribution == "Ubuntu" and stata18_os_version >= 24) or (ansible_distribution == "Debian" and stata18_os_version > 12)
-  ansible.builtin.package:
-    name: libncurses6
-    state: present
+    - name: Install ncurses
+      when: (ansible_distribution_major_version | int) > 12
+      ansible.builtin.package:
+        name: libncurses6
+        state: present
+
+- name: Ubuntu dependencies
+  when: ansible_distribution == "Debian"
+  block:
+    - name: Install ncurses
+      when: (ansible_distribution_major_version | int) < 24
+      ansible.builtin.package:
+        name: libncurses5
+        state: present
+
+    - name: Install ncurses
+      when: (ansible_distribution_major_version | int) >= 24
+      ansible.builtin.package:
+        name: libncurses6
+        state: present
