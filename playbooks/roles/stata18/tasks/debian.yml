@@ -1,8 +1,4 @@
 ---
-- name: Set OS version as int
-  ansible.builtin.set_fact:
-    stata18_os_version: "{{  }}"
-
 - name: Debian dependencies
   when: ansible_distribution == "Debian"
   block:
