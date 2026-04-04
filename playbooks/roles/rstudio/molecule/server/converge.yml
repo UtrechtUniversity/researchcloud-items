@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Testing rstudio role
+      ansible.builtin.include_role:
+        name: rstudio
+      vars:
+        rstudio_kind: server
