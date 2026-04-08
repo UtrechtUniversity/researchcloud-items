@@ -36,7 +36,7 @@
 - name: Create htpasswd files with default username and password for all locations not defined in nginx_location_auth_info
   with_items: "{{ nginx_location_locations }}"
   when:
-    - item.auth | default('')) == 'basic'
+    - (item.auth | default('')) == 'basic'
     - (item.htpasswd | default(item.name)) not in (nginx_location_auth_info | map(attribute='name') | list)
   no_log: true
   community.general.htpasswd:
