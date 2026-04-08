@@ -9,3 +9,4 @@ galaxy_info:
     - name: Ubuntu
 dependencies:
   - require_src_nginx
+  - fact_workspace_info
