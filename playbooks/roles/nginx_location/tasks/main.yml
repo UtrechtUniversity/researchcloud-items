@@ -16,7 +16,7 @@
   when: _htpasswd_files | length > 0
   block:
     - name: Install dependency for htpasswd module (globally)
-      when: not fact_src_ansible_venv 
+      when: not fact_src_ansible_venv
       ansible.builtin.package:
         name: python3-passlib
 
