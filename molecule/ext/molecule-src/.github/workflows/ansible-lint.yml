@@ -14,4 +14,4 @@ jobs:
       # Important: This sets up your GITHUB_WORKSPACE environment variable
       - uses: actions/checkout@v6
       - name: Run ansible-lint
-        uses: ansible/ansible-lint@v26.3.0
+        uses: ansible/ansible-lint@v26.4.0
