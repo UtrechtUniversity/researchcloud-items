@@ -52,7 +52,7 @@
   changed_when: >
     ansible_on_workspace.stdout_lines is not defined or
     'changed=0' not in
-    ansible_on_workspace.stdout_lines[ lookup('ansible.utils.index_of', ansible_on_workspace.stdout_lines, 'regex', '\s*PLAY RECAP\s*')+1 ]
+    ansible_on_workspace.stdout_lines[ lookup('ansible.utils.index_of', ansible_on_workspace.stdout_lines, 'regex', '\s*PLAY RECAP\s*', wantlist=True)[0]+1 ]
   environment:
     VIRTUAL_ENV: "{{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default('/etc/src/venv/ansible_env', true) }}"
     ANSIBLE_COLLECTIONS_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATHS') }}:/rsc/plugins/{{ remote_plugin.script_folder | basename }}"
