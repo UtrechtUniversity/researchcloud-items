@@ -8,23 +8,12 @@
     group: www-data
   with_items: "{{ nginx_location_locations }}"
 
-- name: Gather htpasswd files
-  ansible.builtin.set_fact:
-    _htpasswd_files: "{{ nginx_location_locations | map(attribute='htpasswd') | select('defined') | list }}"
-
 - name: Prepare for creating htpasswd files
-  when: _htpasswd_files | length > 0
   block:
+      # it appears community.general.htpasswd looks for passlib globally instead of in the venv
     - name: Install dependency for htpasswd module (globally)
-      when: not fact_src_ansible_venv
       ansible.builtin.package:
         name: python3-passlib
-
-    - name: Install dependency for htpasswd module (venv)
-      when: (fact_src_ansible_venv | length) > 0 # ansible is not using the global python interpreter
-      ansible.builtin.pip:
-        name: passlib
-        executable: "{{ fact_src_ansible_venv }}/bin/pip"
 
     - name: Create htpasswd location
       ansible.builtin.file:
