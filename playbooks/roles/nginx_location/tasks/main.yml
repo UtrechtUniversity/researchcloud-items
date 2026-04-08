@@ -15,9 +15,16 @@
 - name: Prepare for creating htpasswd files
   when: _htpasswd_files | length > 0
   block:
-    - name: Install dependencies for htpasswd module
+    - name: Install dependency for htpasswd module (globally)
+      when: not fact_src_ansible_venv 
       ansible.builtin.package:
         name: python3-passlib
+
+    - name: Install dependency for htpasswd module (venv)
+      when: (fact_src_ansible_venv | length) > 0 # ansible is not using the global python interpreter
+      ansible.builtin.pip:
+        name: python3-passlib
+        executable: "{{ fact_src_ansible_venv }}/bin/pip"
 
     - name: Create htpasswd location
       ansible.builtin.file:
