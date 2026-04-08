@@ -8,20 +8,18 @@
     group: www-data
   with_items: "{{ nginx_location_locations }}"
 
-- name: Prepare for creating htpasswd files
-  block:
-      # it appears community.general.htpasswd looks for passlib globally instead of in the venv
-    - name: Install dependency for htpasswd module (globally)
-      ansible.builtin.package:
-        name: python3-passlib
+  # it appears community.general.htpasswd looks for passlib globally instead of in the venv
+- name: Install dependency for htpasswd module (globally)
+  ansible.builtin.package:
+    name: python3-passlib
 
-    - name: Create htpasswd location
-      ansible.builtin.file:
-        path: "{{ nginx_location_htpasswd_path }}"
-        owner: root
-        group: www-data
-        state: directory
-        mode: "750"
+- name: Create htpasswd location
+  ansible.builtin.file:
+    path: "{{ nginx_location_htpasswd_path }}"
+    owner: root
+    group: www-data
+    state: directory
+    mode: "750"
 
 - name: Create htpasswd files based on nginx_location_auth_info
   when: nginx_location_auth_info | default('') | length > 0
@@ -35,12 +33,9 @@
     group: www-data
     mode: "644"
 
-- name: Get htpasswd files that were not defined in nginx_location_auth_info
-  ansible.builtin.set_fact:
-    _remaining_htpasswd_files: "{{ _htpasswd_files | difference(nginx_location_auth_info | default([]) | map(attribute='name') | list) }}"
-
 - name: Create htpasswd files with default username and password for all locations not defined in nginx_location_auth_info
-  with_items: "{{ _remaining_htpasswd_files }}"
+  with_items: "{{ nginx_location_locations }}"
+  when: "{{ item.auth == 'basic' and not item.name in (nginx_location_auth_info | map(attribute='name') | list) }}"
   no_log: true
   community.general.htpasswd:
     path: "{{ nginx_location_htpasswd_path }}/{{ item }}"
