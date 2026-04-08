@@ -16,3 +16,5 @@ galaxy_info:
     - name: EL
       versions:
         - all
+dependencies:
+  - fact_workspace_info
