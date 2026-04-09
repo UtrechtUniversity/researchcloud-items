@@ -1,7 +1,7 @@
 ---
 - name: Setup nginx reverse proxies
   hosts: localhost
-  gather_facts: true #trigger CI run
+  gather_facts: true
   pre_tasks:
     - name: Ensure SRC-Nginx is present
       ansible.builtin.include_role:
