@@ -22,7 +22,7 @@
     mode: "750"
 
 - name: Create htpasswd files based on nginx_location_auth_info
-  when: nginx_location_auth_info | default('') | length > 0
+  when: nginx_location_auth_info is defined
   with_items: "{{ nginx_location_auth_info }}"
   no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
