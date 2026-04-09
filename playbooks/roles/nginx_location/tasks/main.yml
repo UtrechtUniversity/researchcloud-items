@@ -40,7 +40,7 @@
     - (item.htpasswd | default(item.name)) not in (nginx_location_auth_info | map(attribute='name') | list)
   no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
-    path: "{{ nginx_location_htpasswd_path }}/{{ item }}"
+    path: "{{ nginx_location_htpasswd_path }}/{{ item.name }}"
     name: "{{ nginx_location_default_username }}"
     password: "{{ nginx_location_default_password }}"
     owner: root
