@@ -23,6 +23,7 @@
 
 - name: Create htpasswd files based on nginx_location_auth_info
   with_items: "{{ nginx_location_auth_info | default([]) }}"
+  when: item.name is defined
   no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
     path: "{{ nginx_location_htpasswd_path }}/{{ item.name }}"
