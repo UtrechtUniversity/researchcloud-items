@@ -1,5 +1,5 @@
 ---
-- name: Setup nginx reverse proxies
+- name: Setup nginx reverse proxies # trigger CI run for test
   hosts: localhost
   gather_facts: true
   pre_tasks:
