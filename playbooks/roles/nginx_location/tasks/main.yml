@@ -24,7 +24,7 @@
 - name: Create htpasswd files based on nginx_location_auth_info
   when: nginx_location_auth_info | default('') | length > 0
   with_items: "{{ nginx_location_auth_info }}"
-  no_log: true
+  no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
     path: "{{ nginx_location_htpasswd_path }}/{{ item.name }}"
     name: "{{ item.username }}"
@@ -36,7 +36,7 @@
 - name: Create htpasswd files with default username and password for all locations not defined in nginx_location_auth_info
   with_items: "{{ nginx_location_locations }}"
   when: (item.auth | default('')) == 'basic' and not (item.htpasswd | default(item.name)) in (nginx_location_auth_info | map(attribute='name') | list)
-  no_log: true
+  no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
     path: "{{ nginx_location_htpasswd_path }}/{{ item }}"
     name: "{{ nginx_location_default_username }}"
