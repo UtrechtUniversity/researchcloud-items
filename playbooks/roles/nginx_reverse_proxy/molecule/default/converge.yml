@@ -5,6 +5,7 @@
   roles:
     - role: nginx_reverse_proxy
       vars:
+        nginx_reverse_proxy_debug: true
         nginx_reverse_proxy_locations:
           - name: galaxy # testing using the Galaxy component Nginx config
             location: /

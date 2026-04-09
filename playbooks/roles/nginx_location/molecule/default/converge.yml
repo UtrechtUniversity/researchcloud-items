@@ -5,6 +5,7 @@
   roles:
     - role: nginx_location
       vars:
+        nginx_location_debug: true
         nginx_location_locations:
           - name: galaxy # testing using the Galaxy component Nginx config
             location: /
