@@ -33,15 +33,56 @@
   ansible.builtin.set_fact:
     fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
 
-- name: Get all packages as facts
-  ansible.builtin.package_facts:
-    manager: auto
-  no_log: true
+- name: Is the workspace a desktop workspace?
+  block:
+    - name: Get all packages as facts
+      ansible.builtin.package_facts:
+        manager: auto
+      no_log: true
 
-- name: Get the desktop package to check for
-  ansible.builtin.set_fact:
-    _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
+    - name: Get the desktop package to check for
+      ansible.builtin.set_fact:
+        _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
 
-- name: Set fact_desktop_workspace
-  ansible.builtin.set_fact:
-    fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"
+    - name: Set fact_desktop_workspace
+      ansible.builtin.set_fact:
+        fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"
+
+- name: Does the workspace have a GPU?
+  block:
+    - name: Get graphics cards info
+      ansible.builtin.command: lshw -class display -json
+      register: graphics_info
+      changed_when: false
+
+    - name: Set graphics fact
+      ansible.builtin.set_fact:
+        fact_all_graphics_cards: "{{ graphics_info.stdout | from_json | default([], true) }}"
+
+    - name: Set GPU fact
+      ansible.builtin.set_fact: # noqa jinja[spacing]
+        fact_workspace_gpus: "{{ (
+          ( fact_all_graphics_cards
+            | selectattr('description', 'defined')
+            | selectattr('description', 'search', '\\b(3D|gpu)\\b', ignorecase=True)
+            | list)
+          +
+          ( fact_all_graphics_cards
+            | selectattr('configuration.driver', 'defined')
+            | selectattr('configuration.driver', 'equalto', 'nvidia')
+            | list)
+        ) }}"
+
+    - name: Set has GPU fact
+      ansible.builtin.set_fact:
+        fact_workspace_has_gpu: "{{ fact_workspace_gpus | length > 0 }}"
+
+    - name: Get CUDA version
+      ansible.builtin.command: nvcc --version
+      register: cuda_version
+      failed_when: false
+      changed_when: false
+
+    - name: Set fact cuda version
+      ansible.builtin.set_fact:
+        fact_cuda_version: "{{ cuda_version.stdout | regex_search('release (.*),', '\\1', multiline=True) | default('', true) }}"
