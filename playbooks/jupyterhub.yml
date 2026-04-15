@@ -20,7 +20,7 @@
           {% if fact_desktop_workspace %}
           from pwd import getpwnam
           c.Spawner.environment.update({
-            'JUPYTER_REMOTE_DESKTOP_PROXY_XSTARTUP': '{{ tigervnc_xstartup_path }}',
+            'JUPYTER_REMOTE_DESKTOP_PROXY_XSTARTUP': '{{ vnc_xstartup_path }}',
             # We need to specify the following variable because the standard tigervnc xstartup script does not set it correctly
             # spawner.user is the user the vnc server will run as
             'XDG_RUNTIME_DIR': lambda spawner : f"/run/user/{getpwnam(spawner.user.name).pw_uid}",
