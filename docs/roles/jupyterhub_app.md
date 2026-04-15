@@ -62,7 +62,7 @@ This generated config will be placed into the directory `standalone` inside the 
 
 - `jupyterhub_app_venv`: String. Path to the JupyterHub instance's `venv`. Default: `/usr/local/jupyterhub`. You can set this to the value `system` to not use a virtual environment.
 - `jupyterhub_app_config_dir`: String. Path to the JupyterHub's instance config dir. Default: `/usr/local/etc/jupyter`.
-- `jupyterhub_app_pip_executable`: String. Which command to use to install packages into the venv (can be set to `uv` when it is available). Default: `pip`.
+- `jupyterhub_app_pip_executable`: String. Which command to use to install packages into the venv (can be set to `uv` when it is available). Default: [`uv_pip`](./uv.md).
 - `jupyterhub_app_pip`: String. Optional. Which package to install into the hub's venv (if set). Default: `""`. If this is set, no traitles config file will be placed.
 
 ### Variables concerning the application
