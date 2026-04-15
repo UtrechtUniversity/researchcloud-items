@@ -1,0 +1,72 @@
+---
+- name: Install dependencies (Debian)
+  when: ansible_os_family == "Debian"
+  block:
+    # Install VirtualGL for hardware-accelerated VNC: https://virtualgl.org
+    # Install TurboVNC: https://turbovnc.org/
+    - name: Get virtualgl apt key
+      ansible.builtin.get_url:
+        url: https://packagecloud.io/dcommander/virtualgl/gpgkey
+        dest: /usr/share/keyrings/virtualgl.key
+        mode: "0644"
+
+    - name: Add virtualgl apt repo
+      ansible.builtin.apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/virtualgl.key] https://packagecloud.io/dcommander/virtualgl/any/ any main
+        state: present
+        filename: renci-irods
+        update_cache: false
+
+    - name: Get turbovnc apt key
+      ansible.builtin.get_url:
+        url: https://packagecloud.io/dcommander/turbovnc/gpgkey
+        dest: /usr/share/keyrings/turbovnc.key
+        mode: "0644"
+
+    - name: Add virtualgl apt repo
+      ansible.builtin.apt_repository:
+        repo: deb [signed-by=/usr/share/keyrings/turbovnc.key] https://packagecloud.io/dcommander/turbovnc/any/ any main
+        state: present
+        filename: turbovnc
+        update_cache: false
+
+    - name: Install packages
+      ansible.builtin.apt:
+        update_cache: true
+        name:
+          - dbus-x11
+          - virtualgl
+          - turbovnc
+        state: present
+
+- name: Ensure binaries are on PATH
+  block:
+    - name: Find TurboVNC binaries
+      ansible.builtin.find:
+        paths: /opt/TurboVNC/bin/
+        file_type: file
+        recurse: false
+      register: turbovnc_binaries
+
+    - name: Create symlinks
+      ansible.builtin.file:
+        src: "{{ item.path }}"
+        path: "/usr/bin/{{ item.path | basename }}"
+        state: link
+        owner: root
+        group: root
+      with_items: "{{ turbovnc_binaries.files }}"
+
+- name: Set path to default start script
+  ansible.builtin.set_fact:
+    vnc_xstartup_path: "{{ turbovnc_xstartup | default(turbovnc_default_xstartup_path['{{ ansible_os_family }}'], true) | default(turbovnc_default_xstartup_path['default']) }}"
+
+- name: Ensure required nvida kernel modules are active
+  when: (fact_cuda_version | length) > 0
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nvidia_modeset
+    - nvidia_uvm
+    - nvidia_drm

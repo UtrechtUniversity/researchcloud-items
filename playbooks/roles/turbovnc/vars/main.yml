@@ -1,0 +1,3 @@
+turbovnc_default_xstartup_path:
+  Debian: /opt/TurboVNC/bin/xstartup.turbovnc
+  default: /opt/TurboVNC/bin/xstartup.turbovnc
