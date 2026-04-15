@@ -8,7 +8,9 @@
   roles:
     - role: fact_workspace_info
     - role: tigervnc
-      when: fact_desktop_workspace
+      when: fact_desktop_workspace and not fact_workspace_has_gpu
+    - role: turbovnc
+      when: fact_desktop_workspace and fact_workspace_has_gpu
     - role: jupyterhub
       vars:
         jupyterhub_uri: "{{ jupyter_uri | default('/', true) }}"
@@ -21,7 +23,8 @@
             'JUPYTER_REMOTE_DESKTOP_PROXY_XSTARTUP': '{{ tigervnc_xstartup_path }}',
             # We need to specify the following variable because the standard tigervnc xstartup script does not set it correctly
             # spawner.user is the user the vnc server will run as
-            'XDG_RUNTIME_DIR': lambda spawner : f"/run/user/{getpwnam(spawner.user.name).pw_uid}"
+            'XDG_RUNTIME_DIR': lambda spawner : f"/run/user/{getpwnam(spawner.user.name).pw_uid}",
+            'TVNC_WM': 'xfce' # force windowmanager to xfce for TurboVNC
           })
           {% endif %}
         jupyterhub_auth: "{{ jupyter_auth | default('sram', true) }}"
