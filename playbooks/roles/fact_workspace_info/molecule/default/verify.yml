@@ -24,3 +24,6 @@
         that:
           - fact_workspace_info['workspace_id'] == 'mocked'
           - fact_desktop_workspace == ('desktop' in inventory_hostname)
+          - fact_workspace_has_gpu == false
+          - fact_workspace_gpus == []
+          - fact_cuda_version == ""
