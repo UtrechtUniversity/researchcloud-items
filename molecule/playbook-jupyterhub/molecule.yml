@@ -1,7 +1,7 @@
 ---
 platforms:
-  - name: workspace-src-ubuntu_jammy-nginx
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+  - name: workspace-src-ubuntu-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-nginx
     command: /sbin/init
     pre_build_image: true
     published_ports:
