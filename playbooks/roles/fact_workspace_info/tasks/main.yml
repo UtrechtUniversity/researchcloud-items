@@ -78,11 +78,20 @@
         fact_workspace_has_gpu: "{{ fact_workspace_gpus | length > 0 }}"
 
     - name: Get CUDA version
-      ansible.builtin.command: nvcc --version
+      ansible.builtin.command: nvidia-smi --version
       register: cuda_version
       failed_when: false
       changed_when: false
 
-    - name: Set fact cuda version
+    - name: Set fact cuda version (success)
+      when:
+        - cuda_version.rc == 0
+        - '":" in cuda_version.stdout_lines[-1]'
+        - '"CUDA" in cuda_version.stdout_lines[-1]'
       ansible.builtin.set_fact:
-        fact_cuda_version: "{{ cuda_version.stdout | regex_search('release (.*),', '\\1', multiline=True) | default('', true) }}"
+        fact_cuda_version: "{{ (cuda_version.stdout_lines[-1] | default(' : ', true)).split(':') | last | trim }}"
+
+    - name: Set fact cuda version (failure)
+      when: fact_cuda_version is not defined
+      ansible.builtin.set_fact:
+        fact_cuda_version: ""
