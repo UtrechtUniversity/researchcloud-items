@@ -86,11 +86,12 @@
     - name: Set fact cuda version (success)
       when:
         - cuda_version.rc == 0
-        - ":" in cuda_version.stdout_lines[-1]
+        - '":" in cuda_version.stdout_lines[-1]'
+        - '"CUDA" in cuda_version.stdout_lines[-1]'
       ansible.builtin.set_fact:
-        fact_cuda_version: "{{ (cuda_version.stdout_lines[-1] | default(" : ", true)).split(":") | last | trim }}"
+        fact_cuda_version: "{{ (cuda_version.stdout_lines[-1] | default(' : ', true)).split(':') | last | trim }}"
 
     - name: Set fact cuda version (failure)
-      when: (cuda_version.rc != 0 or ":" not in cuda_version.stdout_lines[-1])
+      when: fact_cuda_version is not defined
       ansible.builtin.set_fact:
         fact_cuda_version: ""
