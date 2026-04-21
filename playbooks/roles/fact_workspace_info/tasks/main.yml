@@ -6,7 +6,7 @@
 
 - name: Set src_ansible_venv fact
   ansible.builtin.set_fact:
-    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary(src_ansible_venv.stat.path, '') }}"
+    fact_src_ansible_venv: "{{ (src_ansible_venv.stat.exists or 'molecule-roletest' ansible_skip_tags) | ternary(src_ansible_venv.stat.path, false) }}"
 
 - name: Get workspace.json file
   ansible.builtin.command: cat /etc/rsc/workspace.json
