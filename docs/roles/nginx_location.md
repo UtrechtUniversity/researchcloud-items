@@ -67,7 +67,7 @@ Please see the examples below to understand the syntax for location block config
   location: /test_sramauth
   auth: sram
   auth_sram_header: REMOTE_USER # Special key. Optionally specify which header should be filled with the name of the externally authenticated user. Default: REMOTE_USER
-  auth_sram_roles_header: REMOTE_ROLE # Special key. Optionally specify which header should be filled with the SRAM roles (semicollon-separated) of the externally authenticated user. Default: REMOTE_ROLE
+  auth_sram_roles_header: REMOTE_ROLES # Special key. Optionally specify which header should be filled with the SRAM roles (semicollon-separated, e.g. `src_co_admin;src_ws_admin`) of the externally authenticated user. Default: REMOTE_ROLES
 - name: api # fourth location, without auth
   location: /test_sramauth/api
   auth: noauth # explicitly disables auth for the location -- useful to make exceptions for sublocations of otherwise protected locations
