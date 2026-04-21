@@ -1,12 +1,17 @@
 ---
-# Note: db_name must be lowercase
+irods_server_version: ""
 irods_server_admin_password: rods
 irods_server_zone: tempZone
 irods_server_host: "{{ ansible_fqdn }}"
-irods_server_db_name: icat
+irods_server_db_name: icat # must be lowercase
 irods_server_db_username: irods
 irods_server_db_password: db{{ irods_server_admin_password }}
 irods_server_db_host: localhost
 irods_server_db_port: 5432
-irods_server_db_driver: "PostgreSQL ANSI"
 irods_server_start: start
+irods_server_core_re: false # set to a string to override default core rules
+irods_server_hooks_files:
+  hooks: "{{ irods_server_hooks_training }}"
+irods_server_default_rsc_name: trainingResc
+irods_server_use_external_storage: true
+irods_server_python_plugin: false
