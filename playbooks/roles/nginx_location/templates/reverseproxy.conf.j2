@@ -24,7 +24,7 @@ set default_proxy_headers = {
 %}
 
 # keys that should not be mapped directly to nginx directives
-{%- set special_keys = ['name', 'auth', 'location', 'htpasswd', 'include_reverse_proxy_defaults', 'auth_sram_header'] %}
+{%- set special_keys = ['name', 'auth', 'location', 'htpasswd', 'include_reverse_proxy_defaults', 'auth_sram_header', 'auth_sram_roles_header'] %}
 
 {%- if item.include_reverse_proxy_defaults | default(false) %}
 {%- set vhost_properties = dict(defaults, **item) %}
