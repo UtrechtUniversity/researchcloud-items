@@ -51,7 +51,7 @@ location {{ vhost_properties.location }} {
     auth_request_set $username $upstream_http_username;
     auth_request_set $src_roles $upstream_http_src_co_roles;
     proxy_set_header {{ vhost_properties.auth_sram_header | default('REMOTE_USER', true) }} $username;
-    proxy_set_header {{ vhost_properties.auth_sram_roles_header | default('REMOTE_ROLE', true) }} $src_roles;
+    proxy_set_header {{ vhost_properties.auth_sram_roles_header | default('REMOTE_ROLES', true) }} $src_roles;
     {% elif vhost_properties.auth  == 'basic' %}
     auth_basic "{{ auth.message | default('Secure') }}";
     auth_basic_user_file {{ nginx_location_htpasswd_path }}/{{ vhost_properties.htpasswd | default(vhost_properties.name, true) }};
