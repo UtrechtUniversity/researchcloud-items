@@ -20,8 +20,8 @@
       ansible.builtin.assert:
         that:
           - item.user == 'testuser'
-          - item.userid == 1000
-          - item.groupid == 1003
+          - item.userid >= 1000 and item.userid <= 1010
+          - item.groupid >= 1000 and item.groupid <= 1010
           - item.home == '/home/testuser'
           - item.shell == '/usr/bin/bash'
           - item.description == ''

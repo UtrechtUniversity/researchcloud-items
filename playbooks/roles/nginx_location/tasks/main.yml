@@ -8,29 +8,23 @@
     group: www-data
   with_items: "{{ nginx_location_locations }}"
 
-- name: Gather htpasswd files
-  ansible.builtin.set_fact:
-    _htpasswd_files: "{{ nginx_location_locations | map(attribute='htpasswd') | select('defined') | list }}"
+  # it appears community.general.htpasswd looks for passlib globally instead of in the venv
+- name: Install dependency for htpasswd module (globally)
+  ansible.builtin.package:
+    name: python3-passlib
 
-- name: Prepare for creating htpasswd files
-  when: _htpasswd_files | length > 0
-  block:
-    - name: Install dependencies for htpasswd module
-      ansible.builtin.package:
-        name: python3-passlib
-
-    - name: Create htpasswd location
-      ansible.builtin.file:
-        path: "{{ nginx_location_htpasswd_path }}"
-        owner: root
-        group: www-data
-        state: directory
-        mode: "750"
+- name: Create htpasswd location
+  ansible.builtin.file:
+    path: "{{ nginx_location_htpasswd_path }}"
+    owner: root
+    group: www-data
+    state: directory
+    mode: "750"
 
 - name: Create htpasswd files based on nginx_location_auth_info
-  when: nginx_location_auth_info | default('') | length > 0
-  with_items: "{{ nginx_location_auth_info }}"
-  no_log: true
+  with_items: "{{ nginx_location_auth_info | default([]) }}"
+  when: item.name is defined
+  no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
     path: "{{ nginx_location_htpasswd_path }}/{{ item.name }}"
     name: "{{ item.username }}"
@@ -39,15 +33,14 @@
     group: www-data
     mode: "644"
 
-- name: Get htpasswd files that were not defined in nginx_location_auth_info
-  ansible.builtin.set_fact:
-    _remaining_htpasswd_files: "{{ _htpasswd_files | difference(nginx_location_auth_info | default([]) | map(attribute='name') | list) }}"
-
 - name: Create htpasswd files with default username and password for all locations not defined in nginx_location_auth_info
-  with_items: "{{ _remaining_htpasswd_files }}"
-  no_log: true
+  with_items: "{{ nginx_location_locations }}"
+  when:
+    - (item.auth | default('')) == 'basic'
+    - (item.htpasswd | default(item.name)) not in (nginx_location_auth_info | map(attribute='name') | list)
+  no_log: "{{ not nginx_location_debug }}"
   community.general.htpasswd:
-    path: "{{ nginx_location_htpasswd_path }}/{{ item }}"
+    path: "{{ nginx_location_htpasswd_path }}/{{ item.htpasswd | default(item.name) }}"
     name: "{{ nginx_location_default_username }}"
     password: "{{ nginx_location_default_password }}"
     owner: root

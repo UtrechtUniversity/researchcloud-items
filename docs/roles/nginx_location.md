@@ -62,7 +62,7 @@ Please see the examples below to understand the syntax for location block config
 - name: basicauthlocation # second location, with http basic auth
   location: /test_basicauth/ # uri
   auth: basic
-  htpasswd: myfile1 # which of the htpasswd files to use for auth, see the nginx_location_auth_info variable
+  htpasswd: myfile1 # which of the htpasswd files to use for auth, see the nginx_location_auth_info variable. If omitted, will look for an htpasswd file with the vhost's name (in this case, `basicauthlocation`).
 - name: sramauthlocation # third location, with SRAM auth
   location: /test_sramauth
   auth: sram

@@ -1,12 +1,12 @@
 ---
 - name: Determine whether ansible is running in a virtual env
   ansible.builtin.stat:
-    path: /etc/src/venv/src-venv
+    path: "{{ lookup('env', 'VIRTUAL_ENV') | default('/etc/src/venv/src-venv') }}"
   register: src_ansible_venv
 
 - name: Set src_ansible_venv fact
   ansible.builtin.set_fact:
-    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary('/etc/src/venv/src-venv', '') }}"
+    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary(src_ansible_venv.stat.path, '') }}"
 
 - name: Get workspace.json file
   ansible.builtin.command: cat /etc/rsc/workspace.json
@@ -33,15 +33,65 @@
   ansible.builtin.set_fact:
     fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
 
-- name: Get all packages as facts
-  ansible.builtin.package_facts:
-    manager: auto
-  no_log: true
+- name: Is the workspace a desktop workspace?
+  block:
+    - name: Get all packages as facts
+      ansible.builtin.package_facts:
+        manager: auto
+      no_log: true
 
-- name: Get the desktop package to check for
-  ansible.builtin.set_fact:
-    _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
+    - name: Get the desktop package to check for
+      ansible.builtin.set_fact:
+        _workspace_info_desktop_package: "{{ _fact_workspace_info_desktop_package_for_os[ansible_os_family] | default(omit) }}"
 
-- name: Set fact_desktop_workspace
-  ansible.builtin.set_fact:
-    fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"
+    - name: Set fact_desktop_workspace
+      ansible.builtin.set_fact:
+        fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"
+
+- name: Does the workspace have a GPU?
+  block:
+    - name: Get graphics cards info
+      ansible.builtin.command: lshw -class display -json
+      register: graphics_info
+      changed_when: false
+
+    - name: Set graphics fact
+      ansible.builtin.set_fact:
+        fact_all_graphics_cards: "{{ graphics_info.stdout | from_json | default([], true) }}"
+
+    - name: Set GPU fact
+      ansible.builtin.set_fact: # noqa jinja[spacing]
+        fact_workspace_gpus: "{{ (
+          ( fact_all_graphics_cards
+            | selectattr('description', 'defined')
+            | selectattr('description', 'search', '\\b(3D|gpu)\\b', ignorecase=True)
+            | list)
+          +
+          ( fact_all_graphics_cards
+            | selectattr('configuration.driver', 'defined')
+            | selectattr('configuration.driver', 'equalto', 'nvidia')
+            | list)
+        ) }}"
+
+    - name: Set has GPU fact
+      ansible.builtin.set_fact:
+        fact_workspace_has_gpu: "{{ fact_workspace_gpus | length > 0 }}"
+
+    - name: Get CUDA version
+      ansible.builtin.command: nvidia-smi --version
+      register: cuda_version
+      failed_when: false
+      changed_when: false
+
+    - name: Set fact cuda version (success)
+      when:
+        - cuda_version.rc == 0
+        - '":" in cuda_version.stdout_lines[-1]'
+        - '"CUDA" in cuda_version.stdout_lines[-1]'
+      ansible.builtin.set_fact:
+        fact_cuda_version: "{{ (cuda_version.stdout_lines[-1] | default(' : ', true)).split(':') | last | trim }}"
+
+    - name: Set fact cuda version (failure)
+      when: fact_cuda_version is not defined
+      ansible.builtin.set_fact:
+        fact_cuda_version: ""
