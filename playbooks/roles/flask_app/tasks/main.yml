@@ -98,7 +98,7 @@
         depth: 1
 
     - name: Install requirements
-      when: flask_app_pip_requirements
+      when: (flask_app_pip_requirements | length) > 0
       ansible.builtin.pip:
         executable: uv_pip
         requirements: "{{ flask_app_dir }}/{{ item | trim }}"
