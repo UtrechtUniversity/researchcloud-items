@@ -18,6 +18,7 @@ provisioner:
       - name: jupyterhub
         path: jupyterhub.yml
         parameters:
+          jupyterhub_debug: true
           jupyter_auth: noauth
           jupyter_activate_remote_user_auth: true # mock SRAM auth by enabling remote user auth in JupyterHub config, despite setting auth to noauth.
           jupyter_proxy_config: "{ proxy_set_header: { REMOTE_USER: '$$http_user'} }"
