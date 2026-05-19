@@ -1,0 +1,26 @@
+---
+driver:
+  name: ${DRIVER-podman}
+  image_settings: &image_settings
+    pre_build_image: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  playbooks:
+    prepare: ./prepare.yml
+    converge: ./converge.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+role_name_check: 1
+platforms:
+  - name: workspace-src-ubuntu_jammy-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+    <<: *image_settings
