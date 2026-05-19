@@ -5,14 +5,14 @@
   tasks:
     - name: Test Open VSCode
       ansible.builtin.uri:
-        url: http://localhost/hub/spawn/testuser?next=%2Fhub%2Fuser%2Ftestuser%2Fide%2F
+        url: http://localhost/hub/spawn/testuser?next=%2Fhub%2Fuser%2Ftestuser%2Fopenvscode%2F
         method: GET
         headers:
           user: testuser # mock SRAM login
         return_content: true
         follow_redirects: true
       register: openvscode_login
-      failed_when: openvscode_login.failed or not openvscode_login.url is match('http://localhost/user/testuser/ide')
+      failed_when: openvscode_login.failed or not openvscode_login.url is match('http://localhost/user/testuser/openvscode')
       retries: 5
       delay: 3
 
