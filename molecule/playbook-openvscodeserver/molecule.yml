@@ -25,5 +25,4 @@ provisioner:
       - name: openvscodeserver
         path: openvscodeserver.yml
         parameters:
-          openvscode_base_path: "/ide"
           openvscode_jupyter_force_install: 'false'
