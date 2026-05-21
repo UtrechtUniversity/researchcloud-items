@@ -24,6 +24,32 @@ collections:
     type: git
 ```
 
+### Versioning
+
+This collection is versioned using full semantic versions defined in `galaxy.yml`. Each release produces three Git tags:
+
+- **`vX.Y.Z`** — an immutable tag for the exact release  
+- **`vX.Y`** — a floating minor tag that always points to the latest patch release in that minor series  
+- **`vX`** — a floating major tag that always points to the latest release in that major series  
+
+Users can pin to an exact version for reproducibility:
+
+```yaml
+collections:
+  - name: uusrc.general
+    version: "2.3.1"
+```
+
+Or depend on a major or minor stream to automatically receive compatible updates:
+
+```yaml
+collections:
+  - name: uusrc.general
+    version: ">=2.3,<2.4"
+```
+
+This allows consumers to choose between strict stability and automatic updates within a compatible version range.
+
 ## Documentation
 Script developers, please consult the [developer documentation](docs/index.md) before using a playbook 
 to find out if the playbook meets your use case.
