@@ -1,0 +1,98 @@
+name: Tag Ansible Collection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for tag checks
+
+      - name: Detect if galaxy.yml changed
+        id: changed
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q "^galaxy.yml$"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop if galaxy.yml did not change
+        if: steps.changed.outputs.changed == 'false'
+        run: echo "galaxy.yml unchanged — skipping tagging"
+
+      - name: Install yq
+        if: steps.changed.outputs.changed == 'true'
+        run: sudo apt-get update && sudo apt-get install -y yq
+
+      - name: Read version from galaxy.yml
+        if: steps.changed.outputs.changed == 'true'
+        id: version
+        run: |
+          VERSION=$(yq '.version' galaxy.yml)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f2)
+          echo "major=$MAJOR" >> $GITHUB_OUTPUT
+          echo "minor=$MINOR" >> $GITHUB_OUTPUT
+
+      - name: Tag full version (vX.Y.Z) if missing
+        if: steps.changed.outputs.changed == 'true'
+        run: |
+          FULL_TAG="v${{ steps.version.outputs.version }}"
+          if git rev-parse "$FULL_TAG" >/dev/null 2>&1; then
+            echo "Tag $FULL_TAG already exists"
+          else
+            git tag "$FULL_TAG"
+            git push origin "$FULL_TAG"
+          fi
+
+      - name: Tag minor version (vX.Y) if missing or outdated
+        if: steps.changed.outputs.changed == 'true'
+        run: |
+          MINOR_TAG="v${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}"
+
+          if ! git rev-parse "$MINOR_TAG" >/dev/null 2>&1; then
+            git tag "$MINOR_TAG"
+            git push origin "$MINOR_TAG"
+            exit 0
+          fi
+
+          CURRENT_COMMIT=$(git rev-parse "$MINOR_TAG")
+          LATEST_COMMIT=$(git rev-parse HEAD)
+
+          if [ "$CURRENT_COMMIT" != "$LATEST_COMMIT" ]; then
+            git tag -f "$MINOR_TAG"
+            git push -f origin "$MINOR_TAG"
+          else
+            echo "Minor tag already up to date"
+          fi
+
+      - name: Tag major version (vX) if missing or outdated
+        if: steps.changed.outputs.changed == 'true'
+        run: |
+          MAJOR_TAG="v${{ steps.version.outputs.major }}"
+
+          if ! git rev-parse "$MAJOR_TAG" >/dev/null 2>&1; then
+            git tag "$MAJOR_TAG"
+            git push origin "$MAJOR_TAG"
+            exit 0
+          fi
+
+          CURRENT_COMMIT=$(git rev-parse "$MAJOR_TAG")
+          LATEST_COMMIT=$(git rev-parse HEAD)
+
+          if [ "$CURRENT_COMMIT" != "$LATEST_COMMIT" ]; then
+            git tag -f "$MAJOR_TAG"
+            git push -f origin "$MAJOR_TAG"
+          else
+            echo "Major tag already up to date"
+          fi
