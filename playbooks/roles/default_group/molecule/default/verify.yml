@@ -3,10 +3,10 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Create test user
-      ansible.builtin.command: /usr/sbin/adduser --disabled-password --gecos "" testuser2
-      register: adduser
-      changed_when: adduser.rc == 0
+    - name: Run cronjob for testgroup1
+      ansible.builtin.command: "/etc/rsc/add_regular_users_to_group.sh testgroup1"
+    - name: Run cronjob for testgroup2
+      ansible.builtin.command: "/etc/rsc/add_regular_users_to_group.sh testgroup2"
     - name: List testuser groups
       ansible.builtin.command: groups testuser
       changed_when: false
@@ -41,4 +41,4 @@
         that:
           - 'list_groups_newuser.stdout == "testuser2 : testuser2 testgroup1 testgroup2"'
           - 'list_groups_olduser.stdout == "testuser : testuser testgroup1 testgroup2"'
-          - list_gids_newuser.stdout == "1004 5000 5001" # 1004 is the gid for testuser2 as testuser1 has 1001, and sudoers and fuse have 1002 and 1003
+          - 'list_gids_newuser.stdout == "5002 5000 5001"'
