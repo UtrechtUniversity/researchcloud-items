@@ -16,3 +16,7 @@
       vars:
         default_group_group:
           groupname: testgroup2
+    - name: Create testuser2
+      ansible.builtin.user: # this will user useradd, not adduser
+        name: testuser2
+        create_home: true

@@ -12,11 +12,34 @@
     line: "*;*;*;Al0000-2400;{{ default_group_group.groupname }}"
 
 - name: Add existing regular users to new group
+  when: not default_group_use_cron
   ansible.builtin.user:
     name: "{{ item.user }}"
     groups: "{{ default_group_group.groupname }}"
     append: true
   with_items: "{{ fact_regular_users }}"
+
+- name: Cronjob
+  when: default_group_use_cron
+  block:
+    - name: Place script
+      ansible.builtin.copy:
+        src: add_regular_users_to_group.sh
+        dest: /etc/rsc/add_regular_users_to_group.sh
+        mode: "0700"
+        owner: root
+        group: root
+
+    - name: Add existing regular users to new group
+      tags: molecule-idempotence-notest
+      ansible.builtin.command: "/etc/rsc/add_regular_users_to_group.sh {{ default_group_group.groupname | quote }}"
+
+    - name: Add cronjob for adding home users to group
+      ansible.builtin.cron:
+        name: "Add regular users to group {{ default_group_group.groupname }}"
+        user: root
+        job: "/etc/rsc/add_regular_users_to_group.sh {{ default_group_group.groupname | quote }} >> /var/log/src.txt 2>&1"
+        minute: "*/5"
 
 # This assumes users are added with /usr/sbin/useradd
 - name: Ubuntu
