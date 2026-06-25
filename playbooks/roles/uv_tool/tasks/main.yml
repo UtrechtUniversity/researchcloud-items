@@ -1,0 +1,46 @@
+---
+- name: Add uv tool systemwide path to each user's path for installing global packages.
+  when: uv_tool_profile | length > 0
+  ansible.builtin.copy:
+    dest: /etc/profile.d/{{ uv_tool_profile }}
+    mode: "0644"
+    content: |
+      export PATH="{{ uv_tool_location }}/bin${PATH:+:${PATH}}"
+
+- name: Set uv tool systemwide path fact for availability in other roles
+  ansible.builtin.set_fact:
+    fact_global_python_tools: "{{ uv_tool_location }}/bin/"
+
+- name: Install specified python version
+  when: uv_tool_python_version | length > 0
+  ansible.builtin.command:
+    cmd: uv python install "{{ uv_tool_python_version }}"
+  register: uv_tool_install_python
+  changed_when: not 'already installed' in uv_tool_install_python.stderr
+  environment:
+    UV_PYTHON_INSTALL_DIR: "{{ uv_tool_python_install_dir }}"
+    UV_PYTHON_BIN_DIR: "{{ uv_tool_python_bin_dir }}"
+
+- name: Install requested packages using uv tool
+  ansible.builtin.command: >
+    uv tool install
+    {% for opt, val in uv_tool_options.items() %}
+    --{{ opt | replace('_', '-') }}{% if val is string %} "{{ val }}"{% endif %}
+    {% endfor %}
+    {{ uv_tool_force | ternary('--force', '') }}
+    "{{ uv_tool_package }}"
+    {% if uv_tool_python_version | length > 0 %}
+    --managed-python
+    --python "{{ uv_tool_python_version }}"
+    {% endif %}
+    {% if uv_tool_requirements | length > 0 %}
+    --with-requirements "{{ uv_tool_requirements }}"
+    {% endif %}
+    {% for pkg in uv_tool_extra_packages %}
+    --with "{{ pkg }}"
+    {% endfor %}
+  tags: molecule-idempotence-notest
+  environment:
+    UV_TOOL_DIR: "{{ uv_tool_location }}"
+    UV_TOOL_BIN_DIR: "{{ uv_tool_location }}/bin"
+    UV_PYTHON_INSTALL_DIR: "{{ uv_tool_python_bin_dir }}"

@@ -1,0 +1,13 @@
+---
+- name: Verify uv_tool installation with specified python version
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if Python version has been installed
+      ansible.builtin.command: "/usr/local/uu/share/uv/python/bin/python3.9 --version"
+      register: python_version_check
+
+    - name: Assert Python version
+      ansible.builtin.assert:
+        that:
+          - '"Python 3.9.16" in python_version_check.stdout'

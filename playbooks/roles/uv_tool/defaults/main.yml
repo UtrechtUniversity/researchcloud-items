@@ -1,0 +1,11 @@
+---
+uv_tool_package: ''
+uv_tool_extra_packages: []
+uv_tool_requirements: ''
+uv_tool_location: /usr/local/uu-pip
+uv_tool_profile: uu-uv-tool-config.sh
+uv_tool_options: {}
+uv_tool_force: true
+uv_tool_python_version: ""
+uv_tool_python_install_dir: /usr/local/uu/share/uv/python
+uv_tool_python_bin_dir: "{{ uv_tool_python_install_dir }}/bin"

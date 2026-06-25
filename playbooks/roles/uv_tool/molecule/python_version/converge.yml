@@ -1,0 +1,13 @@
+---
+- name: Test uv_tool python version feature
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Include uv_tool role
+      ansible.builtin.include_role:
+        name: uv_tool
+      vars:
+        uv_tool_package: ibridges
+        uv_tool_extra_packages:
+          - molecule
+        uv_tool_python_version: "3.9.16"
