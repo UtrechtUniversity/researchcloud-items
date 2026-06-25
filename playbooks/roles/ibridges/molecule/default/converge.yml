@@ -7,6 +7,5 @@
       ansible.builtin.include_role:
         name: ibridges
       vars:
-        pyenv_default_python: "3.8"
         ibridges_plugins:
-          - flask
+          - flask # fake plugin -- just a random additioanl package to install into the venv

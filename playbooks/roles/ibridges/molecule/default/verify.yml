@@ -4,14 +4,17 @@
   gather_facts: false
   tasks:
     - name: Run ibridges
-      ansible.builtin.shell: . /etc/profile.d/uu-custom-pip.sh && ibridges
+      ansible.builtin.shell: source /etc/profile.d/uu*.sh && ibridges
+      args:
+        executable: /bin/bash
 
     - name: Ensure requested packages are already installed
       ansible.builtin.pip:
         name:
           - flask
           - ibridges-servers-uu
-        virtualenv: /usr/local/uu-pip/venvs/ibridges
+          - ibridgesgui
+        virtualenv: /usr/local/uu-pip/ibridges
         state: present
       register: packages_installed
       failed_when: packages_installed.changed
