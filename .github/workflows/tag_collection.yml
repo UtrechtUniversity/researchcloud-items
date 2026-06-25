@@ -36,7 +36,7 @@ jobs:
         if: steps.changed.outputs.changed == 'true'
         id: version
         run: |
-          VERSION=$(yq '.version' galaxy.yml)
+          VERSION=$(yq '.version' galaxy.yml | tr -d '"')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
           MAJOR=$(echo "$VERSION" | cut -d. -f1)
