@@ -100,13 +100,12 @@
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
     flask_app_venv_user: "{{ asreview_server_user }}"
 
-- name: Install ASReview as CLI command for all users
+- name: Install ASReview using uv_tool role
   ansible.builtin.include_role:
-    name: pipx_install_systemwide
+    name: uv_tool
   vars:
-    pipx_install_systemwide_requirements: "{{ asreview_server_requirements_file }}"
-    pipx_install_systemwide_package: asreview
-    pipx_install_systemwide_use_uv: true # uv has been installed by the flask_app role
+    uv_tool_requirements: "{{ asreview_server_requirements_file }}"
+    uv_tool_package: asreview
 
 - name: Add path to ASReview data to default bash environment
   ansible.builtin.copy:
