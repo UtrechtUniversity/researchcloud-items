@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    # Apt cache is normally updated at deploy time by the SRC-OS component.
+    # Make sure it is fresh so our tests use recent apt repo information.
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      when: ansible_os_family == 'Debian'

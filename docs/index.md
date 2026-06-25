@@ -128,6 +128,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
 - [uv](roles/uv.md) lightning fast python version and dependency manager
+- [uv_tool](roles/uv_tool.md) install python applications for all users lightning fast
 
 ### Experimental
 

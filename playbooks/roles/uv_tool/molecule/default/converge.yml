@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Include uv_tool role
+      ansible.builtin.include_role:
+        name: uv_tool
+      vars:
+        uv_tool_package: "{{ item }}"
+        uv_tool_extra_packages:
+          - molecule
+      with_items:
+        - ibridges
+        - pycowsay
+        - git+https://github.com/UtrechtUniversity/repo2kernel
