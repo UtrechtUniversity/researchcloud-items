@@ -29,10 +29,9 @@
   roles:
     - role: uv
       when: _install_uv
-    - role: pipx_install_systemwide
+    - role: uv_tool
       vars:
-        pipx_install_systemwide_use_uv: true
-        pipx_install_systemwide_package: git+https://github.com/UtrechtUniversity/repo2kernel
+        uv_tool_package: git+https://github.com/UtrechtUniversity/repo2kernel
     - role: miniconda
       when: _install_conda
     - role: julia
