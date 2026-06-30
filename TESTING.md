@@ -14,6 +14,10 @@ Using `-c molecule/ext/molecule-src/molecule.yml` ensures molecule uses the defa
 
 Playbook tests use a specific setup that aims to be as close as possible to the way components are executed on Research Cloud. See [here](https://github.com/UtrechtUniversity/SRC-molecule#scenarios) for more information. Running `molecule` with the parameters explained above automatically takes care of this.
 
+### Does my playbook need a playbook test?
+
+That depends! If the playbook does nothing else than including a few roles, the answer is probably no. If on the other hand it contains substantial logic itself (including e.g. manipulating incoming parameters provided by ResearchCloud), then probably it's not a bad idea.
+
 ## Role tests
 
 For simplicity's sake, roles are currently not tested in the specific way that playbooks are.
