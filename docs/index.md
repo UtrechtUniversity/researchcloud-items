@@ -68,8 +68,6 @@ status should be indicated in the description field of the catalog plugin item.
 ### Experimental
 
 - [anaconda](playbooks/anaconda.md)  python data science development
-- [camunda](playbooks/camunda.md)  a business process workflow suite
-- [camunda-modeler](playbooks/camunda-modeler.md)  part of the camunda suite
 - [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 
@@ -132,6 +130,4 @@ The status of a role is either Experimental or Supported. Supported roles are su
 ### Experimental
 
 - [anaconda](roles/anaconda.md)
-- [camunda_modeler](roles/camunda_modeler.md)
-- [camunda_server](roles/camunda_server.md)
 - [rstudio](roles/rstudio.md)
