@@ -1,0 +1,10 @@
+# Specify the version of basic Jupyter packages to be installed in this file, so Dependabot can keep track of updates.
+# The role uses this file to determine the version of these packages to be installed.
+# Dependabot will automatically open PRs when newer version are released.
+# The PRs will trigger the tests, so we will automatically see if the new version is still compatible with this role.
+# The Dependabot config file is in .github/dependabot.yml
+
+jupyterhub=~5
+jupyterlab
+jhub-remote-user-authenticator
+sudospawner
