@@ -1,12 +1,15 @@
 ---
 - name: Determine whether ansible on the workspace is running in a virtual env
   ansible.builtin.stat:
-    path: "{{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default(lookup('env', 'VIRTUAL_ENV')) | default('/etc/src/venv/ansible_env') }}"
+    path: "{{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default(lookup('env', 'VIRTUAL_ENV'), true) | default('/etc/src/venv/ansible_env', true) }}"
   register: src_ansible_venv
 
 - name: Set src_ansible_venv fact
   ansible.builtin.set_fact:
-    fact_src_ansible_venv: "{{ src_ansible_venv.stat.exists | ternary(src_ansible_venv.stat.path, false) }}"
+    # our test images will currently not have the ansible venv,
+    # so we mock its presence here if we're in CI.
+    # This is so we can test the logic for installing dependencies in a venv (which is the current situation on SRC).
+    fact_src_ansible_venv: "{{ (src_ansible_venv.stat.exists or 'molecule-notest' in ansible_skip_tags) | ternary(src_ansible_venv.stat.path, '') }}"
 
 - name: Get workspace.json file
   ansible.builtin.command: cat /etc/rsc/workspace.json
