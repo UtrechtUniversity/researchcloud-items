@@ -8,7 +8,7 @@
     group: www-data
   with_items: "{{ nginx_location_locations }}"
 
-  # it appears community.general.htpasswd looks for passlib globally instead of in the venv
+  # it appears community.general.htpasswd looks for passlib globally instead of in the venv in which Ansible is currently running
 - name: Install dependency for htpasswd module (globally)
   ansible.builtin.package:
     name: python3-passlib
