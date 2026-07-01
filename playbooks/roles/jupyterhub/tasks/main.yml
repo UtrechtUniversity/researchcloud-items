@@ -88,13 +88,31 @@
           - path: "{{ jupyterhub_venv }}"
             python_preference: system
 
+    - name: Ensure requirements file is present
+      ansible.builtin.copy:
+        dest: /tmp/jupyterhub_requirements.txt
+        src: files/requirements.txt
+        owner: "{{ jupyterhub_user }}"
+        group: "{{ jupyterhub_user }}"
+        mode: "0600"
+
     - name: Install JupyterHub and dependencies
       become_user: "{{ jupyterhub_user }}"
       become: true
       ansible.builtin.pip:
-        executable: uv_pip # uv is installed above
-        name: "{{ (jupyterhub_basic_pkgs + jupyterhub_extra_pkgs) | select }}"
-        break_system_packages: "{{ ansible_version.full is ansible.builtin.version('2.17', '>=') | ternary(jupyterhub_system_pip, omit) }}" # break_system_packages only exists on ansible >= 2.17
+        executable: uv_pip
+        requirements: /tmp/jupyterhub_requirements.txt
+      environment:
+        VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
+
+    - name: Install JupyterHub extra packages
+      when: (jupyterhub_extra_pkgs | length) > 0
+      become_user: "{{ jupyterhub_user }}"
+      become: true
+      ansible.builtin.pip:
+        executable: uv_pip
+        name: "{{ jupyterhub_extra_pkgs | select }}"
       environment:
         VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
         CC: gcc # https://github.com/astral-sh/uv/issues/6488

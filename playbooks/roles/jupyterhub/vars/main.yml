@@ -3,11 +3,6 @@ jupyterhub_user: jupyter
 jupyterhub_user_home: /var/www/jupyter
 jupyterhub_venv: "/usr/local/jupyterhub"
 jupyterhub_sudospawner_path: "{{ jupyterhub_venv }}/bin/sudospawner"
-jupyterhub_basic_pkgs:
-  - jupyterhub
-  - jupyterlab
-  - jhub-remote-user-authenticator
-  - sudospawner
 jupyterhub_uri_with_slashes: "{{ '/' ~ (jupyterhub_uri | trim('/')) ~ '/' if jupyterhub_uri != '/' else '/' }}"
 jupyterhub_default_proxy_config:
   name: jupyterhub

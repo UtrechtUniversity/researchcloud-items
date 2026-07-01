@@ -9,6 +9,10 @@ updates:
     directory: "/playbooks/roles/asreview_server/files" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "pip" # See documentation for possible values
+    directory: "/playbooks/roles/jupyterhub/files" # Location of package manifests
+    schedule:
+      interval: "weekly"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
