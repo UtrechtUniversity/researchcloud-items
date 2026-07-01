@@ -1,6 +1,8 @@
 ---
 - name: Install desktop apps
-  when: fact_desktop_workspace
+  when:
+    - fact_desktop_workspace
+    - ansible_virtualization_type is not defined or ansible_virtualization_type not in ['podman', 'docker', 'container']
   block:
     - name: Install codium
       community.general.snap:
