@@ -1,15 +1,13 @@
 ---
-- name: Install desktop apps
+- name: Install desktop snaps
   when: fact_desktop_workspace
+  tags: molecule-notest
   block:
-    - name: Refresh snaps
-      ansible.builtin.command: snap refresh
-      tags: molecule-idempotence-notest
-
-    - name: Install VSCodium
-      ansible.builtin.command: snap install codium --classic
-      register: uu_generic_install_codium
-      changed_when: '"already installed" not in uu_generic_install_codium.stderr'
+    - name: Install codium
+      community.general.snap:
+        classic: true
+        state: present
+        name: codium
 
 - name: Install run_and_pause script
   ansible.builtin.template:
