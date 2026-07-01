@@ -9,10 +9,20 @@ updates:
     directory: "/playbooks/roles/asreview_server/files" # Location of package manifests
     schedule:
       interval: "weekly"
+    # Tells Dependabot to bump the baseline range only when a version exceeds it
+    versioning-strategy: increase
+    ignore:
+      - dependency-name: "jupyterhub"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/playbooks/roles/jupyterhub/files" # Location of package manifests
     schedule:
       interval: "weekly"
+    # Tells Dependabot to bump the baseline range only when a version exceeds it
+    versioning-strategy: increase
+    ignore:
+      - dependency-name: "jupyterhub"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
