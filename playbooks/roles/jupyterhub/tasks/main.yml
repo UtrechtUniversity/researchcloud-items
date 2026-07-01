@@ -88,12 +88,20 @@
           - path: "{{ jupyterhub_venv }}"
             python_preference: system
 
+    - name: Ensure requirements file is present
+      ansible.builtin.copy:
+        dest: /tmp/jupyterhub_requirements.txt
+        src: files/requirements.txt
+        owner: "{{ jupyterhub_user }}"
+        group: "{{ jupyterhub_user }}"
+        mode: "0600"
+
     - name: Install JupyterHub and dependencies
       become_user: "{{ jupyterhub_user }}"
       become: true
       ansible.builtin.pip:
         executable: uv_pip
-        requirements: files/requirements.txt
+        requirements: /tmp/jupyterhub_requirements.txt
       environment:
         VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
         CC: gcc # https://github.com/astral-sh/uv/issues/6488
