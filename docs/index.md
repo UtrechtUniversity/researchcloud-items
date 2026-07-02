@@ -105,7 +105,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [nginx_uwsgi](roles/nginx_uwsgi.md) serve uWSGI applications with the SRC-Nginx installation
 - [openvscode](roles/openvscodeserver.md) install OpenVSCode server
 - [openrefine](roles/openrefine.md) installs the OpenRefine data cleaning and manipulation webapp
-- [poetry](roles/poetry.md)
 - [pip](roles/pip.md)  install pip
 - [pipx_install_systemwide](roles/pipx_install_systemwide.md) install pip packages in a shared directory for all users
 - [pyenv](roles/pyenv.md)  install pyenv and use it to install custom python version

@@ -8,5 +8,7 @@
     - role: pyenv
       vars:
         pyenv_default_python: "{{ default_python_version | default('system-latest') }}"
-    - role: poetry
     - role: uv
+    - role: uv_tool
+      vars:
+        uv_tool_package: poetry
