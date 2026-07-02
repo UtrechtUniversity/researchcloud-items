@@ -1,6 +1,6 @@
 namespace: "uusrc"
 name: "general"
-version: "2.0.1"
+version: "2.0.0"
 readme: "README.md"
 authors:
   - "Ton Smeele"
