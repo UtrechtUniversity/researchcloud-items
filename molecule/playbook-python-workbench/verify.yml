@@ -5,13 +5,17 @@
   tasks:
     # Just check whether the correct runonce definitions have been installed, and trust them to do their job
     # These definitions are tested in the role tests
-    - name: Check whether poetry runonce defintion is installed
+    - name: Check whether runonce defintions are installed
       ansible.builtin.stat:
         path: "/home/testuser/runonce.d/{{ item }}"
       register: expected_files
       with_items:
         - 01_pyenv-install.sh
-        - 10-poetry.sh
+
+    - name: Check whether poetry is installed
+      ansible.builtin.shell: source /etc/profile.d/uu-* && poetry --help
+      args:
+        executable: /bin/bash
 
     - name: Assert expected files exist
       ansible.builtin.assert:
