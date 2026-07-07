@@ -43,7 +43,9 @@
 
 # This assumes users are added with /usr/sbin/useradd
 - name: Ubuntu
-  when: ansible_distribution == 'Ubuntu'
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - not default_group_use_cron
   block:
     - name: Enable adding extra groups
       ansible.builtin.lineinfile:
