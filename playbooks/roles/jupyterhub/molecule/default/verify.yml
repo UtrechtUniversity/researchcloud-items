@@ -48,3 +48,10 @@
           - jupyterhub_login.status == 200
           - jupyterhub_login_not_allowed.status == 500
           - jupyterhub_login_not_exist.status == 500
+
+    - name: Fail if any venv file is group-writeable
+      ansible.builtin.command: >
+        find /usr/local/jupyterhub -type f -perm -g+w -print
+      register: venv_gw_files
+      changed_when: false
+      failed_when: venv_gw_files.stdout != ""
