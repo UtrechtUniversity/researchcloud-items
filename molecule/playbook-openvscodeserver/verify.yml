@@ -20,3 +20,10 @@
       ansible.builtin.assert:
         that:
           - '"vscode-workbench" in openvscode_login.content'
+
+    - name: Fail if any venv file is group-writeable
+      ansible.builtin.command: >
+        find /usr/local/jupyterhub -type f -perm -g+w -print
+      register: venv_gw_files
+      changed_when: false
+      failed_when: venv_gw_files.stdout != ""

@@ -21,3 +21,10 @@
         that:
           - '"OpenRefine" in openrefine_login.content'
           - '"files-importing-controller.css" in openrefine_login.content' # check that FileExtension is active
+
+    - name: Fail if any venv file is group-writeable
+      ansible.builtin.command: >
+        find /usr/local/jupyterhub -type f -perm -g+w -print
+      register: venv_gw_files
+      changed_when: false
+      failed_when: venv_gw_files.stdout != ""

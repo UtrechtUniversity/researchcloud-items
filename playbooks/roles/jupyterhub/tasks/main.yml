@@ -124,3 +124,13 @@
         owner: root
         group: root
         mode: "0644"
+
+- name: Ensure venv permissions
+  tags: molecule-idempotence-notest
+  ansible.builtin.file:
+    path: "{{ jupyterhub_venv }}"
+    state: directory
+    owner: "{{ jupyterhub_user }}"
+    group: "{{ jupyterhub_allowed_users_group }}"
+    mode: "g-w"
+    recurse: true
