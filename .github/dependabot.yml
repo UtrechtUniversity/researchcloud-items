@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "*"
+      - dependency-name: "asreview"
         update-types:
           - "version-update:semver-minor"
           - "version-update:semver-patch"
@@ -19,7 +19,7 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "*"
+      - dependency-name: "jupyterhub"
         update-types:
           - "version-update:semver-minor"
           - "version-update:semver-patch"
