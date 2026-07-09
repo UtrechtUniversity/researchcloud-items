@@ -6,5 +6,5 @@
 
 jupyterhub==5.*
 jupyterlab
-jhub-remote-user-authenticator
+jhub-remote-user-authenticator==0.1.0
 sudospawner
