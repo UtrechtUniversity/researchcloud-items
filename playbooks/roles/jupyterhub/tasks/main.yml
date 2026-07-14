@@ -132,5 +132,5 @@
     state: directory
     owner: "{{ jupyterhub_user }}"
     group: "{{ jupyterhub_allowed_users_group }}"
-    mode: "g-w"
+    mode: "g-w,o-w"
     recurse: true
