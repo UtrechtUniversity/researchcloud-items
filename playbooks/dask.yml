@@ -1,0 +1,34 @@
+---
+- name: Install Dask and Dask JupyterLab extension
+  hosts: localhost
+  gather_facts: true
+  vars:
+    venv: "{{ dask_venv | default('/usr/local/jupyterhub') }}"
+    labextension_config:
+      labextension:
+        factory:
+          module: 'dask.distributed'
+          class: 'LocalCluster'
+          args: []
+          kwargs:
+            security: "{{ dask_security | default(true, true) }}"
+            dashboard_address: ":0"
+
+  tasks:
+    - name: Place labextension config
+      ansible.builtin.blockinfile:
+        path: /etc/dask/labextension.yml
+        append_newline: true
+        block: "{{ labextension_config | to_yaml }}"
+        owner: root
+        group: root
+        mode: "0644"
+        create: true
+
+    - name: Install the extension
+      ansible.builtin.pip:
+        executable: uv_pip # uv_pip should be available on all SRC workspaces
+        name: dask-labextension
+      environment:
+        VIRTUAL_ENV: "{{ venv }}"
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
