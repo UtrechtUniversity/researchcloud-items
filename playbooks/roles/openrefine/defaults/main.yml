@@ -4,3 +4,4 @@ openrefine_user: root
 openrefine_group: root
 openrefine_version: ""
 openrefine_extensions: {}
+openrefine_download_url: ""
