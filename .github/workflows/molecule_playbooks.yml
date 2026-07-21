@@ -12,6 +12,11 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+      
+# Auto-cancel any previous running jobs from the same branch
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
 
