@@ -65,7 +65,7 @@ jobs:
         id: define-changes
         run: |
           # Use git diff to detect playbook and role changes
-          PLAYBOOKS=$(git diff --name-only "$BASE_REF" "$HEAD_REF" -- 'playbooks/*.yml')
+          PLAYBOOKS=$(git diff --name-only "$BASE_REF" "$HEAD_REF" -- 'playbooks/*.yml' 'molecule/playbook-*')
           ROLES=$(git diff --name-only "$BASE_REF" "$HEAD_REF" -- 'playbooks/roles/**')
 
           echo "Changed playbooks: $PLAYBOOKS"
@@ -75,8 +75,15 @@ jobs:
           PLAYBOOK_SCENARIOS=()
           for PLAYBOOK in $PLAYBOOKS; do
             # Ensure only valid playbook files (exclude nested paths like playbooks/roles/*)
+            # This can be a path in playbooks/*.yml or in molecule/playbook-*
             if [[ "$PLAYBOOK" =~ ^playbooks/[^/]+\.yml$ ]]; then
               SCENARIO_NAME=$(basename "$PLAYBOOK" .yml | sed 's/^/playbook-/')
+            elif [[ "$PLAYBOOK" == molecule/playbook-*/* ]]; then
+              # change molecule/playbook-foo/* to 'playbook-foo'
+              SCENARIO_NAME="${PLAYBOOK#molecule/}"
+              SCENARIO_NAME="${SCENARIO_NAME%%/*}"
+            fi
+            if [[ -n "$SCENARIO_NAME" ]]; then
               PLAYBOOK_SCENARIOS+=("$SCENARIO_NAME")
             fi
           done
