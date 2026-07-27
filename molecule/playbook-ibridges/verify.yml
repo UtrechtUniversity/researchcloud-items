@@ -4,4 +4,4 @@
   gather_facts: false
   tasks:
     - name: Run ibridges
-      ansible.builtin.shell: . /etc/profile.d/uu-custom-pip.sh && ibridges
+      ansible.builtin.shell: . /etc/profile.d/uu-uv-tool-config.sh && ibridges
