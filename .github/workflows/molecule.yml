@@ -22,6 +22,9 @@ jobs:
 
   define_changes:
     runs-on: ubuntu-latest
+    outputs:
+      playbook_matrix: ${{ steps.define-changes.outputs.playbook_matrix }}
+      role_matrix: ${{ steps.define-changes.outputs.role_matrix }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
@@ -78,13 +81,13 @@ jobs:
           if [[ ${#PLAYBOOK_SCENARIOS[@]} -eq 0 ]]; then
             PLAYBOOK_MATRIX="[]"
           else
-            PLAYBOOK_MATRIX=$(printf '%s\n' "${PLAYBOOK_SCENARIOS[@]}" | sort -u | jq -R . | jq -s .)
+            PLAYBOOK_MATRIX=$(printf '%s\n' "${PLAYBOOK_SCENARIOS[@]}" | sort -u | jq -R . | jq -s -c .)
           fi
 
           if [[ ${#ROLE_SCENARIOS[@]} -eq 0 ]]; then
             ROLE_MATRIX="[]"
           else
-            ROLE_MATRIX=$(printf '%s\n' "${ROLE_SCENARIOS[@]}" | sort -u | jq -R . | jq -s .)
+            ROLE_MATRIX=$(printf '%s\n' "${ROLE_SCENARIOS[@]}" | sort -u | jq -R . | jq -s -c .)
           fi
 
           echo "Validated PLAYBOOK_MATRIX: $PLAYBOOK_MATRIX"
