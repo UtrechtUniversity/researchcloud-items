@@ -1,0 +1,138 @@
+name: Molecule Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+# Auto-cancel any previous running jobs from the same branch
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  define_changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # required to get the diff base
+
+      - name: Get Changed Files
+        id: define-changes
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_REF=${{ github.sha }}^1 # github creates a merge commit in pull requests. This is the first parent of the merge, which is the base. 
+            HEAD_REF=${{ github.sha }} # The merge commit.
+          else
+            BASE_REF=${{ github.event.before }}
+            HEAD_REF=${{ github.sha }}
+          fi
+
+          # Use diff to detect playbook and role changes
+          PLAYBOOKS=$(git diff --name-only "$BASE_REF..$HEAD_REF" -- 'playbooks/*.yml')
+          ROLES=$(git diff --name-only "$BASE_REF..$HEAD_REF" -- 'playbooks/roles/**')
+
+          echo "Changed playbooks:$PLAYBOOKS"
+          echo "Changed roles:$ROLES"
+
+          # Parse playbooks
+          PLAYBOOK_SCENARIOS=()
+          for PLAYBOOK in $PLAYBOOKS; do
+            SCENARIO_NAME=$(basename "$PLAYBOOK" .yml | sed 's/^/playbook-/')
+            PLAYBOOK_SCENARIOS+=($SCENARIO_NAME)
+          done
+
+          # Store role paths
+          ROLE_SCENARIOS=()
+          for ROLE in $ROLES; do
+            ROLE_DIR=$(echo "$ROLE" | cut -d'/' -f 1-3) # Extract playbooks/roles/role_name
+            ROLE_SCENARIOS+=($ROLE_DIR)
+          done
+
+          # Deduplicate and convert to JSON arrays, handle empty cases
+          if [[ ${#PLAYBOOK_SCENARIOS[@]} -eq 0 ]]; then
+            PLAYBOOK_MATRIX="[]"
+          else
+            PLAYBOOK_MATRIX=$(printf '%s\\n' "${PLAYBOOK_SCENARIOS[@]}" | sort -u | jq -R . | jq -s .)
+          fi
+
+          if [[ ${#ROLE_SCENARIOS[@]} -eq 0 ]]; then
+            ROLE_MATRIX="[]"
+          else
+            ROLE_MATRIX=$(printf '%s\\n' "${ROLE_SCENARIOS[@]}" | sort -u | jq -R . | jq -s .)
+          fi
+
+          echo "PLAYBOOK_MATRIX:$PLAYBOOK_MATRIX"
+          echo "ROLE_MATRIX:$ROLE_MATRIX"
+
+          # Output matrices
+          echo "playbook_matrix=$PLAYBOOK_MATRIX" >> $GITHUB_OUTPUT
+          echo "role_matrix=$ROLE_MATRIX" >> $GITHUB_OUTPUT
+    outputs:
+      playbook_matrix: ${{ steps.define-changes.outputs.playbook_matrix }}
+      role_matrix: ${{ steps.define-changes.outputs.role_matrix }}
+
+  playbook_tests:
+    needs: define_changes
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        playbook: ${{ fromJSON(needs.define_changes.outputs.playbook_matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r molecule/ext/molecule-src/requirements.txt
+          ansible-galaxy install -r molecule/ext/molecule-src/requirements.yml
+          ansible-galaxy install -r requirements.yml
+
+      - name: Run Molecule Tests for Playbook
+        run: |
+          molecule -c molecule/ext/molecule-src/molecule.yml test --scenario-name ${{ matrix.playbook }}
+
+  role_tests:
+    needs: define_changes
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        role: ${{ fromJSON(needs.define_changes.outputs.role_matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r molecule/ext/molecule-src/requirements.txt
+          ansible-galaxy install -r molecule/ext/molecule-src/requirements.yml
+          ansible-galaxy install -r requirements.yml
+
+      - name: Run Molecule Tests for Role
+        run: |
+          cd ${{ matrix.role }} && if [[ -d molecule ]]; then \
+            molecule -c ../../../molecule/ext/molecule-src/molecule.yml test --all; \
+          fi
