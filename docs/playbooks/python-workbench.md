@@ -26,7 +26,6 @@ For additional development convenience, `poetry` and `miniconda` are also intall
 
 - role [runonce](../roles/runonce.md)
 - role [pyenv](../roles/pyenv.md)
-- role [runonce](../roles/poetry.md)
 - role [miniconda](../roles/miniconda.md)
 
 ## History

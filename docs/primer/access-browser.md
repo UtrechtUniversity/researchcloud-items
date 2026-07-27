@@ -1,5 +1,5 @@
 # Access workspace using a web browser
-[back to index](../primer-for-users.md)
+[back to index](./first-time-use.md)
 
 ### Preparation
 No need to install any software, a web browser suffices.

@@ -30,6 +30,10 @@ jobs:
           uv venv $VIRTUAL_ENV
           uv pip install markdown-checker
 
-      - name: Run markdown-checker
+      - name: Run markdown-checker for urls
         run: |
-          uv run markdown-checker ${{ env.CHECK_FILES }} -f check_broken_urls -f check_broken_paths
+          uv run markdown-checker ${{ env.CHECK_FILES }} -f check_broken_urls
+
+      - name: Run markdown-checker for paths
+        run: |
+          uv run markdown-checker ${{ env.CHECK_FILES }} -f check_broken_paths

@@ -39,13 +39,11 @@ status should be indicated in the description field of the catalog plugin item.
 
 - [agisoft](playbooks/agisoft.md) install Agisoft Metashape
 - [alphafold](playbooks/alphafold.md) install DeepMind AlphaFold
-- [aptly](playbooks/aptly.md)  serve apt repositories on the workspace
-- [asreview](playbooks/asreview_server.md)  machine-learning powered webapplication for systematic reviews
+- [asreview](playbooks/asreview.md)  machine-learning powered webapplication for systematic reviews
 - [custom packages](playbooks/custom_packages.md) download projects, install their dependencies into separate environments, and create Jupyter kernels for them
 - [ibridges](playbooks/ibridges.md)  userfriendly commandline client for iRODS
 - [icommands](playbooks/icommands.md)  commandline tools for iRODS data grid
 - [irods_tools](playbooks/irods_tools.md)  install both iBridges and icommands command line tools
-- [irods_sync](playbooks/irods_sync.md)  sync folders from iRODS or Yoda to the workspace at creation time
 - [jupyterhub](playbooks/jupyterhub.md) install [JupyterHub](https://jupyterhub.readthedocs.io/)
 - [jupyter_rtc](playbooks/jupyter_rtc.md) add Real-time Collaboration functionality to an existing [JupyterHub](https://jupyterhub.readthedocs.io/).
 - [flask_app](roles/flask_app.md)  serve a Flask app with Nginx, optionally with SRAM authorization.
@@ -68,7 +66,6 @@ status should be indicated in the description field of the catalog plugin item.
 ### Experimental
 
 - [anaconda](playbooks/anaconda.md)  python data science development
-- [ephor](playbooks/ephor.md) selected roles for ephor use-case
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
 
 
@@ -80,7 +77,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 - [agisoft](roles/agisoft.md) install Agisoft Metashape
 - [alphafold](roles/alphafold.md) install DeepMind AlphaFold
-- [aptly_add](roles/aptly_add.md) add packages to Aptly repositories on the workspace
 - [asreview_server](roles/asreview_server.md)
 - [default_group](roles/default_group.md) set desired groups as default for regular users
 - [desktop-file](roles/desktop_file.md) add desktop icons and login items for custom apps
@@ -121,7 +117,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
 - [tidyverse_dependencies](roles/tidyverse_dependencies.md)
 - [tigervnc](roles/tigervnc.md) installs TigerVNC server
-- [turbo](roles/turbo.md) installs TurboVNC server
+- [turbovnc](roles/turbovnc.md) installs TurboVNC server
 - [transferuser](roles/transferuser.md)
 - [uu_generic](roles/uu_generic.md) generic uu flavouring for workspaces
 - [uv](roles/uv.md) lightning fast python version and dependency manager

@@ -1,5 +1,5 @@
 # ResearchCloud workshop
-[back to index](../primer-for-users.md)
+[back to index](./introduction.md)
 
 Below are some suggestions for Research-IT support staff to assist new users 
 during their first use of SURF ResearchCloud. 
@@ -116,4 +116,4 @@ Assist the user to create a new workspace using the SURF ResearchCloud catalog.
 Explain how pause and resume buttons can be used to stop and restart
 the workspace during its lifecycle.
 
-[back to index](../primer-for-users.md)
+[back to index](./introduction.md)

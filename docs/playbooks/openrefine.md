@@ -26,7 +26,7 @@ Note: the [FilesExtension](https://github.com/OpenRefine/FilesExtension) extensi
 
 ## See also
 
-- Role [jupyterhub_standalone_proxy](./jupyterhub_standalone_proxy.md)
+- Role [jupyterhub_standalone_proxy](../roles/jupyterhub_standalone_proxy.md)
 - Playbook [openrefine](../roles/openrefine.md)
 
 ## History

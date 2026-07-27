@@ -43,7 +43,7 @@ This component uses the [repo2kernel](https://github.com/UtrechtUniversity/repo2
 
 ### Downloading projects
 
-Downloaded projects will by default will stored in the directory specified by the `custom_packages_code_dir` [parameter](parameter). Each project will be stored in its own folder, which will receive a name that is based on the provided project identifier. For instance, if a DOI was provided, the directory name will be the DOI (with certain disallowed characters removed). If a URL to a git repo was provided, e.g. `https://github.com/UtrechtUniversity/repo2kernel.git` the name of the project's directory will be `repo2kernel`.
+Downloaded projects will by default will stored in the directory specified by the `custom_packages_code_dir` [parameter](#parameters). Each project will be stored in its own folder, which will receive a name that is based on the provided project identifier. For instance, if a DOI was provided, the directory name will be the DOI (with certain disallowed characters removed). If a URL to a git repo was provided, e.g. `https://github.com/UtrechtUniversity/repo2kernel.git` the name of the project's directory will be `repo2kernel`.
 
 Users can specify a specific version (e.g. git tag, brach or commit) of a project by adding `@myversion` after a project identifier. For instance: `https://github.com/binder-examples/conda.git@nbgitpuller` will fetch the `nbgitpuller`.
 
