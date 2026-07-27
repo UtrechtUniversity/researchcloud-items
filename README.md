@@ -73,6 +73,16 @@ There are two kinds of tests:
 1. Role tests. Molecule scenarios should be stored in the `playbooks/roles/<role>/molecule/` directory.
 1. Playbook tests. Molecule scenarios should be stored in the `molecule/` directory and given a `playbook-` prefix.
 
+### Changed files logic
+
+The workflow checks if the new commits contain changed files under the following paths
+
+- `playbooks/roles/*`: if so, a role test is started for each changed role
+- `playbooks/<name>.yml`: if so, a playbook test is started for the scenario `molecule/playbook-<name>`, if it exists
+- `molecule/playbook-<name>`: if so, a playbook test is started for that scenario 
+
+Additionally, directories in `molecule/playbook-<name>` may optionally contain a `triggered_by_role.txt` file. This file must contain a role name on each line, e.g. role `foo`. If any commits change `foo`, a playbook test will be started for each `molecule/playbook-<name>` scenario that contains `foo` in its `triggered_by_role.txt`. This allows a rudimentary form of triggering playbook tests when dependent roles change.
+
 # Other component repos
 
 This repository contains the bulk of UU's ResearchCloud components for Unix/Linux workspaces, which are based on Ansible playbooks, and it also provides reusable roles as a [collection](#installing-as-a-collection). However, some UU components are not part of this repository and can be found elsewhere.
