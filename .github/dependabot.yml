@@ -5,8 +5,16 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/playbooks/roles/asreview_server/files" # Location of package manifests
+  - package-ecosystem: "pip"
+    directory: "/.github/workflows/requirements.txt"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/molecule/ext/molecule-src/ext/requirements.txt"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "pip"
+    directory: "/playbooks/roles/asreview_server/files"
     schedule:
       interval: "weekly"
     ignore:
@@ -14,8 +22,8 @@ updates:
         update-types:
           - "version-update:semver-minor"
           - "version-update:semver-patch"
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/playbooks/roles/jupyterhub/files" # Location of package manifests
+  - package-ecosystem: "pip"
+    directory: "/playbooks/roles/jupyterhub/files"
     schedule:
       interval: "weekly"
     ignore:
@@ -26,5 +34,4 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
       interval: "weekly"

@@ -18,6 +18,18 @@ concurrency:
   group: tests-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  DOCKER_USER: ${{ github.actor }}
+  DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
+  DOCKER_REGISTRY: ghcr.io
+  ANSIBLE_FORCE_COLOR: '1'
+  ANSIBLE_CALLBACK_RESULT_FORMAT: yaml
+  MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
+  REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
+  ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
+  CRUN_VER: 1.11.2
+  VIRTUAL_ENV: ${{ github.workspace }}/.venv
+
 jobs:
 
   define_changes:
@@ -108,20 +120,26 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - name: Set up Python
+      - name: Set Up Python
         uses: actions/setup-python@v7
         with:
           python-version: '3.11'
 
+      - name: Set up UV and caching
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          enable-cache: true
+
       - name: Install Dependencies
         run: |
-          pip install -r molecule/ext/molecule-src/requirements.txt
-          ansible-galaxy install -r molecule/ext/molecule-src/requirements.yml
-          ansible-galaxy install -r requirements.yml
+          uv venv $VIRTUAL_ENV
+          uv pip install -r ${{ env.REQUIREMENTS_FILE }}
+          uv run ansible-galaxy install -r ${{ env.ANSIBLE_REQUIREMENTS_FILE }}
+          uv run ansible-galaxy install -r requirements.yml
 
       - name: Run Molecule Tests for Playbook
         run: |
-          molecule -c molecule/ext/molecule-src/molecule.yml test --scenario-name ${{ matrix.playbook }}
+          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.playbook }}
 
   role_tests:
     needs: define_changes
@@ -134,19 +152,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - name: Set up Python
+      - name: Set Up Python
         uses: actions/setup-python@v7
         with:
           python-version: '3.11'
 
+      - name: Set up UV and caching
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          enable-cache: true
+
       - name: Install Dependencies
         run: |
-          pip install -r molecule/ext/molecule-src/requirements.txt
-          ansible-galaxy install -r molecule/ext/molecule-src/requirements.yml
-          ansible-galaxy install -r requirements.yml
+          uv venv $VIRTUAL_ENV
+          uv pip install -r ${{ env.REQUIREMENTS_FILE }}
+          uv run ansible-galaxy install -r ${{ env.ANSIBLE_REQUIREMENTS_FILE }}
+          uv run ansible-galaxy install -r requirements.yml
 
       - name: Run Molecule Tests for Role
         run: |
           cd ${{ matrix.role }} && if [[ -d molecule ]]; then \
-            molecule -c ../../../molecule/ext/molecule-src/molecule.yml test --all; \
+            uv run molecule -c ../../../molecule/ext/molecule-src/molecule.yml test --all; \
           fi
