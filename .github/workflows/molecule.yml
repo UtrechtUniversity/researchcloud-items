@@ -71,6 +71,14 @@ jobs:
           echo "Changed playbooks: $PLAYBOOKS"
           echo "Changed roles: $ROLES"
 
+          # Parse role scenarios (only for directories inside playbooks/roles)
+          ROLE_SCENARIOS=()
+          for ROLE in $ROLES; do
+            # Extract top-level role path, e.g., playbooks/roles/openrefine/
+            ROLE_DIR=$(echo "$ROLE" | cut -d'/' -f 1-3)
+            ROLE_SCENARIOS+=("$ROLE_DIR")
+          done
+
           # Parse playbook scenarios (only for top-level files in playbooks/)
           PLAYBOOK_SCENARIOS=()
           for PLAYBOOK in $PLAYBOOKS; do
@@ -78,7 +86,7 @@ jobs:
             # This can be a path in playbooks/*.yml or in molecule/playbook-*
             if [[ "$PLAYBOOK" =~ ^playbooks/[^/]+\.yml$ ]]; then
               SCENARIO_NAME=$(basename "$PLAYBOOK" .yml | sed 's/^/playbook-/')
-            elif [[ "$PLAYBOOK" == molecule/playbook-*/* ]]; then
+            elif [[ "$PLAYBOOK" == molecule/playbook-*/* && "$PLAYBOOK" != *triggered_by_role.txt ]]; then
               # change molecule/playbook-foo/* to 'playbook-foo'
               SCENARIO_NAME="${PLAYBOOK#molecule/}"
               SCENARIO_NAME="${SCENARIO_NAME%%/*}"
@@ -88,12 +96,25 @@ jobs:
             fi
           done
 
-          # Parse role scenarios (only for directories inside playbooks/roles)
-          ROLE_SCENARIOS=()
-          for ROLE in $ROLES; do
-            # Extract top-level role path, e.g., playbooks/roles/openrefine/
-            ROLE_DIR=$(echo "$ROLE" | cut -d'/' -f 1-3)
-            ROLE_SCENARIOS+=("$ROLE_DIR")
+          # each playbook scenario dir can contain a file 'triggered_by_role.txt'
+          # ensure that changes to any roles mentioned in that file also trigger a playbook test
+          for item in "${ROLE_SCENARIOS[@]}"; do
+              # Extract role name from `playbooks/roles/<role_name>` (last path component)
+              role="${item##*/}"
+
+              # Loop through all playbook scenarios
+              for scenario in molecule/playbook-*; do
+                  trigger_file="$scenario/triggered_by_role.txt"
+
+                  # Skip if file doesn't exist
+                  [[ -f "$trigger_file" ]] || continue
+
+                  # Filter comments, match whole word
+                  if grep -v '^\s*#' "$trigger_file" | grep -Fxq "$role"; then
+                      echo "Triggering playbook run for $scenario because role $role changed."
+                      PLAYBOOK_SCENARIOS+=("${scenario##*/}")
+                  fi
+              done
           done
 
           # Deduplicate and convert to JSON arrays, ensure default empty arrays if no changes
