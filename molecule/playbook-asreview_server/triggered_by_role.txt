@@ -1,0 +1,3 @@
+# this file lists roles which, when changed, will trigger a molecule CI run for this playbook.
+# this is implemented in the molecule.yml workflow
+nginx_reverse_proxy
