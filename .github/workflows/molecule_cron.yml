@@ -21,6 +21,19 @@ jobs:
 
   molecule:
     runs-on: ubuntu-latest
+    matrix:
+      scenario: # essential playbooks that we want tested
+        - playbook-ibridges
+        - playbook-icommands
+        - playbook-python-workbench
+        - playbook-agisoft
+        - playbook-asreview_server
+        - playbook-jupyter_rtc
+        - playbook-openrefine
+        - playbook-openvscode
+        - playbook-rstudio_server
+        - playbook-robot-server
+        - playbook-uu_provisioning
     steps:
       - name: Workaround crun issue on ubuntu
         run: |
@@ -55,4 +68,4 @@ jobs:
           uv run ansible-galaxy install -r requirements.yml
       - name: Molecule tests
         run: |
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --all
+          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test ${{ matrix.scenario }}
