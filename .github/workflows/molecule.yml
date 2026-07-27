@@ -106,8 +106,8 @@ jobs:
           echo "Validated ROLE_MATRIX: $ROLE_MATRIX"
 
           # Set outputs with escaped values
-          echo "::set-output name=playbook_matrix::$(echo $PLAYBOOK_MATRIX | jq -c)"
-          echo "::set-output name=role_matrix::$(echo $ROLE_MATRIX | jq -c)"
+          echo "playbook_matrix=$(echo "$PLAYBOOK_MATRIX" | jq -c)" >> "$GITHUB_OUTPUT"
+          echo "role_matrix=$(echo "$ROLE_MATRIX" | jq -c)" >> "$GITHUB_OUTPUT"
 
   playbook_tests:
     needs: define_changes
