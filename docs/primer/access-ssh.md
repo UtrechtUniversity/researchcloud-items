@@ -1,5 +1,5 @@
 # Access workspace using Secure Shell
-[back to index](../primer-for-users.md)
+[back to index](./first-time-use.md)
 
 SURF ResearchCloud supports key-based access. 
 

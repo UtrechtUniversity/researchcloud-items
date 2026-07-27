@@ -24,7 +24,7 @@ Other configurations are obtained by setting any of the below Ansible variables 
 
 We recommend to combine Keycloak with a web server (nginx) as a reverse proxy to add
 internet access and encrypt all communication. Just add role 
-[keycloak_behind_nginx](./keycloak_behind_nginx.md) to your playbook.
+[keycloak_behind_nginx](../roles/keycloak.md) to your playbook.
 
 ## Variables
 The following variables and defaults are available:
@@ -43,7 +43,7 @@ keycloak_create_admin: True
 ``` 
 
 ## See also
-Role [keycloak_behind_nginx](./keycloak_behind_nginx.md).
+Role [keycloak](../roles/keycloak.md)
 
 
 ## History

@@ -53,7 +53,7 @@ This allows consumers to choose between strict stability and automatic updates w
 ## Documentation
 Script developers, please consult the [developer documentation](docs/index.md) before using a playbook 
 to find out if the playbook meets your use case.
-For end-users, there is a [Primer SURF ResearchCloud](docs/primer-for-users.md).
+For end-users, there is a [Primer SURF ResearchCloud](docs/primer/introduction.md).
 
 ## Applicable licences
 Some of the code maintained in this repo is derived from other sources. As a consequence, unfortunately we are unable to provide the entire repo content under a single general license. We use the following licensing policy:

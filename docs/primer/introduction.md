@@ -1,5 +1,5 @@
 # Introduction
-[back to index](../primer-for-users.md)
+[back to index](../index.md)
 
 See [here](https://utrechtuniversity.github.io/vre-docs/docs/research-cloud-intro.html) for a general explanation of what ResearchCloud is.
 

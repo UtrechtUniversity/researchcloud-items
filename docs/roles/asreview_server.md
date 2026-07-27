@@ -36,7 +36,7 @@ This role installs the ASReview webapplication. It utilizes the [nginx_reverse_p
 
 - Role [flask_app](./flask_app.md)
 - Role [nginx_reverse_proxy](./nginx_reverse_proxy.md)
-- Playbook [asreview_server](../playbooks/asreview_server.md)
+- Playbook [asreview_server](../playbooks/asreview.md)
 
 ## History
 2025 Written by Dawa Ometto (Utrecht University)

@@ -1,5 +1,5 @@
 # Utrecht University contacts for SURF Research Cloud
-(back to [end-user documentation](primer-for-users.md))   
+(back to [end-user documentation](./primer/introduction.md))   
 
 ## Service administration and support
 Our Research Information Systems support staff make sure that requests and

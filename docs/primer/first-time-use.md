@@ -1,5 +1,5 @@
 # ResearchCloud first-time use
-[back to index](../primer-for-users.md)
+[back to index](./first-time-use.md)
 
 
 ## Preparation
@@ -12,7 +12,7 @@ If you start a new project, use a UU Servicedesk call to [request a new collabor
 
 - When using your web browser for accessing a workspace, you need to configure 
 a [time-based token](access-browser.md).
-Please consult the table in [Options for accessing your workspace](../primer-for-users.md) for 
+Please consult the table in [Options for accessing your workspace](./introduction.md) for 
 any other methods of access.
 
 ## Advanced usage
