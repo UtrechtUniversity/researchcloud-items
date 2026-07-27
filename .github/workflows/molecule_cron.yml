@@ -5,20 +5,22 @@ on:
     - cron: '22 2 * * 3'  # 2:22am on Monday
   workflow_dispatch:
 
+env:
+  DOCKER_USER: ${{ github.actor }}
+  DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
+  DOCKER_REGISTRY: ghcr.io
+  ANSIBLE_FORCE_COLOR: '1'
+  ANSIBLE_CALLBACK_RESULT_FORMAT: yaml
+  MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
+  REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
+  ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
+  CRUN_VER: 1.11.2
+  VIRTUAL_ENV: ${{ github.workspace }}/.venv
+
 jobs:
 
   molecule:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_USER: ${{ github.actor }}
-      DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
-      DOCKER_REGISTRY: ghcr.io
-      ANSIBLE_FORCE_COLOR: '1'
-      ANSIBLE_CALLBACK_RESULT_FORMAT: yaml
-      MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
-      REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
-      ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
-      CRUN_VER: 1.11.2
     steps:
       - name: Workaround crun issue on ubuntu
         run: |
@@ -36,12 +38,21 @@ jobs:
           EOF
       - name: Checkout
         uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - name: Set Up Python
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
-      - run: pip install -r ${{ env.REQUIREMENTS_FILE }}
-      - run: ansible-galaxy install -r ${{ env.ANSIBLE_REQUIREMENTS_FILE }}
-      - run: ansible-galaxy install -r requirements.yml
+
+      - name: Set up UV and caching
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: |
+          uv venv $VIRTUAL_ENV
+          uv pip install -r ${{ env.REQUIREMENTS_FILE }}
+          uv run ansible-galaxy install -r ${{ env.ANSIBLE_REQUIREMENTS_FILE }}
+          uv run ansible-galaxy install -r requirements.yml
       - name: Molecule tests
         run: |
-          molecule -c ${{ env.MOLECULE_CONFIG }} test --all
+          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --all

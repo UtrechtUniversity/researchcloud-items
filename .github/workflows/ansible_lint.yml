@@ -29,13 +29,25 @@ jobs:
   build:
     name: Ansible Lint # Naming the build is important to use it as a status check
     runs-on: ubuntu-latest
+    env:
+      VIRTUAL_ENV: ${{ github.workspace }}/.venv
     steps:
-      - uses: actions/setup-python@v7
+      - name: Set Up Python
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - uses: actions/checkout@v7
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
+
+      - name: Set up UV and caching
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
         with:
-          args: "playbooks/"
-          setup_python: "false"
+          enable-cache: true
+
+      - uses: actions/checkout@v7
+      - name: Install Dependencies
+        run: |
+          uv venv $VIRTUAL_ENV
+          uv pip install ansible-lint
+
+      - name: Run Ansible Lint
+        run: |
+          uv run ansible-lint playbooks/

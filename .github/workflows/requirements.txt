@@ -1,0 +1,4 @@
+# Specifies tools used in CI, so we get Security Advisories
+markdown-link-checker
+ansible-lint
+ansible-galaxy
