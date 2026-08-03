@@ -167,7 +167,11 @@ jobs:
 
       - name: Run Molecule Tests for Playbook
         run: |
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.playbook }}
+          scenario_suffix=""
+          if [[ -d molecule/${{ matrix.playbook }}/default ]]; then # nested scenario
+            scenario_suffix="/*"
+          fi
+          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.playbook }}$scenario_suffix
 
   role_tests:
     needs: define_changes
