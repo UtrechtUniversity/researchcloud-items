@@ -1,0 +1,18 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+
+- name: Import playbook # install JupyterHub before we test this scenario
+  ansible.builtin.import_playbook: "../../playbooks/openvscodeserver.yml"
+  vars:
+    openvscode_base_path: "/ide"
+    openvscode_jupyter_force_install: 'true'
+    jhsp_external_addr: localhost:8080
+    jupyterhub_app_pip_executable: uv_pip
+    jupyterhub_debug: true
+    jupyterhub_auth: noauth
+    jupyterhub_activate_remote_user_auth: true
+    jupyterhub_proxy_config:
+      proxy_set_header:
+        REMOTE_USER: "$$http_user"
