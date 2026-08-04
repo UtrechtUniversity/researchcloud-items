@@ -11,13 +11,3 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: rstudio
-        path: rstudio_server.yml
-        parameters:
-          rstudio_base_path: "/rstudio"
-          rstudio_standalone: 'false'
-          jupyterhub_app_pip_executable: uv_pip

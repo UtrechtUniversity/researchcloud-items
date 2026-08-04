@@ -24,7 +24,7 @@
       delegate_to: localhost
       community.docker.docker_compose_v2:
         project_name: molecule-robot_server
-        project_src: ../../playbook-matlab # relative to <repo_root>/molecule/ext/src-molecule
+        project_src: ./
       environment:
         PUBLIC_KEY: "{{ ssh_pubkey.content | b64decode }}"
 
