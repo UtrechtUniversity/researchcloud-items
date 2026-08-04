@@ -32,7 +32,7 @@ jobs:
           - playbook-jupyter_rtc
           - playbook-matlab
           - playbook-openrefine
-          - playbook-openvscode
+          - playbook-openvscodeserver
           - playbook-reverse_proxy
           - playbook-rstudio_server
           - playbook-robot-server
