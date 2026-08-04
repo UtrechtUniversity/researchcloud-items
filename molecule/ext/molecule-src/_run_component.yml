@@ -30,7 +30,7 @@
         chdir: "{{ remote_plugin.script_folder }}"
       environment:
         VIRTUAL_ENV: "{{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default('/etc/src/venv/ansible_env', true) }}"
-        ANSIBLE_COLLECTIONS_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATHS') }}:{{ remote_plugin.script_folder }}"
+        ANSIBLE_COLLECTION_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTION_PATHS') }}:{{ remote_plugin.script_folder }}"
 
     - name: Install collection dependencies for Ansible plugin
       when: requirements_path is defined
@@ -40,7 +40,7 @@
         chdir: "{{ remote_plugin.script_folder }}"
       environment:
         VIRTUAL_ENV: "{{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default('/etc/src/venv/ansible_env', true) }}"
-        ANSIBLE_COLLECTIONS_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATHS') }}:{{ remote_plugin.script_folder }}"
+        ANSIBLE_COLLECTION_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTION_PATHS') }}:{{ remote_plugin.script_folder }}"
 
 - name: Test the component by executing it using ansible on the workspace
   ansible.builtin.command: >
@@ -49,8 +49,9 @@
   register: ansible_on_workspace
   changed_when: >
     ansible_on_workspace.stdout_lines is not defined or
+    (ansible_on_workspace.stdout_lines | length < 3) or
     'changed=0' not in
     ansible_on_workspace.stdout_lines[ lookup('ansible.utils.index_of', ansible_on_workspace.stdout_lines, 'regex', '\s*PLAY RECAP\s*', wantlist=True)[0]+1 ]
   environment:
     VIRTUAL_ENV: "{{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default('/etc/src/venv/ansible_env', true) }}"
-    ANSIBLE_COLLECTIONS_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATHS') }}:{{ remote_plugin.script_folder | basename }}"
+    ANSIBLE_COLLECTION_PATHS: "{{ lookup('env', 'ANSIBLE_COLLECTION_PATHS') }}:{{ remote_plugin.script_folder | basename }}"

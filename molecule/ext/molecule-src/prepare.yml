@@ -30,7 +30,7 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
-      when: ansible_os_family == 'Debian'
+      when: ansible_facts['os_family'] == 'Debian'
 
 - name: Execute optional extra preparations
   # check if a prepare.yml exists in the scenario's directory, and if so, run it.
