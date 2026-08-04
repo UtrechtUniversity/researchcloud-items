@@ -22,7 +22,7 @@ env:
   DOCKER_USER: ${{ github.actor }}
   DOCKER_PW: ${{ secrets.GITHUB_TOKEN }}
   DOCKER_REGISTRY: ghcr.io
-  ANSIBLE_FORCE_COLOR: '1'
+  ANSIBLE_FORCE_COLOR: '0' # ANSI coloring disables GitHub's ability to mask secrets.
   ANSIBLE_CALLBACK_RESULT_FORMAT: yaml
   MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
   REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
