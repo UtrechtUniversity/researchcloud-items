@@ -11,12 +11,3 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: jupyter_rtc
-        path: jupyter_rtc.yml
-        parameters:
-          jupyterhub_rtc_venv: /usr/local/jupyterhub
-          jupyterhub_rtc_config_path: /usr/local/etc/jupyter/jupyterhub_config.py

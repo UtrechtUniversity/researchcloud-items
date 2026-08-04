@@ -16,13 +16,3 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: agisoft
-        path: agisoft.yml
-        parameters:
-          license: |
-            FOO
-            BAR
