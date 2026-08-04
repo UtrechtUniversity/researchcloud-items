@@ -2,14 +2,13 @@
 - name: Install dependencies
   ansible.builtin.apt:
     pkg:
-      - libgl1-mesa-glx
-      - libegl1-mesa
-      - libxrandr2
+      - libgl1
+      - libglx-mesa0
       - libxrandr2
       - libxss1
       - libxcursor1
       - libxcomposite1
-      - libasound2
+      - libasound2t64
       - libxi6
       - libxtst6
     state: present
