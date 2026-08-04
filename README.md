@@ -59,7 +59,7 @@ That's it for setup! You're now ready to start [adding your own scenarios](#addi
 
 Molecule runs tests for each *scenario* defined under the `molecule` directory. You can think of each scenario as a self-contained test suite. A scenario is just a subdirectory of the `molecule` directory that contains a number of configuration files and playbooks. For our purposes, these are minimally:
 
-* `molecule.yml` - sets general configuration variables for the test suite (e.g. what platform to run on). Overrides the defaults in `molecule/ext/molecule-src/molecule.yml`.
+* `molecule.yml` - sets general configuration variables for the test suite (e.g. what images to run the tests on). Overrides the defaults in `molecule/ext/molecule-src/molecule.yml`.
 * `prepare.yml`  - a playbook used to make preparations on the container before running the Ansible code that we want to test on it.
 * `converge.yml` - a playbook that specifies how to deploy the Ansible role or playbook that we want to test on the container.
 * `verify.yml`   - a playbook that contains additional test assertions after the `converge` step is run.
@@ -73,27 +73,23 @@ We want this procedure because that is [how components are actually deployed ont
 
 To help us achieve this, the `default` scenario contains a `prepare.yml` that takes care of 1., and a `converge.yml` that takes care of 2. Each individual scenario will automatically use these default playbooks, as long as `molecule` is run with the ` -c molecule/default/molecule.yml`.
 
+Information about the component that should be executed for each scenario is defined by a `.env.yml` file inside the scenario. See [here](#adding-scenarios).
+
 ### Adding scenarios
 
 To create a Molecule scenario to test, just create a subdirectory of the `molecule` directory, e.g.:
 
 `mkdir molecule/my-component`
 
-Now add a `molecule.yml` file to the `my-component` subdirectory, with contents like the following:
+Now add a `.env.yml` file to the `my-component` subdirectory, with contents like the following:
 
 ```yaml
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: my-component
-        path: my-component.yaml
-        parameters: # Define all parameters needed by the component here
-          my_component_param1: 'Foo'
-      - name: my-git-component # You can also provide components that should be cloned onto the workspace using git
-        git: https://github.com/foo/bar.git
-        version: my_branch
-        path: playbook.ymk
+---
+components:
+  - path: my-component.yaml
+    # dir: /path/to/directory # this is not necessary -- the default is to use the directory defined by the PLAYBOOK_DIR env variable, set in molecule.yml
+    parameters: # Define all parameters needed by the component here
+      my_component_param1: 'Foo'
 ```
 
 The above config file does not provide a `platforms` key, so tests for this scenario will use the default platforms (containers) specified in `molecule/ext/molecule-src/molecule.yml` (Ubuntu Focal and Ubuntu Jammy). You can override this by adding your own platform definition, e.g.:
@@ -118,7 +114,7 @@ The molecule tests can use either Docker or Podman (default). You can override t
 
 ### Adding additional preparation tasks
 
-Sometimes it may be helpful to perform certain tasks before the `converge` step. The default `prepare.yml` playbook will check if the user has set the `extra_prepare_tasks` key in the scenario's `molecule.yml` `env` section. Set this key to a relative path to a playbook (relative to the location of the default molecule configuration), and the tasks in that playbook will be executed at the end of the `prepare` step.
+Sometimes it may be helpful to perform certain tasks before the `converge` step. The default `prepare.yml` playbook will check if the user has defined a `prepare.yml` inside the scenario, and that playbook will be executed at the end of the `prepare` step.
 
 ### Adding additional assertions
 

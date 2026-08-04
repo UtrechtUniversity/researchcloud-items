@@ -1,0 +1,8 @@
+---
+- name: Skip extra preparations
+  hosts: all
+  gather_facts: false
+  tasks: []
+  # see prepare.yml
+  # this is a workaround for the fact that import_playbook can't take a variable set at runtime as argument.
+  # this file provides a fallback in case no additional prepare.yml was found in the scenario directory.

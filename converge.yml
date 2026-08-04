@@ -2,12 +2,13 @@
 - name: Converge
   hosts: all
   gather_facts: false
+  vars:
+    target_dir: "/rsc/plugins/{{ item.path | basename | splitext | first }}/"
+  vars_files:
+    - "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}/.env.yml" # should set 'components'
   tasks:
-    - name: Debug -- list all components to be executed
-      ansible.builtin.debug:
-        msg: "{{ item.name }}"
-      with_items: "{{ lookup('env', 'components') | from_yaml }}"
-
+    # here we mimick the SRC-External plugin: https://gitlab.com/rsc-surf-nl/plugins/plugin-external-plugin
+    # in the future, we might use the actual SRC-External plugin for testing
     - name: Run components
       ansible.builtin.include_tasks: _run_component.yml
       vars:
@@ -15,6 +16,6 @@
           script_type: Ansible PlayBook
           arguments: -i 127.0.0.1, --skip-tags {{ ansible_skip_tags | join(',') }}
           parameters: "{{ item.parameters | default({}) | to_json }}"
-          script_folder: "{{ item.name }}"
+          script_folder: "{{ target_dir }}"
           path: "{{ item.path }}"
-      with_items: "{{ lookup('env', 'components') | from_yaml }}"
+      with_items: "{{ components }}"
