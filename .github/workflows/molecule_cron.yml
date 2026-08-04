@@ -26,11 +26,13 @@ jobs:
         - playbook-ibridges
         - playbook-icommands
         - playbook-python-workbench
-        - playbook-agisoft
         - playbook-asreview_server
+        - playbook-jupyterhub
         - playbook-jupyter_rtc
+        - playbook-matlab
         - playbook-openrefine
         - playbook-openvscode
+        - playbook-reverse_proxy
         - playbook-rstudio_server
         - playbook-robot-server
         - playbook-uu_provisioning
