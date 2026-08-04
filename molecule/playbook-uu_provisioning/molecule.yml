@@ -8,9 +8,3 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: uu_provisioning
-        path: uu_provisioning.yml

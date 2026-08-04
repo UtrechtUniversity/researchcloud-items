@@ -11,11 +11,3 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-provisioner:
-  name: ansible
-  env:
-    components:
-      - name: openvscodeserver
-        path: openvscodeserver.yml
-        parameters:
-          openvscode_jupyter_force_install: 'false'

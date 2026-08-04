@@ -10,7 +10,7 @@ driver:
         password: $DOCKER_PW
 platforms:
   - name: workspace-src-ubuntu_desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop
     privileged: ${CI-false}
     capabilities:
       - SYS_ADMIN
@@ -31,15 +31,3 @@ scenario:
     - idempotence
     - cleanup
     - destroy
-provisioner:
-  name: ansible
-  config_options:
-    defaults:
-      remote_tmp: /tmp
-  env:
-    extra_prepare_tasks: ../../playbook-matlab/extra_prepare.yml  # relative to <repo_root>/molecule/ext/src-molecule
-    components:
-      - name: matlab
-        path: matlab.yml
-        parameters:
-          matlab_iso_dir: "/data/volume_2"  # This needs to be the same here, in docker-compose.yml, and in extra_prepare.yml

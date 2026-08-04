@@ -11,10 +11,3 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
-provisioner:
-  name: ansible
-  env:
-    ANSIBLE_ROLES_PATH: ../../../
-    components:
-      - name: keycloak
-        path: keycloak.yml
