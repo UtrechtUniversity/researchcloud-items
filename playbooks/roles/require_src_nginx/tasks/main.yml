@@ -13,15 +13,14 @@
         - location = /oauth2_callback {
         - location = /validate {
 
+    - name: Check if nginx is running # noqa command-instead-of-module
+      # use command instead of module to speed up deployments
+      ansible.builtin.command: systemctl is-active nginx
+      register: nginx_check
+      failed_when: false
+      changed_when: false
+
     - name: Stop if SRC nginx config is not present
       ansible.builtin.fail:
-        msg: The SRC-Nginx component must be run before this component
-      when: src_nginx_config.changed
-
-    - name: Populate service facts
-      ansible.builtin.service_facts:
-
-    - name: Stop if nginx is not installed
-      ansible.builtin.fail:
-        msg: Nginx must be installed and active for this component to work.
-      when: services['nginx.service'].state | default('not found', true) != 'running'
+        msg: SRC-Nginx is not installed or active. SRC-Nginx component must be run before this component.
+      when: src_nginx_config.changed or nginx_check.stdout != 'active'
