@@ -21,7 +21,7 @@ jobs:
   molecule:
     runs-on: ubuntu-latest
     strategy:
-      fail_fast: false
+      fail-fast: false
       matrix:
         scenario: # essential playbooks that we want tested
           - playbook-ibridges
