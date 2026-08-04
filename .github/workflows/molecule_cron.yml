@@ -1,8 +1,8 @@
 ---
-name: Biweekly molecule run for playbooks
+name: Weekly molecule run for playbooks
 on:
   schedule:
-    - cron: '22 2 * * 3'  # 2:22am on Monday
+    - cron: '22 1 * * 1'  # 1:22am on Monday
   workflow_dispatch:
 
 env:
@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        fail_fast: false
         scenario: # essential playbooks that we want tested
           - playbook-ibridges
           - playbook-icommands
@@ -74,5 +75,4 @@ jobs:
           if [[ -d molecule/${{ matrix.scenario }}/default ]]; then # nested scenario
             scenario_suffix="/*"
           fi
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.playbook }}$scenario_suffix
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test ${{ matrix.scenario }}$scenario_suffix
+          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.scenario }}$scenario_suffix
