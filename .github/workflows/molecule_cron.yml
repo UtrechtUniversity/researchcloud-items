@@ -18,24 +18,24 @@ env:
   VIRTUAL_ENV: ${{ github.workspace }}/.venv
 
 jobs:
-
   molecule:
     runs-on: ubuntu-latest
-    matrix:
-      scenario: # essential playbooks that we want tested
-        - playbook-ibridges
-        - playbook-icommands
-        - playbook-python-workbench
-        - playbook-asreview_server
-        - playbook-jupyterhub
-        - playbook-jupyter_rtc
-        - playbook-matlab
-        - playbook-openrefine
-        - playbook-openvscode
-        - playbook-reverse_proxy
-        - playbook-rstudio_server
-        - playbook-robot-server
-        - playbook-uu_provisioning
+    strategy:
+      matrix:
+        scenario: # essential playbooks that we want tested
+          - playbook-ibridges
+          - playbook-icommands
+          - playbook-python-workbench
+          - playbook-asreview_server
+          - playbook-jupyterhub
+          - playbook-jupyter_rtc
+          - playbook-matlab
+          - playbook-openrefine
+          - playbook-openvscode
+          - playbook-reverse_proxy
+          - playbook-rstudio_server
+          - playbook-robot-server
+          - playbook-uu_provisioning
     steps:
       - name: Workaround crun issue on ubuntu
         run: |
