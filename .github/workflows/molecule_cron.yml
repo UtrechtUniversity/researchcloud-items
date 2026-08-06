@@ -56,8 +56,12 @@ jobs:
           uv run ansible-galaxy install -r requirements.yml
       - name: Molecule tests
         run: |
-          scenario_suffix=""
-          if [[ -d molecule/${{ matrix.scenario }}/default ]]; then # nested scenario
-            scenario_suffix="/*"
+          SCENARIO="${{ matrix.scenario }}"
+          PLAYBOOK_NAME="${SCENARIO#playbook-}"
+          if [[ -d molecule/${SCENARIO} ]] && [[ -f playbooks/${PLAYBOOK_NAME}.yml ]]; then
+            scenario_suffix=""
+            if [[ -d molecule/${SCENARIO}/default ]]; then # nested scenario
+              scenario_suffix="/*"
+            fi
+            uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${SCENARIO}${scenario_suffix}
           fi
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.scenario }}$scenario_suffix

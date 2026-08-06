@@ -116,6 +116,29 @@ jobs:
               done
           done
 
+          # Filter out playbook scenarios where the underlying playbook file no longer exists
+          FILTERED_PLAYBOOK_SCENARIOS=()
+          for scenario in "${PLAYBOOK_SCENARIOS[@]}"; do
+            playbook_name="${scenario#playbook-}"
+            if [[ -f "playbooks/${playbook_name}.yml" ]]; then
+              FILTERED_PLAYBOOK_SCENARIOS+=("$scenario")
+            else
+              echo "Skipping scenario $scenario: playbooks/${playbook_name}.yml does not exist."
+            fi
+          done
+          PLAYBOOK_SCENARIOS=("${FILTERED_PLAYBOOK_SCENARIOS[@]}")
+
+          # Filter out role scenarios where the underlying role directory no longer exists
+          FILTERED_ROLE_SCENARIOS=()
+          for item in "${ROLE_SCENARIOS[@]}"; do
+            if [[ -d "$item" ]]; then
+              FILTERED_ROLE_SCENARIOS+=("$item")
+            else
+              echo "Skipping scenario for $item: directory does not exist."
+            fi
+          done
+          ROLE_SCENARIOS=("${FILTERED_ROLE_SCENARIOS[@]}")
+
           # Deduplicate and convert to JSON arrays, ensure default empty arrays if no changes
           if [[ ${#PLAYBOOK_SCENARIOS[@]} -eq 0 ]]; then
             PLAYBOOK_MATRIX="[]"
@@ -166,11 +189,15 @@ jobs:
 
       - name: Run Molecule Tests for Playbook
         run: |
-          scenario_suffix=""
-          if [[ -d molecule/${{ matrix.playbook }}/default ]]; then # nested scenario
-            scenario_suffix="/*"
+          SCENARIO="${{ matrix.playbook }}"
+          PLAYBOOK_NAME="${SCENARIO#playbook-}"
+          if [[ -d molecule/${SCENARIO} ]] && [[ -f playbooks/${PLAYBOOK_NAME}.yml ]]; then
+            scenario_suffix=""
+            if [[ -d molecule/${SCENARIO}/default ]]; then # nested scenario
+              scenario_suffix="/*"
+            fi
+            uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${SCENARIO}${scenario_suffix}
           fi
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.playbook }}$scenario_suffix
 
   role_tests:
     needs: define_changes
@@ -202,6 +229,8 @@ jobs:
 
       - name: Run Molecule Tests for Role
         run: |
-          cd ${{ matrix.role }} && if [[ -d molecule ]]; then \
-            uv run molecule -c ../../../molecule/ext/molecule-src/molecule.yml test --all; \
+          if [[ -d ${{ matrix.role }} ]]; then # if the role directory actually exists; this will not be the case when deleting a role!
+            cd ${{ matrix.role }} && if [[ -d molecule ]]; then \
+              uv run molecule -c ../../../molecule/ext/molecule-src/molecule.yml test --all; \
+            fi
           fi
