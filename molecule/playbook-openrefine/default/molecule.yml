@@ -11,3 +11,10 @@ platforms:
       credentials:
         username: $DOCKER_USER
         password: $DOCKER_PW
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../../ext/molecule-src/converge.yml
+    prepare: ../../ext/molecule-src/prepare.yml
+  env:
+    PLAYBOOK_DIR: ../../../playbooks
