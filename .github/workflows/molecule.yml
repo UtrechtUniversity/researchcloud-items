@@ -205,7 +205,7 @@ jobs:
 
       - name: Run Molecule Tests for Role
         run: |
-          if [[ -d molecule/${{ matrix.playbook }} ]]; then # if the role directory actually exists; this will not be the case when deleting a role!
+          if [[ -d ${{ matrix.role }} ]]; then # if the role directory actually exists; this will not be the case when deleting a role!
             cd ${{ matrix.role }} && if [[ -d molecule ]]; then \
               uv run molecule -c ../../../molecule/ext/molecule-src/molecule.yml test --all; \
             fi
