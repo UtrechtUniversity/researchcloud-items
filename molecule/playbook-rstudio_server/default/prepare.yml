@@ -3,10 +3,9 @@
   hosts: all
   gather_facts: false
 
-- name: Import playbook # install JupyterHub before we test this scenario
-  ansible.builtin.import_playbook: "../../playbooks/jupyterhub.yml"
+- name: Import playbook
+  ansible.builtin.import_playbook: "../../../playbooks/jupyterhub.yml"
   vars:
-    jupyterhub_debug: true
     jupyter_auth: noauth
     jupyter_activate_remote_user_auth: true
     jupyter_proxy_config: "{ proxy_set_header: { REMOTE_USER: '$http_user'} }"
