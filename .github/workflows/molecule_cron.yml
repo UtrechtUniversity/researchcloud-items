@@ -71,8 +71,10 @@ jobs:
           uv run ansible-galaxy install -r requirements.yml
       - name: Molecule tests
         run: |
-          scenario_suffix=""
-          if [[ -d molecule/${{ matrix.scenario }}/default ]]; then # nested scenario
-            scenario_suffix="/*"
+          if [[ -d molecule/${{ matrix.playbook }} ]]; then # if the playbook directory actually exists; this will not be the case when deleting a playbook!
+            scenario_suffix=""
+            if [[ -d molecule/${{ matrix.scenario }}/default ]]; then # nested scenario
+              scenario_suffix="/*"
+            fi
+            uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.scenario }}$scenario_suffix
           fi
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.scenario }}$scenario_suffix
