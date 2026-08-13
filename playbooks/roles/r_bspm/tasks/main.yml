@@ -43,4 +43,7 @@
           suppressMessages(bspm::enable())
           options(bspm.version.check=FALSE)
         create: true
+        owner: root
+        group: root
+        mode: "0644"
         append_newline: true
