@@ -13,6 +13,11 @@
         - location = /oauth2_callback {
         - location = /validate {
 
+    - name: Ensure nginx is running #
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+
     - name: Check if nginx is running # noqa command-instead-of-module
       # use command instead of module to speed up deployments
       ansible.builtin.command: systemctl is-active nginx
