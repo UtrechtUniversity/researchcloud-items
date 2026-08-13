@@ -118,7 +118,6 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [sshfs_mount](roles/sshfs_mount.md)
 - [sshfs_cleanup](roles/sshfs_cleanup.md)   
 - [system_python](roles/system_python.md) install latests version of python available through the system package manager
-- [tidyverse_dependencies](roles/tidyverse_dependencies.md)
 - [tigervnc](roles/tigervnc.md) installs TigerVNC server
 - [turbovnc](roles/turbovnc.md) installs TurboVNC server
 - [transferuser](roles/transferuser.md)
