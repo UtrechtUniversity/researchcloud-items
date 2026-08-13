@@ -1,0 +1,81 @@
+---
+- name: Configure Ubuntu R binary repositories
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'noble'
+  block:
+    - name: Install prerequisites for R Ubuntu binaries
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - gnupg
+        state: present
+        update_cache: true
+
+    - name: Check whether R Ubuntu binaries keyring is present
+      ansible.builtin.command:
+        argv:
+          - gpg
+          - --no-default-keyring
+          - --keyring
+          - /usr/share/keyrings/r2u.gpg
+          - --list-keys
+          - 51716619E084DAB9
+      register: r_ubuntu_binaries_keyring
+      changed_when: false
+      failed_when: false
+
+    - name: Import R Ubuntu binaries signing keys
+      ansible.builtin.command:
+        argv:
+          - gpg
+          - --homedir
+          - /tmp
+          - --no-default-keyring
+          - --keyring
+          - /usr/share/keyrings/r2u.gpg
+          - --keyserver
+          - keyserver.ubuntu.com
+          - --recv-keys
+          - A1489FE2AB99A21A
+          - 67C2D66C4B1D4339
+          - 51716619E084DAB9
+      when: r_ubuntu_binaries_keyring.rc != 0
+
+    - name: Configure r2u repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/r2u.sources
+        content: |
+          Types: deb
+          URIs: https://r2u.stat.illinois.edu/ubuntu
+          Suites: noble
+          Components: main
+          Arch: amd64, arm64
+          Signed-By: /usr/share/keyrings/r2u.gpg
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Configure CRAN repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/cran.sources
+        content: |
+          Types: deb
+          URIs: https://cloud.r-project.org/bin/linux/ubuntu
+          Suites: noble-cran40/
+          Components:
+          Arch: amd64, arm64
+          Signed-By: /usr/share/keyrings/r2u.gpg
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Configure CRAN Apt package pinning
+      ansible.builtin.copy:
+        dest: /etc/apt/preferences.d/99cranapt
+        content: |
+          Package: *
+          Pin: release o=CRAN-Apt Project
+          Pin: release l=CRAN-Apt Packages
+          Pin-Priority: 700
+        owner: root
+        group: root
+        mode: "0644"

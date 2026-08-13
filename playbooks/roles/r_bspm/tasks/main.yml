@@ -1,0 +1,46 @@
+---
+- name: Configure bspm for R
+  block:
+    - name: Check whether Rscript is available
+      ansible.builtin.command:
+        argv:
+          - Rscript
+          - --version
+      changed_when: false
+
+    - name: Install bspm dependencies
+      ansible.builtin.apt:
+        name:
+          - python3-dbus
+          - python3-gi
+          - python3-apt
+          - make
+        state: present
+
+    - name: Check whether bspm is installed
+      ansible.builtin.command:
+        argv:
+          - Rscript
+          - -e
+          - if (!requireNamespace("bspm", quietly = TRUE)) quit(status = 1)
+      register: r_bspm_status
+      changed_when: false
+      failed_when: false
+
+    - name: Install bspm
+      ansible.builtin.command:
+        argv:
+          - Rscript
+          - -e
+          - install.packages("bspm")
+      when: r_bspm_status.rc != 0
+
+    - name: Enable bspm in R profile
+      ansible.builtin.blockinfile:
+        path: /etc/R/Rprofile.site
+        marker: "# {mark} ANSIBLE MANAGED BLOCK r_bspm"
+        block: |
+          suppressMessages(bspm::enable())
+          options(bspm.version.check=FALSE)
+        create: true
+        append_newline: true
