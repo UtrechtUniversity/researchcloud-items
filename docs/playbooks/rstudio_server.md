@@ -3,7 +3,7 @@
 
 ## Summary
 
-This role installs [RStudio Server](https://posit.co/products/open-source/rstudio/), an open-source IDE for R programming. It integrates RStudio Server within a JupyterHub environment, enabling users to access the IDE via their browsers. Login via SRAM.
+This role installs [RStudio Server](https://posit.co/products/open-source/rstudio/), an open-source IDE for R programming. It integrates RStudio Server within a JupyterHub environment, enabling users to access the IDE via their browsers. Login via SRAM. The playbook also adds the [r2u](https://github.com/eddelbuettel/r2u) `apt` repository for precompiled CRAN packages reducing installation time of R packages.
 
 The playbook supports two modes of operation:
 1. **Standalone mode**: RStudio Server runs independently of JupyterLab. Users are immediately directed to RStudio.
@@ -26,6 +26,9 @@ In both modes, RStudio Server instances are spawned by JupyterHub and run under 
 - Role [rstudio](../roles/rstudio.md)
 - Role [jupyterhub_standalone_proxy](../roles/jupyterhub_standalone_proxy.md)
 - Role [jupyterhub_app](../roles/jupyterhub_app.md)
+- Role [r_ubuntu_binaries](../roles/r_ubuntu_binaries.md)
+- Role [r_bspm](../roles/r_bspm.md)
+
 
 ## History
 2026 Written by Dawa Ometto (Utrecht University).

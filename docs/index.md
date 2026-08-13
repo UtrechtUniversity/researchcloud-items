@@ -56,6 +56,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
+- [rstudio_server](playbooks/rstudio_server.md) [RStudio](https://docs.posit.co/ide/user/) IDE for R development
 - [r-workbench](playbooks/r-workbench.md)  R development
 - [stata](playbooks/stata.md)  Stata18 statistical analysis suite
 - [security_updates](playbooks/security_updates.md)  automatic updates for Ubuntu
@@ -110,6 +111,8 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [rust](roles/rust.md) install the Rust language
 - [require_src_docker](roles/require_src_docker.md)
 - [require_src_nginx](roles/require_src_nginx.md)
+- [r_bspm](roles/r_bspm.md)
+- [r_ubuntu_binaries](roles/r_ubuntu_binaries.md)
 - [security_updates](roles/security_updates.md)
 - [sshfs_configrobot](roles/sshfs_configrobot.md)
 - [sshfs_mount](roles/sshfs_mount.md)
