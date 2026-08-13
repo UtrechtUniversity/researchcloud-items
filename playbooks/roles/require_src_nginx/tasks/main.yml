@@ -18,13 +18,6 @@
         name: nginx
         state: started
 
-    - name: Check if nginx is running # noqa command-instead-of-module
-      # use command instead of module to speed up deployments
-      ansible.builtin.command: systemctl is-active nginx
-      register: nginx_check
-      failed_when: false
-      changed_when: false
-
     - name: Stop if SRC nginx config is not present
       ansible.builtin.fail:
         msg: SRC-Nginx is not installed or active. SRC-Nginx component must be run before this component.
