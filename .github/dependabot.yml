@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
-    directory: "/molecule/ext/molecule-src/ext/requirements.txt"
+    directory: "/molecule/ext/molecule-src/requirements.txt"
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
