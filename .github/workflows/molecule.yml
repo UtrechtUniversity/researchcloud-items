@@ -27,7 +27,6 @@ env:
   MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
   REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
   ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
-  CRUN_VER: 1.11.2
   VIRTUAL_ENV: ${{ github.workspace }}/.venv
 
 jobs:
