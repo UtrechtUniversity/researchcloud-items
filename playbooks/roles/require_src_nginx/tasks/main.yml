@@ -13,12 +13,12 @@
         - location = /oauth2_callback {
         - location = /validate {
 
+    - name: Stop if SRC nginx config is not present
+      ansible.builtin.fail:
+        msg: SRC-Nginx is not installed or active. SRC-Nginx component must be run before this component.
+      when: src_nginx_config.changed
+
     - name: Ensure nginx is running #
       ansible.builtin.systemd:
         name: nginx
         state: started
-
-    - name: Stop if SRC nginx config is not present
-      ansible.builtin.fail:
-        msg: SRC-Nginx is not installed or active. SRC-Nginx component must be run before this component.
-      when: src_nginx_config.changed or nginx_check.stdout != 'active'
