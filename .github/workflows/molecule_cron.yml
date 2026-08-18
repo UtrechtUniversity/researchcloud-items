@@ -14,7 +14,6 @@ env:
   MOLECULE_CONFIG: molecule/ext/molecule-src/molecule.yml
   REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.txt
   ANSIBLE_REQUIREMENTS_FILE: molecule/ext/molecule-src/requirements.yml
-  CRUN_VER: 1.11.2
   VIRTUAL_ENV: ${{ github.workspace }}/.venv
 
 jobs:
@@ -38,20 +37,6 @@ jobs:
           - playbook-robot-server
           - playbook-uu_provisioning
     steps:
-      - name: Workaround crun issue on ubuntu
-        run: |
-          mkdir -p "${HOME}/.local/bin"
-          curl -L "https://github.com/containers/crun/releases/download/${CRUN_VER}/crun-${CRUN_VER}-linux-amd64" -o "${HOME}/.local/bin/crun"
-          chmod +x "${HOME}/.local/bin/crun"
-          crun --version
-          mkdir -p "${HOME}/.config/containers"
-          cat << EOF > "${HOME}/.config/containers/containers.conf"
-          [engine.runtimes]
-          crun = [
-            "${HOME}/.local/bin/crun",
-            "/usr/bin/crun"
-          ]
-          EOF
       - name: Checkout
         uses: actions/checkout@v7
       - name: Set Up Python
@@ -60,7 +45,7 @@ jobs:
           python-version: '3.12'
 
       - name: Set up UV and caching
-        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d
         with:
           enable-cache: true
       - name: Install dependencies
@@ -71,8 +56,12 @@ jobs:
           uv run ansible-galaxy install -r requirements.yml
       - name: Molecule tests
         run: |
-          scenario_suffix=""
-          if [[ -d molecule/${{ matrix.scenario }}/default ]]; then # nested scenario
-            scenario_suffix="/*"
+          SCENARIO="${{ matrix.scenario }}"
+          PLAYBOOK_NAME="${SCENARIO#playbook-}"
+          if [[ -d molecule/${SCENARIO} ]] && [[ -f playbooks/${PLAYBOOK_NAME}.yml ]]; then
+            scenario_suffix=""
+            if [[ -d molecule/${SCENARIO}/default ]]; then # nested scenario
+              scenario_suffix="/*"
+            fi
+            uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${SCENARIO}${scenario_suffix}
           fi
-          uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${{ matrix.scenario }}$scenario_suffix

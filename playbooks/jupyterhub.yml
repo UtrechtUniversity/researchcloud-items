@@ -3,8 +3,7 @@
   hosts: all
   gather_facts: true
   vars:
-    _jupyterhub_default_pkgs: # Extensions that should be installed on the hub (pypi packages)
-      - jupyterlab-git
+    _jupyterhub_default_pkgs: [] # Extensions that should be installed on the hub (pypi
   roles:
     - role: fact_workspace_info
     - role: tigervnc

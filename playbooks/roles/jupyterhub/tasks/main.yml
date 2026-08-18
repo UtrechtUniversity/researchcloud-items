@@ -54,7 +54,6 @@
 - name: All tasks in this block should trigger restarts of the jupyter services
   notify: Reload jupyterhub service
   block:
-
     - name: Create Jupyter configuration directory
       ansible.builtin.file:
         path: "{{ jupyterhub_config_dir }}"
@@ -88,10 +87,19 @@
           - path: "{{ jupyterhub_venv }}"
             python_preference: system
 
-    - name: Ensure requirements file is present
+    - name: Ensure hub requirements file is present
       ansible.builtin.copy:
-        dest: /tmp/jupyterhub_requirements.txt
-        src: files/requirements.txt
+        dest: /tmp/hub-requirements.txt
+        src: files/hub-requirements.txt
+        owner: "{{ jupyterhub_user }}"
+        group: "{{ jupyterhub_user }}"
+        mode: "0600"
+
+    - name: Ensure lab requirements file is present
+      when: jupyterhub_enable_notebooks
+      ansible.builtin.copy:
+        dest: /tmp/lab-requirements.txt
+        src: files/lab-requirements.txt
         owner: "{{ jupyterhub_user }}"
         group: "{{ jupyterhub_user }}"
         mode: "0600"
@@ -101,7 +109,18 @@
       become: true
       ansible.builtin.pip:
         executable: uv_pip
-        requirements: /tmp/jupyterhub_requirements.txt
+        requirements: /tmp/hub-requirements.txt
+      environment:
+        VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
+        CC: gcc # https://github.com/astral-sh/uv/issues/6488
+
+    - name: Install JupyterLab and dependencies
+      when: jupyterhub_enable_notebooks
+      become_user: "{{ jupyterhub_user }}"
+      become: true
+      ansible.builtin.pip:
+        executable: uv_pip
+        requirements: /tmp/lab-requirements.txt
       environment:
         VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
         CC: gcc # https://github.com/astral-sh/uv/issues/6488
