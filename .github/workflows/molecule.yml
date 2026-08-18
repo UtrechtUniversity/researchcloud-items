@@ -161,6 +161,7 @@ jobs:
 
   playbook_tests:
     needs: define_changes
+    if: ${{ fromJSON(needs.define_changes.outputs.playbook_matrix)[0] != null }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -201,6 +202,7 @@ jobs:
 
   role_tests:
     needs: define_changes
+    if: ${{ fromJSON(needs.define_changes.outputs.role_matrix)[0] != null }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
