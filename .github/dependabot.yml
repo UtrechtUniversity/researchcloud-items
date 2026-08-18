@@ -6,11 +6,11 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/.github/workflows/requirements.txt"
+    directory: "/.github/workflows"
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
-    directory: "/molecule/ext/molecule-src/requirements.txt"
+    directory: "/molecule/ext/molecule-src"
     schedule:
       interval: "daily"
   - package-ecosystem: "pip"
