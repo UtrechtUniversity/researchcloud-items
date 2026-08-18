@@ -5,7 +5,6 @@
 
   roles:
     - role: fact_workspace_info
-    - role: tidyverse_dependencies # install tidyverse dependencies
     - role: install_role
       vars:
         install_role_roles:
