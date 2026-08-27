@@ -1,6 +1,6 @@
 ---
 jupyterhub_port: 8000
-jupyterhub_config_dir: /usr/local/etc/jupyter/
+jupyterhub_config_dir: /usr/local/etc/jupyterhub/
 jupyterhub_uri: /
 jupyterhub_auth: sram
 jupyterhub_bind_addr: 127.0.0.1
