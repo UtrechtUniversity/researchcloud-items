@@ -7,15 +7,9 @@
     owner: root
     group: root
 
-- name: Wait for sqlite cache to be available
-  ansible.builtin.wait_for:
-    path: /synergy_cache.sqlite
-
 - name: Init db
-  become: true
-  become_user: "{{ asreview_server_user }}"
   tags: molecule-idempotence-notest
-  ansible.builtin.command: "{{ asreview_server_config_dir }}/venv/bin/asreview auth-tool create-db --db-uri {{ asreview_server_db_uri }}"
+  ansible.builtin.command: "sudo -u{{ asreview_server_user }} {{ asreview_server_config_dir }}/venv/bin/asreview auth-tool create-db --db-uri {{ asreview_server_db_uri }}"
 
 - name: Run user cron job for the first time
   tags: molecule-idempotence-notest
