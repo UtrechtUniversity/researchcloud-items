@@ -2,11 +2,11 @@
 
 From the project root, run:
 
-`molecule -c molecule/ext/molecule-src/molecule.yml test -s <scenario-name>`
+`molecule -c extensions/molecule/ext/molecule-src/molecule.yml test -s <scenario-name>`
 
 ...where <scenario-name> is the name of one of the subdirectories of the `molecule` directory, e.g. `playbook-security_updates`. 
 
-Using `-c molecule/ext/molecule-src/molecule.yml` ensures molecule uses the default configuration [for testing Research Cloud images](https://github.com/UtrechtUniversity/SRC-molecule#scenarios).
+Using `-c extensions/molecule/ext/molecule-src/molecule.yml` ensures molecule uses the default configuration [for testing Research Cloud images](https://github.com/UtrechtUniversity/SRC-molecule#scenarios).
 
 **For more information on the molecule testing setup, see: https://github.com/UtrechtUniversity/SRC-molecule/blob/main/README.md**
 
