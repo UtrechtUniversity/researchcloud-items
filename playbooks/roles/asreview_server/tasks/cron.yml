@@ -7,6 +7,10 @@
     owner: root
     group: root
 
+- name: Wait for sqlite cache to be available
+  ansible.builtin.wait_for:
+    path: /synergy_cache.sqlite
+
 - name: Init db
   become: true
   become_user: "{{ asreview_server_user }}"
