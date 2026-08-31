@@ -15,3 +15,8 @@ platforms:
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
     command: /sbin/init
     pre_build_image: true
+    registry:
+      url: ${DOCKER_REGISTRY-""}
+      credentials:
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}

@@ -16,7 +16,7 @@ platforms:
     command: /sbin/init
     privileged: true # needed for snapd
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}

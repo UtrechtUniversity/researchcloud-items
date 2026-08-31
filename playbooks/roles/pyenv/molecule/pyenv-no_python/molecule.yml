@@ -12,7 +12,7 @@ platforms:
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal
     pre_build_image: true
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}

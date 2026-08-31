@@ -18,10 +18,10 @@ platforms:
       - 8080:80
     pre_build_image: true
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}
 scenario:
   test_sequence:
     - dependency

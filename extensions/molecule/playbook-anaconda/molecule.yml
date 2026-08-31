@@ -4,10 +4,10 @@ driver:
   image_settings: &image_settings
     pre_build_image: true
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}
 platforms:
   - name: workspace-src-ubuntu_desktop
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop

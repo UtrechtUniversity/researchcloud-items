@@ -16,19 +16,19 @@ platforms:
     command: /sbin/init
     pre_build_image: true
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}
   - name: workspace-src-ubuntu_jammy
     image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
     command: /sbin/init
     pre_build_image: true
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}
 scenario:
   test_sequence:
     - dependency
