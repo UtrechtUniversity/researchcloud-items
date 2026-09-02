@@ -59,7 +59,7 @@
     mode: "0644"
 
 - name: Create service file for app
-  notify: Retart app service
+  notify: Restart app service
   ansible.builtin.template:
     src: uwsgi.service.j2
     dest: /etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service
