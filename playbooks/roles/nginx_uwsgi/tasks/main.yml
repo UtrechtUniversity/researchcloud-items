@@ -50,6 +50,7 @@
     nginx_reverse_proxy_locations: "{{ [dict(uwsgi_default_proxy_config, **uwsgi_proxy_config)] }}"
 
 - name: Create uwsgi ini file for app
+  notify: Restart app service
   ansible.builtin.template:
     src: uwsgi-example.ini.j2
     dest: "{{ uwsgi_config_dir }}/{{ uwsgi_app_name }}.ini"
@@ -58,6 +59,7 @@
     mode: "0644"
 
 - name: Create service file for app
+  notify: Retart app service
   ansible.builtin.template:
     src: uwsgi.service.j2
     dest: /etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service
@@ -88,9 +90,3 @@
       }
     create: true
     mode: "0644"
-
-- name: Start app service
-  ansible.builtin.systemd_service:
-    name: uwsgi-{{ uwsgi_app_name }}
-    state: started
-    enabled: true
