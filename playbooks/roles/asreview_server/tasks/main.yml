@@ -110,7 +110,7 @@
       - create-db
       - --db-uri
       - "{{ asreview_server_db_uri }}"
-  creates: "{{ asreview_server_db_uri }}"
+    creates: "{{ asreview_server_db_uri }}"
 
 - name: Install ASReview using uv_tool role for use by other users
   ansible.builtin.include_role:
