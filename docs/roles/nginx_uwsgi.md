@@ -43,6 +43,7 @@ The nginx web server is used as a reverse proxy, using the [reverse_proxy](./ngi
 - `uwsgi_config`: Dict. Key/value pairs that will be translated to `uwsgi` settings added to the application's `.ini` file. Example: `{ callable: 'foobar' }` (see `uwsgi`'s docs for options). Default: empty.
 - `uwsgi_chdir`: String. Working directory which should be used to execute the app. Default: `uwsgi_app_dir`. Will be skipped if set to an empty string.
 - `uwsgi_config_block`: String. Multiline .ini style key/value pairs to be added to the application's `.ini` file.
+- `uwsgi_workin_dir`: String. Sets the working directory for the systemd service. Default: `/var/www/uwsgi`.
 
 ## See also
 

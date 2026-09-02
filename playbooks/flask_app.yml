@@ -15,8 +15,9 @@
     flask_app_http_password: "{{ flask_http_password | default('', true) }}"
     flask_app_proxy_auth: "{{ flask_proxy_auth | default('sram', true) }}"
     flask_app_location: "{{ flask_proxy_location | default('/', true) }}"
-    flask_app_uwsgi_env: "{{ dict( ( flask_uwsgi_env | default('') ).split(' ') | map('regex_search', '.+=.+') | select | map('split', '=')) }}" # String -> dict
+    # flask_uwsgi_env string to dict:
+    flask_app_uwsgi_env: "{{ dict( ( flask_uwsgi_env | default('') ).split(' ') | map('regex_search', '.+=.+') | select | map('split', '=')) }}"
     flask_app_uwsgi_config_block: "{{ flask_uwsgi_config_block | default('') | replace('\\n', '\n') }}"
-    flask_app_chdir: "{{ flask_chdir | default(true, true) }}"
+    flask_app_chdir: "{{ flask_chdir | default('', true) }}"
   roles:
     - role: flask_app

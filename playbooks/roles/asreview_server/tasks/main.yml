@@ -88,7 +88,6 @@
     flask_app_pip_requirements: "{{ asreview_server_requirements_file }}" # set the requirements file to install the app from
     flask_app_pip_pkg: asreview # specify which package from the requirements file is the actual app
     flask_app_module_path: webapp/app.py
-    flask_app_python_version: 3.11
     flask_app_name: asreview
     flask_app_proxy_auth: "{{ asreview_server_auth }}"
     flask_app_http_username: "{{ asreview_server_http_username }}"
@@ -96,11 +95,24 @@
     flask_app_proxy_config: "{{ asreview_server_proxy_config }}" # eventually passed to nginx_reverse_proxy role
     flask_app_uwsgi_config:
       module: asreview.webapp.app:create_app()
-    flask_app_chdir: false
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
     flask_app_venv_user: "{{ asreview_server_user }}"
+    flask_app_chdir: "{{ asreview_server_config_dir }}"
 
-- name: Install ASReview using uv_tool role
+- name: Init db
+  become: true
+  become_user: "{{ asreview_server_user }}"
+  ansible.builtin.command:
+    argv:
+      - "{{ asreview_server_config_dir }}/venv/bin/asreview"
+      - auth-tool
+      - create-db
+      - --db-uri
+      - "{{ asreview_server_db_uri }}"
+    chdir: "{{ asreview_server_config_dir }}"
+    creates: "{{ asreview_server_db_uri }}"
+
+- name: Install ASReview using uv_tool role for use by other users
   ansible.builtin.include_role:
     name: uv_tool
   vars:
