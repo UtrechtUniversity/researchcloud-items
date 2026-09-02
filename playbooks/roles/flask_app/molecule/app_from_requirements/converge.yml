@@ -5,7 +5,8 @@
   tasks:
     - name: Test
       block:
-        - ansible.builtin.include_role:
+        - name: Include flask_app
+          ansible.builtin.include_role:
             role: flask_app
           vars:
             flask_app_pip_requirements: /tmp/requirements.txt # set the requirements file to install the app from
@@ -24,7 +25,7 @@
       rescue:
         - name: Get error log
           ansible.builtin.slurp:
-            src:  /var/log/uwsgi/example_err.log 
+            src: /var/log/uwsgi/example_err.log
           register: errlog
 
         - name: Debug
