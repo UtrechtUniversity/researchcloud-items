@@ -6,9 +6,8 @@
     - role: flask_app
       vars:
         flask_app_pip_pkg: asreview
-        flask_app_version: 1.6
         flask_app_module_path: webapp/app.py
-        flask_app_python_version: 3.11
+        flask_app_python_version: 3.12
         flask_app_name: example
         flask_app_proxy_auth: basic
         flask_app_http_username: tester
