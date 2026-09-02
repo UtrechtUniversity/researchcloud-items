@@ -3,3 +3,9 @@
   ansible.builtin.service:
     name: nginx
     state: restarted
+
+- name: Restart app service
+  ansible.builtin.systemd_service:
+    name: uwsgi-{{ uwsgi_app_name }}
+    state: restarted
+    enabled: true
