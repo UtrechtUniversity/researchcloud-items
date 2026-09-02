@@ -20,3 +20,4 @@ flask_app_chdir: true
 flask_app_pip_requirements: ""
 flask_app_venv_user: www-data
 flask_app_venv_group: www-data
+flask_app_working_dir: ""

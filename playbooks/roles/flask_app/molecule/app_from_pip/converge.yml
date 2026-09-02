@@ -17,3 +17,4 @@
         flask_app_chdir: false
         flask_app_uwsgi_env:
           ASREVIEW_PATH: /var/www/example/asreview
+        uwsgi_working_dir: /var/www/example/

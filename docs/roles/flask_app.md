@@ -63,6 +63,7 @@ Many of the variables below are to configure the uWSGI settings. While individua
 - `flask_app_proxy_config`: Dict. Settings passed on to the [nginx_reverse_proxy](./nginx_reverse_proxy.md) location definition. By default it contains standard settings for authentication, based on the `flask_app_proxy_auth` variable. You can override these settings using the `auth` and `htpasswd` keys in this dict. You can also add other directives that will end up in the nginx location definition: see the [variables for nginx_reverse_proxy](./nginx_reverse_proxy.md#variables)).
 - `flask_app_http_username`: String. Optional, used if `flask_app_proxy_auth_basic` is enabled to set the username for authentication.
 - `flask_app_http_password`: String. Optional, used if `flask_app_proxy_auth_basic` is enabled to set the password for authentication.
+- `flask_app_working_dir`: String. Optional. If set, will be passed to the [nginx_uwsgi](../roles/nginx_uwsgi.md) role to set the uwsgi systemd service working directory.
 
 ## See also
 
