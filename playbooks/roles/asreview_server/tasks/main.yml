@@ -99,7 +99,11 @@
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
     flask_app_venv_user: "{{ asreview_server_user }}"
 
-- name: Install ASReview using uv_tool role
+- name: Init db
+  tags: molecule-idempotence-notest
+  ansible.builtin.command: "sudo -u{{ asreview_server_user }} {{ asreview_server_config_dir }}/venv/bin/asreview auth-tool create-db --db-uri {{ asreview_server_db_uri }}"
+
+- name: Install ASReview using uv_tool role for use by other users
   ansible.builtin.include_role:
     name: uv_tool
   vars:
@@ -112,10 +116,6 @@
     mode: "0644"
     content: |
       export ASREVIEW_PATH="{{ asreview_server_env.ASREVIEW_PATH }}"
-
-- name: Init db
-  tags: molecule-idempotence-notest
-  ansible.builtin.command: "sudo -u{{ asreview_server_user }} {{ asreview_server_config_dir }}/venv/bin/asreview auth-tool create-db --db-uri {{ asreview_server_db_uri }}"
 
 - name: Start taskmanager
   block:
