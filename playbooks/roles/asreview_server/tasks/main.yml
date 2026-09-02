@@ -100,8 +100,16 @@
     flask_app_venv_user: "{{ asreview_server_user }}"
 
 - name: Init db
-  tags: molecule-idempotence-notest
-  ansible.builtin.command: "sudo -u{{ asreview_server_user }} {{ asreview_server_config_dir }}/venv/bin/asreview auth-tool create-db --db-uri {{ asreview_server_db_uri }}"
+  become: true
+  become_user: "{{ asreview_server_user }}"
+  ansible.builtin.command:
+    argv:
+      - "{{ asreview_server_config_dir }}/venv/bin/asreview"
+      - auth-tool
+      - create-db
+      - --db-uri
+      - "{{ asreview_server_db_uri }}"
+  creates: "{{ asreview_server_db_uri }}"
 
 - name: Install ASReview using uv_tool role for use by other users
   ansible.builtin.include_role:
