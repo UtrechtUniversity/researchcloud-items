@@ -57,7 +57,6 @@ Many of the variables below are to configure the uWSGI settings. While individua
 - `flask_app_num_workers`: Integer. Number of processes `uWSGI` should spawn to handle requests for the app. Default: `2`.
 - `flask_app_uwsgi_config`: Dict. Settings to be added to the `uWSGI` `.ini` config file, according to `key=value`.
 - `flask_app_uwsgi_config_block`: String. Additional multiline `.ini` style configuration for `uWSGI`. See `uWSGI` docs for more info, and see the default `.ini` template in the uWSGI role.
-- `flask_app_chdir`: Boolean. If `true`, the app will be executed from the directory containing the app's code.
 - `flask_app_proxy_auth`: String. Set to `sram` to enable SRAM authorization / Single-Sign On authentication, `basic` for HTTP basic auth, or omit for no authentication. Default: `sram`.
 - `flask_app_proxy_location`: String. Nginx location definition determining which URL to serve the app at. Default: `/`, meaning the app is served at `http://yourworkspacefqdn`. Can also be set to e.g. `/myapp` to serve at `http://yourworkspacefqdn/myapp`.
 - `flask_app_proxy_config`: Dict. Settings passed on to the [nginx_reverse_proxy](./nginx_reverse_proxy.md) location definition. By default it contains standard settings for authentication, based on the `flask_app_proxy_auth` variable. You can override these settings using the `auth` and `htpasswd` keys in this dict. You can also add other directives that will end up in the nginx location definition: see the [variables for nginx_reverse_proxy](./nginx_reverse_proxy.md#variables)).

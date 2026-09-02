@@ -95,7 +95,6 @@
     flask_app_proxy_config: "{{ asreview_server_proxy_config }}" # eventually passed to nginx_reverse_proxy role
     flask_app_uwsgi_config:
       module: asreview.webapp.app:create_app()
-    flask_app_chdir: false
     flask_app_uwsgi_env: "{{ asreview_server_env }}"
     flask_app_venv_user: "{{ asreview_server_user }}"
     flask_app_working_dir: "{{ asreview_server_config_dir }}"
