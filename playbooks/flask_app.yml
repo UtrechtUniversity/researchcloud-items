@@ -17,6 +17,6 @@
     flask_app_location: "{{ flask_proxy_location | default('/', true) }}"
     flask_app_uwsgi_env: "{{ dict( ( flask_uwsgi_env | default('') ).split(' ') | map('regex_search', '.+=.+') | select | map('split', '=')) }}" # String -> dict
     flask_app_uwsgi_config_block: "{{ flask_uwsgi_config_block | default('') | replace('\\n', '\n') }}"
-    flask_app_working_dir: "{{ flask_working_dir | default('', true) }}"
+    flask_app_chdir: "{{ flask_chdir | default('', true) }}"
   roles:
     - role: flask_app

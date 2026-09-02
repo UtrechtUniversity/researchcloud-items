@@ -15,6 +15,6 @@
         flask_app_http_password: letmein
         flask_app_uwsgi_config:
           module: asreview.webapp.app:create_app()
-        flask_app_chdir: false
         flask_app_uwsgi_env:
           ASREVIEW_PATH: /var/www/example/asreview
+        flask_app_chdir: /var/www/example/

@@ -19,4 +19,4 @@ flask_app_proxy_config: {}
 flask_app_pip_requirements: ""
 flask_app_venv_user: www-data
 flask_app_venv_group: www-data
-flask_app_working_dir: ""
+flask_app_chdir: ""
