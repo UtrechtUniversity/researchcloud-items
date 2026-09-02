@@ -39,7 +39,7 @@
       ansible.builtin.pip:
         name:
           - wheel
-          - uwsgi
+          - pyuwsgi
         state: present # only install if not yet present, otherwise keep existing
         virtualenv: "{{ uwsgi_venv }}"
 
