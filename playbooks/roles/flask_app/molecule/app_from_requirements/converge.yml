@@ -7,7 +7,7 @@
       block:
         - name: Include flask_app
           ansible.builtin.include_role:
-            role: flask_app
+            name: flask_app
           vars:
             flask_app_pip_requirements: /tmp/requirements.txt # set the requirements file to install the app from
             flask_app_pip_pkg: asreview # specify which package from the requirements file is the actual app
