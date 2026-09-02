@@ -88,7 +88,6 @@
     flask_app_pip_requirements: "{{ asreview_server_requirements_file }}" # set the requirements file to install the app from
     flask_app_pip_pkg: asreview # specify which package from the requirements file is the actual app
     flask_app_module_path: webapp/app.py
-    flask_app_python_version: 3.11
     flask_app_name: asreview
     flask_app_proxy_auth: "{{ asreview_server_auth }}"
     flask_app_http_username: "{{ asreview_server_http_username }}"
