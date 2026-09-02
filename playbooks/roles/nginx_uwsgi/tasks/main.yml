@@ -72,7 +72,7 @@
   block:
     - name: Get service file
       ansible.builtin.slurp:
-        src: "etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service"
+        src: /etc/systemd/system/uwsgi-{{ uwsgi_app_name }}.service
       register: debug_service
 
     - name: Debug
