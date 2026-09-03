@@ -30,6 +30,7 @@
         expected_python_version:
           "20.04": "3.9"
           "22.04": "3.11"
+          "24.04": "3.12"
 
     - name: Assert correct global python version
       ansible.builtin.assert:
