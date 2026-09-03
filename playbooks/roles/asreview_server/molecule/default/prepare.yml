@@ -6,3 +6,11 @@
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
+
+    - name: Ensure testuser in managedusers (for testing cronjob)
+      ansible.builtin.file:
+        path: /etc/rsc/managedusers/testuser
+        owner: root
+        group: root
+        mode: "0644"
+        state: touch
