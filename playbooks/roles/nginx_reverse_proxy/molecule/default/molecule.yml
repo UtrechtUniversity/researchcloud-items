@@ -7,13 +7,10 @@ provisioner:
     converge: ./converge.yml
   env:
     ANSIBLE_ROLES_PATH: ../../../
-  config_options:
-    defaults:
-      remote_tmp: /tmp
 role_name_check: 1
 platforms:
-  - name: workspace-src-ubuntu_jammy
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-nginx
+  - name: workspace-src-ubuntu-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-nginx
     command: /sbin/init
     pre_build_image: true
     registry:
