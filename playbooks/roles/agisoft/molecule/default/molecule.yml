@@ -1,17 +1,16 @@
 ---
 driver:
   name: ${DRIVER-podman}
-  image_settings: &image_settings
+
+platforms:
+  - name: workspace-src-ubuntu_noble-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop
     pre_build_image: true
     registry:
       url: ${DOCKER_REGISTRY-""}
       credentials:
         username: ${DOCKER_USER-""}
         password: ${DOCKER_PW-""}
-platforms:
-  - name: workspace-src-ubuntu_noble-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop
-    <<: *image_settings
 role_name_check: 1
 provisioner:
   name: ansible
