@@ -1,0 +1,10 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    pre_build_image: true
+    registry:
+      url: ${DOCKER_REGISTRY-""}
+      credentials:
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}

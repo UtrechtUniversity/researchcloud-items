@@ -1,0 +1,13 @@
+---
+platforms:
+  - name: workspace-src-ubuntu-nginx
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-nginx
+    command: /sbin/init
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+    registry:
+      url: ${DOCKER_REGISTRY-""}
+      credentials:
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}

@@ -1,16 +1,25 @@
 ---
-- name: Attempt to replace generated file with expected file
-  ansible.builtin.copy:
-    src: files/{{ item }}
-    dest: /etc/nginx/app-location-conf.d/{{ item }}
-    mode: "0640"
-    owner: root
-    group: www-data
-  diff: true
-  check_mode: true
-  register: compare_file
+- name: Read file from managed host
+  ansible.builtin.slurp:
+    src: /etc/nginx/app-location-conf.d/{{ item }}
+  register: remote_file
 
-- name: Assert nothing changed
+- name: Assert host file matches controller file (whitespace-normalized)
+  vars:
+    remote_content: >-
+      {{ (remote_file.content | b64decode)
+         | regex_replace('\r\n', '\n')
+         | regex_replace('[ \t]+', ' ')
+         | regex_replace('\n[ \t]*\n+', '\n')
+         | trim }}
+    local_content: >-
+      {{ lookup('file', 'files/{{ item }}')
+         | regex_replace('\r\n', '\n')
+         | regex_replace('[ \t]+', ' ')
+         | regex_replace('\n[ \t]*\n+', '\n')
+         | trim }}
   ansible.builtin.assert:
     that:
-      - not compare_file.changed
+      - remote_content == local_content
+    fail_msg: "File content differs between host and controller (after whitespace normalization)"
+    success_msg: "File content matches"

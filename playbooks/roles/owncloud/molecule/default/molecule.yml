@@ -6,10 +6,10 @@ platforms:
     pre_build_image: true
     privileged: true
     registry:
-      url: $DOCKER_REGISTRY
+      url: ${DOCKER_REGISTRY-""}
       credentials:
-        username: $DOCKER_USER
-        password: $DOCKER_PW
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}
 provisioner:
   name: ansible
   playbooks:
