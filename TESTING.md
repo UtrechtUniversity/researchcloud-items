@@ -1,5 +1,11 @@
 # Molecule tests
 
+Molecule tests for playbooks are in `extensions/molecule`, the standard path for Ansiblec ollections.
+
+Molecule tests for roles are in that role's respective directory under `molecule`.
+
+## Playbooks tests
+
 From the project root, run:
 
 `molecule -c extensions/molecule/ext/molecule-src/molecule.yml test -s <scenario-name>`
@@ -10,8 +16,6 @@ Using `-c extensions/molecule/ext/molecule-src/molecule.yml` ensures molecule us
 
 **For more information on the molecule testing setup, see: https://github.com/UtrechtUniversity/SRC-molecule/blob/main/README.md**
 
-## Playbooks tests
-
 Playbook tests use a specific setup that aims to be as close as possible to the way components are executed on Research Cloud. See [here](https://github.com/UtrechtUniversity/SRC-molecule#scenarios) for more information. Running `molecule` with the parameters explained above automatically takes care of this.
 
 ### Does my playbook need a playbook test?
@@ -20,7 +24,14 @@ That depends! If the playbook does nothing else than including a few roles, the 
 
 ## Role tests
 
-For simplicity's sake, roles are currently not tested in the specific way that playbooks are.
+Roles are not tested by the two-stage Ansible procedure described above for playbook tests. Instead, each role has its own `molecule` directory that simply applies the role to a test contianer.
+
+To run:
+
+```
+cd playbooks/roles/myrole
+molecule -c ../../extensions/molecule/ext/molecule-src/molecule.yml test # optionally add -s <scenario_name>, or --all
+```
 
 Keep in mind that this may mean that a role for which the tests pass locally on your machine may not work on a SRC workspace, e.g. due to different versions of Ansible on your machine and on SRC workspaces. Of course, as soon as you create a playbook/component that uses the role, the tests for this playbook *will* check that everything passes in an SRC environment!
 
