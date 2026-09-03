@@ -1,0 +1,39 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  vars:
+    target_dir: "/rsc/plugins/{{ item.path | basename | splitext | first }}/"
+    src_dir: "{{ item.dir | default(lookup('env', 'PLAYBOOK_DIR')) }}/"
+  vars_files:
+    - "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}/.env.yml" # should set 'components'
+  tasks:
+    - name: Debug -- list all components to be executed
+      ansible.builtin.debug:
+        msg: "Playbook: {{ item.path }} in {{ src_dir }} will be copied to {{ target_dir }}."
+      with_items: "{{ components }}"
+
+    - name: Copy local component dir
+      ansible.posix.synchronize:
+        src: "{{ src_dir }}"
+        dest: "{{ target_dir }}"
+        archive: false
+        links: true
+        recursive: true
+        rsync_opts:
+          - --exclude=".*"
+        ssh_connection_multiplexing: true
+      with_items: "{{ components }}"
+
+    # Apt cache is normally updated at deploy time by the SRC-OS component.
+    # Make sure it is fresh so our tests use recent apt repo information.
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      when: ansible_facts['os_family'] == 'Debian'
+
+- name: Execute optional extra preparations
+  # check if a prepare.yml exists in the scenario's directory, and if so, run it.
+  # if not, run the dummy _empty.yml playbook instead.
+  # this is a workaround for the fact that import_playbook can't take a variable set at runtime as argument.
+  ansible.builtin.import_playbook: "{{ query('fileglob', lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') ~ '/prepare.yml') | length | ternary(lookup('env','MOLECULE_SCENARIO_DIRECTORY') ~ '/prepare.yml', '_empty.yml') }}" # noqa yaml[line-length]
