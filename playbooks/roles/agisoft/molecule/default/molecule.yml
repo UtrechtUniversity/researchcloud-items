@@ -8,17 +8,14 @@ driver:
       credentials:
         username: ${DOCKER_USER-""}
         password: ${DOCKER_PW-""}
+platforms:
+  - name: workspace-src-ubuntu_noble-desktop
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble-desktop
+    <<: *image_settings
+role_name_check: 1
 provisioner:
   name: ansible
   playbooks:
     converge: ./converge.yml
   env:
     ANSIBLE_ROLES_PATH: ../../../
-role_name_check: 1
-platforms:
-  - name: workspace-src-ubuntu_focal-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_focal-desktop
-    <<: *image_settings
-  - name: workspace-src-ubuntu_jammy-desktop
-    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy-desktop
-    <<: *image_settings
