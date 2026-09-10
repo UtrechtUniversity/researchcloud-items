@@ -59,7 +59,7 @@ c.Spawner.env_keep = {{ jupyterhub_config_env_keep | string }}
 
 # Server config
 {% if jupyterhub_enable_unix_socket %}
-c.JupyterHub.hub_bind_url = "unix+http://{{ jupyterhub_user_home | replace("/", "%2F") }}%2Fjupyterhub.sock"
+c.JupyterHub.hub_bind_url = "http+unix://{{ jupyterhub_user_home | replace("/", "%2F") }}%2Fjupyterhub.sock"
 c.JupyterHub.hub_connect_url = c.JupyterHub.hub_bind_url
 c.JupyterHub.hub_socket_mode = 0o660
 c.JupyterHub.ip = "127.0.0.1" # necessary so JupyterHub will start ConfigurableHTTPProxy on the right IP
