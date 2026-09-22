@@ -1,0 +1,23 @@
+# Additional server to expose a public endpoint for the Hub's API when using unix sockets:
+# When the API listens on a unix socket, it is not accessible by local users. This ensures local users cannot impersonate each other by curl'ing the socket and setting the REMOTE_USER header.
+# However, single-user servers must be able to reach the API. So we define this additional server to proxy requests from a publically reachable socket to the main socket (which only www-data can read/write).
+
+server {
+    # Listen using a Unix socket instead of a TCP socket for local communications.
+    # Since this is a public endpoint, this is not strictly necessary -- but since we're illustrating UDS, let's use a UDS instead of TCP port!
+    listen unix:{{ jupyterhub_public_rundir }}/jupyterhub-api.sock;
+
+    # Restrict requests to /hub/api only
+    # This route requires API tokens for authentication, not REMOTE_USER.
+    # The Hub provided a single-user server with its own API key when it is spawned.
+    # So only Hub-spawned processses will be able to connect.
+    location /hub/api {
+        proxy_pass http://unix:{{ jupyterhub_rundir }}/jupyterhub.sock;
+
+        # Remove the REMOTE_USER header.
+        proxy_set_header REMOTE_USER "";
+
+        # Note: API endpoints require authorization, which is granted via unique API keys from the Hub.
+        # User tokens authenticate single-user servers, ensuring security at this endpoint.
+    }
+}
