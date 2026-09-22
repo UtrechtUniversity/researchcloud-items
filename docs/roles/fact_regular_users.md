@@ -26,8 +26,8 @@ The variable `fact_regular_users` and `fact_co_groups` are filled. Examples:
 [
   {
     user: "foo", 
-    userid: 1000, 
-    groupid: 1000, 
+    userid: "1000", 
+    groupid: "1000", 
     home: "/home/foo", 
     shell: "/bin/bash",
     description: "sample user foo"
