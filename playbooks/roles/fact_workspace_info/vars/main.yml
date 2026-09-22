@@ -1,0 +1,6 @@
+_src_venv_path: |
+  {% if 'molecule-notest' in ansible_skip_tags %}
+  {{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default('/etc/src/venv/ansible_env', true) }}
+  {% else %}
+  {{ lookup('env', 'WORKSPACE_ANSIBLE_VENV') | default(lookup('env', 'VIRTUAL_ENV')) | default('/etc/src/venv/ansible_env', true) }}
+  {% endif %}
