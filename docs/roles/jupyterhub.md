@@ -27,7 +27,7 @@ SRAM authentication is default, but can also be disabled. Other options include 
 
 JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to run notebooks as specific users: when you login with user `foo` (usin e.g. SRAM), the hub (which runs as a dedicated service user itself) will use special `sudo` permissions to spawn a notebook server running as user `foo` on the workspace. Only users in the group specified by `jupyterhub_allowed_users_group` variable are allowed to spawn in this way.
 
-**Note**: at the moment JupyterHub listens on a TCP port (8000). This means users with shell access can easily bypass authentication. **Do not provide shell access to untrusted users**. In the future we may remedy this by using Docker containers or unix sockets.
+**Security Note**: by default we ensure that JupyterHub listens on a Unix socket, instead of the default TCP port (8000). This is to prevent users with shell access from easily bypass authentication (by curl'ing localhost:8000 and setting the `REMOTE_USER` header, which is normally set by SRAM). See [Architecture](#architecture) below.
 
 ## Variables
 
@@ -47,6 +47,36 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 - `jupyterhub_create_default_group`: Boolean. Whether the group specified by `jupyterhub_allowed_users_group` should be created as a default group for all users. Default: `true`.
 - `jupyterhub_remote_user_header`: String. Which HTTP header should be used to get the username from, when using remote user auth (SRAM). Default: `REMOTE_USER`.
 - `jupyterhub_activate_remote_user_auth`: Boolean. Whether to enable remote user auth in the JupyterHub config. You can set this to `true` in order to test remote auth without actually having SRAM or another external auth provider, e.g. in CI. Default: `false`.
+- `jupyterhub_enable_unix_socket`: Boolean. Whether all Hub elements should listen on Unix sockets (more secure) instead of TCP ports. See the Security Note above, and the [Architecture](#architecture) section below. Default: `true`.
+
+## Architecture
+
+By default we ensure that all JupyterHub components (the Hub proper, ConfigurableHTTPProxy and its API) listen on a Unix socket, instead of the default TCP port (8000). This is to prevent users with shell access from easily bypass authentication (by curl'ing localhost:8000 and setting the `REMOTE_USER` header, which is normally set by SRAM). The diagram below illustrates the architecture, and the way in which it remedies the kind of attack in question.
+
+```mermaid
+graph TD
+    subgraph Server Side
+        B(Nginx) -->|Sets REMOTE_USER header to alice<br/>Communicates via UDS| D(ConfigurableHTTPProxy)
+        D(ConfigurableHTTPProxy) <-->|Communicates via UDS| E(JupyterHub)
+        E(JupyterHub) -->|Spawns as user alice<br/>Provides API token| F(Single-User Notebook Server) -->|API requests to /hub/<br/>with API token|G
+        D -->|Proxies requests to| F
+        G(Nginx listening on UDS) -->|Proxies requests to<br/>|E
+    end
+
+    subgraph User Side
+      A(User Alice) -->|Connects with token| B(Nginx)
+    end
+
+    subgraph Authentication Server
+      A(User Alice) -->|Logs in| C(Authentication Server)
+      C-->|Provides token| A
+      B -->|Validates token| C(Authentication Server)
+    end
+
+    subgraph Impersonation Attempt
+        H(Impersonator Bob) -.->|Attempt to connect with `REMOTE_USER: alice`<br/>Blocked by UDS Permissions| D(ConfigurableHTTPProxy)
+    end
+```
 
 ## See also
 
