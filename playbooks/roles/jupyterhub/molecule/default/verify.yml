@@ -56,3 +56,35 @@
       register: venv_gw_files
       changed_when: false
       failed_when: venv_gw_files.stdout != ""
+
+    - name: Ensure normal users cannot read the CHP and Hub sockets
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: "0660"
+        owner: "jupyter"
+        group: "nginx"
+      register: check_permissions
+      check_mode: true
+      failed_when: check_permissions.changed
+      with_items:
+        - /run/jupyterhub/jupyterhub.sock
+        - /run/jupyterhub/chp.sock
+        - /run/jupyterhub/chp-api.sock
+
+    - name: Test public API socket 1
+      ansible.builtin.uri:
+        url: http://localhost/hub/api/users/testuser/activity
+        unix_socket: /run/jupyterhub_public/jupyterhub-api.sock
+        method: POST
+        return_content: true
+      register: public_api_read
+      failed_when: public_api_read.status != 403
+
+    - name: Test public API socket 2
+      ansible.builtin.uri:
+        url: http://localhost/hub/api/ # returns version, not authenticated
+        unix_socket: /run/jupyterhub_public/jupyterhub-api.sock
+        method: GET
+        return_content: true
+      register: public_api_read
+      failed_when: public_api_read.status != 200
