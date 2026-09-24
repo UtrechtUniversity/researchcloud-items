@@ -6,4 +6,6 @@
   # irods server will use a local postgresql database
 
   roles:
-    - irods_server
+    - role: irods_server
+      vars:
+        irods_server_host: "{{ workspace_fqdn | default(ansible_fqdn) }}"

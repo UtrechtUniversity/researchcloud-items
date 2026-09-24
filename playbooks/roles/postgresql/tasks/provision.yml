@@ -3,6 +3,7 @@
   ansible.builtin.pip:
     name: psycopg2-binary
     state: present
+    executable: "{{ fact_src_ansible_venv }}/bin/pip"
 
 - name: Create PostgreSQL database
   community.postgresql.postgresql_db:
