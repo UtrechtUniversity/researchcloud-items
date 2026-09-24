@@ -8,4 +8,3 @@
 jupyterhub==6.*
 jhub-remote-user-authenticator==0.1.0
 sudospawner
-jupyter_scheduler
