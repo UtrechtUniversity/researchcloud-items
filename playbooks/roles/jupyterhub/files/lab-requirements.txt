@@ -7,3 +7,4 @@
 
 jupyterlab==4.*
 jupyterlab-git==0.*
+jupyter_scheduler
