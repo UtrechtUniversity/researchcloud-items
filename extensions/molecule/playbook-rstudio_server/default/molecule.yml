@@ -16,6 +16,3 @@ provisioner:
   playbooks:
     converge: ../../ext/molecule-src/converge.yml
     prepare: ../../ext/molecule-src/prepare.yml
-  env:
-    PLAYBOOK_DIR: ../../../playbooks
-

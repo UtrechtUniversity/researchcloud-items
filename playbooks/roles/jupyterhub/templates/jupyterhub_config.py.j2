@@ -58,20 +58,24 @@ c.Spawner.args = [
 c.Spawner.env_keep = {{ jupyterhub_config_env_keep | string }}
 
 # Server config
+
 {% if jupyterhub_enable_unix_socket %}
-c.JupyterHub.hub_bind_url = "http+unix://{{ jupyterhub_user_home | replace("/", "%2F") }}%2Fjupyterhub.sock"
+c.JupyterHub.hub_bind_url = "http+unix://{{ jupyterhub_rundir | replace("/", "%2F") }}%2Fjupyterhub.sock"
 c.JupyterHub.hub_connect_url = c.JupyterHub.hub_bind_url
-c.JupyterHub.hub_socket_mode = 0o660
-c.JupyterHub.ip = "127.0.0.1" # necessary so JupyterHub will start ConfigurableHTTPProxy on the right IP
+c.JupyterHub.hub_socket_mode = 0o660 # Set file permissions for Hub sockets
+c.JupyterHub.bind_url = "http+unix://{{ jupyterhub_rundir | replace("/", "%2F") }}%2Fchp.sock{{ jupyterhub_uri }}"
+c.ConfigurableHTTPProxy.api_url = "http+unix://{{ jupyterhub_rundir | replace("/", "%2F") }}%2Fchp-api.sock"
+c.ConfigurableHTTPProxy.command_umask = 0o007 # control CHP socket permisions using umask: mask no permissions for owner and group, mask all permissions for other.
+public_api_uri = "http+unix://{{ jupyterhub_public_rundir | replace("/", "%2F") }}%2Fjupyterhub-api.sock{{ jupyterhub_api_uri }}"
 c.Spawner.environment.update({
-  'JUPYTERHUB_API_URL': "http://localhost:8000{{ jupyterhub_api_uri }}",
-  'JUPYTERHUB_ACTIVITY_URL': lambda spawner : f"http://localhost:8000{{ jupyterhub_api_uri }}/users/{spawner.user.name}/activity"
+  'JUPYTERHUB_API_URL': public_api_uri, 
+  'JUPYTERHUB_ACTIVITY_URL': lambda spawner : f"{public_api_uri}users/{spawner.user.name}/activity"
 })
 {% else %}
 c.JupyterHub.ip = "{{ jupyterhub_bind_addr }}"
 c.JypyterHub.port = {{ jupyterhub_port | int }}
-{% endif %}
 c.JupyterHub.base_url = "{{ jupyterhub_uri }}"
+{% endif %}
 
 # Configure paths for essential server files
 c.JupyterHub.cookie_secret_file = "{{ jupyterhub_user_home }}/jupyterhub_cookie_secret"

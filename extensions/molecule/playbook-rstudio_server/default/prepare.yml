@@ -4,7 +4,7 @@
   gather_facts: false
 
 - name: Import playbook
-  ansible.builtin.import_playbook: "../../../playbooks/jupyterhub.yml"
+  ansible.builtin.import_playbook: "../../../../playbooks/jupyterhub.yml"
   vars:
     jupyter_auth: noauth
     jupyter_activate_remote_user_auth: true
