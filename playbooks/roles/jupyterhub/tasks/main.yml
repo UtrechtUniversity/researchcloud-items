@@ -51,6 +51,34 @@
   ansible.builtin.set_fact:
     jupyterhub_venv_path: "{{ jupyterhub_venv }}"
 
+- name: Unix socket preparation
+  when: jupyterhub_enable_unix_socket
+  block:
+    - name: Create run dir
+      ansible.builtin.file:
+        path: "{{ jupyterhub_rundir }}"
+        state: directory
+        owner: "{{ jupyterhub_user }}"
+        group: www-data
+        mode: "02770" # setgid so www-data can read/write to sockets
+
+    - name: Create public dir
+      ansible.builtin.file:
+        path: "{{ jupyterhub_public_rundir }}"
+        state: directory
+        owner: www-data
+        group: "{{ jupyterhub_allowed_users_group }}"
+        mode: "03770" # setgid and sticky but so www-data and jupyterhub users can read/write to sockets, but only www-data can delete the socket.
+
+    - name: Add public socket proxy
+      notify: Restart nginx
+      ansible.builtin.template:
+        src: templates/jupyterhub_public_socket_proxy.conf.j2
+        dest: /etc/nginx/conf.d/jupyterhub.conf
+        owner: root
+        group: root
+        mode: "0644"
+
 - name: All tasks in this block should trigger restarts of the jupyter services
   notify: Reload jupyterhub service
   block:

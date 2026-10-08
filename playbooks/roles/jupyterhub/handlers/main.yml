@@ -5,3 +5,8 @@
     daemon_reload: true
     enabled: true
     name: jupyterhub
+
+- name: Restart nginx
+  ansible.builtin.systemd:
+    state: restarted
+    name: nginx

@@ -11,3 +11,7 @@ User={{ jupyterhub_user }}
 Environment=PATH=/usr/local/bin:{{ jupyterhub_venv }}/bin:/usr/bin/:/bin
 [Install]
 WantedBy=multi-user.target
+{% if jupyterhub_enable_unix_socket %}
+ExecStartPre=-/usr/bin/find {{ jupyterhub_public_rundir }} {{ jupyterhub_rundir }} -maxdepth 1 -type s -name '*.sock' -delete
+ExecStopPost=-/usr/bin/find {{ jupyterhub_public_rundir }} {{ jupyterhub_rundir }} -maxdepth 1 -type s -name '*.sock' -delete
+{% endif %}

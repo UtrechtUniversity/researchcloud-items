@@ -85,9 +85,9 @@ jobs:
             # This can be a path in playbooks/*.yml or in molecule/playbook-*
             if [[ "$PLAYBOOK" =~ ^playbooks/[^/]+\.yml$ ]]; then
               SCENARIO_NAME=$(basename "$PLAYBOOK" .yml | sed 's/^/playbook-/')
-            elif [[ "$PLAYBOOK" == molecule/playbook-*/* && "$PLAYBOOK" != *triggered_by_role.txt ]]; then
-              # change molecule/playbook-foo/* to 'playbook-foo'
-              SCENARIO_NAME="${PLAYBOOK#molecule/}"
+            elif [[ "$PLAYBOOK" == extensions/molecule/playbook-*/* && "$PLAYBOOK" != *triggered_by_role.txt ]]; then
+              # change extensions/molecule/playbook-foo/* to 'playbook-foo'
+              SCENARIO_NAME="${PLAYBOOK#extensions/molecule/}"
               SCENARIO_NAME="${SCENARIO_NAME%%/*}"
             fi
             if [[ -n "$SCENARIO_NAME" ]]; then
@@ -102,7 +102,7 @@ jobs:
               role="${item##*/}"
 
               # Loop through all playbook scenarios
-              for scenario in molecule/playbook-*; do
+              for scenario in extensions/molecule/playbook-*; do
                   trigger_file="$scenario/triggered_by_role.txt"
 
                   # Skip if file doesn't exist
@@ -192,9 +192,9 @@ jobs:
         run: |
           SCENARIO="${{ matrix.playbook }}"
           PLAYBOOK_NAME="${SCENARIO#playbook-}"
-          if [[ -d molecule/${SCENARIO} ]] && [[ -f playbooks/${PLAYBOOK_NAME}.yml ]]; then
+          if [[ -d extensions/molecule/${SCENARIO} ]] && [[ -f playbooks/${PLAYBOOK_NAME}.yml ]]; then
             scenario_suffix=""
-            if [[ -d molecule/${SCENARIO}/default ]]; then # nested scenario
+            if [[ -d extensions/molecule/${SCENARIO}/default ]]; then # nested scenario
               scenario_suffix="/*"
             fi
             uv run molecule -c ${{ env.MOLECULE_CONFIG }} test --scenario-name ${SCENARIO}${scenario_suffix}
