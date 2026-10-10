@@ -1,0 +1,20 @@
+---
+platforms:
+  - name: workspace-src-ubuntu_jammy
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_jammy
+    command: /sbin/init
+    pre_build_image: true
+    privileged: true
+    registry:
+      url: $DOCKER_REGISTRY
+      credentials:
+        username: $DOCKER_USER
+        password: $DOCKER_PW
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ./prepare.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+role_name_check: 1
