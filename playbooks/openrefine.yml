@@ -22,6 +22,7 @@
   roles:
     - role: openrefine
       vars:
+        openrefine_download_url: "{{ openrefine_url | default('', true) }}"
         openrefine_extensions: "{{ (_openrefine_default_extensions + _openrefine_extra_extensions) | select }}"
     - role: jupyterhub_standalone_proxy
       when: _openrefine_jupyter_force_install
