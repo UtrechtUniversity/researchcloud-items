@@ -64,7 +64,7 @@ jobs:
         id: define-changes
         run: |
           # Use git diff to detect playbook and role changes
-          PLAYBOOKS=$(git diff --name-only "$BASE_REF" "$HEAD_REF" -- 'playbooks/*.yml' 'molecule/playbook-*')
+          PLAYBOOKS=$(git diff --name-only "$BASE_REF" "$HEAD_REF" -- 'playbooks/*.yml' 'extensions/molecule/playbook-*')
           ROLES=$(git diff --name-only "$BASE_REF" "$HEAD_REF" -- 'playbooks/roles/**')
 
           echo "Changed playbooks: $PLAYBOOKS"
