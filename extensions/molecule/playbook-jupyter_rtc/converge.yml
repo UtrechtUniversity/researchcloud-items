@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+
+- name: Run component
+  ansible.builtin.import_playbook: "../../../playbooks/jupyter_rtc.yml"
+  vars:
+    jupyterhub_rtc_venv: /usr/local/jupyterhub
+    jupyterhub_rtc_config_path: /usr/local/etc/jupyter/jupyterhub_config.py

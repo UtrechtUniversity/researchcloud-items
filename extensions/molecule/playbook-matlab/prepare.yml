@@ -2,7 +2,7 @@
 - name: Prepare
   hosts: all
   gather_facts: false
-  tasks:
+  pre_tasks:
 
     - name: Create SSH keypair (use testuser for generation)
       user:
@@ -35,9 +35,8 @@
       delay: 3
       until: wait_for_robotserver.rc == 0
 
-    - name: Run robot-client component
-      ansible.builtin.include_role:
-        role: robotuser
+  roles:
+    - role: robotuser
       vars:
         robotuser_key: "{{ ssh_privkey.content | b64decode }}"
         robotuser_name: uurobot
