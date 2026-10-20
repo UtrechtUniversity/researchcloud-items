@@ -4,3 +4,5 @@
   gather_facts: true
   roles:
     - goose
+      vars:
+        jupyterhub_allowed_users_group: jupyterhub
