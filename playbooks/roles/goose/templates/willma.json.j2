@@ -1,0 +1,13 @@
+{
+  "name": "AI hub",
+  "engine": "openai",
+  "display_name": "AI hub",
+  "api_key_env": "WILLMA_API_KEY",
+  "base_url": "https://api.willma.surf.nl/v0/chat/completions",
+  "models": [
+    { "name": "openai/gpt-oss-120b", "context_limit": 128000 },
+    { "name": "mistralai/Mistral-Small-3.2-24B-Instruct-2506", "context_limit": 128000 }
+  ],
+  "supports_streaming": true,
+  "requires_auth": true
+}

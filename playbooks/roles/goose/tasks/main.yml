@@ -1,0 +1,64 @@
+---  
+- name: Create shared Goose config directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - /etc/goose
+    - /etc/goose/custom_providers
+
+- name: Add custom provider config
+  template:
+    src: willma.json.j2
+    dest: /etc/goose/custom_providers/willma.json
+    mode: '0644'
+
+- name: Install Goose CLI
+  shell: |
+    curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+  args:
+    executable: /bin/bash
+
+- name: Download Goose desktop app .deb package
+  get_url:
+    url: https://github.com/aaif-goose/goose/releases/download/v1.55.0/goose_1.55.0_amd64.deb
+    dest: /tmp/goose_1.55.0_amd64.deb
+  when: fact_desktop_workspace | default(false)
+
+- name: Install Goose desktop app .deb package
+  apt:
+    deb: /tmp/goose_1.55.0_amd64.deb
+  when: fact_desktop_workspace | default(false)
+
+- name: Set Goose config directory for login shells
+  ansible.builtin.copy:
+    dest: /etc/profile.d/goose.sh
+    content: |
+      export GOOSE_CONFIG_DIR=/etc/goose
+    owner: root
+    group: root
+    mode: "0644"
+    
+- name: Install Goose API key environment file
+  ansible.builtin.copy:
+    dest: /etc/goose/api.env
+    owner: root
+    content: |
+      WILLMA_API_KEY={{ WILLMA_API_KEY }}
+    mode: "0640"
+  no_log: true
+
+- name: Load Goose API key for login shells
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/profile.d/goose-api.sh
+    content: |
+      if [ -r /etc/goose/api.env ]; then
+        . /etc/goose/api.env
+      fi
+    owner: root
+    group: root
+    mode: "0644"

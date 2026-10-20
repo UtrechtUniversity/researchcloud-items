@@ -1,0 +1,6 @@
+---
+- name: Install Goose
+  hosts: all
+  gather_facts: true
+  roles:
+    - goose
