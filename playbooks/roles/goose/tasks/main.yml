@@ -16,11 +16,25 @@
     dest: /etc/goose/custom_providers/willma.json
     mode: '0644'
 
-- name: Install Goose CLI
-  shell: |
-    curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+- name: Install Goose CLI without interactive configuration
+  become: true
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh |
+      CONFIGURE=false bash
   args:
     executable: /bin/bash
+    creates: /root/.local/bin/goose
+
+- name: Install Goose CLI system-wide
+  become: true
+  ansible.builtin.copy:
+    src: /root/.local/bin/goose
+    dest: /usr/local/bin/goose
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0755"
 
 - name: Download Goose desktop app .deb package
   get_url:
@@ -43,13 +57,14 @@
     mode: "0644"
     
 - name: Install Goose API key environment file
+  become: true
   ansible.builtin.copy:
     dest: /etc/goose/api.env
     owner: root
+    group: "{{ jupyterhub_allowed_users_group }}"
     content: |
-      WILLMA_API_KEY={{ WILLMA_API_KEY }}
+      export WILLMA_API_KEY={{ WILLMA_API_KEY | quote }}
     mode: "0640"
-  no_log: true
 
 - name: Load Goose API key for login shells
   become: true
