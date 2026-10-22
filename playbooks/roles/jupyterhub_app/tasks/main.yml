@@ -69,3 +69,7 @@
         group: "{{ jupyterhub_app_stat.stat.gr_name }}"
         mode: "0644"
         content: "{{ jupyterhub_app_standalone_config }}"
+
+# Need option to disable jupyter app launcher?
+- name: Run Jupyter App Launcher tasks
+  ansible.builtin.include_tasks: launcher.yml
