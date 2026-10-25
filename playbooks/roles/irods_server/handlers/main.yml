@@ -1,0 +1,12 @@
+---
+- name: Reload systemd service
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart irods
+  ansible.builtin.service:
+    enabled: true
+    name: irods
+    state: restarted
+  failed_when: false
+  register: restarted_irods
