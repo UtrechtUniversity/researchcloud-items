@@ -11,7 +11,4 @@ platforms:
       credentials:
         username: ${DOCKER_USER-""}
         password: ${DOCKER_PW-""}
-provisioner:
-  name: ansible
-  playbooks:
-    prepare: ../../ext/molecule-src/prepare.yml
+
