@@ -4,8 +4,8 @@
   ansible.builtin.file:
     path: "{{ item.home }}/.config/goose/custom_providers"
     state: directory
-    owner: "{{ item.name }}"
-    group: "{{ item.group | default(item.name) }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.groupid | default(item.user) }}"
     mode: "0750"
   with_items: "{{ fact_regular_users }}"
 
@@ -14,8 +14,8 @@
   ansible.builtin.template:
     src: willma.json.j2
     dest: "{{ item.home }}/.config/goose/custom_providers/willma.json"
-    owner: "{{ item.name }}"
-    group: "{{ item.group | default(item.name) }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group | default(item.user) }}"
     mode: "0640"
   with_items: "{{ fact_regular_users }}"
 
