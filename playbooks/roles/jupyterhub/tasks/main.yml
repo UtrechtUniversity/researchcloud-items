@@ -3,14 +3,6 @@
   ansible.builtin.set_fact:
     _jupyterhub_default_proxy_config: "{{ jupyterhub_default_proxy_config }}"
 
-- name: Set user fact (for downstream plays)
-  ansible.builtin.set_fact:
-    _jupyterhub_user: "{{ jupyterhub_user }}"
-
-- name: Set venv fact (for downstream plays)
-  ansible.builtin.set_fact:
-    _jupyterhub_venv: "{{ jupyterhub_venv }}"
-
 - name: Create reverse proxy
   ansible.builtin.include_role:
     name: nginx_reverse_proxy
