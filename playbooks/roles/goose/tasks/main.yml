@@ -1,19 +1,40 @@
 ---
-- name: Create shared Goose config directories
+- name: Create Goose configuration directories for users
+  become: true
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: "{{ item.home }}/.config/goose/custom_providers"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.group | default(item.name) }}"
+    mode: "0750"
+  with_items: "{{ fact_regular_users }}"
+
+- name: Install Goose config for users
+  become: true
+  ansible.builtin.template:
+    src: willma.json.j2
+    dest: "{{ item.home }}/.config/goose/custom_providers/willma.json"
+    owner: "{{ item.name }}"
+    group: "{{ item.group | default(item.name) }}"
+    mode: "0640"
+  with_items: "{{ fact_regular_users }}"
+
+- name: Create Goose config directory for new users
+  become: true
+  ansible.builtin.file:
+    path: /etc/skel/.config/goose/custom_providers
     state: directory
     owner: root
     group: root
     mode: "0755"
-  loop:
-    - /etc/goose
-    - /etc/goose/custom_providers
 
-- name: Add custom provider config
+- name: Install default Goose config for new users
+  become: true
   ansible.builtin.template:
     src: willma.json.j2
-    dest: /etc/goose/custom_providers/willma.json
+    dest: /etc/skel/.config/goose/custom_providers/willma.json
+    owner: root
+    group: root
     mode: "0644"
 
 - name: Install Goose CLI without interactive configuration
@@ -36,20 +57,9 @@
     group: root
     mode: "0755"
 
-- name: Download Goose desktop app .deb package
-  ansible.builtin.get_url:
-    url: https://github.com/aaif-goose/goose/releases/download/v1.55.0/goose_1.55.0_amd64.deb
-    dest: /tmp/goose_1.55.0_amd64.deb
-    owner: root
-    group: root
-    mode: "0644"
-  when: fact_desktop_workspace | default(false)
-
-- name: Install Goose desktop app .deb package
-  become: true
-  ansible.builtin.apt:
-    deb: /tmp/goose_1.55.0_amd64.deb
-  when: fact_desktop_workspace | default(false)
+- name: Install Goose desktop
+  when: fact_desktop_workspace
+  ansible.builtin.include_tasks: desktop.yml
 
 - name: Set Goose config directory for login shells
   ansible.builtin.copy:
