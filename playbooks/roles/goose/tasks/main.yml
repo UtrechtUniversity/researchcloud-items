@@ -1,4 +1,4 @@
----  
+---
 - name: Create shared Goose config directories
   ansible.builtin.file:
     path: "{{ item }}"
@@ -11,10 +11,10 @@
     - /etc/goose/custom_providers
 
 - name: Add custom provider config
-  template:
+  ansible.builtin.template:
     src: willma.json.j2
     dest: /etc/goose/custom_providers/willma.json
-    mode: '0644'
+    mode: "0644"
 
 - name: Install Goose CLI without interactive configuration
   become: true
@@ -37,13 +37,17 @@
     mode: "0755"
 
 - name: Download Goose desktop app .deb package
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/aaif-goose/goose/releases/download/v1.55.0/goose_1.55.0_amd64.deb
     dest: /tmp/goose_1.55.0_amd64.deb
+    owner: root
+    group: root
+    mode: "0644"
   when: fact_desktop_workspace | default(false)
 
 - name: Install Goose desktop app .deb package
-  apt:
+  become: true
+  ansible.builtin.apt:
     deb: /tmp/goose_1.55.0_amd64.deb
   when: fact_desktop_workspace | default(false)
 
@@ -55,7 +59,7 @@
     owner: root
     group: root
     mode: "0644"
-    
+
 - name: Install Goose API key environment file
   become: true
   ansible.builtin.copy:
