@@ -3,6 +3,7 @@
   hosts: all
   gather_facts: true
   roles:
+    - role: jupyter-ai
     - role: goose
       vars:
         jupyterhub_allowed_users_group: jupyterhub

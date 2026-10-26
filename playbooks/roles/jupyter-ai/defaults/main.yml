@@ -1,0 +1,4 @@
+---
+# Default variables for jupyter-ai role
+jupyter_ai_package: jupyter-ai
+jupyter_ai_version: "*"
