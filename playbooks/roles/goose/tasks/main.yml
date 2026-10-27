@@ -61,14 +61,14 @@
   when: fact_desktop_workspace
   ansible.builtin.include_tasks: desktop.yml
 
-- name: Set Goose config directory for login shells
-  ansible.builtin.copy:
-    dest: /etc/profile.d/goose.sh
-    content: |
-      export GOOSE_CONFIG_DIR=/etc/goose
+- name: Create goose env dir
+  become: true
+  ansible.builtin.file:
+    path: /etc/goose
+    state: directory
     owner: root
     group: root
-    mode: "0644"
+    mode: "0755"
 
 - name: Install Goose API key environment file
   become: true
