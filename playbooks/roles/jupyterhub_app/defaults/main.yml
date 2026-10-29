@@ -20,3 +20,18 @@ jupyterhub_app_server_config: |
   c.ServerProxy.servers.update(settings)
 jupyterhub_app_standalone_config: |
   c.StandaloneProxyServer.command = {{ jupyterhub_app_command | default(jupyterhub_app_server.command, true) | default([], true) | string }}
+
+# Jupyter App Launcher defaults
+jupyter_app_launcher_config:
+  title: "{{ jupyterhub_app_name }} [↗]"
+  description: "Open {{ jupyterhub_app_name }} environment"
+  type: "url"
+  source: "/user-redirect/{{ jupyterhub_app_name | lower }}/"
+  catalog: "Applications"
+  icon: "{{ jupyterhub_app_icon_path | default(jupyterhub_app_server.launcher_entry.icon_path, true) | default('', true) }}"
+  args:
+    createNewWindow: true
+
+# Directory where the Jupyter App Launcher configuration is stored
+# Not sure whether this is correct. 
+jupyter_app_launcher_config_dir: "{{ jupyterhub_app_config_dir | ternary('/usr/local/share/jupyter/jupyter_app_launcher', _jupyterhub_app_venv ~ '/share/jupyter/jupyter_app_launcher') }}"

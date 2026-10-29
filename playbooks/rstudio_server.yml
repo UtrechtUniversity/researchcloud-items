@@ -31,8 +31,29 @@
       vars:
         jupyterhub_uri: "{{ _rstudio_base_path }}"
         jhsp_external_addr: "{{ _rstudio_fqdn }}"
-    - role: jupyterhub_app
+
+  tasks:
+    - name: Install jupyter-rsession-proxy
+      notify: Restart JupyterHub
+      ansible.builtin.pip:
+        name: jupyter-rsession-proxy
+        state: present
+        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
+
+    - name: Get RStudio icon path
+      ansible.builtin.command:
+        argv:
+          - "{{ _rstudio_jupyter_venv_path }}/bin/python"
+          - -c
+          - "from jupyter_rsession_proxy import setup_rserver; print(setup_rserver()['launcher_entry']['icon_path'])"
+      register: rstudio_icon
+      changed_when: false
+
+    - name: Configure RStudio as a JupyterHub app
+      ansible.builtin.include_role:
+        name: jupyterhub_app
       vars:
+        jupyterhub_app_icon_path: "{{ rstudio_icon.stdout }}"
         jupyterhub_app_name: rstudio
         jupyterhub_app_venv: "{{ _rstudio_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ rstudio_jupyter_config_dir | default('') }}"
@@ -55,16 +76,18 @@
           c.StandaloneProxyServer.rewrite_response = config['rewrite_response']
           c.StandaloneProxyServer.timeout = config['timeout']
           c.StandaloneProxyServer.environment = config['environment']
-
-  tasks:
-    - name: Install jupyter-rsession-proxy
-      notify: Restart JupyterHub
-      ansible.builtin.pip:
-        name: jupyter-rsession-proxy
-        state: present
-        virtualenv: "{{ _rstudio_jupyter_venv_path }}"
+          
   handlers:
     - name: Restart JupyterHub
       ansible.builtin.service:
         state: restarted
         name: jupyterhub
+
+  # tasks:
+  #   - name: Install jupyter-rsession-proxy
+  #     notify: Restart JupyterHub
+  #     ansible.builtin.pip:
+  #       name: jupyter-rsession-proxy
+  #       state: present
+  #       virtualenv: "{{ _rstudio_jupyter_venv_path }}"
+

@@ -1,0 +1,31 @@
+- name: Install jupyter_app_launcher
+  notify: Restart JupyterHub
+  ansible.builtin.pip:
+    name: jupyter-app-launcher
+    state: present
+    virtualenv: "{{ _jupyterhub_app_venv }}"
+
+- name: Write to jupyter app launcher config
+  notify: Restart JupyterHub
+  ansible.builtin.blockinfile:
+    path: "{{ jupyter_app_launcher_config_dir }}/jp_app_launcher_custom.yml"
+    owner: root
+    group: "{{ jupyterhub_app_stat.stat.gr_name }}"
+    mode: "0644"
+    block: "{{ [jupyter_app_launcher_config] | to_nice_yaml(indent=2, sort_keys=false) | trim }}"
+    create: true
+    marker: "# {mark} ANSIBLE MANAGED BLOCK -- {{ jupyterhub_app_name }}"
+
+# The part below disables it for all installed applications..
+- name: Disable legacy server-proxy launcher tiles
+  ansible.builtin.command:
+    argv:
+      - "{{ _jupyterhub_app_venv }}/bin/jupyter"
+      - labextension
+      - disable
+      - --level=sys_prefix
+      - "@jupyterhub/jupyter-server-proxy"
+
+# Remove config file if launcher is disabled
+
+# Clean up any leftover installation files if the launcher is disabled?
