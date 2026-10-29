@@ -70,6 +70,28 @@
         mode: "0644"
         content: "{{ jupyterhub_app_standalone_config }}"
 
-# Need option to disable jupyter app launcher?
 - name: Run Jupyter App Launcher tasks
+  when: (jupyter_app_launcher | default('enabled')) == 'enabled'
   ansible.builtin.include_tasks: launcher.yml
+
+# Need option to disable jupyter app launcher?
+# The part below disables it for all applications..
+# - name: Disable Jupyter App Launcher
+#   when: (jupyter_app_launcher | default('enabled')) == 'disabled'
+#   block:
+#     - name: Uninstall Jupyter App Launcher
+#       ansible.builtin.pip:
+#         name: jupyter-app-launcher
+#         state: absent
+#         virtualenv: "{{ _jupyterhub_app_venv }}"
+#       register: jupyter_app_launcher_uninstall
+
+#     - name: Enable legacy server-proxy launcher tiles
+#       when: jupyter_app_launcher_uninstall is changed
+#       ansible.builtin.command:
+#         argv:
+#           - "{{ _jupyterhub_app_venv }}/bin/jupyter"
+#           - labextension
+#           - enable
+#           - --level=sys_prefix
+#           - "@jupyterhub/jupyter-server-proxy"
