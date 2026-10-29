@@ -22,8 +22,16 @@
   ansible.builtin.debug:
     msg: "{{ jupyter_app_launcher_config.icon | default('not set') }}"
 
-# Remove original launcher settings (in jupyter_server_config or in standalone c.StandaloneProxyServer.launcher_entry = None)
-
+# Disable original launcher tiles
+- name: Disable legacy server-proxy launcher tiles
+  ansible.builtin.command:
+    argv:
+      - "{{ _jupyterhub_app_venv }}/bin/jupyter"
+      - labextension
+      - disable
+      - --level=sys_prefix
+      - "@jupyterhub/jupyter-server-proxy"
+      
 # Remove config file if launcher is disabled
 
 # Clean up any leftover installation files if the launcher is disabled?
