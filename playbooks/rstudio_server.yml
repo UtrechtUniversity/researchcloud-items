@@ -76,6 +76,12 @@
           c.StandaloneProxyServer.rewrite_response = config['rewrite_response']
           c.StandaloneProxyServer.timeout = config['timeout']
           c.StandaloneProxyServer.environment = config['environment']
+          
+  handlers:
+    - name: Restart JupyterHub
+      ansible.builtin.service:
+        state: restarted
+        name: jupyterhub
 
   # tasks:
   #   - name: Install jupyter-rsession-proxy
@@ -84,8 +90,4 @@
   #       name: jupyter-rsession-proxy
   #       state: present
   #       virtualenv: "{{ _rstudio_jupyter_venv_path }}"
-  # handlers:
-  #   - name: Restart JupyterHub
-  #     ansible.builtin.service:
-  #       state: restarted
-  #       name: jupyterhub
+
