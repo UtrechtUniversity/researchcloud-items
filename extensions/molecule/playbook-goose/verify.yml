@@ -1,0 +1,7 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test Goose
+      ansible.builtin.shell: goose --version

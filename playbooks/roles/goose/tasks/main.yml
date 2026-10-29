@@ -1,0 +1,93 @@
+---
+- name: Create Goose configuration directories for users
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/goose/custom_providers"
+    state: directory
+    owner: "{{ item.user }}"
+    group: "{{ item.groupid | default(item.user) }}"
+    mode: "0750"
+  with_items: "{{ fact_regular_users }}"
+
+- name: Install Goose config for users
+  become: true
+  ansible.builtin.template:
+    src: willma.json.j2
+    dest: "{{ item.home }}/.config/goose/custom_providers/willma.json"
+    owner: "{{ item.user }}"
+    group: "{{ item.group | default(item.user) }}"
+    mode: "0640"
+  with_items: "{{ fact_regular_users }}"
+
+- name: Create Goose config directory for new users
+  become: true
+  ansible.builtin.file:
+    path: /etc/skel/.config/goose/custom_providers
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install default Goose config for new users
+  become: true
+  ansible.builtin.template:
+    src: willma.json.j2
+    dest: /etc/skel/.config/goose/custom_providers/willma.json
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install Goose CLI without interactive configuration
+  become: true
+  ansible.builtin.shell: |
+    set -o pipefail
+    curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh |
+      CONFIGURE=false bash
+  args:
+    executable: /bin/bash
+    creates: /root/.local/bin/goose
+
+- name: Install Goose CLI system-wide
+  become: true
+  ansible.builtin.copy:
+    src: /root/.local/bin/goose
+    dest: /usr/local/bin/goose
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install Goose desktop
+  when: fact_desktop_workspace
+  ansible.builtin.include_tasks: desktop.yml
+
+- name: Create goose env dir
+  become: true
+  ansible.builtin.file:
+    path: /etc/goose
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install Goose API key environment file
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/goose/api.env
+    owner: root
+    group: "{{ jupyterhub_allowed_users_group }}"
+    content: |
+      export WILLMA_API_KEY={{ WILLMA_API_KEY | quote }}
+    mode: "0640"
+
+- name: Load Goose env files for login shells
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/profile.d/goose-env.sh
+    content: |
+      for f in /etc/goose/*.env; do
+        [ -r "$f" ] && . "$f"
+      done
+    owner: root
+    group: root
+    mode: "0644"
