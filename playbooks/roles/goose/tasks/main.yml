@@ -80,14 +80,14 @@
       export WILLMA_API_KEY={{ WILLMA_API_KEY | quote }}
     mode: "0640"
 
-- name: Load Goose API key for login shells
+- name: Load Goose env files for login shells
   become: true
   ansible.builtin.copy:
-    dest: /etc/profile.d/goose-api.sh
+    dest: /etc/profile.d/goose-env.sh
     content: |
-      if [ -r /etc/goose/api.env ]; then
-        . /etc/goose/api.env
-      fi
+      for f in /etc/goose/*.env; do
+        [ -r "$f" ] && . "$f"
+      done
     owner: root
     group: root
     mode: "0644"
