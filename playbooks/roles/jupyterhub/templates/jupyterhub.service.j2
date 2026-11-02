@@ -16,4 +16,3 @@ ExecStartPre=+-/usr/bin/rm -f {{ jupyterhub_public_rundir }}/jupyterhub-api.sock
 {% endif %}
 [Install]
 WantedBy=multi-user.target
-WantedBy=nginx.service
