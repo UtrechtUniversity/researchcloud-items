@@ -153,6 +153,22 @@
         VIRTUAL_ENV: "{{ jupyterhub_system_pip | ternary(omit, jupyterhub_venv) }}"
         CC: gcc # https://github.com/astral-sh/uv/issues/6488
 
+    - name: Install custom JupyterHub stylesheet
+      ansible.builtin.copy:
+        dest: "{{ (jupyterhub_system_pip | ternary('/usr/local', jupyterhub_venv)) }}/share/jupyterhub/static/css/uu_theme.css"
+        src: files/uu_theme.css
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Add custom stylesheet link to JupyterHub page template
+      ansible.builtin.blockinfile:
+        path: "{{ (jupyterhub_system_pip | ternary('/usr/local', jupyterhub_venv)) }}/share/jupyterhub/templates/page.html"
+        insertbefore: "</head>"
+        block: |
+          <link rel="stylesheet" href="{% raw %}{{ static_url('css/uu_theme.css') }}{% endraw %}" type="text/css" />
+        marker: "<!-- {mark} ANSIBLE MANAGED CUSTOM THEME LINK -->"
+
     - name: Install JupyterHub extra packages
       when: (jupyterhub_extra_pkgs | length) > 0
       become_user: "{{ jupyterhub_user }}"
