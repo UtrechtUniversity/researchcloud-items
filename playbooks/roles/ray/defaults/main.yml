@@ -1,0 +1,18 @@
+---
+ray_head_node: true
+ray_head_node_address: ""
+ray_no_cpu: false
+ray_dashboard_host: "127.0.0.1"
+ray_dashboard_port: "8265"
+ray_client_server_port: "10001"
+ray_head_node_port: "6379"
+ray_env: ""
+ray_src_token: ""
+ray_public_key: ""
+ray_fail_hard: false
+ray_user_packages: ""
+ray_python_version: ""
+ray_version: ""
+ray_setup: true
+ray_autoscale: false
+ray_auth_token: ""

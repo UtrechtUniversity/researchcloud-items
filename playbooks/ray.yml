@@ -1,0 +1,23 @@
+---
+- name: Install a Ray head node or worker
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: ray
+      vars: # all these parameters must be defined in the component
+        ray_head_node: "{{ ray_head_node | default(false, true) | bool }}"
+        ray_no_cpu: "{{ ray_no_cpu | default(true, true) | bool }}"
+        ray_head_node_address: "{{ ray_head_node_address | default('', true) }}"
+        ray_dashboard_port: "{{ ray_dashboard_port | default('8265', true) }}"
+        ray_client_server_port: "{{ ray_client_server_port | default('10001', true) }}"
+        ray_head_node_port: "{{ ray_head_node_port | default('6379', true) }}"
+        ray_env: "{{ ray_env | default('') }}"
+        ray_src_token: "{{ ray_src_token | default('') }}"
+        ray_auth_token: "{{ ray_auth_token | default('') }}"
+        ray_public_key: "{{ ray_public_key | default('') }}"
+        ray_fail_hard: "{{ ray_fail_hard | default(false, true) | bool }}"
+        ray_user_packages: "{{ ray_packages | default('') }}"
+        ray_python_version: "{{ ray_python_version | default('', true) }}"
+        ray_version: "{{ ray_version | default('', true) | length | ternary('=='~ray_version, '') }}"
+        ray_setup: "{{ ray_do_setup | default(true, true) | bool }}"
+        ray_autoscale: "{{ ray_autoscale | default(false, true) | bool }}"
