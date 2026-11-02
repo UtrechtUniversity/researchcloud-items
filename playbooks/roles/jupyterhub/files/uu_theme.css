@@ -1,0 +1,36 @@
+/* UU Theme CSS */
+
+:root {
+    --uu-yellow: #FFCD00;
+    --uu-black: #000000;
+    --uu-white: #FFFFFF;
+}
+
+/* buttons */
+.btn-jupyter, .btn-primary, #logout {
+    background-color: var(--uu-yellow) !important;
+    border-color: var(--uu-yellow) !important;
+    color: var(--uu-black) !important;
+}
+
+.btn-jupyter:hover, .btn-primary:hover, #logout:hover,
+.btn-jupyter:focus, .btn-primary:focus, #logout:focus {
+    background-color: var(--uu-black) !important;
+    border-color: var(--uu-black) !important;
+    color: var(--uu-yellow) !important;
+    box-shadow: 0 0 0 3px rgba(255, 205, 0, 0.4) !important;
+}
+
+/* navigation bar */
+.navbar {
+    border-bottom: 4px solid var(--uu-yellow) !important;
+}
+
+#dark-theme-toggle:hover {
+    color: var(--uu-yellow) !important;
+}
+
+.progress-bar {
+    background-color: var(--uu-yellow) !important;
+    color: var(--uu-black) !important;
+}
