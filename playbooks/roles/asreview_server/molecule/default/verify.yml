@@ -4,6 +4,20 @@
   gather_facts: false
   tasks:
 
+    - name: Assert systemd services active
+      block:
+        - name: Service is started
+          ansible.builtin.systemd_service:
+            name: "{{ item }}"
+            state: started
+            enabled: true
+          register: service_active
+          check_mode: true
+          failed_when: service_active.changed or service_active.status.ExecMainStatus != "0"
+          with_items:
+            - asreview-taskmanager
+            - uwsgi-asreview
+
     - name: Test that we can login with a user not created by cron
       block:
         - name: Get auth for tester
