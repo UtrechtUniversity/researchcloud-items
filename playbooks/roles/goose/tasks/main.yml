@@ -9,11 +9,21 @@
     mode: "0750"
   with_items: "{{ fact_regular_users }}"
 
-- name: Install Goose config for users
+- name: Install AI hub config for users
   become: true
   ansible.builtin.template:
     src: willma.json.j2
     dest: "{{ item.home }}/.config/goose/custom_providers/willma.json"
+    owner: "{{ item.user }}"
+    group: "{{ item.group | default(item.user) }}"
+    mode: "0640"
+  with_items: "{{ fact_regular_users }}"
+
+- name: Install Goose main config for users
+  become: true
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ item.home }}/.config/goose/config.yaml"
     owner: "{{ item.user }}"
     group: "{{ item.group | default(item.user) }}"
     mode: "0640"
@@ -28,11 +38,20 @@
     group: root
     mode: "0755"
 
-- name: Install default Goose config for new users
+- name: Install AI hub config for new users
   become: true
   ansible.builtin.template:
     src: willma.json.j2
     dest: /etc/skel/.config/goose/custom_providers/willma.json
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install Goose config for new users
+  become: true
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: /etc/skel/.config/goose/config.yaml
     owner: root
     group: root
     mode: "0644"
