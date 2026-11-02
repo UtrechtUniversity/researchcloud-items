@@ -5,6 +5,9 @@ After=network.target
 [Service]
 User=www-data
 Group=www-data
+WorkingDirectory={{ asreview_server_config_dir }}
+Restart=on-failure
+RestartSec=10s
 StandardOutput=append:/var/log/asreview_taskmanager.log
 StandardError=append:/var/log/asreview_taskmanager_err.log
 {% for var_name, value in asreview_server_env.items() %}
