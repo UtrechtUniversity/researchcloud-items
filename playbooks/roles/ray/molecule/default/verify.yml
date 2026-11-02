@@ -1,0 +1,52 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test dashboard up
+      ansible.builtin.uri:
+        url: http://0.0.0.0:8265/
+      retries: 10
+      delay: 1
+
+    - name: Copy test script
+      ansible.builtin.copy:
+        src: ../files/{{ item }} # noqa: no-relative-paths
+        dest: /home/ray/{{ item }}
+        owner: ray
+        group: ray
+        mode: "0655"
+      with_items:
+        - test1.py
+
+    - name: Test Ray cluster resources
+      become_user: ray
+      become: true
+      ansible.builtin.command:
+        cmd: /opt/ray_head-venv/bin/ray list nodes
+      environment:
+        RAY_ADDRESS: "test-ray:6379"
+        RAY_AUTH_TOKEN: "foo"
+        RAY_AUTH_MODE: "token"
+      register: test_job_output
+      until: '"CPU:" in test_job_output.stdout'
+      retries: 10
+      delay: 1
+
+    - name: Test Ray job API
+      become_user: ray
+      become: true
+      ansible.builtin.command:
+        cmd: /opt/ray_head-venv/bin/ray job submit --working-dir /home/ray/ --address http://127.0.0.1:8265 -- python test1.py
+      environment:
+        RAY_AUTH_TOKEN: "foo"
+        RAY_AUTH_MODE: "token"
+      timeout: 15
+      register: test_job_output
+      failed_when: false
+
+    - name: Assert test output
+      ansible.builtin.assert:
+        that:
+          - '"Result: 16" in test_job_output.stdout'
+      failed_when: false
