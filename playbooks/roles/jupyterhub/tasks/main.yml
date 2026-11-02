@@ -79,6 +79,26 @@
         group: root
         mode: "0644"
 
+    - name: Create nginx systemd drop-in directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/nginx.service.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Add ExecStartPre socket cleanup to nginx
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/nginx.service.d/cleanup-sockets.conf
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Service]
+          ExecStartPre=-/bin/rm -f {{ jupyterhub_public_rundir }}/jupyterhub-api.sock
+      notify:
+        - Restart nginx
+
 - name: All tasks in this block should trigger restarts of the jupyter services
   notify: Reload jupyterhub service
   block:
