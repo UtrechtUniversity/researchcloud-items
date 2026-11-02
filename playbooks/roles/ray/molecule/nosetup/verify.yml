@@ -1,0 +1,39 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Copy test items
+      ansible.builtin.copy:
+        src: ../files/{{ item }} # noqa: no-relative-paths
+        dest: /home/ray/{{ item }}
+        owner: ray
+        group: ray
+        mode: "0655"
+      with_items:
+        - test_autoscaler.py
+        - fake_multi_node.yaml
+
+    # Test starting ray 'manually', the way `ray up` would.
+    # Use a fake cluster definition for testing.
+    # Run as root to allow bypassing ulimits.
+    - name: Start ray with fake autoscale
+      ansible.builtin.shell: >-
+        ulimit -n 1048576; ulimit -u 1048576;
+        /opt/ray_head-venv/bin/ray start
+        --autoscaling-config=/home/ray/fake_multi_node.yaml
+        --head --disable-usage-stats --block
+        --dashboard-host=0.0.0.0 --dashboard-port=8265
+        --port=6379 --node-ip-address=$(find_private_ip.sh)
+      async: 5000
+      poll: 0
+      environment:
+        RAY_ADDRESS: "test-ray:6379"
+        RAY_FAKE_CLUSTER: "1"
+
+    - name: Wait for Ray to start
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 6379
+        delay: 1
+        timeout: 60

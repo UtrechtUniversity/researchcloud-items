@@ -1,0 +1,23 @@
+---
+- name: Restart ray systemd service
+  ansible.builtin.systemd:
+    name: "{{ ray_service_name }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: Fail if ray is not active
+  when: ray_fail_hard
+  become_user: "{{ ray_user }}"
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ ray_cmd }} status --address '{{ ray_connect_address }}'"
+  environment:
+    RAY_AUTH_MODE: "{{ ((ray_auth_token | length) > 0) | ternary('token', omit) }}"
+    RAY_AUTH_TOKEN: "{{ ray_auth_token | default(omit, true) }}"
+  register: ray_status
+  failed_when: "not 'Active' in ray_status.stdout"
+  changed_when: false
+  retries: 10
+  delay: 1 # the status command itself retries for 5 seconds
+  timeout: 15

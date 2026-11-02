@@ -1,0 +1,36 @@
+# Ray cluster configuration for the SRC node provider.
+# Uses https://github.com/UtrechtUniversity/src-ray-provider
+cluster_name: {{ ray_src_cluster_name }}
+
+provider:
+  type: external
+  module: src_ray_provider.node_provider.ResearchCloudNodeProvider
+  co_name: "{{ ray_src_co_name }}"
+  wallet_name: "{{ ray_src_wallet_name }}"
+  cloud_name: "{{ ray_src_cloud_name }}"
+
+head_node_type: head
+available_node_types:
+  head:
+    min_workers: 0
+    max_workers: 1
+    resources: {"CPU": 1}
+    node_config: {}
+  worker:
+    min_workers: 0
+    resources: {"CPU": 2}
+    node_config:
+      num_cpu: 2
+
+max_workers: {{ ray_src_max_workers }} # Global cap on worker nodes across the whole cluster
+
+# These need to be defined but can be left empty if not needed.
+initialization_commands: []
+worker_setup_commands: []
+head_setup_commands: []
+file_mounts: {}
+cluster_synced_files: []
+file_mounts_sync_continuously: false
+rsync_exclude: []
+rsync_filter: []
+setup_commands: []

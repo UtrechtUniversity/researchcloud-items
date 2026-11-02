@@ -53,6 +53,7 @@ status should be indicated in the description field of the catalog plugin item.
 - [openvscodeserver](playbooks/openvscodeserver.md) installs the OpenVSCode web IDE and serves it for all users
 - [openrefine](playbooks/openrefine.md) installs the OpenRefine data cleaning and manipulation webapp
 - [python-workbench](playbooks/python-workbench.md)  Python development
+- [ray](playbooks/ray.md) install Ray on a workspace as a head or worker, with options for provider-managed and autoscaled clusters
 - [reverse_proxy](playbooks/reverse_proxy.md) add reverse proxies to the SRC-Nginx environment
 - [robot-server](playbooks/robot-server.md) agent used for remote filesystem mounts   
 - [robotuser](playbooks/robotuser.md) agent used for remote filesystem mounts
@@ -113,6 +114,7 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [require_src_nginx](roles/require_src_nginx.md)
 - [r_bspm](roles/r_bspm.md)
 - [r_ubuntu_binaries](roles/r_ubuntu_binaries.md)
+- [ray](roles/ray.md) install Ray as a cluster head or worker
 - [security_updates](roles/security_updates.md)
 - [sshfs_configrobot](roles/sshfs_configrobot.md)
 - [sshfs_mount](roles/sshfs_mount.md)
