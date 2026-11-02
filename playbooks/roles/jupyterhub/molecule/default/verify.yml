@@ -67,14 +67,14 @@
       check_mode: true
       failed_when: check_permissions.changed
       with_items:
-        - /run/jupyterhub/jupyterhub.sock
-        - /run/jupyterhub/chp.sock
-        - /run/jupyterhub/chp-api.sock
+        - /var/www/jupyterhub_run/jupyterhub.sock
+        - /var/www/jupyterhub_run/chp.sock
+        - /var/www/jupyterhub_run/chp-api.sock
 
     - name: Test public API socket 1
       ansible.builtin.uri:
         url: http://localhost/hub/api/users/testuser/activity
-        unix_socket: /run/jupyterhub_public/jupyterhub-api.sock
+        unix_socket: /var/www/jupyterhub_public_run/jupyterhub-api.sock
         method: POST
         return_content: true
       register: public_api_read
@@ -83,7 +83,7 @@
     - name: Test public API socket 2
       ansible.builtin.uri:
         url: http://localhost/hub/api/ # returns version, not authenticated
-        unix_socket: /run/jupyterhub_public/jupyterhub-api.sock
+        unix_socket: /var/www/jupyterhub_public_run/jupyterhub-api.sock
         method: GET
         return_content: true
       register: public_api_read
