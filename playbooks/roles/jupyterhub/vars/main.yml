@@ -19,6 +19,6 @@ jupyterhub_default_proxy_config:
   htpasswd: "{{ (jupyterhub_auth == 'basic') | ternary('jupyterhub', omit) }}"
   auth_sram_header: "{{ jupyterhub_remote_user_header }}"
 jupyterhub_system_pip: "{{ (jupyterhub_venv | default('system', true)) == 'system' }}"
-jupyterhub_rundir: /var/run/jupyterhub
-jupyterhub_public_rundir: /var/run/jupyterhub_public
+jupyterhub_rundir: "/var/www/jupyterhub_run"
+jupyterhub_public_rundir: "/var/www/jupyterhub_public_run"
 jupyterhub_api_uri: "{{ jupyterhub_uri_with_slashes }}hub/api"
