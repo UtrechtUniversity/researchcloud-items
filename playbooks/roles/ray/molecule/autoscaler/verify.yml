@@ -1,0 +1,50 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test dashboard up
+      ansible.builtin.uri:
+        url: http://0.0.0.0:8265/
+      retries: 10
+      delay: 1
+
+    - name: Copy test script
+      ansible.builtin.copy:
+        src: ../files/{{ item }} # noqa: no-relative-paths
+        dest: /home/ray/{{ item }}
+        owner: ray
+        group: ray
+        mode: "0655"
+      with_items:
+        - test_autoscaler.py
+
+    - name: Test autoscaler
+      become_user: ray
+      become: true
+      ansible.builtin.command:
+        cmd: /opt/ray_head-venv/bin/python /home/ray/test_autoscaler.py
+      environment:
+        RAY_AUTH_TOKEN: "foo"
+        RAY_AUTH_MODE: "token"
+        RAY_ADDRESS: "test-ray:6379"
+      timeout: 15
+
+    - name: Test Ray cluster resources
+      become_user: ray
+      become: true
+      ansible.builtin.command:
+        cmd: /opt/ray_head-venv/bin/ray list nodes
+      environment:
+        RAY_ADDRESS: "test-ray:6379"
+        RAY_AUTH_TOKEN: "foo"
+        RAY_AUTH_MODE: "token"
+      register: test_job_output
+      until: '"CPU:" in test_job_output.stdout'
+      retries: 10
+      delay: 1
+
+    - name: Assert resources output
+      ansible.builtin.assert:
+        that:
+          - '"DEAD" not in test_job_output.stdout'

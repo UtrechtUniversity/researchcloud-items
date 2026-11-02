@@ -1,0 +1,27 @@
+---
+ray_user: ray
+ray_head_node: true
+ray_head_node_address: ""
+ray_head_no_cpu: false # toggle to disable resource usage on head node.
+ray_dashboard_host: "127.0.0.1"
+ray_dashboard_port: "8265"
+ray_client_server_port: "10001"
+ray_head_node_port: "6379"
+ray_env: ""
+ray_src_token: "" # token for the Ray SURF ResearchCloud autoscaler.
+ray_public_key: ""
+ray_fail_hard: false
+ray_user_packages: ""
+ray_python_version: ""
+ray_version: ""
+ray_setup: true # create and start ray systemd service.
+ray_autoscale: false # start head node with --autoscaling-config, place autoscale config. Mimics a head node that would be started with `ray up`.
+ray_autoscale_config: "ray_bootstrap_config.yaml.j2" # path to the autoscale config file.
+ray_auth_token: "" # token to protect the ray cluster with.
+ray_service_prefix: "" # will be added to service name, allows running multiple ray services on one node.
+ray_log_to_stderr: false
+ray_src_max_workers: 6 # maximum number of workers for the Ray SURF ResearchCloud autoscaler cluster definition.
+ray_src_co_name: "" # CO name for the Ray SURF ResearchCloud autoscaler cluster definition.
+ray_src_wallet_name: "" # Wallet name for the Ray SURF ResearchCloud autoscaler cluster definition.
+ray_src_cloud_name: "SURF HPC Cloud" # Cloud name for the Ray SURF ResearchCloud autoscaler cluster definition.
+ray_src_cluster_name: "{{ ray_service_prefix | default('ray'~lookup('community.general.random_string', length=4), true) }}-cluster"

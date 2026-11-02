@@ -1,0 +1,31 @@
+---
+- name: Get CO info
+  tags: molecule-notest
+  when: not (ray_src_co_name | length) > 0 or not (ray_src_wallet_name | length) > 0 or not (ray_src_cloud_name | length) > 0
+  block:
+
+    - name: Get CO info shell
+      ansible.builtin.shell:
+        cmd: "source /home/{{ ray_user }}/.bashrc && {{ ray_venv }}/bin/researchcloud get-current-workspace"
+      args:
+        executable: /bin/bash
+      register: co_info
+      changed_when: false
+
+    - name: Parse CO information
+      ansible.builtin.set_fact:
+        co_info_json: "{{ co_info.stdout | from_json }}"
+
+    - name: Set wallet, CO, and cloud names
+      ansible.builtin.set_fact:
+        ray_src_wallet_name: "{{ ray_src_wallet_name | default(co_info_json.meta.wallet_name, true) }}"
+        ray_src_co_name: "{{ ray_src_co_name | default(co_info_json.meta.co_name, true) }}"
+        ray_src_cloud_name: "{{ ray_src_cloud_name | default(co_info_json.meta.subscription_name, true) }}"
+
+- name: Create autoscaling config file
+  ansible.builtin.template:
+    src: "{{ ray_autoscale_config }}"
+    dest: "/home/{{ ray_user }}/ray_bootstrap_config.yaml"
+    owner: "{{ ray_user }}"
+    group: "{{ ray_user }}"
+    mode: "0600"

@@ -1,0 +1,20 @@
+---
+ray_default_packages:
+  - default
+  - client
+# noqa: jinja[spacing]
+ray_packages: >-
+  {%- if (ray_user_packages | length) > 0 -%}
+  [{{ ray_user_packages }}]
+  {%- else -%}
+  [{{ ray_default_packages | join(',') }}]
+  {%- endif -%}
+# noqa: jinja[spacing]
+ray_service_name: >-
+  ray_
+  {%- if (ray_service_prefix | length) > 0 -%}
+  {{ ray_service_prefix }}_
+  {%- endif -%}
+  {{ ray_head_node | ternary('head', 'worker') }}
+ray_venv: /opt/{{ ray_service_name }}-venv
+ray_cmd: "{{ ray_venv }}/bin/ray"

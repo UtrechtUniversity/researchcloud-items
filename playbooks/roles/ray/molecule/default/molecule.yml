@@ -1,0 +1,39 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ./converge.yml
+    prepare: ../prepare.yml
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+  config_options:
+    defaults:
+      remote_tmp: /tmp
+role_name_check: 1
+platforms:
+  - name: test-ray
+    image: ghcr.io/utrechtuniversity/src-test-workspace:ubuntu_noble
+    command: /sbin/init
+    published_ports:
+      - 6379:6379
+      - 10001:10001
+      - 8265:8265
+    pre_build_image: true
+    registry:
+      url: ${DOCKER_REGISTRY-""}
+      credentials:
+        username: ${DOCKER_USER-""}
+        password: ${DOCKER_PW-""}
+scenario:
+  test_sequence:
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - verify
+    - cleanup
+    - destroy
