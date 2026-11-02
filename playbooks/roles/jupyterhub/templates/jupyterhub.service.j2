@@ -12,7 +12,6 @@ User={{ jupyterhub_user }}
 Environment=PATH=/usr/local/bin:{{ jupyterhub_venv }}/bin:/usr/bin/:/bin
 {% if jupyterhub_enable_unix_socket %}
 RuntimeDirectory={{ jupyterhub_rundir }}
-ExecStartPre=+-/usr/bin/rm -f {{ jupyterhub_public_rundir }}/jupyterhub-api.sock
 {% endif %}
 [Install]
 WantedBy=multi-user.target
