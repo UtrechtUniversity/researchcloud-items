@@ -8,10 +8,4 @@
     state: present
   environment:
     VIRTUAL_ENV: "{{ jupyter_venv }}"
-
-- name: Reload JupyterHub service after installing jupyter‑ai
-  ansible.builtin.systemd:
-    name: jupyterhub
-    state: restarted
-    daemon_reload: true
-  become: true
+  notify: Restart JupyterHub
