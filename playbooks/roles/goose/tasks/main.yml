@@ -96,8 +96,64 @@
     owner: root
     group: "{{ jupyterhub_allowed_users_group }}"
     content: |
-      export WILLMA_API_KEY={{ WILLMA_API_KEY | quote }}
+      WILLMA_API_KEY={{ WILLMA_API_KEY | quote }}
     mode: "0640"
+  no_log: true
+  register: goose_api_key_environment
+
+- name: Create JupyterHub systemd override directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/systemd/system/jupyterhub.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Configure JupyterHub to load Goose API key
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/jupyterhub.service.d/goose-api-key.conf
+    content: |
+      [Service]
+      EnvironmentFile=/etc/goose/api.env
+    owner: root
+    group: root
+    mode: "0644"
+  register: goose_jupyterhub_api_key_config
+
+- name: Check whether JupyterHub configuration exists
+  become: true
+  ansible.builtin.stat:
+    path: "{{ goose_jupyterhub_config_path }}"
+  register: goose_jupyterhub_config
+
+- name: Add Goose API key to spawned JupyterHub server environments
+  become: true
+  ansible.builtin.blockinfile:
+    path: "{{ goose_jupyterhub_config_path }}"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK -- Goose API key"
+    block: |
+      import os
+      c.Spawner.environment.update({
+        'WILLMA_API_KEY': os.environ['WILLMA_API_KEY'],
+      })
+  when: goose_jupyterhub_config.stat.exists
+  register: goose_jupyterhub_api_key_forwarding
+
+- name: Gather service facts
+  ansible.builtin.service_facts:
+
+- name: Restart JupyterHub to load Goose API key
+  become: true
+  ansible.builtin.systemd:
+    name: jupyterhub
+    state: restarted
+    daemon_reload: true
+  when:
+    - goose_api_key_environment.changed or goose_jupyterhub_api_key_config.changed or goose_jupyterhub_api_key_forwarding.changed
+    - "'jupyterhub.service' in ansible_facts.services"
 
 - name: Load Goose env files for login shells
   become: true
@@ -107,6 +163,7 @@
       for f in /etc/goose/*.env; do
         [ -r "$f" ] && . "$f"
       done
+      export WILLMA_API_KEY
     owner: root
     group: root
     mode: "0644"

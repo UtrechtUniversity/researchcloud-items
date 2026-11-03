@@ -1,2 +1,3 @@
 ---
 WILLMA_API_KEY: 'mock-willma-api-key'
+goose_jupyterhub_config_path: /usr/local/etc/jupyter/jupyterhub_config.py

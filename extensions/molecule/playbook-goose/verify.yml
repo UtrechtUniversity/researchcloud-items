@@ -4,4 +4,14 @@
   gather_facts: false
   tasks:
     - name: Test Goose
-      ansible.builtin.shell: goose --version
+      ansible.builtin.command: goose --version
+      changed_when: false
+
+    - name: Test JupyterHub forwards Goose API key to spawned servers
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fq
+          - "'WILLMA_API_KEY': os.environ['WILLMA_API_KEY'],"
+          - /usr/local/etc/jupyter/jupyterhub_config.py
+      changed_when: false
