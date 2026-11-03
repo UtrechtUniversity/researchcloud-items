@@ -69,6 +69,7 @@ status should be indicated in the description field of the catalog plugin item.
 
 - [anaconda](playbooks/anaconda.md)  python data science development
 - [keycloak](playbooks/keycloak.md)  OpenIDConnect/SAML Server
+- [goose](playbooks/goose.md)   goose open source AI agent
 
 
 ## Roles
@@ -131,3 +132,5 @@ The status of a role is either Experimental or Supported. Supported roles are su
 
 - [anaconda](roles/anaconda.md)
 - [rstudio](roles/rstudio.md)
+- [goose](roles/goose.md)
+- [jupyter-ai](roles/jupyter-ai.md)
