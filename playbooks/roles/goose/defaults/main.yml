@@ -1,5 +1,5 @@
 ---
-WILLMA_API_KEY: 'mock-willma-api-key'
+WILLMA_API_KEY: 'mock-key'
 goose_jupyterhub_config_path: /usr/local/etc/jupyter/jupyterhub_config.py
 # Default group for the Goose API key environment file when JupyterHub is not present.
 # It will be overridden with ``jupyterhub_allowed_users_group`` when JupyterHub is installed.
