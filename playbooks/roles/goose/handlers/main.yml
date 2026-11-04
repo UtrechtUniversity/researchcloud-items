@@ -1,0 +1,7 @@
+- name: Restart JupyterHub
+  become: true
+  ansible.builtin.systemd:
+    name: jupyterhub
+    state: restarted
+    daemon_reload: true
+  when: "'jupyterhub.service' in ansible_facts.services"
