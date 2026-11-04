@@ -89,12 +89,19 @@
     group: root
     mode: "0755"
 
+- name: Check whether JupyterHub configuration exists
+  become: true
+  ansible.builtin.stat:
+    path: "{{ goose_jupyterhub_config_path }}"
+  register: goose_jupyterhub_config
+
 - name: Install Goose API key environment file
   become: true
   ansible.builtin.copy:
     dest: /etc/goose/api.env
     owner: root
-    group: "{{ jupyterhub_allowed_users_group }}"
+    # Use the JupyterHub group when JupyterHub is present, otherwise fall back to the default ``goose_api_key_group`` (e.g., "fuse").
+    group: "{{ goose_jupyterhub_config.stat.exists | ternary(jupyterhub_allowed_users_group, goose_api_key_group) }}"
     content: |
       WILLMA_API_KEY={{ WILLMA_API_KEY | quote }}
     mode: "0640"
@@ -102,53 +109,42 @@
   register: goose_api_key_environment
   notify: Restart JupyterHub
 
-- name: Create JupyterHub systemd override directory
+- name: JupyterHub Goose integration tasks
   become: true
-  ansible.builtin.file:
-    path: /etc/systemd/system/jupyterhub.service.d
-    state: directory
-    owner: root
-    group: root
-    mode: "0755"
-
-- name: Configure JupyterHub to load Goose API key
-  become: true
-  ansible.builtin.copy:
-    dest: /etc/systemd/system/jupyterhub.service.d/goose-api-key.conf
-    content: |
-      [Service]
-      EnvironmentFile=/etc/goose/api.env
-    owner: root
-    group: root
-    mode: "0644"
-  register: goose_jupyterhub_api_key_config
-  notify: Restart JupyterHub
-
-- name: Check whether JupyterHub configuration exists
-  become: true
-  ansible.builtin.stat:
-    path: "{{ goose_jupyterhub_config_path }}"
-  register: goose_jupyterhub_config
-
-- name: Add Goose API key to spawned JupyterHub server environments
-  become: true
-  ansible.builtin.blockinfile:
-    path: "{{ goose_jupyterhub_config_path }}"
-    insertafter: EOF
-    marker: "# {mark} ANSIBLE MANAGED BLOCK -- Goose API key"
-    block: |
-      import os
-      c.Spawner.environment.update({
-        'WILLMA_API_KEY': os.environ['WILLMA_API_KEY'],
-      })
   when: goose_jupyterhub_config.stat.exists
-  register: goose_jupyterhub_api_key_forwarding
-  notify: Restart JupyterHub
+  block:
+    - name: Create JupyterHub systemd override directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/jupyterhub.service.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
 
-- name: Gather service facts
-  ansible.builtin.service_facts:
+    - name: Configure JupyterHub to load Goose API key
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/jupyterhub.service.d/goose-api-key.conf
+        content: |
+          [Service]
+          EnvironmentFile=/etc/goose/api.env
+        owner: root
+        group: root
+        mode: "0644"
+      register: goose_jupyterhub_api_key_config
+      notify: Restart JupyterHub
 
-
+    - name: Add Goose API key to spawned JupyterHub server environments
+      ansible.builtin.blockinfile:
+        path: "{{ goose_jupyterhub_config_path }}"
+        insertafter: EOF
+        marker: "# {mark} ANSIBLE MANAGED BLOCK -- Goose API key"
+        block: |
+          import os
+          c.Spawner.environment.update({
+            'WILLMA_API_KEY': os.environ['WILLMA_API_KEY'],
+          })
+      register: goose_jupyterhub_api_key_forwarding
+      notify: Restart JupyterHub
 
 - name: Load Goose env files for login shells
   become: true
