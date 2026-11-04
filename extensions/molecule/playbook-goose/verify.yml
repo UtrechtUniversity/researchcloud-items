@@ -1,0 +1,37 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Test Goose
+      ansible.builtin.command: goose --version
+      changed_when: false
+
+    - name: Test JupyterHub forwards Goose API key to spawned servers
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fq
+          - "c.Spawner.env_keep.append('WILLMA_API_KEY')"
+          - /usr/local/etc/jupyter/jupyterhub_config.py
+      changed_when: false
+
+    - name: Test JupyterHub is configured to load Goose API key
+      become: true
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fqx
+          - EnvironmentFile=/etc/goose/api.env
+          - /etc/systemd/system/jupyterhub.service.d/goose-api-key.conf
+      changed_when: false
+
+    - name: Test Goose API key environment file
+      become: true
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fqx
+          - WILLMA_API_KEY=mock-key
+          - /etc/goose/api.env
+      changed_when: false
