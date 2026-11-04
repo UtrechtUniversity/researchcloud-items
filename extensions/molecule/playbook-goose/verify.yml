@@ -12,6 +12,26 @@
         argv:
           - grep
           - -Fq
-          - "'WILLMA_API_KEY': os.environ['WILLMA_API_KEY'],"
+          - "c.Spawner.env_keep.append('WILLMA_API_KEY')"
           - /usr/local/etc/jupyter/jupyterhub_config.py
+      changed_when: false
+
+    - name: Test JupyterHub is configured to load Goose API key
+      become: true
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fqx
+          - EnvironmentFile=/etc/goose/api.env
+          - /etc/systemd/system/jupyterhub.service.d/goose-api-key.conf
+      changed_when: false
+
+    - name: Test Goose API key environment file
+      become: true
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fqx
+          - WILLMA_API_KEY=mock-key
+          - /etc/goose/api.env
       changed_when: false

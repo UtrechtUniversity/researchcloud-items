@@ -95,6 +95,10 @@
     path: "{{ goose_jupyterhub_config_path }}"
   register: goose_jupyterhub_config
 
+- name: Gather JupyterHub service facts
+  ansible.builtin.service_facts:
+  when: goose_jupyterhub_config.stat.exists
+
 - name: Install Goose API key environment file
   become: true
   ansible.builtin.copy:
@@ -139,10 +143,8 @@
         insertafter: EOF
         marker: "# {mark} ANSIBLE MANAGED BLOCK -- Goose API key"
         block: |
-          import os
-          c.Spawner.environment.update({
-            'WILLMA_API_KEY': os.environ['WILLMA_API_KEY'],
-          })
+          # Add Goose API key to env_keep for spawned JupyterHub servers
+          c.Spawner.env_keep.append('WILLMA_API_KEY')
       register: goose_jupyterhub_api_key_forwarding
       notify: Restart JupyterHub
 

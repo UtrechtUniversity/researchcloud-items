@@ -28,5 +28,4 @@ jupyterhub_config_env_keep:
   - PATH
   - CONDA_ROOT
   - CONDA_DEFAULT_ENV
-  - WILLMA_API_KEY
 jupyterhub_debug: false
