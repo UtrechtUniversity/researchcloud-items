@@ -1,0 +1,157 @@
+---
+- name: User provisioning
+  block:
+    - name: Create user ray
+      ansible.builtin.user:
+        name: ray
+        state: present
+        shell: /bin/bash
+
+    - name: Setup ssh key
+      when: (ray_public_key | length) > 0
+      ansible.posix.authorized_key:
+        user: ray
+        state: present
+        key: "{{ ray_public_key }}"
+
+    # The Ray SRC provider expects the public key to be at a pre-determined location
+    # This is to propagate the key to new nodes.
+    - name: Write ssh key to expected location
+      when: (ray_public_key | length) > 0
+      ansible.builtin.copy:
+        dest: /home/ray/ray_public.pub
+        owner: ray
+        group: ray
+        mode: "0600"
+        content: "{{ ray_public_key }}"
+
+    - name: Add token to .bashrc
+      when: (ray_src_token | length) > 0
+      ansible.builtin.lineinfile:
+        path: "/home/ray/.bashrc"
+        line: export RESEARCH_CLOUD_TOKEN="{{ ray_src_token }}"
+        owner: ray
+        group: ray
+        mode: "0600"
+
+    - name: Allow ray user to control systemd service
+      when: ray_setup
+      tags: molecule-idempotence-notest
+      community.general.sudoers:
+        name: ray-systemctl
+        state: present
+        user: ray
+        nopassword: true
+        commands:
+          - /usr/bin/systemctl start {{ ray_service_name }}.service
+          - /usr/bin/systemctl restart {{ ray_service_name }}.service
+          - /usr/bin/systemctl stop {{ ray_service_name }}.service
+
+- name: Find private network
+  block:
+    - name: Create find_ip script
+      ansible.builtin.copy:
+        src: find_private_ip.sh
+        dest: /usr/local/bin/find_private_ip.sh
+        owner: root
+        group: root
+        mode: "0655"
+
+    - name: Test find private ip
+      ansible.builtin.command:
+        cmd: /usr/local/bin/find_private_ip.sh
+      register: find_private_ip
+      changed_when: false
+
+    - name: Fail if no private network
+      when:
+        - find_private_ip.rc != 0
+      ansible.builtin.fail:
+        msg: "No private network found! Result of script: {{ find_private_ip.stdout }}"
+
+    - name: Set internal ip
+      ansible.builtin.set_fact:
+        ray_internal_ip: "{{ find_private_ip.stdout | trim }}"
+
+    - name: Set auth token
+      when: (ray_auth_token | length) > 0
+      ansible.builtin.copy:
+        dest: /home/ray/ray_auth_token
+        owner: ray
+        group: ray
+        mode: "0600"
+        content: "{{ ray_auth_token }}"
+
+    - name: Set connect address
+      ansible.builtin.set_fact:
+        ray_connect_address: |-
+          {%- if ray_head_node_address | length > 0 -%}
+          {%- if ':' in ray_head_node_address -%}
+          {{ ray_head_node_address }}
+          {%- else -%}
+          {{ ray_head_node_address }}:{{ ray_head_node_port }}
+          {%- endif -%}
+          {%- elif ray_head_node -%}
+          {{ ray_internal_ip }}:{{ ray_head_node_port }}
+          {%- else -%}
+          auto
+          {%- endif -%}
+
+    - name: Create Ray env file
+      ansible.builtin.template:
+        src: ray.env.j2
+        dest: "/home/ray/{{ ray_service_name }}.env"
+        owner: ray
+        group: ray
+        mode: "0600"
+
+- name: Setup venv
+  block:
+    - name: Create venv
+      ansible.builtin.command:
+        cmd: |-
+          uv venv
+          {% if (ray_python_version | length) > 0 %}
+          --python {{ ray_python_version }}
+          {% else %}
+          --no-managed-python
+          {% endif %}
+          --seed
+          {{ ray_venv }}
+        creates: "{{ ray_venv }}"
+      environment:
+        UV_PYTHON_INSTALL_DIR: /opt/
+
+    - name: Install ray
+      ansible.builtin.command:
+        cmd: uv pip install ray{{ ray_packages }}{{ ray_version }} git+https://github.com/UtrechtUniversity/src-ray-provider.git
+        creates: "{{ ray_venv }}/bin/ray"
+      environment:
+        VIRTUAL_ENV: "{{ ray_venv }}"
+
+    - name: Add venv to .bashrc PATH
+      ansible.builtin.lineinfile:
+        path: "/home/ray/.bashrc"
+        line: 'export PATH="{{ ray_venv }}/bin/:$PATH"'
+        state: present
+
+    - name: Create autoscaling config
+      when: ray_autoscale
+      ansible.builtin.template:
+        src: ray_bootstrap_config.yaml.j2
+        dest: /home/ray/ray_bootstrap_config.yaml
+        owner: ray
+        group: ray
+        mode: "0600"
+
+    - name: Create Ray systemd service
+      when: ray_setup
+      ansible.builtin.template:
+        src: ray.service.j2
+        dest: /etc/systemd/system/{{ ray_service_name }}.service
+        owner: root
+        group: root
+        mode: "0644"
+      notify:
+        - Restart ray systemd service
+        - Fail if ray is not active
