@@ -157,8 +157,8 @@
       ansible.builtin.copy:
         dest: "{{ (jupyterhub_system_pip | ternary('/usr/local', jupyterhub_venv)) }}/share/jupyterhub/static/css/uu_theme.css"
         src: files/uu_theme.css
-        owner: root
-        group: root
+        owner: "{{ jupyterhub_system_pip | ternary('root', jupyterhub_user) }}"
+        group: "{{ jupyterhub_system_pip | ternary('root', jupyterhub_allowed_users_group) }}"
         mode: "0644"
 
     - name: Add custom stylesheet link to JupyterHub page template
