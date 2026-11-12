@@ -1,0 +1,16 @@
+# The ResearchCloud Ray provider's bootstrap_config function dynamically loads
+# available node types from the Catalog Item flavours.
+# This role's default config (ray_bootstrap_config.yaml.j2) is one that has not been bootstrapped yet.
+# So this script runs that default config through the bootstrapping process.
+# This mimics what `ray up` normally does.
+
+import yaml
+from ray.autoscaler._private.commands import _bootstrap_config
+
+config_path = "/home/{{ ray_user }}/ray_bootstrap_config.yaml"
+
+config = yaml.safe_load(open(config_path).read())
+config = _bootstrap_config(config, True)
+
+with open(config_path, "wt") as f:
+    yaml.safe_dump(config, f)

@@ -29,3 +29,25 @@
     owner: "{{ ray_user }}"
     group: "{{ ray_user }}"
     mode: "0600"
+
+  # The ResearchCloud Ray provider's bootstrap_config function dynamically loads
+  # available node types from the Catalog Item flavours. So we must run the provided
+  # base config through the bootstrap process to ensure node types matching live flavours
+  # are available.
+- name: Run autoscaling config through Ray bootstrap process
+  block:
+    - name: Place bootstrap script
+      ansible.builtin.template:
+        src: templates/bootstrap_config.py.j2
+        dest: /home/{{ ray_user }}/bootstrap_config.py
+        owner: "{{ ray_user }}"
+        group: "{{ ray_user }}"
+        mode: "0600"
+
+      # This requires hitting the ResearchCloud API -- so don't test this in molecule.
+    - name: Run bootstrap script
+      tags: molecule-notest
+      ansible.builtin.shell:
+        cmd: source /home/{{ ray_user }}/.bashrc && {{ ray_venv }}/bin/python /home/{{ ray_user }}/bootstrap_config.py
+      args:
+        executable: /bin/bash
