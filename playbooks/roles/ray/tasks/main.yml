@@ -124,7 +124,7 @@
 
     - name: Install ray
       ansible.builtin.command:
-        cmd: uv pip install ray{{ ray_packages }}{{ ray_version }} git+https://github.com/UtrechtUniversity/src-ray-provider.git
+        cmd: uv pip install ray{{ ray_final_packages }}{{ ray_version }} git+https://github.com/UtrechtUniversity/src-ray-provider.git
         creates: "{{ ray_venv }}/bin/ray"
       environment:
         VIRTUAL_ENV: "{{ ray_venv }}"

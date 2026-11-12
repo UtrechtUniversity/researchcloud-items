@@ -3,7 +3,7 @@ ray_default_packages:
   - default
   - client
 # noqa: jinja[spacing]
-ray_packages: >-
+ray_final_packages: >-
   {%- if (ray_user_packages | length) > 0 -%}
   [{{ ray_user_packages }}]
   {%- else -%}
