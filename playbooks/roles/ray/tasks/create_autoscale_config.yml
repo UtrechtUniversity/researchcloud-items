@@ -11,12 +11,15 @@
         executable: /bin/bash
       register: co_info
       changed_when: false
+      failed_when: ray_fail_hard and co_info.rc > 0
 
     - name: Parse CO information
+      when: co_info.rc == 0
       ansible.builtin.set_fact:
         co_info_json: "{{ co_info.stdout | from_json }}"
 
     - name: Set wallet, CO, and cloud names
+      when: co_info.rc == 0
       ansible.builtin.set_fact:
         ray_src_wallet_name: "{{ ray_src_wallet_name | default(co_info_json.meta.wallet_name, true) }}"
         ray_src_co_name: "{{ ray_src_co_name | default(co_info_json.meta.co_name, true) }}"
@@ -49,5 +52,7 @@
       tags: molecule-notest
       ansible.builtin.shell:
         cmd: source /home/{{ ray_user }}/.bashrc && {{ ray_venv }}/bin/python /home/{{ ray_user }}/bootstrap_config.py
+      register: run_bootstrap_script
+      failed_when: ray_fail_hard and run_bootstrap_script.rc > 0
       args:
         executable: /bin/bash
