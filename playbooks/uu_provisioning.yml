@@ -7,6 +7,8 @@
 - name: Standard UU Provisioning
   hosts: localhost
   gather_facts: true
+  vars:
+    _uu_provisioning_epiphany: "{{ uu_provisioning_epiphany | default(false, true) | bool }}"
   roles:
     - role: uu_generic
     - role: security_updates
@@ -33,4 +35,51 @@
           ansible.builtin.lineinfile:
             path: /etc/sudoers
             state: absent
-            regexp: '^%wheel'
+            regexp: "^%wheel"
+
+    - name: Swap firefox for epiphany # https://github.com/UtrechtUniversity/SRC-catalog-items/issues/12
+      when:
+        - fact_desktop_workspace
+        - _uu_provisioning_epiphany
+      block:
+        - name: Install Epiphany (Debian/Ubuntu)
+          ansible.builtin.apt:
+            name: epiphany-browser
+            state: present
+            update_cache: true
+          when: ansible_os_family == "Debian"
+
+        - name: Install Epiphany (RedHat/Fedora/Arch)
+          ansible.builtin.package:
+            name: epiphany
+            state: present
+          when: ansible_os_family != "Debian"
+
+        - name: Set Epiphany as system-wide default for web handlers
+          community.general.ini_file:
+            path: /etc/xdg/mimeapps.list
+            section: Default Applications
+            option: "{{ item }}"
+            value: org.gnome.Epiphany.desktop
+            no_extra_spaces: true
+            create: true
+            owner: root
+            group: root
+            mode: "0644"
+          loop:
+            - x-scheme-handler/http
+            - x-scheme-handler/https
+            - x-scheme-handler/about
+            - x-scheme-handler/unknown
+            - text/html
+            - application/xhtml+xml
+
+        - name: Set x-www-browser alternative to Epiphany
+          community.general.alternatives:
+            name: "{{ item }}"
+            path: /usr/bin/epiphany-browser
+            link: "/usr/bin/{{ item }}"
+          loop:
+            - x-www-browser
+            - gnome-www-browser
+          when: ansible_os_family == "Debian"
