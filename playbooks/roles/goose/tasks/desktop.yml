@@ -1,0 +1,24 @@
+- name: Download Goose desktop app .deb package
+  become: true
+  ansible.builtin.get_url:
+    url: https://github.com/aaif-goose/goose/releases/download/v1.55.0/goose_1.55.0_amd64.deb
+    dest: /tmp/goose_1.55.0_amd64.deb
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install Goose desktop app .deb package
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/goose_1.55.0_amd64.deb
+    state: present
+
+- name: Install desktop file menu item through role
+  ansible.builtin.include_role:
+    name: desktop_file
+  vars:
+    desktopfile_app_name: goose
+    desktopfile_sizes:
+      - 48
+    desktopfile_login: false
+    desktopfile_desktop: true
