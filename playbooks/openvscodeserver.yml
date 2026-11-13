@@ -29,6 +29,7 @@
         jupyterhub_app_venv: "{{ openvscode_jupyter_venv_path | default('') }}"
         jupyterhub_app_config_dir: "{{ openvscode_jupyter_config_dir | default('') }}"
         jupyterhub_app_pip_executable: "{{ _openvscode_pip_cmd }}"
+        jupyterhub_app_icon_path: "{{ openvscodeserver_icon_path }}"
         jupyterhub_app_server:
           command: "{{ _openvscode_cmd }}"
           unix_socket: true
