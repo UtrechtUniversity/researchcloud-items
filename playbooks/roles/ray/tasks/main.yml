@@ -13,6 +13,7 @@
         user: "{{ ray_user }}"
         state: present
         key: "{{ ray_public_key }}"
+        generate_ssh_key: true # Will not overwrite existing ssh keys. In autoscale mode, we want to have an existing keypair for the head node to use to login to new nodes.
 
     # The Ray SRC provider expects the public key to be at a pre-determined location
     # This is to propagate the key to new nodes.
@@ -45,6 +46,7 @@
         commands:
           - /usr/bin/systemctl start {{ ray_service_name }}.service
           - /usr/bin/systemctl restart {{ ray_service_name }}.service
+          - /usr/bin/systemctl status {{ ray_service_name }}.service
           - /usr/bin/systemctl stop {{ ray_service_name }}.service
 
 - name: Find private network
