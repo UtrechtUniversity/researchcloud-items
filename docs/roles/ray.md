@@ -76,6 +76,7 @@ Store the token securely (for example, as a ResearchCloud secret) and use the sa
 | `ray_src_wallet_name` | `""` | Wallet name for the Ray SURF ResearchCloud autoscaler cluster definition. |
 | `ray_src_cloud_name` | `"SURF HPC Cloud"` | Cloud name for the Ray SURF ResearchCloud autoscaler cluster definition. |
 | `ray_src_cluster_name` | `"ray<random_string>-cluster"` or `<ray_service_prefix>-cluster` if service name is set | Cluster name for the Ray SURF ResearchCloud autoscaler cluster definition. |
+| `ray_src_workspace_id` | `""` | ID of the current workspace. Will be acquired dynamically if this variable is empty. |
 
 
 ## Technical details

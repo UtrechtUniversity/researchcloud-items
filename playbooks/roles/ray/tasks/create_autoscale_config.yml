@@ -1,7 +1,6 @@
 ---
 - name: Get CO info
   tags: molecule-notest
-  when: not (ray_src_co_name | length) > 0 or not (ray_src_wallet_name | length) > 0 or not (ray_src_cloud_name | length) > 0
   block:
 
     - name: Get CO info shell
@@ -24,6 +23,9 @@
         ray_src_wallet_name: "{{ ray_src_wallet_name | default(co_info_json.meta.wallet_name, true) }}"
         ray_src_co_name: "{{ ray_src_co_name | default(co_info_json.meta.co_name, true) }}"
         ray_src_cloud_name: "{{ ray_src_cloud_name | default(co_info_json.meta.subscription_name, true) }}"
+        ray_src_workspace_id: "{{ ray_src_workspace_id | default(co_info_json.id) }}"
+        ray_src_catalog_item: "{{ co_info_json.meta.application_name }}"
+        ray_src_size_flavour: "{{ (co_info_json.meta.flavours | selectattr('category', 'eq', 'size') | list)[0].name }}"
 
 - name: Create autoscaling config file
   ansible.builtin.template:
