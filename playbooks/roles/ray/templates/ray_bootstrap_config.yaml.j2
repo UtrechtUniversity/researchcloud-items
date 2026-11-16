@@ -8,14 +8,17 @@ provider:
   co_name: "{{ ray_src_co_name }}"
   wallet_name: "{{ ray_src_wallet_name }}"
   cloud_name: "{{ ray_src_cloud_name }}"
+  head_workspace_id: "{{ ray_src_workspace_id }}"
 
 head_node_type: head
 available_node_types:
   head:
     min_workers: 0
-    max_workers: 1
-    resources: {"CPU": 1}
-    node_config: {}
+    max_workers: 0
+    resources: {"CPU": 0}
+    node_config:
+      catalog_item_name: "{{ ray_src_catalog_item }}"
+      size_flavour_name: "{{ ray_src_size_flavour }}"
   worker:
     min_workers: 0
     resources: {"CPU": 2}
