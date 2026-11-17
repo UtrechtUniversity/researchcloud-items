@@ -25,4 +25,6 @@ ray_src_co_name: "" # CO name for the Ray SURF ResearchCloud autoscaler cluster 
 ray_src_wallet_name: "" # Wallet name for the Ray SURF ResearchCloud autoscaler cluster definition.
 ray_src_cloud_name: "SURF HPC Cloud" # Cloud name for the Ray SURF ResearchCloud autoscaler cluster definition.
 ray_src_cluster_name: "{{ ray_service_prefix | default('ray'~lookup('community.general.random_string', length=4, special=false), true) }}-cluster"
-ray_src_workspace_id: "" # ID of the current workspace. Will be acquired dynamically if not set there.
+ray_src_workspace_id: "" # ID of the current (head node) workspace. Will be acquired dynamically if not set here, when in autoscaling mode.
+ray_src_catalog_item: "" # Catalog item name of of the current (head node) workspace. Will be acquired dynamically if not set here, , when in autoscaling mode.
+ray_src_size_flavour: "" # Size flavour of of the current (head node) workspace. Will be acquired dynamically if not set here, when in autoscaling mode.
