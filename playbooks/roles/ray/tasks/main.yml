@@ -6,6 +6,7 @@
         name: "{{ ray_user }}"
         state: present
         shell: /bin/bash
+        generate_ssh_key: true # Will not overwrite existing ssh keys. In autoscale mode, we want to have an existing keypair for the head node to use to login to new nodes.
 
     - name: Setup ssh key
       when: (ray_public_key | length) > 0
@@ -13,7 +14,6 @@
         user: "{{ ray_user }}"
         state: present
         key: "{{ ray_public_key }}"
-        generate_ssh_key: true # Will not overwrite existing ssh keys. In autoscale mode, we want to have an existing keypair for the head node to use to login to new nodes.
 
     # The Ray SRC provider expects the public key to be at a pre-determined location
     # This is to propagate the key to new nodes.
