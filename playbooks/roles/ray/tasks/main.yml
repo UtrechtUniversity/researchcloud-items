@@ -6,7 +6,8 @@
         name: "{{ ray_user }}"
         state: present
         shell: /bin/bash
-        generate_ssh_key: true # Will not overwrite existing ssh keys. In autoscale mode, we want to have an existing keypair for the head node to use to login to new nodes.
+        generate_ssh_key: "{{ ray_head_node }}" # In autoscale mode, we want to have an existing keypair for the head node to use to login to new nodes. If not in autoscale mode, these keys will be ignored.
+      register: ray_created_user
 
     - name: Setup ssh key
       when: (ray_public_key | length) > 0
@@ -138,7 +139,9 @@
         state: present
 
     - name: Create autoscaling config
-      when: ray_autoscale
+      when:
+        - ray_head_node
+        - ray_autoscale
       ansible.builtin.include_tasks:
         file: create_autoscale_config.yml
 
