@@ -48,6 +48,7 @@ JupyterHub's [sudospawner](https://github.com/jupyterhub/sudospawner) is used to
 - `jupyterhub_remote_user_header`: String. Which HTTP header should be used to get the username from, when using remote user auth (SRAM). Default: `REMOTE_USER`.
 - `jupyterhub_activate_remote_user_auth`: Boolean. Whether to enable remote user auth in the JupyterHub config. You can set this to `true` in order to test remote auth without actually having SRAM or another external auth provider, e.g. in CI. Default: `false`.
 - `jupyterhub_enable_unix_socket`: Boolean. Whether all Hub elements should listen on Unix sockets (more secure) instead of TCP ports. See the Security Note above, and the [Architecture](#architecture) section below. Default: `true`.
+- `jupyterhub_uu_theme`: Boolean. Whether to install the UU theme for JupyterHub. Default: `true`.
 
 ## Architecture
 
