@@ -174,6 +174,7 @@
         CC: gcc # https://github.com/astral-sh/uv/issues/6488
 
     - name: Install custom JupyterHub stylesheet
+      when: jupyterhub_uu_theme
       ansible.builtin.copy:
         dest: "{{ (jupyterhub_system_pip | ternary('/usr/local', jupyterhub_venv)) }}/share/jupyterhub/static/css/uu_theme.css"
         src: files/uu_theme.css
@@ -182,6 +183,7 @@
         mode: "0644"
 
     - name: Add custom stylesheet link to JupyterHub page template
+      when: jupyterhub_uu_theme
       ansible.builtin.blockinfile:
         path: "{{ (jupyterhub_system_pip | ternary('/usr/local', jupyterhub_venv)) }}/share/jupyterhub/templates/page.html"
         insertbefore: "</head>"
