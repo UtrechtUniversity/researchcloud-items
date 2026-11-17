@@ -35,7 +35,7 @@ max_workers: {{ ray_src_max_workers }} # Global cap on worker nodes across the w
 # These need to be defined but can be left empty if not needed.
 initialization_commands: []
 worker_setup_commands: []
-worker_start_ray_commands: ["/bin/true"] # this key is required, but since workers will be started with systemd, we don't actually need to do anything.
+worker_start_ray_commands: []
 head_setup_commands: []
 file_mounts: {}
 cluster_synced_files: []
