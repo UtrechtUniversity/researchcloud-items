@@ -10,6 +10,11 @@ provider:
   cloud_name: "{{ ray_src_cloud_name }}"
   head_workspace_id: "{{ ray_src_workspace_id }}"
 
+auth:
+  ssh_user: ray
+  ssh_private_key: "{{ ray_created_user.ssh_key_file }}"
+  ssh_public_key: "{{ ray_created_user.ssh_key_file }}.pub"
+
 head_node_type: head
 available_node_types:
   head:
