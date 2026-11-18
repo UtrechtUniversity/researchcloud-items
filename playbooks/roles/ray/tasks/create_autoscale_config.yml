@@ -1,8 +1,13 @@
 ---
 - name: Get CO info
   tags: molecule-notest
-  when:
-    - not ((ray_src_wallet_name | length > 0) and (ray_src_co_name | length > 0) and (ray_src_cloud_name | length > 0) and (ray_src_workspace_id | length > 0) and (ray_src_catalog_item | length > 0) and (ray_src_size_flavour | length > 0))
+  when: >- # only run if at least one of the following variables is empty
+    not (ray_src_wallet_name | length | bool) or
+    not (ray_src_cloud_name | length | bool) or
+    not (ray_src_workspace_id | length | bool) or
+    not (ray_src_catalog_item | length | bool) or
+    not (ray_src_catalog_item | length | bool) or
+    not (ray_src_size_flavour | length | bool)
   block:
 
     - name: Get CO info shell
