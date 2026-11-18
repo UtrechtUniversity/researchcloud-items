@@ -12,7 +12,7 @@
 
     - name: Get CO info shell
       ansible.builtin.shell:
-        cmd: "source /home/{{ ray_user }}/.bashrc && {{ ray_venv }}/bin/researchcloud get-current-workspace"
+        cmd: "source /home/{{ ray_user }}/{{ ray_service_name }}.env && export RESEARCH_CLOUD_TOKEN && {{ ray_venv }}/bin/researchcloud get-current-workspace"
       args:
         executable: /bin/bash
       register: co_info
@@ -30,9 +30,9 @@
         ray_src_wallet_name: "{{ ray_src_wallet_name | default(co_info_json.meta.wallet_name, true) }}"
         ray_src_co_name: "{{ ray_src_co_name | default(co_info_json.meta.co_name, true) | default('') }}"
         ray_src_cloud_name: "{{ ray_src_cloud_name | default(co_info_json.meta.subscription_name, true) | default('') }}"
-        ray_src_workspace_id: "{{ ray_src_workspace_id | default(co_info_json.id) | default('') }}"
-        ray_src_catalog_item: "{{ ray_src_catalog_item | default(co_info_json.meta.application_name) | default('') }}"
-        ray_src_size_flavour: "{{ ray_src_size_flavour | default(((co_info_json.meta.flavours | selectattr('category', 'eq', 'size') | list)[0].name)) | default('') }}"
+        ray_src_workspace_id: "{{ ray_src_workspace_id | default(co_info_json.id, true) | default('') }}"
+        ray_src_catalog_item: "{{ ray_src_catalog_item | default(co_info_json.meta.application_name, true) | default('') }}"
+        ray_src_size_flavour: "{{ ray_src_size_flavour | default(((co_info_json.meta.flavours | selectattr('category', 'eq', 'size') | list)[0].name), true) | default('') }}"
 
 - name: Create autoscaling config file
   ansible.builtin.template:
@@ -60,7 +60,7 @@
     - name: Run bootstrap script
       tags: molecule-notest
       ansible.builtin.shell:
-        cmd: source /home/{{ ray_user }}/.bashrc && {{ ray_venv }}/bin/python /home/{{ ray_user }}/bootstrap_config.py
+        cmd: source /home/{{ ray_user }}/{{ ray_service_name }}.env && export RESEARCH_CLOUD_TOKEN && {{ ray_venv }}/bin/python /home/{{ ray_user }}/bootstrap_config.py
       register: run_bootstrap_script
       failed_when: ray_fail_hard and run_bootstrap_script.rc > 0
       args:
