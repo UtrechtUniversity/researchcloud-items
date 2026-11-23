@@ -1,4 +1,17 @@
 ---
+- name: Check for GPU
+  ansible.builtin.include_role:
+    name: fact_workspace_info
+  vars:
+    fact_workspace_info_facts:
+      - gpu
+
+- name: Install recommended driver (server/headless flavour)
+  ansible.builtin.command: ubuntu-drivers install --gpgpu
+  when:
+    - ansible_os_family == "Debian"
+    - fact_workspace_has_gpu
+
 - name: User provisioning
   block:
     - name: Create user {{ ray_user }}
