@@ -1,39 +1,46 @@
 ---
-- name: Determine whether ansible on the workspace is running in a virtual env
-  ansible.builtin.stat:
-    path: "{{ _src_venv_path }}"
-  register: src_ansible_venv
-
-- name: Set src_ansible_venv fact
-  ansible.builtin.set_fact:
-    fact_src_ansible_venv: "{{ (src_ansible_venv.stat.exists or 'molecule-notest' in ansible_skip_tags) | ternary(_src_venv_path, '') }}"
-
-- name: Get workspace.json file
-  ansible.builtin.command: cat /etc/rsc/workspace.json
-  changed_when: false
-  register: _workspace_info_file
-
-- name: Parse workspace.json info
-  ansible.builtin.set_fact:
-    fact_workspace_info: "{{ _workspace_info_file['stdout'] | from_json }}"
-
 - name: Gather minimal system facts
   ansible.builtin.setup:
     gather_subset:
       - min
   when: ansible_os_family is not defined
 
-- name: Gather mounts facts
-  ansible.builtin.setup:
-    gather_subset:
-      - mounts
-  when: ansible_mounts is not defined
+- name: SRC facts
+  when: "'src' in fact_workspace_info_facts"
+  block:
+    - name: Determine whether ansible on the workspace is running in a virtual env
+      ansible.builtin.stat:
+        path: "{{ _src_venv_path }}"
+      register: src_ansible_venv
 
-- name: Set fact_workspace_storage
-  ansible.builtin.set_fact:
-    fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
+    - name: Set src_ansible_venv fact
+      ansible.builtin.set_fact:
+        fact_src_ansible_venv: "{{ (src_ansible_venv.stat.exists or 'molecule-notest' in ansible_skip_tags) | ternary(_src_venv_path, '') }}"
+
+    - name: Get workspace.json file
+      ansible.builtin.command: cat /etc/rsc/workspace.json
+      changed_when: false
+      register: _workspace_info_file
+
+    - name: Parse workspace.json info
+      ansible.builtin.set_fact:
+        fact_workspace_info: "{{ _workspace_info_file['stdout'] | from_json }}"
+
+- name: Set storage facts
+  when: "'storage' in fact_workspace_info_facts"
+  block:
+    - name: Gather mounts facts
+      ansible.builtin.setup:
+        gather_subset:
+          - mounts
+      when: ansible_mounts is not defined
+
+    - name: Set fact_workspace_storage
+      ansible.builtin.set_fact:
+        fact_workspace_storage: "{{ ansible_mounts | selectattr('mount', 'search', '^/data/') | list }}"
 
 - name: Is the workspace a desktop workspace?
+  when: "'desktop' in fact_workspace_info_facts"
   block:
     - name: Get all packages as facts
       ansible.builtin.package_facts:
@@ -49,6 +56,7 @@
         fact_desktop_workspace: "{{ _workspace_info_desktop_package is defined and _workspace_info_desktop_package in ansible_facts.packages }}"
 
 - name: Does the workspace have a GPU?
+  when: "'gpu' in fact_workspace_info_facts"
   block:
     - name: Get graphics cards info
       ansible.builtin.command: lshw -class display -json

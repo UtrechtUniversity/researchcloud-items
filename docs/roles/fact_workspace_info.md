@@ -4,10 +4,21 @@
 ## Summary
 Makes information about the workspace and CO available as Ansible facts. Provides three facts:
 
+### SRC facts
+
 - `fact_workspace_info` -- Dict. Object containing info about the workspace (CO, user endpoint URL, etc.)/
-- `fact_desktop_workspace` -- Boolean. True if the workspace has a desktop environment.
-- `fact_workspace_storage` -- List. List of Strings of paths to ResearchCloud storage volumes mounted on the workspace.
 - `fact_src_ansible_venv` -- string path to the python environment currently being used by Ansible. Can be used to install additional `pip` dependencies for Ansible modules into the correct environment. Empty string if Ansible is not using a virtual environment (but instead the global system python environment).
+
+### Storage facts
+
+- `fact_workspace_storage` -- List. List of Strings of paths to ResearchCloud storage volumes mounted on the workspace.
+
+### Desktop facts
+
+- `fact_desktop_workspace` -- Boolean. True if the workspace has a desktop environment.
+
+### GPU facts 
+
 - `fact_workspace_gpus`: List. Contains dicts describing available GPUs. Obtained using the `lshw -class display` command, filtering on descriptions containing '3d' (this works at least for NVIDIA GPUs, untested with others).
 - `fact_workspace_has_gpu`: Boolean. Whether the workspace has any GPUs (convenience fact determined on the basis of `fact_workspace_gpus`).
 - `fact_cuda_version`: String. CUDA release version (e.g. `13.2`), or empty.
@@ -58,6 +69,10 @@ See here for example output of the facts.
     }
  ]
 ```
+
+## Variables
+
+- `fact_workspace_info_facts`: List. Which kinds of facts to set. Defaults to all: `['src', 'storage', 'desktop', 'gpu']`. Can set to a subset for performance reasons.
 
 ## History
 2024 Written by Dawa Ometto (Utrecht University)
