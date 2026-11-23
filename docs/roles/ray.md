@@ -71,6 +71,7 @@ Store the token securely (for example, as a ResearchCloud secret) and use the sa
 | `ray_fail_hard` | `false` | When `true`, fail the role if the Ray status check after a service restart does not report the cluster as active. |
 | `ray_service_prefix` | `""` | Optional prefix for the systemd service name, allowing multiple Ray services on one machine. |
 | `ray_log_to_stderr` | `false` | Add the explicit `RAY_LOG_TO_STDERR=1` setting to the systemd service environment. |
+| `ray_tmp_dir` | `/tmp/ray` | Path to the temporary directory that Ray should use for data and sockets. |
 | `ray_src_max_workers` | `6` | Maximum number of total nodes for the Ray SURF ResearchCloud autoscaler cluster definition. |
 | `ray_src_co_name` | `""` | CO name for the Ray SURF ResearchCloud autoscaler cluster definition. |
 | `ray_src_wallet_name` | `""` | Wallet name for the Ray SURF ResearchCloud autoscaler cluster definition. |
