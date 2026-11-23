@@ -12,12 +12,14 @@
         ray_dashboard_host: "0.0.0.0" # bind the dashboard to localhost for debugging
         ray_fail_hard: true
         ray_auth_token: "foo"
+        ray_tmp_dir: /tmp/ray_head
     - role: ray
       vars:
         ray_head_node: false
         ray_fail_hard: true
         ray_auth_token: "foo"
         ray_head_node_address: "test-ray" # the name of the container
+        ray_tmp_dir: /tmp/ray_worker
 
   tasks:
     # normally the role handlers should start services using handlers
