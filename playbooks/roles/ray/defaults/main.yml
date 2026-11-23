@@ -20,6 +20,7 @@ ray_autoscale_config: "ray_bootstrap_config.yaml.j2" # path to the autoscale con
 ray_auth_token: "" # token to protect the ray cluster with.
 ray_service_prefix: "" # will be added to service name, allows running multiple ray services on one node.
 ray_log_to_stderr: false
+ray_tmp_dir: /tmp/ray
 ray_src_max_workers: 6 # maximum number of workers for the Ray SURF ResearchCloud autoscaler cluster definition.
 ray_src_co_name: "" # CO name for the Ray SURF ResearchCloud autoscaler cluster definition.
 ray_src_wallet_name: "" # Wallet name for the Ray SURF ResearchCloud autoscaler cluster definition.

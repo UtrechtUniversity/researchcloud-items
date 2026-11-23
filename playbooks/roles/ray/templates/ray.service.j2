@@ -18,7 +18,7 @@ ExecStart={{ ray_cmd }} start \
     --dashboard-host="{{ ray_dashboard_host }}" \
     --dashboard-port "$RAY_DASHBOARD_PORT" \
     --ray-client-server-port "$RAY_CLIENT_SERVER_PORT" \
-    --temp-dir /tmp/{{ ray_service_name }} \
+    --temp-dir {{ ray_tmp_dir }} \
     --dashboard-agent-listen-port=52365 \
     --runtime-env-agent-port=52366{%- if 'molecule-notest' in ansible_skip_tags -%} \
         --min-worker-port=20000 \
@@ -31,7 +31,7 @@ ExecStart={{ ray_cmd }} start \
     --block \
     --node-ip-address "$RAY_NODE_IP_ADDRESS" \
     --address "$RAY_ADDRESS" \
-    --temp-dir /tmp/{{ ray_service_name }} \
+    --temp-dir {{ ray_tmp_dir }} \
     --dashboard-agent-listen-port=52367 \
     --runtime-env-agent-port=52368{%- if 'molecule-notest' in ansible_skip_tags -%} \
         --min-worker-port=20100 \
@@ -43,10 +43,10 @@ ExecStart={{ ray_cmd }} start \
 ExecStop=/usr/local/bin/uv tool run ray stop
 # The first stop sometimes doesn't end all processes, so try harder:
 ExecStop=/usr/local/bin/uv tool run ray stop --force
-ExecStopPost=/usr/bin/rm -rf /tmp/{{ ray_service_name }}
+ExecStopPost=/usr/bin/rm -rf {{ ray_tmp_dir }}
 Restart=on-failure
 
-Environment=TMPDIR=/tmp/{{ ray_service_name }}
+Environment=TMPDIR={{ ray_tmp_dir }}
 {%- if ray_log_to_stderr -%}
 Environment=RAY_LOG_TO_STDERR=1
 {%- endif -%}
