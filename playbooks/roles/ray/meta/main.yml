@@ -9,3 +9,9 @@ galaxy_info:
       versions:
         - jammy
         - noble
+dependencies:
+  - role: fact_workspace_info
+    vars:
+      fact_workspace_info_facts:
+        - storage
+        - gpu
