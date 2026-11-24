@@ -80,6 +80,7 @@ Store the token securely (for example, as a ResearchCloud secret) and use the sa
 | `ray_src_workspace_id` | `""` | ID of the current (head node) workspace. Will be acquired dynamically if not set here, when in autoscaling mode. |
 | `ray_src_catalog_item` | `""` | Catalog item name of the current (head node) workspace. Will be acquired dynamically if not set here, when in autoscaling mode. |
 | `ray_src_size_flavour` | `""` | Size flavour name of the current (head node) workspace. Will be acquired dynamically if not set here, when in autoscaling mode. |
+| `ray_src_resume_workspaces` | `true` |  When in autoscaling mode, whether to set the `resume_paused_workspaces` config flag. See the SRC Ray Provider documentation. |
 
 
 ## Technical details
