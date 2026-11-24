@@ -1,10 +1,8 @@
 ---
-- name: Check for GPU
-  ansible.builtin.include_role:
-    name: fact_workspace_info
-  vars:
-    fact_workspace_info_facts:
-      - gpu
+- name: Set Ray temp dir
+  when: ansible_facts["mounts"] | selectattr('mount', 'eq', '/mnt/scratch') | list | length > 0
+  ansible.builtin.set_fact:
+    ray_tmp_dir: /mnt/scratch
 
 - name: Install recommended driver (server/headless flavour)
   ansible.builtin.command: ubuntu-drivers install --gpgpu
