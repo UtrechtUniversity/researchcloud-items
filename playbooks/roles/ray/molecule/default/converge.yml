@@ -13,6 +13,7 @@
         ray_fail_hard: true
         ray_auth_token: "foo"
         ray_tmp_dir: /tmp/ray_head
+        ray_venv: /opt/ray_head-venv
     - role: ray
       vars:
         ray_head_node: false
@@ -20,6 +21,7 @@
         ray_auth_token: "foo"
         ray_head_node_address: "test-ray" # the name of the container
         ray_tmp_dir: /tmp/ray_worker
+        ray_venv: /opt/ray_worker-venv
 
   tasks:
     # normally the role handlers should start services using handlers

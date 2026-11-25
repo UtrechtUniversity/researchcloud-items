@@ -20,7 +20,7 @@
     - name: Start ray with fake autoscale
       ansible.builtin.shell: >-
         ulimit -n 1048576; ulimit -u 1048576;
-        /opt/ray_head-venv/bin/ray start
+        /opt/ray/bin/ray start
         --autoscaling-config=/home/ray/fake_multi_node.yaml
         --head --disable-usage-stats --block
         --dashboard-host=0.0.0.0 --dashboard-port=8265
