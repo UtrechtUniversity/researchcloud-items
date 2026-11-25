@@ -65,7 +65,7 @@ Store the token securely (for example, as a ResearchCloud secret) and use the sa
 | `ray_src_token` | `""` | Optional SURF ResearchCloud token. When set, it is exported as `RESEARCH_CLOUD_TOKEN` in the `ray` user's shell configuration for the autoscaler. |
 | `ray_python_version` | `""` | Python version for the virtual environment. Empty uses the system Python available to `uv`. |
 | `ray_version` | `""` | Optional pip version specifier appended to the Ray package name, for example `==2.40.0`. |
-| `ray_user_packages` | `""` | Optional comma-separated Ray package extras. Empty installs the `default` and `client` extras. |
+| `ray_user_extras` | `""` | Optional comma-separated Ray package extras. Empty installs the `default` and `client` extras. |
 | `ray_env` | `""` | Optional comma-separated environment variables in `NAME=VALUE` form, added to the Ray environment. |
 | `ray_setup` | `true` | Create and start the systemd service. Set to `false` to install and configure Ray without creating that service -- this is the behavior required when creating a Ray cluster with `ray up`. |
 | `ray_fail_hard` | `false` | When `true`, fail the role if the Ray status check after a service restart does not report the cluster as active. |
