@@ -14,6 +14,7 @@ ray_fail_hard: false
 ray_user_packages: ""
 ray_python_version: ""
 ray_version: ""
+ray_venv: /opt/ray
 ray_setup: true # create and start ray systemd service.
 ray_autoscale: false # start head node with --autoscaling-config, place autoscale config. Mimics a head node that would be started with `ray up`.
 ray_autoscale_config: "ray_bootstrap_config.yaml.j2" # path to the autoscale config file.
