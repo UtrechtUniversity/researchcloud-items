@@ -11,6 +11,7 @@ ray_env: ""
 ray_src_token: "" # token for the Ray SURF ResearchCloud autoscaler.
 ray_public_key: ""
 ray_fail_hard: false
+ray_user_extras: ""
 ray_user_packages: ""
 ray_python_version: ""
 ray_version: ""
