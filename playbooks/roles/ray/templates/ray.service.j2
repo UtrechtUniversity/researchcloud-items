@@ -44,6 +44,9 @@ ExecStop=/usr/local/bin/uv tool run ray stop
 # The first stop sometimes doesn't end all processes, so try harder:
 ExecStop=/usr/local/bin/uv tool run ray stop --force
 ExecStopPost=/usr/bin/rm -rf {{ ray_tmp_dir }}
+{% if ray_autoscale %}
+ExecStopPost={{ ray_cmd }} down -y /home/{{ ray_user }}/ray_bootstrap_config.yaml
+{% endif %}
 Restart=on-failure
 
 Environment=TMPDIR={{ ray_tmp_dir }}
