@@ -1,13 +1,13 @@
 ---
-ray_default_packages:
+ray_default_extras:
   - default
   - client
 # noqa: jinja[spacing]
-ray_final_packages: >-
-  {%- if (ray_user_packages | length) > 0 -%}
-  [{{ ray_user_packages }}]
+ray_final_extras: >-
+  {%- if (ray_user_extras | length) > 0 -%}
+  [{{ ray_user_extras }}]
   {%- else -%}
-  [{{ ray_default_packages | join(',') }}]
+  [{{ ray_default_extras | join(',') }}]
   {%- endif -%}
 # noqa: jinja[spacing]
 ray_service_name: >-
@@ -17,3 +17,9 @@ ray_service_name: >-
   {%- endif -%}
   {{ ray_head_node | ternary('head', 'worker') }}
 ray_cmd: "{{ ray_venv }}/bin/ray"
+# noqa: jinja[spacing]
+ray_final_packages: >-
+  {{ ray_head_node | ternary('git+https://github.com/UtrechtUniversity/src-ray-provider.git ', '') }}
+  {%- if (ray_user_packages | length) > 0 -%}
+  {{ ray_user_packages | join(' ') }}
+  {%- endif -%}

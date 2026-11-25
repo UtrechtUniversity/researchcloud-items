@@ -60,7 +60,8 @@ These are the main playbook inputs. For role-level settings and defaults, see th
 | `head_no_cpu` | `true` | Whether to reserve the head's CPUs from Ray tasks. |
 | `dashboard_port` | `"8265"` | Ray dashboard port on the head. |
 | `client_server_port` | `"10001"` | Ray Client server port on the head. |
-| `packages` | `""` | Optional comma-separated Ray package extras. Empty uses the default and client extras. |
+| `packages` | `""` | Optional comma-separated Ray package extras (e.g. `ray[tune]`). Empty uses the `default` and client `extras`. |
+| `extra_packages` | `""` | Optional space-separated pip packages to be installed in the Ray venv. |
 | `python_version` | `""` | Optional Python version for the Ray virtual environment. |
 | `version` | `""` | Optional Ray version to install. |
 | `env` | `""` | Optional comma-separated environment variables in `NAME=VALUE` form. |
