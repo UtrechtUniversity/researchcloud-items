@@ -112,14 +112,6 @@
           auto
           {%- endif -%}
 
-    - name: Create Ray env file
-      ansible.builtin.template:
-        src: ray.env.j2
-        dest: "/home/{{ ray_user }}/{{ ray_service_name }}.env"
-        owner: "{{ ray_user }}"
-        group: "{{ ray_user }}"
-        mode: "0600"
-
 - name: Setup venv
   block:
     - name: Create venv
@@ -150,61 +142,69 @@
         line: 'export PATH="{{ ray_venv }}/bin/:$PATH"'
         state: present
 
-    - name: Create autoscaling config
-      when:
-        - ray_head_node
-        - ray_autoscale
-      ansible.builtin.include_tasks:
-        file: create_autoscale_config.yml
+# When Ray is not being run as a systemd service, configure global ulimits for the ray user.
+# Systemd already handles this for us.
+- name: Configure global ulimits for the ray user
+  when: not ray_setup
+  block:
+    - name: Set pam limits for ray user
+      community.general.pam_limits:
+        domain: "{{ ray_user }}"
+        limit_type: "{{ item.type }}"
+        limit_item: "{{ item.item }}"
+        value: 1048576
+      loop:
+        - { type: 'soft', item: 'nproc' }
+        - { type: 'hard', item: 'nproc' }
+        - { type: 'soft', item: 'nofile' }
+        - { type: 'hard', item: 'nofile' }
 
-    # When Ray is not being run as a systemd service, configure global ulimits for the ray user.
-    # Systemd already handles this for us.
-    - name: Configure global ulimits for the ray user
-      when: not ray_setup
-      block:
-        - name: Set pam limits for ray user
-          community.general.pam_limits:
-            domain: "{{ ray_user }}"
-            limit_type: "{{ item.type }}"
-            limit_item: "{{ item.item }}"
-            value: 1048576
-          loop:
-            - { type: 'soft', item: 'nproc' }
-            - { type: 'hard', item: 'nproc' }
-            - { type: 'soft', item: 'nofile' }
-            - { type: 'hard', item: 'nofile' }
+    - name: Ensure PAM limits are loaded for non-interactive sessions
+      ansible.builtin.lineinfile:
+        path: /etc/pam.d/common-session-noninteractive
+        line: "session required pam_limits.so"
+        state: present
 
-        - name: Ensure PAM limits are loaded for non-interactive sessions
-          ansible.builtin.lineinfile:
-            path: /etc/pam.d/common-session-noninteractive
-            line: "session required pam_limits.so"
-            state: present
+- name: Create Ray env file
+  ansible.builtin.template:
+    src: ray.env.j2
+    dest: "/home/{{ ray_user }}/{{ ray_service_name }}.env"
+    owner: "{{ ray_user }}"
+    group: "{{ ray_user }}"
+    mode: "0600"
 
-    - name: Create Ray systemd service
-      when: ray_setup
-      ansible.builtin.template:
-        src: ray.service.j2
-        dest: /etc/systemd/system/{{ ray_service_name }}.service
-        owner: root
-        group: root
-        mode: "0644"
-      notify:
-        - Restart ray systemd service
-        - Fail if ray is not active
+- name: Create autoscaling config
+  when:
+    - ray_head_node
+    - ray_autoscale
+  ansible.builtin.include_tasks:
+    file: create_autoscale_config.yml
 
-    - name: Enable logrotation for service
-      when: ray_setup
-      ansible.builtin.blockinfile:
-        path: /etc/logrotate.d/{{ ray_service_name }}
-        block: >
-          /var/log/{{ ray_service_name }}.log {
-            hourly
-            rotate 5
-            size 50M
-            compress
-            delaycompress
-            missingok
-            copytruncate
-          }
-        create: true
-        mode: "0644"
+- name: Create Ray systemd service
+  when: ray_setup
+  ansible.builtin.template:
+    src: ray.service.j2
+    dest: /etc/systemd/system/{{ ray_service_name }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Restart ray systemd service
+    - Fail if ray is not active
+
+- name: Enable logrotation for service
+  when: ray_setup
+  ansible.builtin.blockinfile:
+    path: /etc/logrotate.d/{{ ray_service_name }}
+    block: >
+      /var/log/{{ ray_service_name }}.log {
+        hourly
+        rotate 5
+        size 50M
+        compress
+        delaycompress
+        missingok
+        copytruncate
+      }
+    create: true
+    mode: "0644"
