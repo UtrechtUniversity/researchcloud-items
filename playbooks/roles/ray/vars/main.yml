@@ -1,13 +1,12 @@
 ---
-ray_default_extras:
-  - default
-  - client
 # noqa: jinja[spacing]
 ray_final_extras: >-
   {%- if (ray_user_extras | length) > 0 -%}
   [{{ ray_user_extras }}]
+  {%- elif ray_head_node -%}
+  [default,client]
   {%- else -%}
-  [{{ ray_default_extras | join(',') }}]
+  [default]
   {%- endif -%}
 # noqa: jinja[spacing]
 ray_service_name: >-
