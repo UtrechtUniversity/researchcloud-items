@@ -10,7 +10,7 @@ Ubuntu operating system.
 
 ## Description
 
-This component concerns Ubuntu's so-called [unattended upgrades feature](https://help.ubuntu.com/community/AutomaticSecurityUpdates). This feature installs *only* updates from Ubuntu's default security channel, which are therefore deemed critical and stable by Canonical. Without this component, an SRC workspace will **not** install security updates automatically.
+This component concerns Ubuntu's so-called [unattended upgrades feature](https://ubuntu.com/server/docs/how-to/software/automatic-updates/). This feature installs *only* updates from Ubuntu's default security channel, which are therefore deemed critical and stable by Canonical. Without this component, an SRC workspace will **not** install security updates automatically.
 
 Note that updates that need a reboot to become active will *not* trigger an automatic reboot (this is up to the user). However, it is still possible that when e.g. a webserver is updated through unattended upgrades, this results in downtime. Disabling periodic unattended upgrades is thus configurable by the user. **The user should decide whether the risk of service disruption outweighs the risks of an unupdated workspace.**
 

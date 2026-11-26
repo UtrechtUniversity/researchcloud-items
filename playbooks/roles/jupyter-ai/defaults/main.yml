@@ -1,0 +1,6 @@
+---
+# Default variables for jupyter-ai role
+jupyter_ai_package: jupyter-ai
+jupyter_ai_version: "*"
+jupyter_user: jupyter
+jupyter_venv: /usr/local/jupyterhub

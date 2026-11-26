@@ -1,0 +1,11 @@
+---
+- name: Install Jupyter AI extension into JupyterHub venv
+  become_user: "{{ jupyter_user }}"
+  become: true
+  ansible.builtin.pip:
+    name: "{{ jupyter_ai_package }}{{ ('==' + jupyter_ai_version) if jupyter_ai_version != '*' else '' }}"
+    executable: uv_pip
+    state: present
+  environment:
+    VIRTUAL_ENV: "{{ jupyter_venv }}"
+  notify: Restart JupyterHub
