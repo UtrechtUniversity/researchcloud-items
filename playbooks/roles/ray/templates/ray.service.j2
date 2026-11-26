@@ -45,7 +45,7 @@ ExecStop=/usr/local/bin/uv tool run ray stop
 ExecStop=/usr/local/bin/uv tool run ray stop --force
 ExecStopPost=/usr/bin/rm -rf {{ ray_tmp_dir }}
 {% if ray_autoscale %}
-ExecStopPost={{ ray_cmd }} down -y /home/{{ ray_user }}/ray_bootstrap_config.yaml
+ExecStopPost={{ ray_cmd }} down --workers-only -y /home/{{ ray_user }}/ray_bootstrap_config.yaml
 {% endif %}
 Restart=on-failure
 
