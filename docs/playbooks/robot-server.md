@@ -40,7 +40,7 @@ robotuser_generate_ssh_key: Boolean. Default: `true`. Whether to generate a fres
 ```
 
 ## See also
-Role [sshfs_configrobot](../roles/sshfs_configrobot) robot used to mount remote filesystem
+Role [sshfs_configrobot](../roles/sshfs_configrobot.md) robot used to mount remote filesystem
 Playbook [robotuser](./robotuser.md) playbook used to connect to a robotserver
 
 

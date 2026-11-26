@@ -19,7 +19,7 @@ The role:
 ## See also
 
 - role [jupyterhub](../roles/jupyterhub.md)
-- role [goose](..roles/goose.md)
+- role [goose](../roles/goose.md)
 
 ## History
 <year> Written by <author> (<organization>)
