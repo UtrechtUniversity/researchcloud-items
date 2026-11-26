@@ -9,7 +9,7 @@ provider:
   wallet_name: "{{ ray_src_wallet_name }}"
   cloud_name: "{{ ray_src_cloud_name }}"
   head_workspace_id: "{{ ray_src_workspace_id }}"
-  resume_paused_workspaces: "{{ ray_src_resume_workspaces | string | lower }}"
+  resume_paused_workspaces: {{ ray_src_resume_workspaces | string | lower }}
 
 auth:
   ssh_user: ray
