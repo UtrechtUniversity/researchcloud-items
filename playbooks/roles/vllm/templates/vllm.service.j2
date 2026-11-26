@@ -1,0 +1,19 @@
+[Unit]
+Description=vLLM OpenAI-compatible server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User={{ vllm_user }}
+Group={{ vllm_group }}
+WorkingDirectory=/var/lib/{{ vllm_user }}
+ExecStart={{ vllm_venv }}/bin/vllm serve {{ vllm_model }} --host {{ vllm_host }} --port {{ vllm_port }}{{ (' ' + vllm_extra_args) if vllm_extra_args | length > 0 else '' }}
+Restart=on-failure
+RestartSec=5
+{% for key, value in vllm_environment.items() %}
+Environment="{{ key }}={{ value }}"
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target

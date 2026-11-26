@@ -1,0 +1,11 @@
+{
+  "name": "vLLM",
+  "engine": "openai",
+  "display_name": "vLLM",
+  "base_url": "{{ goose_vllm_base_url }}",
+  "models": [
+    { "name": "{{ goose_vllm_model }}", "context_limit": {{ goose_vllm_context_limit }} }
+  ],
+  "supports_streaming": true,
+  "requires_auth": false
+}

@@ -134,3 +134,4 @@ The status of a role is either Experimental or Supported. Supported roles are su
 - [rstudio](roles/rstudio.md)
 - [goose](roles/goose.md)
 - [jupyter-ai](roles/jupyter-ai.md)
+- [vllm](roles/vllm.md)

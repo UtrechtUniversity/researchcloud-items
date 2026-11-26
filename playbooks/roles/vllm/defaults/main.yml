@@ -1,0 +1,13 @@
+---
+vllm_enabled: true
+vllm_user: vllm
+vllm_group: vllm
+vllm_service_name: vllm
+vllm_venv: /opt/vllm
+vllm_python: python3
+vllm_package: vllm
+vllm_model: ""
+vllm_host: 127.0.0.1
+vllm_port: 8000
+vllm_extra_args: ""
+vllm_environment: {}

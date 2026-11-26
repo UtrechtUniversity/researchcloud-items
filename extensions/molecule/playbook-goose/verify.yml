@@ -7,6 +7,24 @@
       ansible.builtin.command: goose --version
       changed_when: false
 
+    - name: Test Goose selects the Willma provider
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -Fqx
+          - active_provider: AI-hub
+          - /home/jupyterhub/.config/goose/config.yaml
+      changed_when: false
+
+    - name: Test Goose installs the Willma provider config
+      become: true
+      ansible.builtin.command:
+        argv:
+          - test
+          - -f
+          - /home/jupyterhub/.config/goose/custom_providers/willma.json
+      changed_when: false
+
     - name: Test JupyterHub forwards Goose API key to spawned servers
       ansible.builtin.command:
         argv:
@@ -32,6 +50,6 @@
         argv:
           - grep
           - -Fqx
-          - WILLMA_API_KEY=mock-key
+          - WILLMA_API_KEY=test-willma-key
           - /etc/goose/api.env
       changed_when: false

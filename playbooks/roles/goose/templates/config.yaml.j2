@@ -1,8 +1,15 @@
-active_provider: AI-hub
+active_provider: {{ 'AI-hub' if goose_willma_enabled | bool else 'vLLM' }}
 providers:
+{% if goose_willma_enabled | bool %}
   AI-hub:
     enabled: true
     model: openai/gpt-oss-120b
     configured: true
+{% else %}
+  vLLM:
+    enabled: true
+    model: {{ goose_vllm_model }}
+    configured: true
+{% endif %}
 GOOSE_MODE: auto
 GOOSE_TELEMETRY_ENABLED: false

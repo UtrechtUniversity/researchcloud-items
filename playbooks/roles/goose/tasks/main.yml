@@ -1,4 +1,12 @@
 ---
+- name: Determine whether the Willma provider is enabled
+  ansible.builtin.set_fact:
+    goose_willma_enabled: >-
+      {{
+        goose_use_willma | bool and
+        (WILLMA_API_KEY | default(goose_willma_default_api_key)) != goose_willma_default_api_key
+      }}
+
 - name: Create Goose configuration directories for users
   become: true
   ansible.builtin.file:
@@ -9,11 +17,31 @@
     mode: "0750"
   with_items: "{{ fact_regular_users }}"
 
-- name: Install AI hub config for users
+- name: Install Willma provider config for users
+  when: goose_willma_enabled
   become: true
   ansible.builtin.template:
     src: willma.json.j2
     dest: "{{ item.home }}/.config/goose/custom_providers/willma.json"
+    owner: "{{ item.user }}"
+    group: "{{ item.group | default(item.user) }}"
+    mode: "0640"
+  with_items: "{{ fact_regular_users }}"
+
+- name: Remove stale Willma provider config for users
+  when: not goose_willma_enabled
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.home }}/.config/goose/custom_providers/willma.json"
+    state: absent
+  with_items: "{{ fact_regular_users }}"
+
+- name: Install vLLM provider config for users
+  when: not goose_willma_enabled
+  become: true
+  ansible.builtin.template:
+    src: vllm.json.j2
+    dest: "{{ item.home }}/.config/goose/custom_providers/vllm.json"
     owner: "{{ item.user }}"
     group: "{{ item.group | default(item.user) }}"
     mode: "0640"
@@ -38,11 +66,29 @@
     group: root
     mode: "0755"
 
-- name: Install AI hub config for new users
+- name: Install Willma provider config for new users
+  when: goose_willma_enabled
   become: true
   ansible.builtin.template:
     src: willma.json.j2
     dest: /etc/skel/.config/goose/custom_providers/willma.json
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Remove stale Willma provider config for new users
+  when: not goose_willma_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/skel/.config/goose/custom_providers/willma.json
+    state: absent
+
+- name: Install vLLM provider config for new users
+  when: not goose_willma_enabled
+  become: true
+  ansible.builtin.template:
+    src: vllm.json.j2
+    dest: /etc/skel/.config/goose/custom_providers/vllm.json
     owner: root
     group: root
     mode: "0644"
@@ -100,6 +146,7 @@
   when: goose_jupyterhub_config.stat.exists
 
 - name: Install Goose API key environment file
+  when: goose_willma_enabled
   become: true
   ansible.builtin.copy:
     dest: /etc/goose/api.env
@@ -113,9 +160,19 @@
   register: goose_api_key_environment
   notify: Restart JupyterHub
 
+- name: Remove stale Goose API key environment file
+  when: not goose_willma_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/goose/api.env
+    state: absent
+  notify: Restart JupyterHub
+
 - name: JupyterHub Goose integration tasks
   become: true
-  when: goose_jupyterhub_config.stat.exists
+  when:
+    - goose_willma_enabled
+    - goose_jupyterhub_config.stat.exists
   block:
     - name: Create JupyterHub systemd override directory
       ansible.builtin.file:
@@ -148,7 +205,27 @@
       register: goose_jupyterhub_api_key_forwarding
       notify: Restart JupyterHub
 
+- name: Remove stale JupyterHub Goose API key configuration
+  become: true
+  when:
+    - not goose_willma_enabled
+    - goose_jupyterhub_config.stat.exists
+  block:
+    - name: Remove JupyterHub systemd override directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/jupyterhub.service.d/goose-api-key.conf
+        state: absent
+      notify: Restart JupyterHub
+
+    - name: Remove Goose API key from spawned JupyterHub server environments
+      ansible.builtin.blockinfile:
+        path: "{{ goose_jupyterhub_config_path }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK -- Goose API key"
+        state: absent
+      notify: Restart JupyterHub
+
 - name: Load Goose env files for login shells
+  when: goose_willma_enabled
   become: true
   ansible.builtin.copy:
     dest: /etc/profile.d/goose-env.sh
@@ -160,3 +237,10 @@
     owner: root
     group: root
     mode: "0644"
+
+- name: Remove stale Goose environment profile
+  when: not goose_willma_enabled
+  become: true
+  ansible.builtin.file:
+    path: /etc/profile.d/goose-env.sh
+    state: absent

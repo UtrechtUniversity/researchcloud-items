@@ -1,0 +1,99 @@
+---
+- name: Validate vLLM configuration
+  ansible.builtin.assert:
+    that:
+      - vllm_model | length > 0
+    fail_msg: "vllm_model must be set when vllm_enabled is true."
+  when: vllm_enabled | bool
+
+- name: Check for an existing vLLM systemd service
+  become: true
+  ansible.builtin.stat:
+    path: /etc/systemd/system/{{ vllm_service_name }}.service
+  register: vllm_service_file
+  when: not vllm_enabled | bool
+
+- name: Stop disabled vLLM service
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ vllm_service_name }}"
+    state: stopped
+    enabled: false
+    daemon_reload: true
+  when:
+    - not vllm_enabled | bool
+    - vllm_service_file.stat.exists
+
+- name: Remove disabled vLLM systemd service
+  become: true
+  ansible.builtin.file:
+    path: /etc/systemd/system/{{ vllm_service_name }}.service
+    state: absent
+  when:
+    - not vllm_enabled | bool
+    - vllm_service_file.stat.exists
+
+- name: Install vLLM system dependencies
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3
+      - python3-venv
+    state: present
+  when:
+    - vllm_enabled | bool
+    - ansible_os_family == "Debian"
+
+- name: Create vLLM group
+  become: true
+  ansible.builtin.group:
+    name: "{{ vllm_group }}"
+    state: present
+  when: vllm_enabled | bool
+
+- name: Create vLLM user
+  become: true
+  ansible.builtin.user:
+    name: "{{ vllm_user }}"
+    group: "{{ vllm_group }}"
+    system: true
+    home: /var/lib/{{ vllm_user }}
+    create_home: true
+    shell: /usr/sbin/nologin
+  when: vllm_enabled | bool
+
+- name: Create vLLM virtual environment
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ vllm_python }} -m venv {{ vllm_venv }}"
+    creates: "{{ vllm_venv }}/bin/python"
+  when: vllm_enabled | bool
+
+- name: Install vLLM package
+  become: true
+  ansible.builtin.pip:
+    name: "{{ vllm_package }}"
+    executable: "{{ vllm_venv }}/bin/pip"
+    state: present
+  when: vllm_enabled | bool
+  notify: Restart vLLM
+
+- name: Install vLLM systemd service
+  become: true
+  ansible.builtin.template:
+    src: vllm.service.j2
+    dest: /etc/systemd/system/{{ vllm_service_name }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  when: vllm_enabled | bool
+  notify: Restart vLLM
+
+- name: Enable and start vLLM
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ vllm_service_name }}"
+    state: started
+    enabled: true
+    daemon_reload: true
+  when: vllm_enabled | bool

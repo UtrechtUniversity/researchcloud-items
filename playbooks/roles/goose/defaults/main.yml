@@ -1,5 +1,10 @@
 ---
 WILLMA_API_KEY: 'mock-key'
+goose_use_willma: true
+goose_willma_default_api_key: 'mock-key'
+goose_vllm_model: Qwen/Qwen2.5-1.5B-Instruct
+goose_vllm_base_url: http://127.0.0.1:8000/v1
+goose_vllm_context_limit: 32768
 goose_jupyterhub_config_path: /usr/local/etc/jupyter/jupyterhub_config.py
 # Default group for the Goose API key environment file when JupyterHub is not present.
 # It will be overridden with ``jupyterhub_allowed_users_group`` when JupyterHub is installed.

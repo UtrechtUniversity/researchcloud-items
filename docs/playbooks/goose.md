@@ -2,13 +2,13 @@
 [back to index](../index.md#Playbooks)
 
 ## Summary
-This playbook installs [goose](https://goose-docs.ai/), an open source AI agent, on jupyterhub workspaces. It contains configuration files to connect with SURFs AI hub as custom provider. Furthermore, the playbook installs [Jupyter AI](https://jupyter-ai.readthedocs.io/en/stable/), a chat interface within jupyter that can use goose as a provider.
+This playbook installs [goose](https://goose-docs.ai/), an open source AI agent, with Jupyter AI. It uses SURF's AI hub when configured and otherwise installs a local vLLM server.
 
 ## Requires
 
 * Debian-based system
 * SRC Component: [SRC-Nginx Component](https://gitlab.com/rsc-surf-nl/plugins/plugin-nginx) must be executed prior to this component.
-* A JupyterHub installation.
+* A JupyterHub installation, installed by the preceding JupyterHub playbook
 
 ## Description
 
@@ -18,11 +18,14 @@ The playbook:
 - Installs goose
 - Installs goose desktop for desktop workspaces
 - Installs jupyter-ai
-- Uses a component secret in Research Cloud to establish API connection
+- Uses a component secret in Research Cloud to establish the optional AI hub connection
+- Installs vLLM when the AI hub is unavailable or disabled
 
 ## Variables
 
-- API key, to be set by admins
+- `WILLMA_API_KEY`: AI hub API key
+- `goose_use_willma`: explicitly enable or disable the AI hub provider
+- `goose_vllm_model`: model served by vLLM when the AI hub is disabled
 
 ## See also
 
